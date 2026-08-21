@@ -1,0 +1,40 @@
+# 构建产物
+node_modules/
+out/
+dist/
+release/
+build/
+coverage/
+*.tsbuildinfo
+*.log
+
+# 环境与密钥 — 绝不提交
+.env
+.env.*
+!.env.example
+.npmrc
+*.pem
+*.key
+*.p12
+*.pfx
+*credentials*
+*secret*
+*.token
+ghp_*
+github_pat_*
+
+# 工作区计划与证据（不入库）
+.omo/
+
+# 大模型权重 — 绝不入库，仅本地 models/ 目录
+models/
+*.gguf
+*.bin
+*.safetensors
+*.onnx
+*.pt
+*.ckpt
+
+# 用户数据与缓存
+userData/
+.cache/
