@@ -30,6 +30,10 @@
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "sqlite-vec": "^0.1.9",
+    "sqlite-vec-darwin-x64": "^0.1.9",
+    "sqlite-vec-linux-arm64": "^0.1.9",
+    "sqlite-vec-linux-x64": "^0.1.9",
+    "sqlite-vec-windows-x64": "^0.1.9",
     "zustand": "^5.0.14"
   },
   "devDependencies": {
