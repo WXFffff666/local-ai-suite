@@ -151,6 +151,9 @@ function ensureDir(dir: string): void {
 // Core: save / list / copy / insert / reuse
 // ---------------------------------------------------------------------------
 
+// 单调递增序号：同毫秒保存时保证 list 排序确定性（CI 曾因同 ms tie 排序不稳定而抖动）
+let __gallerySeq = 0
+
 /** 保存一张图到 gallery/<id>/ — 写入 原图 + 缩略 + meta.json */
 export function save(opts: SaveOptions): GalleryItem {
   const b64 = normalizeB64(opts.b64)
@@ -179,10 +182,11 @@ export function save(opts: SaveOptions): GalleryItem {
   // 缩略：MVP 直接复用原图 bytes；后续可在 main 进程用 sharp 缩放
   writeFileSync(thumbPath, buf)
 
-  const meta: GalleryMeta = {
+  const meta: GalleryMeta & { seq?: number } = {
     id: safeId,
     prompt,
     createdAt: Date.now(),
+    seq: ++__gallerySeq,
   }
   if (opts.negative_prompt !== undefined) meta.negative_prompt = opts.negative_prompt
   if (opts.width !== undefined) meta.width = Number(opts.width)
@@ -224,7 +228,10 @@ export function list(opts: ListOptions = {}): GalleryItem[] {
       // corrupt meta -> skip
     }
   }
-  out.sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0))
+  out.sort((a, b) =>
+    ((b as { seq?: number }).seq ?? 0) - ((a as { seq?: number }).seq ?? 0) ||
+    (b.createdAt ?? 0) - (a.createdAt ?? 0),
+  )
   return out
 }
 
