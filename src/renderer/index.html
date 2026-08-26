@@ -4,6 +4,17 @@
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;" />
     <title>Local AI Suite</title>
+    <!-- T30: 主题无闪烁 — 同步设置 data-theme，早于 React 挂载，避免 FOUC -->
+    <script>(function(){try{var k='las:theme';var lk='las:locale';var m=localStorage.getItem(k)||'system';var s=m;if(m==='system'){try{s=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}catch(e){s='light'}}document.documentElement.setAttribute('data-theme',s);document.documentElement.style.colorScheme=s;document.documentElement.classList.remove('light','dark');document.documentElement.classList.add(s);var loc=localStorage.getItem(lk)||'zh-CN';if(loc)document.documentElement.lang=loc;}catch(e){}})();</script>
+    <style>
+      html[data-theme='light']{color-scheme:light}
+      html[data-theme='dark']{color-scheme:dark}
+      html,body{margin:0}
+      /* 首帧背景跟随主题，避免白屏闪烁 */
+      html[data-theme='light'] body{background:#ffffff;color:#0f0f0f}
+      html[data-theme='dark'] body{background:#0f0f0f;color:#e8e8e8}
+      html:not([data-theme]) body{background:#0f0f0f;color:#e8e8e8}
+    </style>
   </head>
   <body>
     <div id="root"></div>
