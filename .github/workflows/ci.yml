@@ -40,6 +40,12 @@ jobs:
       - run: pnpm install --frozen-lockfile
         env:
           ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      # electron 的 index.js 在 dist 缺失时会现场下载甚至 exit(1) —— 测试桩掉它
+      - name: Stub electron dist (tests must never fetch the binary)
+        shell: bash
+        run: |
+          mkdir -p node_modules/electron/dist
+          printf 'stub' > node_modules/electron/path.txt
       - run: pnpm typecheck
       # 诊断步（不挡门禁）：原生模块套件在 hosted runner 上曾使 worker 直接退出，
       # 单独跑一次以捕获其 stderr —— 修复后可移除
@@ -69,6 +75,13 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: '20.x', cache: pnpm }
       - run: pnpm install --frozen-lockfile
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      - name: Stub electron dist (tests must never fetch the binary)
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force node_modules/electron/dist | Out-Null
+          Set-Content node_modules/electron/path.txt 'stub'
       - run: pnpm exec vitest run -c vitest.config.ci.ts --no-file-parallelism
       - run: pnpm exec playwright install chromium
       - run: pnpm test:e2e
