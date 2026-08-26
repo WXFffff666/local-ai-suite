@@ -38,6 +38,8 @@ jobs:
           node-version: '20.x'
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
       - run: pnpm typecheck
       # 诊断步（不挡门禁）：原生模块套件在 hosted runner 上曾使 worker 直接退出，
       # 单独跑一次以捕获其 stderr —— 修复后可移除

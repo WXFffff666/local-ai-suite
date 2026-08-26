@@ -2,14 +2,13 @@ import { defineConfig, mergeConfig } from 'vitest/config'
 
 import baseConfig from './vitest.config'
 
-// CI hosted runners: single long-lived fork avoids per-file native-module
-// reload crashes (better-sqlite3/sqlite-vec) and memory spikes.
+// CI hosted runners: serialize files (native modules + memory spikes),
+// and keep electron out of the test runtime entirely (ELECTRON_SKIP_BINARY_DOWNLOAD=1 in ci.yml).
 export default mergeConfig(
   baseConfig,
   defineConfig({
     test: {
-      pool: 'forks',
-      poolOptions: { forks: { singleFork: true } },
+      fileParallelism: false,
     },
   }),
 )
