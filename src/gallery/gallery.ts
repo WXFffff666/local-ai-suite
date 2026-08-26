@@ -1,0 +1,390 @@
+/**
+ * 画廊落盘 — Wave5 T23
+ *
+ * 画廊落盘缩略图/原图/元数据，右键复制/插入聊天，一键复用参数，gallery/ 落盘
+ * - 原图: gallery/<id>/original.png  (b64 -> png)
+ * - 缩略: gallery/<id>/thumb.png     (复用原图，仅路径区分；真实缩略可在渲染层用 sharp/canvas 二次生成)
+ * - 元数据: gallery/<id>/meta.json   (prompt/seed/steps/model/width/height ...)
+ * - 接口: save/list/copy/insert/reuse  (task 要求 5 动词全暴露)
+ *
+ * MIT, 无 AGPL. 仅 Node fs/path.
+ */
+
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync, rmSync } from 'fs'
+import { join, resolve } from 'path'
+
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+export const GALLERY_DIR_NAME = 'gallery' as const
+export const ORIGINAL_FILE = 'original.png' as const
+export const THUMB_FILE = 'thumb.png' as const
+export const META_FILE = 'meta.json' as const
+
+/** 落盘元数据 — 生成参数全量 */
+export type GalleryMeta = {
+  id: string
+  prompt: string
+  negative_prompt?: string
+  width?: number
+  height?: number
+  steps?: number
+  cfg_scale?: number
+  seed?: number
+  model?: string
+  sampler?: string
+  createdAt: number
+  /** 可选额外透传 */
+  extra?: Record<string, unknown>
+}
+
+/** 列表项 = 元数据 + 落盘路径 */
+export type GalleryItem = GalleryMeta & {
+  originalPath: string
+  thumbPath: string
+  metaPath: string
+}
+
+/** save 入参 */
+export type SaveOptions = {
+  /** base64 PNG (不含 data: 前缀，也兼容 data:image/png;base64,) */
+  b64: string
+  prompt: string
+  negative_prompt?: string
+  width?: number
+  height?: number
+  steps?: number
+  cfg_scale?: number
+  seed?: number
+  model?: string
+  sampler?: string
+  extra?: Record<string, unknown>
+  /** 自定义落盘根，默认 gallery/ ；测试注入临时目录 */
+  baseDir?: string
+  /** 可选覆盖 id，便于测试确定性 */
+  id?: string
+}
+
+/** list 入参 */
+export type ListOptions = {
+  baseDir?: string
+}
+
+/** 生成参数复用 — 直接喂给 /generate 或 queue */
+export type ReuseParams = {
+  prompt: string
+  negative_prompt?: string
+  width?: number
+  height?: number
+  steps?: number
+  cfg_scale?: number
+  seed?: number
+  model?: string
+  sampler?: string
+  extra?: Record<string, unknown>
+}
+
+/** copy 返回 */
+export type CopyPayload = {
+  /** 落盘绝对路径 */
+  path: string
+  /** b64 (不含前缀) */
+  b64: string
+  mime: string
+}
+
+/** insert 返回 — 插入聊天/编辑器 */
+export type InsertPayload = {
+  /** 插入文本 (markdown 图片引用 + prompt) */
+  text: string
+  /** 图片本地路径 */
+  imagePath: string
+  /** 图片 b64 供前端直接预览 */
+  b64: string
+  prompt: string
+}
+
+// ---------------------------------------------------------------------------
+// Path helpers
+// ---------------------------------------------------------------------------
+
+export function getGalleryDir(baseDir?: string): string {
+  if (baseDir) return resolve(baseDir)
+  return join(process.cwd(), GALLERY_DIR_NAME)
+}
+
+export function getItemDir(id: string, baseDir?: string): string {
+  return join(getGalleryDir(baseDir), id)
+}
+
+export function getOriginalPath(id: string, baseDir?: string): string {
+  return join(getItemDir(id, baseDir), ORIGINAL_FILE)
+}
+
+export function getThumbPath(id: string, baseDir?: string): string {
+  return join(getItemDir(id, baseDir), THUMB_FILE)
+}
+
+export function getMetaPath(id: string, baseDir?: string): string {
+  return join(getItemDir(id, baseDir), META_FILE)
+}
+
+function genId(): string {
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`
+}
+
+function normalizeB64(raw: string): string {
+  const s = raw.trim()
+  if (!s) throw new Error('b64 is required')
+  // strip data url prefix
+  const m = s.match(/^data:image\/\w+;base64,(.+)$/)
+  if (m) return m[1]!.trim()
+  return s
+}
+
+function ensureDir(dir: string): void {
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
+}
+
+// ---------------------------------------------------------------------------
+// Core: save / list / copy / insert / reuse
+// ---------------------------------------------------------------------------
+
+/** 保存一张图到 gallery/<id>/ — 写入 原图 + 缩略 + meta.json */
+export function save(opts: SaveOptions): GalleryItem {
+  const b64 = normalizeB64(opts.b64)
+  const prompt = (opts.prompt ?? '').trim()
+  if (!prompt) throw new Error('prompt is required for gallery save')
+  // validate base64 sanity
+  try {
+    const buf = Buffer.from(b64, 'base64')
+    if (buf.length === 0) throw new Error('empty')
+    // round-trip check: re-encode should not be empty
+    if (!buf.toString('base64')) throw new Error('invalid b64')
+  } catch (e) {
+    throw new Error(`invalid b64: ${(e as Error).message}`)
+  }
+  const id = (opts.id?.trim() || genId())
+  // sanitize id for filesystem
+  const safeId = id.replace(/[^a-zA-Z0-9._-]/g, '_')
+  const dir = getItemDir(safeId, opts.baseDir)
+  ensureDir(dir)
+  const originalPath = getOriginalPath(safeId, opts.baseDir)
+  const thumbPath = getThumbPath(safeId, opts.baseDir)
+  const metaPath = getMetaPath(safeId, opts.baseDir)
+
+  const buf = Buffer.from(b64, 'base64')
+  writeFileSync(originalPath, buf)
+  // 缩略：MVP 直接复用原图 bytes；后续可在 main 进程用 sharp 缩放
+  writeFileSync(thumbPath, buf)
+
+  const meta: GalleryMeta = {
+    id: safeId,
+    prompt,
+    createdAt: Date.now(),
+  }
+  if (opts.negative_prompt !== undefined) meta.negative_prompt = opts.negative_prompt
+  if (opts.width !== undefined) meta.width = Number(opts.width)
+  if (opts.height !== undefined) meta.height = Number(opts.height)
+  if (opts.steps !== undefined) meta.steps = Number(opts.steps)
+  if (opts.cfg_scale !== undefined) meta.cfg_scale = Number(opts.cfg_scale)
+  if (opts.seed !== undefined) meta.seed = Number(opts.seed)
+  if (opts.model !== undefined) meta.model = String(opts.model)
+  if (opts.sampler !== undefined) meta.sampler = String(opts.sampler)
+  if (opts.extra !== undefined) meta.extra = opts.extra
+
+  writeFileSync(metaPath, JSON.stringify(meta, null, 2), 'utf-8')
+
+  return { ...meta, originalPath: resolve(originalPath), thumbPath: resolve(thumbPath), metaPath: resolve(metaPath) }
+}
+
+/** 列出 gallery/ 下所有项，按 createdAt 倒序 */
+export function list(opts: ListOptions = {}): GalleryItem[] {
+  const dir = getGalleryDir(opts.baseDir)
+  if (!existsSync(dir)) return []
+  const entries = readdirSync(dir, { withFileTypes: true })
+  const out: GalleryItem[] = []
+  for (const ent of entries) {
+    if (!ent.isDirectory()) continue
+    const id = ent.name
+    const metaPath = getMetaPath(id, opts.baseDir)
+    if (!existsSync(metaPath)) continue
+    try {
+      const raw = readFileSync(metaPath, 'utf-8')
+      const meta = JSON.parse(raw) as GalleryMeta
+      if (!meta.id) meta.id = id
+      out.push({
+        ...meta,
+        originalPath: resolve(getOriginalPath(id, opts.baseDir)),
+        thumbPath: resolve(getThumbPath(id, opts.baseDir)),
+        metaPath: resolve(metaPath),
+      })
+    } catch {
+      // corrupt meta -> skip
+    }
+  }
+  out.sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0))
+  return out
+}
+
+/** 按 id 读取单项，找不到抛错 */
+export function getItem(id: string, baseDir?: string): GalleryItem {
+  const metaPath = getMetaPath(id, baseDir)
+  if (!existsSync(metaPath)) throw new Error(`gallery item ${id} not found`)
+  const raw = readFileSync(metaPath, 'utf-8')
+  const meta = JSON.parse(raw) as GalleryMeta
+  return {
+    ...meta,
+    id: meta.id ?? id,
+    originalPath: resolve(getOriginalPath(id, baseDir)),
+    thumbPath: resolve(getThumbPath(id, baseDir)),
+    metaPath: resolve(metaPath),
+  }
+}
+
+/** 右键复制 — 返回 b64 + 路径；若在 Electron 渲染层可再写 clipboard */
+export function copy(idOrItem: string | GalleryItem, baseDir?: string): CopyPayload {
+  const id = typeof idOrItem === 'string' ? idOrItem : idOrItem.id
+  const dirBase = typeof idOrItem === 'object' && (idOrItem as GalleryItem).metaPath ? undefined : baseDir
+  // validation when string id
+  if (typeof idOrItem === 'string') getItem(id, baseDir)
+  const resolvedBase = dirBase ?? baseDir
+  // prefer item's own paths if object
+  const origPath = typeof idOrItem === 'string' ? getOriginalPath(id, resolvedBase) : (idOrItem as GalleryItem).originalPath ?? getOriginalPath(id, resolvedBase)
+  if (!existsSync(origPath)) throw new Error(`original not found for ${id}: ${origPath}`)
+  const buf = readFileSync(origPath)
+  const b64 = buf.toString('base64')
+  // best-effort write to electron clipboard if available (no throw)
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const electron = require('electron') as { clipboard?: { writeImage?: (img: unknown) => void; writeBuffer?: (t: string, b: Buffer, type: string) => void } }
+    if (electron?.clipboard?.writeBuffer) {
+      // PNG buffer
+      electron.clipboard.writeBuffer('image/png', buf, 'image/png')
+    }
+  } catch {
+    // not in electron — ignore
+  }
+  return { path: resolve(origPath), b64, mime: 'image/png' }
+}
+
+/** 插入聊天 — 返回 InsertPayload；若提供 onInsert 回调则调用 */
+export function insert(
+  idOrItem: string | GalleryItem,
+  baseDirOrCallback?: string | ((payload: InsertPayload) => void),
+  maybeCallback?: (payload: InsertPayload) => void,
+): InsertPayload {
+  let baseDir: string | undefined
+  let onInsert: ((payload: InsertPayload) => void) | undefined
+  if (typeof baseDirOrCallback === 'function') {
+    onInsert = baseDirOrCallback
+  } else {
+    baseDir = baseDirOrCallback as string | undefined
+    onInsert = maybeCallback
+  }
+  const id = typeof idOrItem === 'string' ? idOrItem : idOrItem.id
+  const item = typeof idOrItem === 'string' ? getItem(id, baseDir) : idOrItem
+  const origPath = typeof idOrItem === 'string' ? getOriginalPath(id, baseDir) : (item as GalleryItem).originalPath ?? getOriginalPath(id, baseDir)
+  let b64 = ''
+  try {
+    if (existsSync(origPath)) b64 = readFileSync(origPath).toString('base64')
+  } catch {
+    b64 = ''
+  }
+  // fallback to copy if exists
+  if (!b64) {
+    try {
+      b64 = copy(id, baseDir).b64
+    } catch {
+      b64 = ''
+    }
+  }
+  const text = `![${item.prompt.slice(0, 32)}](${origPath}) ${item.prompt}`
+  const payload: InsertPayload = { text, imagePath: resolve(origPath), b64, prompt: item.prompt }
+  if (onInsert) onInsert(payload)
+  return payload
+}
+
+/** 一键复用参数 — 返回可直接喂给 /generate 的参数 */
+export function reuse(idOrItem: string | GalleryItem, baseDir?: string): ReuseParams {
+  const item = typeof idOrItem === 'string' ? getItem(idOrItem, baseDir) : idOrItem
+  const out: ReuseParams = { prompt: item.prompt }
+  if (item.negative_prompt !== undefined) out.negative_prompt = item.negative_prompt
+  if (item.width !== undefined) out.width = item.width
+  if (item.height !== undefined) out.height = item.height
+  if (item.steps !== undefined) out.steps = item.steps
+  if (item.cfg_scale !== undefined) out.cfg_scale = item.cfg_scale
+  if (item.seed !== undefined) out.seed = item.seed
+  if (item.model !== undefined) out.model = item.model
+  if (item.sampler !== undefined) out.sampler = item.sampler
+  if (item.extra !== undefined) out.extra = item.extra
+  return out
+}
+
+/** 删除单项 — 辅助 */
+export function remove(id: string, baseDir?: string): boolean {
+  const dir = getItemDir(id, baseDir)
+  if (!existsSync(dir)) return false
+  rmSync(dir, { recursive: true, force: true })
+  return true
+}
+
+/** 清空画廊 — 辅助，测试用 */
+export function clear(baseDir?: string): number {
+  const items = list({ baseDir })
+  let n = 0
+  for (const it of items) {
+    if (remove(it.id, baseDir)) n++
+  }
+  return n
+}
+
+// ---------------------------------------------------------------------------
+// Aliases — 兼容语义化命名，task 要求动词全暴露故同时保留
+// ---------------------------------------------------------------------------
+
+export const saveToGallery = save
+export const listGallery = list
+export const copyGalleryItem = copy
+export const insertGalleryItem = insert
+export const reuseGalleryParams = reuse
+export const getGalleryItem = getItem
+
+// In-memory helpers for preview (不落盘)
+export function toDataUrl(b64: string, mime = 'image/png'): string {
+  const clean = normalizeB64(b64)
+  return `data:${mime};base64,${clean}`
+}
+
+// Re-export for class wrapper
+
+export class Gallery {
+  constructor(private baseDir?: string) {}
+  save(opts: Omit<SaveOptions, 'baseDir'>): GalleryItem {
+    return save({ ...opts, baseDir: this.baseDir })
+  }
+  list(): GalleryItem[] {
+    return list({ baseDir: this.baseDir })
+  }
+  get(id: string): GalleryItem {
+    return getItem(id, this.baseDir)
+  }
+  copy(id: string): CopyPayload {
+    return copy(id, this.baseDir)
+  }
+  insert(id: string, onInsert?: (p: InsertPayload) => void): InsertPayload {
+    return insert(id, this.baseDir, onInsert)
+  }
+  reuse(id: string): ReuseParams {
+    return reuse(id, this.baseDir)
+  }
+  remove(id: string): boolean {
+    return remove(id, this.baseDir)
+  }
+  clear(): number {
+    return clear(this.baseDir)
+  }
+}
+
+export default Gallery
