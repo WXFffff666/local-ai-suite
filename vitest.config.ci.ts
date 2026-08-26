@@ -2,13 +2,18 @@ import { defineConfig, mergeConfig } from 'vitest/config'
 
 import baseConfig from './vitest.config'
 
-// CI hosted runners: serialize files (native modules + memory spikes),
-// and keep electron out of the test runtime entirely (ELECTRON_SKIP_BINARY_DOWNLOAD=1 in ci.yml).
+// CI hosted runners:
+// - threads pool (no child processes): native-module aborts surface as normal
+//   stack traces instead of silently killing fork workers.
+// - serialize files: memory spikes + shared userData dirs in tests.
 export default mergeConfig(
   baseConfig,
   defineConfig({
     test: {
+      pool: 'threads',
       fileParallelism: false,
+      maxWorkers: 1,
+      minWorkers: 1,
     },
   }),
 )
