@@ -48,3 +48,11 @@ models/
 # 用户数据与缓存
 userData/
 .cache/
+
+# === 源码路径显式豁免（防止全局/宽泛 ignore 规则吞掉源码）===
+!src/main/storage/migrations/001-init.sql
+!src/models/registry.ts
+!src/models/registry.test.ts
+!src/renderer/src/features/cache/clearCache.ts
+!src/renderer/src/features/coverage/overwriteCoverage.ts
+!src/renderer/src/features/release/publishRelease.ts
