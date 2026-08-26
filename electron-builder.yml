@@ -98,8 +98,9 @@ nsis:
 # macOS — CSC_LINK / APPLE_ID via env secrets (placeholder, no hard-coded key)
 mac:
   target:
+    # arm64 需原生 runner/通用二进制链；x64 runner 交叉打包 arm64 会因原生模块架构不符而失败
     - target: dmg
-      arch: [x64, arm64]
+      arch: [x64]
   icon: build/icon.icns
   category: public.app-category.productivity
   hardenedRuntime: true

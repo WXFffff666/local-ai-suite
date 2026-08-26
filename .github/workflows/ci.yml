@@ -39,7 +39,19 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
+      # 诊断步（不挡门禁）：原生模块套件在 hosted runner 上曾使 worker 直接退出，
+      # 单独跑一次以捕获其 stderr —— 修复后可移除
+      - name: Diagnose storage suite (non-blocking)
+        continue-on-error: true
+        run: pnpm exec vitest run -c vitest.config.ci.ts src/main/storage --no-file-parallelism 2>&1 | tee storage-diag.log
       - run: pnpm exec vitest run -c vitest.config.ci.ts --no-file-parallelism
+      - name: Upload storage diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: storage-diag
+          path: storage-diag.log
+          if-no-files-found: ignore
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium
       - name: Run e2e (xvfb)
