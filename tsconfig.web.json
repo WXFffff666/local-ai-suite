@@ -1,6 +1,6 @@
 {
   "extends": "@electron-toolkit/tsconfig/tsconfig.web.json",
-  "include": ["src/renderer/src/env.d.ts", "src/renderer/src/**/*", "src/preload/*.d.ts", "src/shared/**/*"],
+  "include": ["src/renderer/src/env.d.ts", "src/renderer/src/**/*", "src/renderer/utils/**/*", "src/preload/*.d.ts", "src/shared/**/*", "src/main/ipc/whitelist.ts", "src/chat/**/*", "src/core/**/*", "src/theme/**/*"],
   "compilerOptions": {
     "composite": true,
     "jsx": "react-jsx"

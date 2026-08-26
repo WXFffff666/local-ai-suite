@@ -12,30 +12,52 @@
     "build": "electron-vite build",
     "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
     "preview": "electron-vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:e2e:ci": "playwright test --reporter=list",
+    "rebuild:native": "electron-builder install-app-deps",
+    "postinstall": "electron-builder install-app-deps",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win --x64",
+    "check:size": "node scripts/check-pack-size.mjs",
+    "check:licenses": "node scripts/check-licenses.mjs",
+    "bench": "node benchmarks/bench.mjs",
+    "bench:live": "node benchmarks/bench.mjs --live"
   },
   "dependencies": {
+    "better-sqlite3": "^13.0.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "sqlite-vec": "^0.1.9",
     "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@electron-toolkit/tsconfig": "^2.0.0",
     "@electron-toolkit/utils": "^4.0.0",
+    "@playwright/test": "^1.56.0",
+    "@types/better-sqlite3": "^9.6.0",
     "@types/node": "^26.1.2",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.0.5",
+    "@vitest/coverage-v8": "^4.1.11",
+    "chokidar": "^5.0.0",
     "electron": "^43.2.0",
     "electron-builder": "^26.15.3",
     "electron-vite": "^5.0.0",
+    "sharp": "^0.35.3",
     "typescript": "^5.9.3",
-    "vite": "^8.2.0"
+    "vite": "^8.2.0",
+    "vitest": "^4.1.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
       "electron",
-      "esbuild"
+      "esbuild",
+      "better-sqlite3",
+      "sqlite-vec",
+      "sharp"
     ]
   }
 }

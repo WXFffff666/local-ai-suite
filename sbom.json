@@ -1,0 +1,222 @@
+{
+  "bomFormat": "CycloneDX-lite",
+  "specVersion": "1.4",
+  "generatedAt": "2026-08-22T15:10:36.349Z",
+  "project": {
+    "name": "local-ai-suite",
+    "license": "MIT",
+    "version": "0.1.0"
+  },
+  "summary": {
+    "totalComponents": 21,
+    "violations": 0,
+    "allowlist": [
+      "better-sqlite3",
+      "sqlite-vec",
+      "sharp",
+      "electron",
+      "electron-builder"
+    ],
+    "allowedLicenses": [
+      "MIT",
+      "Apache-2.0",
+      "BSD*",
+      "ISC",
+      "0BSD",
+      "CC0-1.0",
+      "Unlicense"
+    ]
+  },
+  "components": [
+    {
+      "name": "@electron-toolkit/tsconfig",
+      "version": "2.0.0",
+      "license": "MIT",
+      "allowed": true,
+      "reason": "permissive",
+      "path": "node_modules/.pnpm/@electron-toolkit+tsconfig@2.0.0_@types+node@26.2.0/node_modules/@electron-toolkit/tsconfig",
+      "purl": "pkg:npm/@electron-toolkit/tsconfig@2.0.0"
+    },
+    {
+      "name": "@electron-toolkit/utils",
+      "version": "4.0.0",
+      "license": "MIT",
+      "allowed": true,
+      "reason": "permissive",
+      "path": "node_modules/.pnpm/@electron-toolkit+utils@4.0.0_electron@43.4.1/node_modules/@electron-toolkit/utils",
+      "purl": "pkg:npm/@electron-toolkit/utils@4.0.0"
+    },
+    {
+      "name": "@playwright/test",
+      "version": "1.62.1",
+      "license": "Apache-2.0",
+      "allowed": true,
+      "reason": "permissive",
+      "path": "node_modules/.pnpm/@playwright+test@1.62.1/node_modules/@playwright/test",
+      "purl": "pkg:npm/@playwright/test@1.62.1"
+    },
+    {
+      "name": "@types/better-sqlite3",
+      "version": "9.6.0",
+      "license": "MIT",
+      "allowed": true,
+      "reason": "permissive",
+      "path": "node_modules/.pnpm/@types+better-sqlite3@9.6.0/node_modules/@types/better-sqlite3",
+      "purl": "pkg:npm/@types/better-sqlite3@9.6.0"
+    },
+    {
+      "name": "@types/node",
+      "version": "26.2.0",
+      "license": "MIT",
+      "allowed": true,
+      "reason": "permissive",
+      "path": "node_modules/.pnpm/@types+node@26.2.0/node_modules/@types/node",
+      "purl": "pkg:npm/@types/node@26.2.0"
+    },
+    {
+      "name": "@types/react",
+      "version": "19.2.18",
+      "license": "MIT",
+      "allowed": true,
+      "reason": "permissive",
+      "path": "node_modules/.pnpm/@types+react@19.2.18/node_modules/@types/react",
+      "purl": "pkg:npm/@types/react@19.2.18"
+    },
+    {
+      "name": "@types/react-dom",
+      "version": "19.2.4",
+      "license": "MIT",
+      "allowed": true,
+      "reason": "permissive",
+      "path": "node_modules/.pnpm/@types+react-dom@19.2.4_@types+react@19.2.18/node_modules/@types/react-dom",
+      "purl": "pkg:npm/@types/react-dom@19.2.4"
+    },
+    {
+      "name": "@vitejs/plugin-react",
+      "version": "6.1.0",
+      "license": "MIT",
+      "allowed": true,
+      "reason": "permissive",
+      "path": "node_modules/.pnpm/@vitejs+plugin-react@6.1.0_vite@8.2.2_@types+node@26.2.0_jiti@2.7.0_/node_modules/@vitejs/plugin-react",
+      "purl": "pkg:npm/@vitejs/plugin-react@6.1.0"
+    },
+    {
+      "name": "@vitest/coverage-v8",
+      "version": "4.1.11",
+      "license": "MIT",
+      "allowed": true,
+      "reason": "permissive",
+      "path": "node_modules/.pnpm/@vitest+coverage-v8@4.1.11_vitest@4.1.11/node_modules/@vitest/coverage-v8",
+      "purl": "pkg:npm/@vitest/coverage-v8@4.1.11"
+    },
+    {
+      "name": "better-sqlite3",
+      "version": "13.0.3",
+      "license": "MIT",
+      "allowed": true,
+      "reason": "package-allowlist",
+      "path": "node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3",
+      "purl": "pkg:npm/better-sqlite3@13.0.3"
+    },
+    {
+      "name": "chokidar",
+      "version": "5.0.0",
+      "license": "MIT",
+      "allowed": true,
+      "reason": "permissive",
+      "path": "node_modules/.pnpm/chokidar@5.0.0/node_modules/chokidar",
+      "purl": "pkg:npm/chokidar@5.0.0"
+    },
+    {
+      "name": "electron",
+      "version": "43.4.1",
+      "license": "MIT",
+      "allowed": true,
+      "reason": "package-allowlist",
+      "path": "node_modules/.pnpm/electron@43.4.1/node_modules/electron",
+      "purl": "pkg:npm/electron@43.4.1"
+    },
+    {
+      "name": "electron-builder",
+      "version": "26.15.3",
+      "license": "MIT",
+      "allowed": true,
+      "reason": "package-allowlist",
+      "path": "node_modules/.pnpm/electron-builder@26.15.3_electron-builder-squirrel-windows@26.15.3/node_modules/electron-builder",
+      "purl": "pkg:npm/electron-builder@26.15.3"
+    },
+    {
+      "name": "electron-vite",
+      "version": "5.0.0",
+      "license": "MIT",
+      "allowed": true,
+      "reason": "permissive",
+      "path": "node_modules/.pnpm/electron-vite@5.0.0_vite@8.2.2_@types+node@26.2.0_jiti@2.7.0_/node_modules/electron-vite",
+      "purl": "pkg:npm/electron-vite@5.0.0"
+    },
+    {
+      "name": "react",
+      "version": "19.2.8",
+      "license": "MIT",
+      "allowed": true,
+      "reason": "permissive",
+      "path": "node_modules/.pnpm/react@19.2.8/node_modules/react",
+      "purl": "pkg:npm/react@19.2.8"
+    },
+    {
+      "name": "react-dom",
+      "version": "19.2.8",
+      "license": "MIT",
+      "allowed": true,
+      "reason": "permissive",
+      "path": "node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom",
+      "purl": "pkg:npm/react-dom@19.2.8"
+    },
+    {
+      "name": "sqlite-vec",
+      "version": "0.1.9",
+      "license": "MIT OR Apache",
+      "allowed": true,
+      "reason": "package-allowlist",
+      "path": "node_modules/.pnpm/sqlite-vec@0.1.9/node_modules/sqlite-vec",
+      "purl": "pkg:npm/sqlite-vec@0.1.9"
+    },
+    {
+      "name": "typescript",
+      "version": "5.9.3",
+      "license": "Apache-2.0",
+      "allowed": true,
+      "reason": "permissive",
+      "path": "node_modules/.pnpm/typescript@5.9.3/node_modules/typescript",
+      "purl": "pkg:npm/typescript@5.9.3"
+    },
+    {
+      "name": "vite",
+      "version": "8.2.2",
+      "license": "MIT",
+      "allowed": true,
+      "reason": "permissive",
+      "path": "node_modules/.pnpm/vite@8.2.2_@types+node@26.2.0_jiti@2.7.0/node_modules/vite",
+      "purl": "pkg:npm/vite@8.2.2"
+    },
+    {
+      "name": "vitest",
+      "version": "4.1.11",
+      "license": "MIT",
+      "allowed": true,
+      "reason": "permissive",
+      "path": "node_modules/.pnpm/vitest@4.1.11_@types+node@26.2.0_@vitest+coverage-v8@4.1.11_vite@8.2.2_@types+node@26.2.0_jiti@2.7.0_/node_modules/vitest",
+      "purl": "pkg:npm/vitest@4.1.11"
+    },
+    {
+      "name": "zustand",
+      "version": "5.0.15",
+      "license": "MIT",
+      "allowed": true,
+      "reason": "permissive",
+      "path": "node_modules/.pnpm/zustand@5.0.15_@types+react@19.2.18_react@19.2.8/node_modules/zustand",
+      "purl": "pkg:npm/zustand@5.0.15"
+    }
+  ],
+  "violations": []
+}

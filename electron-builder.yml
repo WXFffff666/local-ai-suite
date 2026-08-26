@@ -1,0 +1,129 @@
+appId: com.localaisuite.app
+productName: Local AI Suite
+copyright: Copyright (c) 2026 WXFffff666
+
+directories:
+  output: release
+  buildResources: build
+
+# ---- pack size optimization ----
+asar: true
+asarUnpack:
+  - "**/*.node"
+  - "**/*.dll"
+  - "**/*.so"
+
+compression: maximum
+npmRebuild: true
+buildDependenciesFromSource: false
+# Per-platform native rebuild: better-sqlite3 / sqlite-vec / sharp are listed
+# in pnpm.onlyBuiltDependencies and rebuilt via `electron-builder install-app-deps`
+# or `pnpm rebuild` on the target OS. Only the current platform's
+# prebuilds (e.g. sqlite-vec-windows-x64 on Win) are packed; other
+# platform binaries are excluded via files whitelist below.
+nodeGypRebuild: false
+electronCompile: false
+
+files:
+  - out/**/*
+  - package.json
+  # --- strict whitelist: exclude docs / tests / maps / caches / models ---
+  - "!**/*.ts"
+  - "!**/*.map"
+  - "!**/*.md"
+  - "!**/LICENSE*"
+  - "!**/LICENCE*"
+  - "!**/README*"
+  - "!**/CHANGELOG*"
+  - "!**/.git/**"
+  - "!**/.github/**"
+  - "!**/docs/**"
+  - "!**/coverage/**"
+  - "!**/.omo/**"
+  - "!**/test/**"
+  - "!**/__tests__/**"
+  - "!**/*.test.*"
+  - "!**/*.spec.*"
+  - "!**/example/**"
+  - "!**/examples/**"
+  - "!**/__mocks__/**"
+  - "!**/.cache/**"
+  - "!node_modules/.cache/**"
+  - "!node_modules/.bin/**"
+  - "!**/*.pdb"
+  - "!**/*.lib"
+  - "!**/*.exp"
+  - "!**/*.o"
+  - "!**/*.a"
+  # never pack local models (large weights) — downloaded to userData/models at runtime
+  - "!models/**"
+  - "!**/*.gguf"
+  - "!**/*.bin"
+  - "!**/*.safetensors"
+  - "!**/*.onnx"
+  - "!**/*.pt"
+  - "!**/*.ckpt"
+  - "!release/**"
+  - "!out/**/*.ts"
+  # exclude other-platform prebuilds when packing on Windows (keep win-x64 only)
+  # these patterns are no-ops on the target platform but trim cross-platform fat when present
+  - "!node_modules/sqlite-vec-darwin-*/**"
+  - "!node_modules/sqlite-vec-linux-*/**"
+  - "!node_modules/sharp/vendor/**"
+  - "!node_modules/@sharp/**"
+  - "!node_modules/sharp-libvips*/**"
+
+extraMetadata:
+  main: out/main/index.js
+
+publish:
+  provider: github
+  releaseType: draft
+  publishAutoUpdate: false
+
+# Windows — primary target, budget <150 MB (without models)
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+  icon: build/icon.ico
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  perMachine: false
+  # reduce installer overhead
+  differentialPackage: false
+
+# macOS — CSC_LINK / APPLE_ID via env secrets (placeholder, no hard-coded key)
+mac:
+  target:
+    - target: dmg
+      arch: [x64, arm64]
+  icon: build/icon.icns
+  category: public.app-category.productivity
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+
+dmg:
+  sign: false
+
+# Linux
+linux:
+  target:
+    - target: AppImage
+      arch: [x64]
+    - target: deb
+      arch: [x64]
+  icon: build/icons/512x512.png
+  category: Utility
+
+# Native rebuild per platform:
+#   pnpm rebuild better-sqlite3 sqlite-vec sharp   # or: pnpm exec electron-builder install-app-deps
+# CI matrix runs this on each OS before `electron-builder --publish ...`
+# so only the matching sqlite-vec-*/sharp binary is present in node_modules.
+
+# Avoid publishing on local `pnpm exec electron-builder` without --publish flag
+# CI uses --publish always which overrides this; draft Release created on tag push v*

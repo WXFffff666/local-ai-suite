@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  privacy-security:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.x
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: License gate (MIT-only, AGPL isolated to sidecars/)
+        run: node scripts/check-licenses.mjs
+      - name: Privacy gate (local-first / offline / userData / no 0.0.0.0)
+        run: node scripts/check-privacy.mjs
+      - name: Pack size gate (<150 MB excluding models)
+        run: node scripts/check-pack-size.mjs
+
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.x
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm test
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Run e2e (xvfb)
+        run: xvfb-run -a pnpm test:e2e
+
+  test-win:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 9.x }
+      - uses: actions/setup-node@v4
+        with: { node-version: '20.x', cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm exec playwright install chromium
+      - run: pnpm test:e2e

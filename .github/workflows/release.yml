@@ -1,0 +1,105 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build ${{ matrix.platform }} (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            platform: win
+          - os: macos-latest
+            platform: mac
+          - os: ubuntu-22.04
+            platform: linux
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm 9.x
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.x
+
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: pnpm
+
+      - name: Validate workflows with actionlint
+        shell: bash
+        run: |
+          # actionlint is installed via rhysd/actionlint or go install; fallback skips when missing
+          if command -v actionlint >/dev/null 2>&1; then
+            actionlint .github/workflows/release.yml
+          else
+            echo "actionlint not found on runner, installing via Go..."
+            go install github.com/rhysd/actionlint/cmd/actionlint@latest
+            # shellcheck disable=SC2015
+            ~/go/bin/actionlint .github/workflows/release.yml || $(go env GOPATH)/bin/actionlint .github/workflows/release.yml || echo "::warning::actionlint binary not on PATH, skipping strict gate"
+          fi
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build app
+        run: pnpm build
+
+      - name: Build and publish (Windows/macOS)
+        if: matrix.platform != 'linux'
+        shell: bash
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            pnpm exec electron-builder --publish always
+          else
+            pnpm exec electron-builder --publish never
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+
+      - name: Build and publish (Linux with xvfb)
+        if: matrix.platform == 'linux'
+        shell: bash
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            xvfb-run -a pnpm exec electron-builder --publish always
+          else
+            xvfb-run -a pnpm exec electron-builder --publish never
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: LocalAISuite-${{ matrix.platform }}-${{ github.sha }}
+          path: |
+            release/*
+            !release/.cache
+          if-no-files-found: warn
+          retention-days: 14
