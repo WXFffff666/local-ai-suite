@@ -32,7 +32,7 @@ const ALLOWED_LICENSE_PATTERNS = [
   /^MIT$/i,
   /^MIT\*?$/i,
   /^Apache-2\.0$/i,
-  /^(MIT OR Apache-2\.0)$/i, // sqlite-vec-* 平台二进制包
+  /^(MIT OR Apache(?:-2\.0)?)$/i, // sqlite-vec-* 平台二进制包
   /^Apache-2\.0 WITH LLVM-exception$/i, // 部分 Rust 相关
   /^BSD$/i,
   /^BSD-2-Clause$/i,
