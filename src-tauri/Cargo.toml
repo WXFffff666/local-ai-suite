@@ -1,0 +1,34 @@
+[package]
+name = "local-ai-suite"
+version = "0.1.0"
+description = "Local AI Suite — Tauri migration skeleton (Wave7 T38 validation)"
+edition = "2021"
+authors = ["WXFffff666 <205728233+WXFffff666@users.noreply.github.com>"]
+license = "MIT"
+repository = "https://github.com/WXFffff666/local-ai-suite"
+rust-version = "1.70"
+
+# 二进制入口：src/main.rs 为最小适配器，离线 cargo check 可过。
+# Tauri 依赖设为 optional，首次 cargo check 无需联网下载；
+# 正式迁移时将 `tauri` 设为非 optional 并执行 `cargo check` / `cargo build` 即可。
+[[bin]]
+name = "local-ai-suite"
+path = "src/main.rs"
+
+[dependencies]
+serde = { version = "1", features = ["derive"], optional = true }
+serde_json = { version = "1", optional = true }
+# 正式迁移时取消注释（或移除 optional）即为完整 Tauri 壳：
+# tauri = { version = "1.6", features = [] }
+tauri = { version = "1.6", features = [], optional = true }
+tauri-plugin-stronghold = { version = "1.5", optional = true }
+
+[features]
+default = []
+tauri-app = ["dep:tauri", "dep:serde", "dep:serde_json", "dep:tauri-plugin-stronghold"]
+
+[build-dependencies]
+tauri-build = { version = "1.5", optional = true }
+
+# 离线验证：cargo check            -> 0 依赖，必过
+# 完整验证：cargo check --features tauri-app -> 需联网拉取 tauri/stronghold

@@ -1,0 +1,55 @@
+{
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm build",
+    "devPath": "http://localhost:5173",
+    "distDir": "../out/renderer",
+    "withGlobalTauri": false
+  },
+  "package": {
+    "productName": "Local AI Suite",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": {
+        "open": true,
+        "scope": []
+      },
+      "http": {
+        "request": true,
+        "scope": ["http://127.0.0.1:*"]
+      },
+      "fs": {
+        "readFile": true,
+        "writeFile": true,
+        "exists": true,
+        "scope": ["$APPDATA/**", "$RESOURCE/**", "$DOWNLOAD/**"]
+      },
+      "path": { "all": true },
+      "dialog": { "open": true, "save": true }
+    },
+    "bundle": {
+      "active": true,
+      "identifier": "com.local-ai.suite",
+      "icon": ["icons/icon.png"],
+      "targets": ["nsis", "dmg", "appimage"],
+      "resources": []
+    },
+    "security": {
+      "csp": "default-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self' http://127.0.0.1:* ws://127.0.0.1:*; media-src 'self' blob:; worker-src 'self' blob:"
+    },
+    "windows": [
+      {
+        "title": "Local AI Suite",
+        "width": 1100,
+        "height": 720,
+        "minWidth": 900,
+        "minHeight": 560,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ]
+  }
+}
