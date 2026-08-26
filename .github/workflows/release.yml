@@ -18,7 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: windows-latest
+          - os: windows-2022
             platform: win
           - os: macos-latest
             platform: mac
@@ -44,7 +44,7 @@ jobs:
         shell: bash
         run: |
           # 官方安装脚本（runner 未必有 Go，不能用 go install 兜底）
-          bash <(curl -s https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) latest
+          bash <(curl -s https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash
           ./actionlint -version
           ./actionlint .github/workflows/release.yml
 
