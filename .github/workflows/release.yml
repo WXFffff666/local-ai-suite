@@ -57,8 +57,11 @@ jobs:
       - name: Build and publish (Windows/macOS)
         if: matrix.platform != 'linux'
         shell: bash
+        env:
+          GIT_REF: ${{ github.ref }}
+          CSC_IDENTITY_AUTO_DISCOVERY: false
         run: |
-          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+          if [[ "$GIT_REF" == refs/tags/v* ]]; then
             pnpm exec electron-builder --publish always
           else
             pnpm exec electron-builder --publish never
@@ -74,8 +77,10 @@ jobs:
       - name: Build and publish (Linux with xvfb)
         if: matrix.platform == 'linux'
         shell: bash
+        env:
+          GIT_REF: ${{ github.ref }}
         run: |
-          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+          if [[ "$GIT_REF" == refs/tags/v* ]]; then
             xvfb-run -a pnpm exec electron-builder --publish always
           else
             xvfb-run -a pnpm exec electron-builder --publish never
