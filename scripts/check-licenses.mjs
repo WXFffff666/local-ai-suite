@@ -20,8 +20,9 @@ const ROOT = path.resolve(__dirname, '..');
 const PACKAGE_ALLOWLIST = new Set([
   'better-sqlite3',
   'sqlite-vec',
+  /^sqlite-vec-(darwin|linux|windows)-(x64|arm64)$/, // 平台二进制分包（license 同主包：MIT OR Apache）
   'sharp',
-  // pnpm/electron 工具链常见子依赖豁免（如子依赖无 license 字段但为 MIT 上游）
+  // pnpm/electron 工具链包（上游 license 字段偶报 MIT 误报）
   'electron',
   'electron-builder',
 ]);
@@ -86,7 +87,8 @@ function tokenizeLicenseExpression(expr) {
 
 function isAllowedLicense(licenseExpr, filePath, pkgName) {
   // 显式包白名单优先
-  if (PACKAGE_ALLOWLIST.has(pkgName)) return { allowed: true, reason: 'package-allowlist' };
+  if (PACKAGE_ALLOWLIST.has(pkgName) || [...PACKAGE_ALLOWLIST].some((e) => e instanceof RegExp && e.test(pkgName)))
+    return { allowed: true, reason: 'package-allowlist' };
 
   const tokens = tokenizeLicenseExpression(licenseExpr);
 
