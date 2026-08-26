@@ -256,6 +256,10 @@ export function copy(idOrItem: string | GalleryItem, baseDir?: string): CopyPayl
   const buf = readFileSync(origPath)
   const b64 = buf.toString('base64')
   // best-effort write to electron clipboard if available (no throw)
+  // 非 Electron 运行时（vitest/CI）直接跳过，避免在 runner 上因加载 electron 原型挂起/拖慢
+  if (!(process.versions as unknown as { electron?: string } | undefined)?.electron) {
+    return { path: resolve(origPath), b64, mime: 'image/png' }
+  }
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const electron = require('electron') as { clipboard?: { writeImage?: (img: unknown) => void; writeBuffer?: (t: string, b: Buffer, type: string) => void } }
