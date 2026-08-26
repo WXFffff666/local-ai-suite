@@ -43,15 +43,10 @@ jobs:
       - name: Validate workflows with actionlint
         shell: bash
         run: |
-          # actionlint is installed via rhysd/actionlint or go install; fallback skips when missing
-          if command -v actionlint >/dev/null 2>&1; then
-            actionlint .github/workflows/release.yml
-          else
-            echo "actionlint not found on runner, installing via Go..."
-            go install github.com/rhysd/actionlint/cmd/actionlint@latest
-            # shellcheck disable=SC2015
-            ~/go/bin/actionlint .github/workflows/release.yml || $(go env GOPATH)/bin/actionlint .github/workflows/release.yml || echo "::warning::actionlint binary not on PATH, skipping strict gate"
-          fi
+          # 官方安装脚本（runner 未必有 Go，不能用 go install 兜底）
+          bash <(curl -s https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) latest
+          ./actionlint -version
+          ./actionlint .github/workflows/release.yml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

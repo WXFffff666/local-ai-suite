@@ -46,7 +46,8 @@ jobs:
         run: xvfb-run -a pnpm test:e2e
 
   test-win:
-    runs-on: windows-latest
+    # windows-2025 镜像的 VS18 无法被 node-gyp 识别，且 better-sqlite3 v13 未发布预编译产物，钉 2022（VS2022）
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
