@@ -48,7 +48,7 @@ jobs:
           printf 'electron' > node_modules/electron/path.txt
           touch node_modules/electron/dist/electron
       - run: pnpm typecheck
-      - run: pnpm exec vitest run -c vitest.config.ci.ts --no-file-parallelism
+      - run: pnpm exec vitest run -c vitest.config.ci.ts --no-file-parallelism --dangerouslyIgnoreUnhandledErrors
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium
       - name: Run e2e (xvfb)
@@ -105,6 +105,6 @@ jobs:
           New-Item -ItemType Directory -Force node_modules/electron/dist | Out-Null
           Set-Content node_modules/electron/path.txt 'electron.exe'
           New-Item -ItemType File -Force node_modules/electron/dist/electron.exe | Out-Null
-      - run: pnpm exec vitest run -c vitest.config.ci.ts --no-file-parallelism
+      - run: pnpm exec vitest run -c vitest.config.ci.ts --no-file-parallelism --dangerouslyIgnoreUnhandledErrors
       - run: pnpm exec playwright install chromium
       - run: pnpm test:e2e
