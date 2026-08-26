@@ -13,7 +13,6 @@ permissions:
 
 jobs:
   release:
-    continue-on-error: ${{ matrix.platform == 'macos-latest' }}
     name: Build ${{ matrix.platform }} (${{ matrix.os }})
     strategy:
       fail-fast: false
@@ -21,8 +20,6 @@ jobs:
         include:
           - os: windows-2022
             platform: win
-          - os: macos-latest
-            platform: mac
           - os: ubuntu-22.04
             platform: linux
     runs-on: ${{ matrix.os }}
@@ -102,3 +99,23 @@ jobs:
             !release/.cache
           if-no-files-found: warn
           retention-days: 14
+
+  # macOS ??????/??????? arm64 ???????????????? win/linux ???
+  release-mac:
+    runs-on: macos-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.x
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Build mac app (draft, no publish)
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+        run: pnpm exec electron-builder --mac --publish never
