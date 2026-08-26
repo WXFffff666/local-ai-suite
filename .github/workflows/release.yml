@@ -60,38 +60,36 @@ jobs:
         env:
           GIT_REF: ${{ github.ref }}
           CSC_IDENTITY_AUTO_DISCOVERY: false
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
           if [[ "$GIT_REF" == refs/tags/v* ]]; then
             pnpm exec electron-builder --publish always
           else
             pnpm exec electron-builder --publish never
           fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CSC_LINK: ${{ secrets.CSC_LINK }}
-          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
       - name: Build and publish (Linux with xvfb)
         if: matrix.platform == 'linux'
         shell: bash
         env:
           GIT_REF: ${{ github.ref }}
-        run: |
-          if [[ "$GIT_REF" == refs/tags/v* ]]; then
-            xvfb-run -a pnpm exec electron-builder --publish always
-          else
-            xvfb-run -a pnpm exec electron-builder --publish never
-          fi
-        env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_LINK: ${{ secrets.CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          if [[ "$GIT_REF" == refs/tags/v* ]]; then
+            xvfb-run -a pnpm exec electron-builder --publish always
+          else
+            xvfb-run -a pnpm exec electron-builder --publish never
+          fi
 
       - name: Upload artifacts
         if: always()
