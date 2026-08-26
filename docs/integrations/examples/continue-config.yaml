@@ -1,0 +1,43 @@
+name: Local AI Suite
+version: 1.0.0
+schema: v1
+
+models:
+  - name: Local Chat — Qwen3 4B
+    provider: openai
+    model: qwen3-4b-instruct
+    apiBase: http://127.0.0.1:11434/v1
+    apiKey: ollama
+    roles:
+      - chat
+      - edit
+      - apply
+    defaultRole: chat
+    capabilities:
+      - tool_use
+    requestOptions:
+      timeout: 60000
+      extraBodyProperties:
+        temperature: 0.2
+        max_tokens: 4096
+
+  # Optional local embedding for @codebase context
+  - name: Local Embed — BGE-M3
+    provider: openai
+    model: bge-m3
+    apiBase: http://127.0.0.1:11434/v1
+    apiKey: ollama
+    roles:
+      - embed
+
+tabAutocompleteModel:
+  provider: openai
+  model: qwen3-4b-instruct
+  apiBase: http://127.0.0.1:11434/v1
+  apiKey: ollama
+
+contextProviders:
+  - name: code
+  - name: docs
+  - name: diff
+  - name: open
