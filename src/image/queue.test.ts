@@ -6,6 +6,7 @@ import {
   classifyVram,
   gradeVram,
   gradeModelRequest,
+  formatSseEvent,
   formatQueueSse,
   sseHeaders,
   ImageQueue,
@@ -123,6 +124,11 @@ describe('gradeModelRequest — <4GB SD1.5 Q4降级 / <6GB 警告SDXL / >12GB �
 // ---------------------------------------------------------------------------
 
 describe('SSE helpers', () => {
+  it('formatSseEvent 输出 event+data 单帧（死代码移除后行为不变）', () => {
+    const s = formatSseEvent('done', { jobId: 'a', ok: 1 })
+    expect(s).toBe('event: done\ndata: {"jobId":"a","ok":1}\n\n')
+    expect(formatSseEvent('ping', 'raw-text')).toBe('event: ping\ndata: raw-text\n\n')
+  })
   it('formatQueueSse 含 event 与 data', () => {
     const s = formatQueueSse({ type: 'progress', jobId: 'abc', progress: 42, status: 'running', message: 'half' })
     expect(s).toContain('event: progress')
@@ -318,5 +324,87 @@ describe('createImageQueueHandler — fetch-style', () => {
     expect(res.status).toBe(200)
     expect(res.headers.get('content-type')).toBe('text/event-stream')
     await q.drain()
+  })
+})
+
+// ---------------------------------------------------------------------------
+// 内存与监听器泄漏回归 (W0-audit task 3)
+// ---------------------------------------------------------------------------
+
+describe('ImageQueue 内存泄漏回归', () => {
+  it('入队 1000 个 job 全部结束后 jobs.size ≤ 100（仅保留最近完成供 SSE 补发）', async () => {
+    const q = new ImageQueue({ concurrency: 1 })
+    q.setHandler(async (job) => ({ b64: 'x', prompt: job.prompt }))
+    const ids: string[] = []
+    for (let i = 0; i < 1000; i++) ids.push(q.enqueue({ prompt: `p${i}` }))
+    await q.drain()
+    // prune 在终态后的微任务内执行，等待其落地
+    await new Promise((r) => setTimeout(r, 0))
+    expect(q.size).toBeLessThanOrEqual(100)
+    expect(q.listJobs().length).toBeLessThanOrEqual(100)
+    // 最近的完成 job 仍可查询（SSE 补发窗口）
+    expect(q.getJob(ids[999]!)?.status).toBe('done')
+    // 更早的已被清理
+    expect(q.getJob(ids[0]!)).toBeUndefined()
+  }, 30_000)
+
+  it('cancel/失败/完成路径均触发 prune', async () => {
+    const q = new ImageQueue({ concurrency: 1, defaultMaxRetries: 0, defaultBackoffMs: 1 })
+    let n = 0
+    q.setHandler(async () => {
+      n += 1
+      if (n % 2 === 0) throw new Error('400 invalid') // 混合 done 与 failed 终态
+      return { ok: true }
+    })
+    const cancelIds: string[] = []
+    const runIds: string[] = []
+    for (let i = 0; i < 300; i++) {
+      const id = q.enqueue({ prompt: `p${i}` })
+      if (i % 3 === 0) cancelIds.push(id) // 部分会被 cancel（queued 路径）
+      runIds.push(id)
+    }
+    for (const id of cancelIds) q.cancel(id) // 已在跑的行不生效，queued 的生效
+    await q.drain()
+    await new Promise((r) => setTimeout(r, 0))
+    expect(q.size).toBeLessThanOrEqual(100)
+  }, 30_000)
+})
+
+describe('ImageQueue SSE 监听器清理', () => {
+  it('全局流 reader.cancel() 后 listener 归零且后续事件不残留', async () => {
+    const q = new ImageQueue({ concurrency: 1, defaultBackoffMs: 5 })
+    q.setHandler(async () => ({ b64: 'x' }))
+    const res = q.toSseResponse()
+    expect(q.listenerCount).toBe(1)
+    const reader = res.body!.getReader()
+    await reader.cancel()
+    await new Promise((r) => setTimeout(r, 0))
+    expect(q.listenerCount).toBe(0)
+    // cancel 后再入队并结束：监听器不再增长（心跳与订阅均已释放）
+    const id = q.enqueue({ prompt: 'after-cancel' })
+    await q.waitFor(id)
+    expect(q.listenerCount).toBe(0)
+  })
+
+  it('单 job 流 (sseForJob) cancel 后同样清零', async () => {
+    const q = new ImageQueue({ concurrency: 1, defaultBackoffMs: 5 })
+    q.setHandler(async () => ({ b64: 'x' }))
+    const id = q.enqueue({ prompt: 'a' })
+    const res = q.sseForJob(id)
+    expect(q.listenerCount).toBe(1)
+    const reader = res.body!.getReader()
+    // 读走快照帧后断开，模拟客户端中途 disconnect
+    await reader.read()
+    await reader.cancel()
+    await new Promise((r) => setTimeout(r, 0))
+    expect(q.listenerCount).toBe(0)
+  })
+
+  it('外部订阅者的取消函数移除自身监听', () => {
+    const q = new ImageQueue({ concurrency: 1 })
+    const unsub = q.subscribe(() => {})
+    expect(q.listenerCount).toBe(1)
+    unsub()
+    expect(q.listenerCount).toBe(0)
   })
 })

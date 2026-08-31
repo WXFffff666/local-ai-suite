@@ -262,10 +262,8 @@ function sleep(ms: number, signal?: AbortSignal): Promise<void> {
 // SSE helpers — 纯函数，可直接用于 http Response
 export function formatSseEvent(event: string, data: unknown): string {
   const payload = typeof data === 'string' ? data : JSON.stringify(data)
-  // 每行 data: 前缀，event: 可选
-  const lines = payload.split('\n').map((l) => `data: ${l}`).join('\n')
-  return `event: ${event}\ndata: ${payload}\n\n` + (lines ? '' : '')
-  // 实际上 SSE 规范为 event + data 行；简化为 event+data 单行 JSON 更易解析
+  // SSE 规范为 event + data 行；简化为 event+data 单行 JSON 更易解析
+  return `event: ${event}\ndata: ${payload}\n\n`
 }
 
 export function formatQueueSse(event: QueueEvent): string {
@@ -284,6 +282,9 @@ export function sseHeaders(): Record<string, string> {
 // ---------------------------------------------------------------------------
 // ImageQueue
 // ---------------------------------------------------------------------------
+
+/** 终态 job (done/failed/cancelled) 在队列中保留的上限，超出部分于微任务内 prune；保留项供 SSE 补发 */
+const MAX_RETAINED_COMPLETED_JOBS = 100
 
 export class ImageQueue {
   private jobs = new Map<string, ImageJob>()
@@ -325,6 +326,23 @@ export class ImageQueue {
 
   get size(): number {
     return this.jobs.size
+  }
+
+  /** 当前活跃的事件订阅者数量（泄漏回归断言用） */
+  get listenerCount(): number {
+    return this.listeners.size
+  }
+
+  private pruneScheduled = false
+
+  /** 在微任务内清理超出保留上限的终态 job，避免 jobs Map 无界增长 */
+  private schedulePrune(): void {
+    if (this.pruneScheduled) return
+    this.pruneScheduled = true
+    queueMicrotask(() => {
+      this.pruneScheduled = false
+      this.prune(MAX_RETAINED_COMPLETED_JOBS)
+    })
   }
 
   getJob(id: string): ImageJob | undefined {
@@ -376,6 +394,7 @@ export class ImageQueue {
       job.status = 'cancelled'
       job.finishedAt = Date.now()
       this.emit({ type: 'cancelled', jobId, progress: job.progress, status: 'cancelled', message: 'cancelled' })
+      this.schedulePrune()
       return true
     }
     // 若正在运行，abort
@@ -399,6 +418,8 @@ export class ImageQueue {
       this.runJob(job).finally(() => {
         this.running = Math.max(0, this.running - 1)
         this.emit({ type: 'progress', jobId: job.id, progress: job.progress, status: job.status, message: 'queue tick' })
+        // runJob 的所有终态 (done/failed/cancelled) 都会走到这里：微任务内 prune 防止 jobs Map 无界增长
+        this.schedulePrune()
         // 驱动下一个
         queueMicrotask(() => this.pump())
       })
@@ -527,11 +548,16 @@ export class ImageQueue {
     const queue = this
     let hb: ReturnType<typeof setInterval> | null = null
     let unsub: (() => void) | null = null
+    // 幂等清理：stream cancel / 写入已关闭流 时移除订阅与心跳，杜绝监听器残留
+    const cleanup = (): void => {
+      if (hb) { clearInterval(hb); hb = null }
+      if (unsub) { unsub(); unsub = null }
+    }
     const stream = new ReadableStream<string>({
       start(controller) {
         const send = (ev: QueueEvent): void => {
           if (jobId && ev.jobId !== jobId) return
-          try { controller.enqueue(formatQueueSse(ev)) } catch { /* closed */ }
+          try { controller.enqueue(formatQueueSse(ev)) } catch { cleanup() /* closed */ }
         }
         // 立即推送当前 job 快照
         if (jobId) {
@@ -545,12 +571,11 @@ export class ImageQueue {
         unsub = queue.subscribe(send)
         // 心跳
         hb = setInterval(() => {
-          try { controller.enqueue(`: keep-alive ${Date.now()}\n\n`) } catch { if (hb) clearInterval(hb) }
+          try { controller.enqueue(`: keep-alive ${Date.now()}\n\n`) } catch { cleanup() }
         }, 15_000)
       },
       cancel() {
-        if (hb) clearInterval(hb)
-        if (unsub) unsub()
+        cleanup()
       },
     })
     // 包装为 Response
@@ -562,14 +587,22 @@ export class ImageQueue {
     return this.toSseResponse(jobId)
   }
 
-  /** 清空已完成任务 (done/failed/cancelled) — 可选保留最近 N 条 */
+  /** 清空已完成任务 (done/failed/cancelled) — 可选保留最近 N 条。
+   *  finishedAt 仅毫秒精度，同刻完成的 tie 用 Map 插入序兜底，确保删的是最旧的 */
   prune(keepRecent = 20): number {
-    const done = [...this.jobs.values()]
-      .filter((j) => j.status === 'done' || j.status === 'failed' || j.status === 'cancelled')
-      .sort((a, b) => (b.finishedAt ?? 0) - (a.finishedAt ?? 0))
-    if (done.length <= keepRecent) return 0
-    const toRemove = done.slice(keepRecent)
-    for (const j of toRemove) this.jobs.delete(j.id)
+    const terminal: Array<{ job: ImageJob; seq: number }> = []
+    let seq = 0
+    for (const j of this.jobs.values()) {
+      if (j.status === 'done' || j.status === 'failed' || j.status === 'cancelled') {
+        terminal.push({ job: j, seq })
+      }
+      seq += 1
+    }
+    if (terminal.length <= keepRecent) return 0
+    const toRemove = terminal
+      .sort((a, b) => (a.job.finishedAt ?? 0) - (b.job.finishedAt ?? 0) || a.seq - b.seq)
+      .slice(0, terminal.length - keepRecent)
+    for (const { job } of toRemove) this.jobs.delete(job.id)
     return toRemove.length
   }
 }
