@@ -11,7 +11,7 @@
  */
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync, rmSync } from 'fs'
-import { join, resolve } from 'path'
+import { basename, dirname, isAbsolute, join, relative, resolve } from 'path'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -109,13 +109,44 @@ export type InsertPayload = {
 // Path helpers
 // ---------------------------------------------------------------------------
 
+/** 画廊错误 — id 非法、路径越出画廊根目录等安全失败（task4） */
+export class GalleryError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'GalleryError'
+  }
+}
+
+/**
+ * id 文件系统净化 — 白名单 [a-zA-Z0-9._-]，其余替换为 '_'。
+ * 原为 save() 内联正则（gallery.ts:173），提升为 save 与全部读路径共用的唯一事实源。
+ */
+export function sanitizeGalleryId(id: string): string {
+  return id.replace(/[^a-zA-Z0-9._-]/g, '_')
+}
+
+/**
+ * 目录包含校验（评审 r1 强制形式）：两侧先大小写折叠，再取
+ * `path.relative(galleryDir, target)`，结果必须非空、不以 '..' 开头、非绝对路径
+ * ——同时规避 Windows 盘符大小写（D:\ vs d:\）与 `\\?\` 前缀陷阱。失败抛 GalleryError。
+ */
+function assertInsideGalleryDir(target: string, galleryDir: string): void {
+  const rel = relative(galleryDir.toLowerCase(), resolve(target).toLowerCase())
+  if (!rel || rel.startsWith('..') || isAbsolute(rel)) {
+    throw new GalleryError(`gallery path escapes base directory: ${target}`)
+  }
+}
+
 export function getGalleryDir(baseDir?: string): string {
   if (baseDir) return resolve(baseDir)
   return join(process.cwd(), GALLERY_DIR_NAME)
 }
 
 export function getItemDir(id: string, baseDir?: string): string {
-  return join(getGalleryDir(baseDir), id)
+  const galleryDir = getGalleryDir(baseDir)
+  const dir = join(galleryDir, sanitizeGalleryId(id))
+  assertInsideGalleryDir(dir, galleryDir)
+  return dir
 }
 
 export function getOriginalPath(id: string, baseDir?: string): string {
@@ -128,6 +159,19 @@ export function getThumbPath(id: string, baseDir?: string): string {
 
 export function getMetaPath(id: string, baseDir?: string): string {
   return join(getItemDir(id, baseDir), META_FILE)
+}
+
+/**
+ * 对象入参（copy/insert 收到 GalleryItem）携带的 originalPath 复核：
+ * 从其自身结构重导规范路径（触发 getItemDir 的净化+包含校验），与入参不一致即视为篡改/越界。
+ */
+function canonicalOriginalPath(origPath: string): string {
+  const idDir = dirname(origPath)
+  const canonical = resolve(getOriginalPath(basename(idDir), dirname(idDir)))
+  if (resolve(origPath).toLowerCase() !== canonical.toLowerCase()) {
+    throw new GalleryError(`gallery item path fails containment check: ${origPath}`)
+  }
+  return canonical
 }
 
 function genId(): string {
@@ -169,8 +213,8 @@ export function save(opts: SaveOptions): GalleryItem {
     throw new Error(`invalid b64: ${(e as Error).message}`)
   }
   const id = (opts.id?.trim() || genId())
-  // sanitize id for filesystem
-  const safeId = id.replace(/[^a-zA-Z0-9._-]/g, '_')
+  // sanitize id for filesystem (与读路径共用唯一净化规则；越界 id 在 getItemDir 抛 GalleryError)
+  const safeId = sanitizeGalleryId(id)
   const dir = getItemDir(safeId, opts.baseDir)
   ensureDir(dir)
   const originalPath = getOriginalPath(safeId, opts.baseDir)
@@ -212,7 +256,12 @@ export function list(opts: ListOptions = {}): GalleryItem[] {
   for (const ent of entries) {
     if (!ent.isDirectory()) continue
     const id = ent.name
-    const metaPath = getMetaPath(id, opts.baseDir)
+    let metaPath: string
+    try {
+      metaPath = getMetaPath(id, opts.baseDir)
+    } catch {
+      continue // 目录名无法通过净化/包含校验（如 '..x'）→ 跳过，不炸整个列表
+    }
     if (!existsSync(metaPath)) continue
     try {
       const raw = readFileSync(metaPath, 'utf-8')
@@ -257,8 +306,12 @@ export function copy(idOrItem: string | GalleryItem, baseDir?: string): CopyPayl
   // validation when string id
   if (typeof idOrItem === 'string') getItem(id, baseDir)
   const resolvedBase = dirBase ?? baseDir
-  // prefer item's own paths if object
-  const origPath = typeof idOrItem === 'string' ? getOriginalPath(id, resolvedBase) : (idOrItem as GalleryItem).originalPath ?? getOriginalPath(id, resolvedBase)
+  // prefer item's own paths if object (对象路径过包含复核，防篡改 originalPath 任意读)
+  const origPath = typeof idOrItem === 'string'
+    ? getOriginalPath(id, resolvedBase)
+    : idOrItem.originalPath
+      ? canonicalOriginalPath(idOrItem.originalPath)
+      : getOriginalPath(id, resolvedBase)
   if (!existsSync(origPath)) throw new Error(`original not found for ${id}: ${origPath}`)
   const buf = readFileSync(origPath)
   const b64 = buf.toString('base64')
@@ -296,7 +349,11 @@ export function insert(
   }
   const id = typeof idOrItem === 'string' ? idOrItem : idOrItem.id
   const item = typeof idOrItem === 'string' ? getItem(id, baseDir) : idOrItem
-  const origPath = typeof idOrItem === 'string' ? getOriginalPath(id, baseDir) : (item as GalleryItem).originalPath ?? getOriginalPath(id, baseDir)
+  const origPath = typeof idOrItem === 'string'
+    ? getOriginalPath(id, baseDir)
+    : item.originalPath
+      ? canonicalOriginalPath(item.originalPath)
+      : getOriginalPath(id, baseDir)
   let b64 = ''
   try {
     if (existsSync(origPath)) b64 = readFileSync(origPath).toString('base64')

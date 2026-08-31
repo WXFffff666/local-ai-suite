@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { existsSync, mkdirSync, readFileSync, rmSync } from 'fs'
-import { join } from 'path'
+import { join, relative, resolve } from 'path'
 import { tmpdir } from 'os'
 import { mkdtempSync } from 'fs'
 import {
@@ -18,6 +18,7 @@ import {
   getMetaPath,
   toDataUrl,
   Gallery,
+  GalleryError,
   saveToGallery,
   listGallery,
   copyGalleryItem,
@@ -246,5 +247,80 @@ describe('gallery — 落盘缩略图/原图/元数据 + 右键复制/插入/复
     writeFileSync(join(cDir, 'meta.json'), '{ not json', 'utf-8')
     expect(list({ baseDir: galleryDir }).length).toBe(1)
     expect(list({ baseDir: galleryDir })[0]!.id).toBe(item.id)
+  })
+
+  // -------------------------------------------------------------------------
+  // task4 — 读路径 id 净化 + 目录包含校验
+  // -------------------------------------------------------------------------
+
+  it('task4: 穿越 id 被拒或被净化，绝不逃出 gallery 根目录', () => {
+    const g = resolve(galleryDir)
+    // '../../evil' 净化为 '.._.._evil' 后仍以 '..' 开头 → 包含校验直接拒绝（计划验收的抛错分支）
+    expect(() => getOriginalPath('../../evil', galleryDir)).toThrow(GalleryError)
+    expect(() => getThumbPath('..\\..\\windows\\system32', galleryDir)).toThrow(GalleryError)
+    // 'a/b%2e%2e' 被完全净化折叠为根内普通目录名 a_b_2e_2e
+    expect(resolve(getOriginalPath('a/b%2e%2e', galleryDir))).toBe(join(g, 'a_b_2e_2e', 'original.png'))
+    expect(relative(g, resolve(getOriginalPath('a/b%2e%2e', galleryDir)))).toBe(join('a_b_2e_2e', 'original.png'))
+    // 读动词同口径：拒绝而非逃出
+    expect(() => copy('../../evil', galleryDir)).toThrow(GalleryError)
+    expect(() => getItem('..\\..\\x', galleryDir)).toThrow(GalleryError)
+  })
+
+  it('task4: 净化后仍以 .. 开头的 id（字面 .. / . / 空串 / ..hidden）抛 GalleryError', () => {
+    for (const bad of ['..', '.', '', '..hidden', '../..', '..\\..']) {
+      expect(() => getMetaPath(bad, galleryDir)).toThrow(GalleryError)
+      expect(() => getOriginalPath(bad, galleryDir)).toThrow(GalleryError)
+      expect(() => getThumbPath(bad, galleryDir)).toThrow(GalleryError)
+      expect(() => getItem(bad, galleryDir)).toThrow(GalleryError)
+      expect(() => remove(bad, galleryDir)).toThrow(GalleryError)
+    }
+  })
+
+  it('task4: remove 穿越 id 被拒且父目录与既有项毫发无损', () => {
+    const item = save({ b64: TINY_PNG_B64, prompt: 'precious', baseDir: galleryDir })
+    expect(() => remove('..', galleryDir)).toThrow(GalleryError)
+    expect(existsSync(item.originalPath)).toBe(true)
+    expect(list({ baseDir: galleryDir }).length).toBe(1)
+  })
+
+  it('task4: save 以越界 id 落盘被拒，父目录零残留', () => {
+    expect(() => save({ b64: TINY_PNG_B64, prompt: 'x', id: '..', baseDir: galleryDir })).toThrow(GalleryError)
+    expect(() => save({ b64: TINY_PNG_B64, prompt: 'x', id: '../..', baseDir: galleryDir })).toThrow(GalleryError)
+    expect(existsSync(join(resolve(galleryDir, '..'), 'original.png'))).toBe(false)
+    expect(existsSync(join(resolve(galleryDir, '..'), 'meta.json'))).toBe(false)
+  })
+
+  it('task4: 对象入参携带被篡改 originalPath 时 copy/insert 抛 GalleryError', () => {
+    const item = save({ b64: TINY_PNG_B64, prompt: 'tamper target', baseDir: galleryDir })
+    const outside = join(tmpRoot, 'outside-secret.png')
+    const { writeFileSync } = require('fs') as typeof import('fs')
+    writeFileSync(outside, 'secret-bytes', 'utf-8')
+    const evil = { ...item, originalPath: outside }
+    expect(() => copy(evil, galleryDir)).toThrow(GalleryError)
+    expect(() => insert(evil, galleryDir)).toThrow(GalleryError)
+    // 对象合法路径仍走通（回归保护）
+    expect(copy(item, galleryDir).b64).toBe(TINY_PNG_B64)
+  })
+
+  it('task4: list 遇盘上异常目录名（..x 开头）跳过而非崩溃', () => {
+    const item = save({ b64: TINY_PNG_B64, prompt: 'survivor', baseDir: galleryDir })
+    const weird = join(galleryDir, '..hidden-dir')
+    mkdirSync(weird, { recursive: true })
+    const { writeFileSync } = require('fs') as typeof import('fs')
+    writeFileSync(join(weird, 'meta.json'), JSON.stringify({ id: '..hidden-dir', prompt: 'ghost', createdAt: 1 }), 'utf-8')
+    const items = list({ baseDir: galleryDir })
+    expect(items.length).toBe(1)
+    expect(items[0]!.id).toBe(item.id)
+  })
+
+  it('task4: 合法 id 全动词往返不变', () => {
+    const item = save({ b64: TINY_PNG_B64, prompt: 'round trip', id: 'legit-id_1.2-3', baseDir: galleryDir })
+    expect(item.id).toBe('legit-id_1.2-3')
+    expect(getItem(item.id, galleryDir).prompt).toBe('round trip')
+    expect(copy(item.id, galleryDir).b64).toBe(TINY_PNG_B64)
+    expect(insert(item.id, galleryDir).prompt).toBe('round trip')
+    expect(reuse(item.id, galleryDir).prompt).toBe('round trip')
+    expect(remove(item.id, galleryDir)).toBe(true)
+    expect(list({ baseDir: galleryDir }).length).toBe(0)
   })
 })
