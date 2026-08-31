@@ -407,8 +407,17 @@ export async function getSettings(): Promise<UnifiedSettings> {
   }
 }
 
+/** saveSettings 的补丁形状 — 各节均可深部分（此前的交叉类型写法实际强制全量，盲区暴露后修正） */
+export type SettingsPatch = {
+  search?: Partial<SearchSettings>
+  hfToken?: string
+  image?: Partial<ImageBackendSettings>
+  ports?: Partial<PortSettings>
+  update?: Partial<UpdateSettings>
+}
+
 /** 保存 — 接收内存态 Partial，合并后加密落盘，返回解密态全量 */
-export async function saveSettings(partial: Partial<UnifiedSettings> & { search?: Partial<SearchSettings>; image?: Partial<ImageBackendSettings>; ports?: Partial<PortSettings>; update?: Partial<UpdateSettings> }): Promise<UnifiedSettings> {
+export async function saveSettings(partial: SettingsPatch): Promise<UnifiedSettings> {
   const current = await getSettings()
   const next: UnifiedSettings = {
     search: { ...current.search, ...(partial.search ?? {}) },
@@ -505,19 +514,41 @@ function MaskedInput({ label, value, placeholder, onChange, hint }: MaskedInputP
 }
 
 export function SettingsPage(): React.JSX.Element {
-  const [settings, setSettings] = React.useState<UnifiedSettings>(() => {
-    try { return getSettings() } catch { return { ...DEFAULT_SETTINGS, search: { ...DEFAULT_SEARCH }, image: { ...DEFAULT_IMAGE }, ports: { ...DEFAULT_PORTS }, update: { ...DEFAULT_UPDATE } } }
-  })
+  const [settings, setSettings] = React.useState<UnifiedSettings>(() => ({
+    ...DEFAULT_SETTINGS,
+    search: { ...DEFAULT_SEARCH },
+    image: { ...DEFAULT_IMAGE },
+    ports: { ...DEFAULT_PORTS },
+    update: { ...DEFAULT_UPDATE },
+  }))
   const [portDraft, setPortDraft] = React.useState<PortSettings>(settings.ports)
   const [msg, setMsg] = React.useState('')
+
+  // getSettings 是异步的（密钥解密走 IPC）— 首帧用默认值，随后异步合并真实设置；getSettings 契约保证不抛异常
+  React.useEffect(() => {
+    let cancelled = false
+    void getSettings().then((s) => {
+      if (!cancelled) setSettings(s)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   React.useEffect(() => setPortDraft(settings.ports), [settings.ports])
 
   const save = (patch: Parameters<typeof saveSettings>[0]): void => {
-    const next = saveSettings(patch)
-    setSettings(next)
-    setMsg('已保存（密钥已用 safeStorage 加密落盘）')
-    window.setTimeout(() => setMsg(''), 1800)
+    // encryptSecret IPC 可能失败 → saveSettings 可能 reject，必须 await 并在 UI 明示错误
+    void (async () => {
+      try {
+        const next = await saveSettings(patch)
+        setSettings(next)
+        setMsg('已保存（密钥已用 safeStorage 加密落盘）')
+        window.setTimeout(() => setMsg(''), 1800)
+      } catch (e) {
+        setMsg(`保存失败：${(e as Error).message ?? String(e)}`)
+      }
+    })()
   }
 
   const portErrors = validatePorts(portDraft)
@@ -647,7 +678,18 @@ export function SettingsPage(): React.JSX.Element {
         </p>
         <button
           type="button"
-          onClick={() => { const r = rotateSecrets(); const cur = getSettings(); setSettings(cur); setMsg(`已重加密 ${r.rotated} 条密钥`) }}
+          onClick={() => {
+            void (async () => {
+              try {
+                const r = await rotateSecrets()
+                const cur = await getSettings()
+                setSettings(cur)
+                setMsg(`已重加密 ${r.rotated} 条密钥`)
+              } catch (e) {
+                setMsg(`轮转失败：${(e as Error).message ?? String(e)}`)
+              }
+            })()
+          }}
           style={{ padding: '6px 12px', borderRadius: 6, border: '1px solid #333', background: '#1e1e1e', color: '#ccc', cursor: 'pointer', fontSize: 12 }}
         >
           重加密（轮转）

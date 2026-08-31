@@ -393,7 +393,7 @@ export function createGpuHealthHandler(opts: GpuHandlerOptions = {}) {
   }
 
   // fetch-style helper attached
-  ;(handler as unknown as Record<string, unknown>)['handleRequest'] = async (req: Request): Promise<Response> => {
+  ;(handler as unknown as Record<string, unknown>)['handleRequest'] = async (_req: Request): Promise<Response> => {
     const info = await getInfo()
     const body = toHealthResponse(info)
     return new Response(JSON.stringify(body), { status: 200, headers: { 'content-type': 'application/json' } })

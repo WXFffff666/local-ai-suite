@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 // ─── Types ──────────────────────────────────────────────────────────
 export type QuantLevel = "Q4" | "Q5" | "Q8";
