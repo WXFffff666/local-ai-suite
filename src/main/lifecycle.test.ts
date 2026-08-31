@@ -64,6 +64,7 @@ const mocks = vi.hoisted(() => {
     FakeBrowserWindow,
     shutdownServices: vi.fn(),
     registerShutdownHook: vi.fn(),
+    initServices: vi.fn(() => Promise.resolve(undefined)),
     mainLogger: {
       fatal: vi.fn(),
       error: vi.fn(),
@@ -101,6 +102,12 @@ vi.mock('./shutdown', async (importOriginal) => {
     shutdownServices: mocks.shutdownServices
   }
 })
+
+// The real container would spin chokidar + real fs watches during these tests;
+// index.ts only needs to prove it calls initServices() after whenReady.
+vi.mock('./services', () => ({
+  initServices: mocks.initServices
+}))
 
 vi.mock('./logger', async (importOriginal) => {
   const actual = await importOriginal<typeof import('./logger')>()
@@ -199,6 +206,7 @@ describe('lifecycle — src/main/index.ts 生命周期接线', () => {
     const win = mocks.FakeBrowserWindow.instances[0]
     if (win === undefined) throw new Error('whenReady did not create the main window')
     expect(mocks.ipcMain.handle).toHaveBeenCalled()
+    expect(mocks.initServices).toHaveBeenCalledTimes(1)
 
     win.isMinimizedValue = true
     win.isVisibleValue = false

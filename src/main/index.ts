@@ -9,6 +9,7 @@ import { createPublishReleaseHandler } from './handlers/publishRelease'
 import { createClearCacheHandler } from './handlers/clearCache'
 import { getMainLogger, registerGlobalErrorLogging } from './logger'
 import { shutdownServices, type ShutdownResult } from './shutdown'
+import { initServices } from './services'
 
 /**
  * Sidecar host — all local sidecars (LLM / embedding / image / search)
@@ -166,6 +167,15 @@ function registerIpcHandlers(): void {
 app.whenReady().then(() => {
   registerIpcHandlers()
   createWindow()
+
+  // Service container (todo7): lazy — spawns nothing; watch + handshake start here.
+  initServices({
+    warn: (message, error) => {
+      getMainLogger().warn({ err: error }, `[services] ${message}`)
+    }
+  }).catch((error: unknown) => {
+    getMainLogger().error({ err: error }, 'services container init failed')
+  })
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
