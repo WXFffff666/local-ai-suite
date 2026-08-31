@@ -25,7 +25,7 @@ flowchart TB
     Llama["llama-server\nllama.cpp  GGUF\n:11435  /health  /completion SSE"]
     Ollama["ollama\nOpenAI兼容  /v1/*\n:11434  /v1/models  /v1/chat/completions"]
     SD["sd-cli\nstable-diffusion.cpp\n:11436  /health  /generate"]
-    SearxNG["SearXNG  Python\n:11437  /search  AGPL隔离"]
+    SearxNG["SearXNG  Python\n:7788  /search  AGPL隔离"]
     Cloud["Cloud Adapters  HTTPS直连\nTavily / Exa / Brave\n无本地进程"]
   end
 
@@ -111,7 +111,7 @@ interface IImageBackend  extends ISidecar { generate?() }
 | llama.cpp | `llama-server` (`LLAMA_BIN`) | `11435` | `GET /health` | `POST /completion` SSE |
 | Ollama | `ollama` | `11434` | `GET /v1/models` | `POST /v1/chat/completions` |
 | sd.cpp | `sd-cli` (`SD_BIN`) | `11436` | `GET /health` | `POST /generate` |
-| SearXNG | `python -m searxng` | `11437` | `GET /healthz` | `GET /search?q=` |
+| SearXNG | `python -m searxng` | `7788`（默认，可设置覆盖） | `GET /healthz` | `GET /search?q=` |
 | Cloud | 无进程 (HTTPS) | — | — | 供应商 API |
 
 所有端口通过环境变量或 `Create*Options.port` 覆盖，但 `host` 永远 `127.0.0.1`。
@@ -219,7 +219,7 @@ sequenceDiagram
 
 | 适配器 | 文件 | 协议 | 鉴权 |
 |--------|------|------|------|
-| `SearXNG` | `search/searxng.ts` | `GET http://127.0.0.1:11437/search?q=` | 无 |
+| `SearXNG` | `search/searxng.ts` | `GET http://127.0.0.1:7788/search?q=`（默认，可设置覆盖） | 无 |
 | `Tavily` | `search/cloud.ts` | `POST https://api.tavily.com/search` | `TAVILY_API_KEY` |
 | `Exa` | `search/cloud.ts` | `POST https://api.exa.ai/search` | `x-api-key: EXA_API_KEY` |
 | `Brave` | `search/cloud.ts` | `GET https://api.search.brave.com/res/v1/web/search` | `X-Subscription-Token: BRAVE_API_KEY` |

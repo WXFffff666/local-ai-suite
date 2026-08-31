@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { join } from 'path'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
+import { SEARXNG_HOST, SEARXNG_PORT } from '../search/searxng'
 
 // ---------------------------------------------------------------------------
 // Types — 统一设置模型
@@ -60,7 +61,8 @@ export type UnifiedSettings = {
 
 export const DEFAULT_SEARCH: SearchSettings = {
   provider: 'searxng',
-  searxngUrl: 'http://127.0.0.1:8080',
+  // 单一事实源 = src/search/searxng.ts SEARXNG_PORT（默认 7788，可在设置覆盖）
+  searxngUrl: `http://${SEARXNG_HOST}:${SEARXNG_PORT}`,
   searxngEnabled: false,
   tavilyApiKey: '',
   exaApiKey: '',

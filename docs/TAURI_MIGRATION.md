@@ -173,7 +173,7 @@ pnpm typecheck && pnpm test
 
 - **不做**：不覆盖现有 Electron 代码，不改 `src/core/types.ts`，不提交 `Cargo.lock`（由 `cargo check` 生成）。
 - **风险**：`better-sqlite3 / sqlite-vec` 等原生模块在 Tauri 侧需改为 `tauri-plugin-sql` 或 Rust `rusqlite`，属后续 Phase，不在 T38 范围。
-- **AGPL 隔离**：SearXNG 仍为 `127.0.0.1:11437` 独立进程，Tauri 侧 `allowlist.http.scope` 仅放行 `http://127.0.0.1:*`，与 Electron 侧一致。
+- **AGPL 隔离**：SearXNG 仍为 `127.0.0.1:7788`（默认端口）独立进程，Tauri 侧 `allowlist.http.scope` 仅放行 `http://127.0.0.1:*`，与 Electron 侧一致。
 
 ---
 

@@ -123,7 +123,7 @@
 | **形态参考** | 仅参考交互/架构形态，未复制代码 | LM Studio / Cherry Studio / Fooocus / ComfyUI |
 | **思路复用** | 复用设计思路，自写实现 | AnythingLLM RAG / LangChain rerank / Ollama 兼容层 |
 | **侧车集成** | 以独立二进制子进程集成，MIT 可链 | `llama-server` (`:11435`) / `sd-cli` (`:11436`) |
-| **隔离侧车** | AGPL 仅以独立进程运行于 `sidecars/` | `SearXNG` (`:11437`) |
+| **隔离侧车** | AGPL 仅以独立进程运行于 `sidecars/` | `SearXNG` (`:7788`) |
 | **权重引用** | 仅文档与下载器引用，不分发 | 10 项模型权重 |
 
 ### 代码级标注

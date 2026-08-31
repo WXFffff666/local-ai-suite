@@ -127,7 +127,7 @@ gradeModelRequest(vramMB, 'sdxl') // → { allowed, downgraded, effectiveModel, 
 
 | 适配器 | 端口/协议 | 鉴权 | 费率提示 |
 |--------|-----------|------|----------|
-| **SearXNG**（本地，AGPL 隔离） | `127.0.0.1:11437` `GET /search?q=` | 无 | 免费，离线可用 |
+| **SearXNG**（本地，AGPL 隔离） | `127.0.0.1:7788`（默认端口，可在设置覆盖） `GET /search?q=` | 无 | 免费，离线可用 |
 | **Tavily** | `POST https://api.tavily.com/search` | `TAVILY_API_KEY` | $0.008/次 |
 | **Exa** | `POST https://api.exa.ai/search` | `x-api-key: EXA_API_KEY` | $0.005/次 |
 | **Brave Search** | `GET https://api.search.brave.com/res/v1/web/search` | `X-Subscription-Token: BRAVE_API_KEY` | $0.003/次 |
@@ -241,7 +241,7 @@ Renderer (React 19 + Zustand 5)
 Main (BrowserWindow + IPC白名单) ──► SidecarManager ─┬─ llama-server  :11435  /completion SSE
                                       │              ├─ ollama        :11434  /v1/* (OpenAI兼容)
                                       │              ├─ sd-cli        :11436  /generate
-                                      │              └─ SearXNG       :11437  /search 〔AGPL隔离〕
+                                      │              └─ SearXNG       :7788   /search 〔AGPL隔离〕
                                       │              └─ Cloud Adapters (Tavily/Exa/Brave) HTTPS
    ┌──────────────────────────────────┘
    ▼
