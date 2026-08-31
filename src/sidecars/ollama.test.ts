@@ -160,11 +160,11 @@ describe('createOllamaSidecarConfig / createOllamaSidecar (复用 SidecarManager
     const { SidecarManager } = await import('../core/SidecarManager')
     expect(() => new SidecarManager({ name: 'bad', bin: 'bin', args: [], port: 11434, healthUrl: 'http://0.0.0.0:11434/api/tags' } as never, { fsDeps: fsMock.deps as never })).toThrow(/127\.0\.0\.1/)
   })
-  it('createOllamaSidecar spawn 使用 ollama serve 且日志落盘 logs/sidecar-ollama.log', () => {
+  it('createOllamaSidecar spawn 使用 ollama serve 且日志落盘 logs/sidecar-ollama.log', async () => {
     const proc = mockChildProcess()
     const spawner = vi.fn(() => proc as unknown as ReturnType<typeof import('child_process').spawn>)
-    const m = createOllamaSidecar({ managerOptions: { spawner: spawner as never, fetcher: async () => true, fsDeps: fsMock.deps as never } })
-    m.start()
+    const m = createOllamaSidecar({ managerOptions: { spawner: spawner as never, fetcher: async () => true, fsDeps: fsMock.deps as never, probePort: async () => true } })
+    await m.start()
     expect(spawner).toHaveBeenCalledWith('ollama', expect.arrayContaining(['serve']), expect.objectContaining({ stdio: expect.anything() }))
     const logCall = (fsMock.deps.createWriteStream as ReturnType<typeof vi.fn>).mock.calls[0][0] as string
     expect(logCall).toContain('sidecar-ollama.log')
@@ -174,28 +174,31 @@ describe('createOllamaSidecarConfig / createOllamaSidecar (复用 SidecarManager
     expect(m.getStatus().healthUrl).toBe(OLLAMA_HEALTH_URL)
     m.stop()
   })
-  it('OllamaManager env 合并：OLLAMA_HOST + OLLAMA_MODELS 注入 spawn env', () => {
+  it('OllamaManager env 合并：OLLAMA_HOST + OLLAMA_MODELS 注入 spawn env', async () => {
     const proc = mockChildProcess()
     let capturedEnv: Record<string, string> | undefined
     const spawner = vi.fn((_bin: string, _args: string[], opts: Record<string, unknown>) => { capturedEnv = (opts.env as Record<string, string>); return proc as unknown as ReturnType<typeof import('child_process').spawn> })
-    const m = createOllamaSidecar({ modelsDir: 'models', managerOptions: { spawner: spawner as never, fetcher: async () => true, fsDeps: fsMock.deps as never } })
-    m.start()
+    const m = createOllamaSidecar({ modelsDir: 'models', managerOptions: { spawner: spawner as never, fetcher: async () => true, fsDeps: fsMock.deps as never, probePort: async () => true } })
+    await m.start()
     expect(capturedEnv?.['OLLAMA_HOST']).toBe('127.0.0.1:11434')
     expect(capturedEnv?.['OLLAMA_MODELS']).toContain('models')
     m.stop()
   })
-  it('logPath 便捷访问与 restart 语义', () => {
+  it('logPath 便捷访问与 restart 语义（退避 500ms 后才重新 spawn）', async () => {
     const proc1 = mockChildProcess({ pid: 111 } as never)
     const proc2 = mockChildProcess({ pid: 222 } as never)
     let call = 0
     const spawner = vi.fn(() => (call++ === 0 ? proc1 : proc2) as unknown as ReturnType<typeof import('child_process').spawn>)
-    const m = createOllamaSidecar({ managerOptions: { spawner: spawner as never, fetcher: async () => true, fsDeps: fsMock.deps as never } })
+    const m = createOllamaSidecar({ managerOptions: { spawner: spawner as never, fetcher: async () => true, fsDeps: fsMock.deps as never, probePort: async () => true } })
     expect(m.logPath).toContain('sidecar-ollama.log')
-    m.start()
+    await m.start()
     expect(m.getStatus().restarts).toBe(0)
     m.restart()
-    expect(spawner).toHaveBeenCalledTimes(2)
     expect(m.getStatus().restarts).toBe(1)
+    expect(m.getStatus().state).toBe('backoff')
+    expect(spawner).toHaveBeenCalledTimes(1)
+    await vi.advanceTimersByTimeAsync(500)
+    expect(spawner).toHaveBeenCalledTimes(2)
     m.stop()
   })
 })

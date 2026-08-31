@@ -734,7 +734,8 @@ export class OllamaSidecar {
   get psUrl(): string { return getPsUrl(this.port) }
   get healthUrl(): string { return getHealthUrl(this.port) }
 
-  start(): void { this.manager.start() }
+  /** Async: SidecarManager awaits port preflight before spawn (W0-2). */
+  start(): Promise<void> { return this.manager.start() }
   stop(): void { this.manager.stop() }
   restart(): void { this.manager.restart() }
   getStatus(): ReturnType<SidecarManager['getStatus']> { return this.manager.getStatus() }

@@ -212,7 +212,7 @@ describe('createSdSidecarConfig / createSdSidecar (复用 SidecarManager)', () =
     expect(() => new SidecarManager({ name: 'bad', bin: 'bin', args: [], port: 11436, healthUrl: 'http://0.0.0.0:11436/health' }, { fsDeps: fsMock.deps as never })).toThrow(/127\.0\.0\.1/)
   })
 
-  it('createSdSidecar spawn 使用 sd-cli 且日志落盘 logs/sidecar-sd.log + CPU 回退参数', () => {
+  it('createSdSidecar spawn 使用 sd-cli 且日志落盘 logs/sidecar-sd.log + CPU 回退参数', async () => {
     const proc = mockChildProcess()
     const spawner = vi.fn(() => proc as unknown as ReturnType<typeof import('child_process').spawn>)
     const m = createSdSidecar({
@@ -223,9 +223,10 @@ describe('createSdSidecarConfig / createSdSidecar (复用 SidecarManager)', () =
         spawner: spawner as never,
         fetcher: async () => true,
         fsDeps: fsMock.deps as never,
+        probePort: async () => true,
       },
     })
-    m.start()
+    await m.start()
     expect(spawner).toHaveBeenCalledWith('sd-cli', expect.arrayContaining(['--host', '127.0.0.1', '--port', '11436', '--model', 'models/sd.gguf', '--weight-type', 'q8_0', '--cpu']), expect.objectContaining({ stdio: expect.anything() }))
     expect(fsMock.deps.mkdirSync).toHaveBeenCalled()
     const logCall = (fsMock.deps.createWriteStream as ReturnType<typeof vi.fn>).mock.calls[0][0] as string
@@ -237,20 +238,23 @@ describe('createSdSidecarConfig / createSdSidecar (复用 SidecarManager)', () =
     m.stop()
   })
 
-  it('logPath 便捷访问与 restart 语义', () => {
+  it('logPath 便捷访问与 restart 语义（退避 500ms 后才重新 spawn）', async () => {
     const proc1 = mockChildProcess({ pid: 111 } as never)
     const proc2 = mockChildProcess({ pid: 222 } as never)
     let call = 0
     const spawner = vi.fn(() => (call++ === 0 ? proc1 : proc2) as unknown as ReturnType<typeof import('child_process').spawn>)
     const m = createSdSidecar({
-      managerOptions: { spawner: spawner as never, fetcher: async () => true, fsDeps: fsMock.deps as never },
+      managerOptions: { spawner: spawner as never, fetcher: async () => true, fsDeps: fsMock.deps as never, probePort: async () => true },
     })
     expect(m.logPath).toContain('sidecar-sd.log')
-    m.start()
+    await m.start()
     expect(m.getStatus().restarts).toBe(0)
     m.restart()
-    expect(spawner).toHaveBeenCalledTimes(2)
     expect(m.getStatus().restarts).toBe(1)
+    expect(m.getStatus().state).toBe('backoff')
+    expect(spawner).toHaveBeenCalledTimes(1)
+    await vi.advanceTimersByTimeAsync(500)
+    expect(spawner).toHaveBeenCalledTimes(2)
     m.stop()
   })
 })

@@ -1,8 +1,16 @@
 /**
- * Sidecar / Provider abstractions — T4
+ * Sidecar / Provider abstractions — T4, extended by audit fix W0-2.
  * Contract for T8-T10,16,20 reuse. All sidecars MUST bind 127.0.0.1.
- * No AGPL here; pure interfaces.
+ * No AGPL here: interfaces, the config guard protecting them, and the shared
+ * lifecycle vocabulary (state, events, manager DI options).
  */
+
+import type { ChildProcess } from 'child_process'
+
+import type { LogFsDeps } from './sidecarLogs'
+
+/** All sidecars bind the loopback interface — no exceptions. */
+export const SIDECAR_HOST = '127.0.0.1' as const
 
 /** Single sidecar descriptor. All fields required; healthUrl must be 127.0.0.1. */
 export interface ISidecar {
@@ -18,15 +26,78 @@ export interface ISidecar {
   healthUrl: string
 }
 
+/**
+ * Lifecycle state machine of a SidecarManager (audit fix W0-2).
+ * - stopped:  not spawned (initial / after stop())
+ * - running:  child spawned, health pulse active
+ * - backoff:  waiting out an exponential-backoff delay before respawn
+ * - failed:   terminal — restart budget exhausted, no further auto-restart;
+ *             a new SidecarManager instance is required to recover
+ */
+export type SidecarState = 'stopped' | 'running' | 'backoff' | 'failed'
+
 /** Sidecar runtime status (returned by SidecarManager.getStatus()). */
 export interface SidecarStatus {
   name: string
   running: boolean
   pid?: number
+  /** Resolved listen port (equals config port unless preflight reallocated it). */
   port: number
   healthUrl: string
   failures: number
   restarts: number
+  state: SidecarState
+}
+
+/** Lifecycle events emitted by SidecarManager.onSidecarEvent. */
+export type SidecarEventType = 'restarting' | 'failed'
+export type SidecarEventListener = (event: SidecarEventType, status: SidecarStatus) => void
+
+/** Returns true when host:port is currently bindable (free). */
+export type PortProbe = (host: string, port: number) => Promise<boolean>
+
+/** Injection surface for SidecarManager (spawner/fetcher/probePort/fsDeps for Vitest). */
+export type SidecarManagerOptions = {
+  healthIntervalMs?: number
+  maxFailures?: number
+  maxRestarts?: number
+  restartBaseMs?: number
+  logDir?: string
+  logMaxBytes?: number
+  /** Dynamic reallocation range, default [20000, 30000]. */
+  dynamicPortRange?: readonly [min: number, max: number]
+  /** Override spawn for tests. Signature matches child_process.spawn. */
+  spawner?: (bin: string, args: string[], opts: Record<string, unknown>) => ChildProcess
+  /** Override fetch for tests. Return true if healthy. */
+  fetcher?: (url: string) => Promise<boolean>
+  /** Override port preflight probe for tests. Return true if the port is free. */
+  probePort?: PortProbe
+  /** Override fs deps for tests. */
+  fsDeps?: LogFsDeps
+}
+
+function assertLocalHealthUrl(url: string): void {
+  let u: URL
+  try {
+    u = new URL(url)
+  } catch {
+    throw new Error(`healthUrl must be a valid URL, got: ${url}`)
+  }
+  if (u.hostname !== SIDECAR_HOST) {
+    throw new Error(`healthUrl must be on ${SIDECAR_HOST}, got hostname=${u.hostname} url=${url}`)
+  }
+  if (u.protocol !== 'http:' && u.protocol !== 'https:') {
+    throw new Error(`healthUrl must be http(s), got ${url}`)
+  }
+}
+
+/** Boundary guard for ISidecar: throws on any contract violation. */
+export function assertValidSidecarConfig(c: ISidecar): void {
+  if (!c.name || !c.bin || !Array.isArray(c.args) || !c.port || !c.healthUrl) {
+    throw new Error('ISidecar requires name, bin, args, port, healthUrl')
+  }
+  if (c.port < 1024 || c.port > 65535) throw new Error(`port out of range: ${c.port}`)
+  assertLocalHealthUrl(c.healthUrl)
 }
 
 /** Model provider sidecar (T8-T10). Wraps ISidecar + model operations. */

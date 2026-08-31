@@ -180,7 +180,7 @@ describe('createLlamaSidecarConfig / createLlamaSidecar (复用 SidecarManager)'
     expect(() => new SidecarManager({ name: 'bad', bin: 'bin', args: [], port: 11435, healthUrl: 'http://0.0.0.0:11435/health' }, { fsDeps: fsMock.deps as never })).toThrow(/127\.0\.0\.1/)
   })
 
-  it('createLlamaSidecar spawn 使用 llama-server 且日志落盘 logs/sidecar-llama.log', () => {
+  it('createLlamaSidecar spawn 使用 llama-server 且日志落盘 logs/sidecar-llama.log', async () => {
     const proc = mockChildProcess()
     const spawner = vi.fn(() => proc as unknown as ReturnType<typeof import('child_process').spawn>)
     const m = createLlamaSidecar({
@@ -189,9 +189,10 @@ describe('createLlamaSidecarConfig / createLlamaSidecar (复用 SidecarManager)'
         spawner: spawner as never,
         fetcher: async () => true,
         fsDeps: fsMock.deps as never,
+        probePort: async () => true,
       },
     })
-    m.start()
+    await m.start()
     expect(spawner).toHaveBeenCalledWith('llama-server', expect.arrayContaining(['--host', '127.0.0.1', '--port', '11435', '--model', 'models/qwen.gguf']), expect.objectContaining({ stdio: expect.anything() }))
     expect(fsMock.deps.mkdirSync).toHaveBeenCalled()
     // log path must be sidecar-llama.log
@@ -204,20 +205,23 @@ describe('createLlamaSidecarConfig / createLlamaSidecar (复用 SidecarManager)'
     m.stop()
   })
 
-  it('logPath 便捷访问与 restart 语义', () => {
+  it('logPath 便捷访问与 restart 语义（退避 500ms 后才重新 spawn）', async () => {
     const proc1 = mockChildProcess({ pid: 111 } as never)
     const proc2 = mockChildProcess({ pid: 222 } as never)
     let call = 0
     const spawner = vi.fn(() => (call++ === 0 ? proc1 : proc2) as unknown as ReturnType<typeof import('child_process').spawn>)
     const m = createLlamaSidecar({
-      managerOptions: { spawner: spawner as never, fetcher: async () => true, fsDeps: fsMock.deps as never },
+      managerOptions: { spawner: spawner as never, fetcher: async () => true, fsDeps: fsMock.deps as never, probePort: async () => true },
     })
     expect(m.logPath).toContain('sidecar-llama.log')
-    m.start()
+    await m.start()
     expect(m.getStatus().restarts).toBe(0)
     m.restart()
-    expect(spawner).toHaveBeenCalledTimes(2)
     expect(m.getStatus().restarts).toBe(1)
+    expect(m.getStatus().state).toBe('backoff')
+    expect(spawner).toHaveBeenCalledTimes(1)
+    await vi.advanceTimersByTimeAsync(500)
+    expect(spawner).toHaveBeenCalledTimes(2)
     m.stop()
   })
 })

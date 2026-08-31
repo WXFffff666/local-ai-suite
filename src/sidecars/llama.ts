@@ -374,8 +374,9 @@ export class LlamaSidecar {
     return getHealthUrl(this.port)
   }
 
-  start(): void {
-    this.manager.start()
+  /** Async: SidecarManager awaits port preflight before spawn (W0-2). */
+  start(): Promise<void> {
+    return this.manager.start()
   }
 
   stop(): void {
