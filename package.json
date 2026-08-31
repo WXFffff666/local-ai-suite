@@ -27,6 +27,8 @@
   },
   "dependencies": {
     "better-sqlite3": "^13.0.3",
+    "pino": "^10.3.1",
+    "pino-roll": "^4.0.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "sqlite-vec": "^0.1.9",

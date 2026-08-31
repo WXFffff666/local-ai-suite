@@ -7,6 +7,8 @@ import { createDeleteWorkspaceHandler } from './handlers/deleteWorkspace'
 import { createOverwriteCoverageHandler } from './handlers/overwriteCoverage'
 import { createPublishReleaseHandler } from './handlers/publishRelease'
 import { createClearCacheHandler } from './handlers/clearCache'
+import { getMainLogger, registerGlobalErrorLogging } from './logger'
+import { shutdownServices, type ShutdownResult } from './shutdown'
 
 /**
  * Sidecar host — all local sidecars (LLM / embedding / image / search)
@@ -17,7 +19,36 @@ export const SIDECAR_HOST = '127.0.0.1' as const
 
 app.enableSandbox()
 
+// --- Lifecycle hardening (audit W0-1) --------------------------------------
+// Fatal process errors must land in the rolling main log before the default
+// terminal semantics run (uncaughtException -> flush -> exit(1); see logger.ts).
+registerGlobalErrorLogging({
+  getLogger: getMainLogger,
+  exit: (code: number): void => {
+    app.exit(code)
+  }
+})
+
+// Single-instance lock: a second launch asks the FIRST instance to surface its
+// window via 'second-instance' and this duplicate process quits immediately.
+const ownsInstanceLock = app.requestSingleInstanceLock()
+if (!ownsInstanceLock) {
+  app.quit()
+} else {
+  app.on('second-instance', () => {
+    focusMainWindow()
+  })
+}
+
 let mainWindow: BrowserWindow | null = null
+
+/** Restore/show/focus the primary window (used by second-instance + activate). */
+function focusMainWindow(): void {
+  if (mainWindow === null || mainWindow.isDestroyed()) return
+  if (mainWindow.isMinimized()) mainWindow.restore()
+  if (!mainWindow.isVisible()) mainWindow.show()
+  mainWindow.focus()
+}
 
 function createWindow(): void {
   mainWindow = new BrowserWindow({
@@ -143,4 +174,43 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
+})
+
+let quitCleanupComplete = false
+
+function recordShutdownFailures(result: ShutdownResult): void {
+  for (const failure of result.errors) {
+    getMainLogger().error(
+      { err: failure.reason, hookIndex: failure.hookIndex, timeoutMs: failure.timeoutMs },
+      'shutdown hook failed'
+    )
+  }
+}
+
+// Quit cleanup: hold the first quit long enough to stop every registered service
+// (shutdownServices bounds each hook with a 3s timeout, so this can never hang
+// forever), then re-quit. will-quit is the safety net for exotic quit paths.
+app.on('before-quit', (event) => {
+  if (quitCleanupComplete) return
+  event.preventDefault()
+  void shutdownServices()
+    .then(recordShutdownFailures)
+    .catch((error: unknown) => {
+      // Last-resort sink: if the file logger itself failed while quitting,
+      // stderr is all that is left (matches this file's console.* precedent).
+      console.error('[shutdown] cleanup did not complete cleanly:', error)
+    })
+    .finally(() => {
+      quitCleanupComplete = true
+      app.quit()
+    })
+})
+
+app.on('will-quit', () => {
+  // Idempotent: on the normal path the hooks already ran and this is a no-op.
+  void shutdownServices()
+    .then(recordShutdownFailures)
+    .catch((error: unknown) => {
+      console.error('[shutdown] cleanup did not complete cleanly:', error)
+    })
 })
