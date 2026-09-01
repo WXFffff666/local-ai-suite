@@ -7,8 +7,12 @@ import { ChatRelay } from './ipc/chatRelay'
 import { DownloadManager } from './ipc/downloadManager'
 import { searchHF } from '../market/hf'
 import { getMainLogger, registerGlobalErrorLogging } from './logger'
-import { shutdownServices, type ShutdownResult } from './shutdown'
-import { getServices, initServices } from './services'
+import { registerShutdownHook, shutdownServices, type ShutdownResult } from './shutdown'
+import { getServices, initServices, SIDECAR_NAMES, type SidecarName } from './services'
+import { startApiServer, ENGINE_MIN_OLLAMA_VERSION, type ApiServerStatus } from './apiServer'
+import { TrayController } from './tray'
+import type { SidecarManager } from '../core/SidecarManager'
+import type { SidecarStatus } from '../core/types'
 
 /**
  * Sidecar host — all local sidecars (LLM / embedding / image / search)
@@ -41,6 +45,32 @@ if (!ownsInstanceLock) {
 }
 
 let mainWindow: BrowserWindow | null = null
+
+// --- W1-10: embedded API server state + tray ---------------------------------
+// The arbitration result lives in a mutable ref so BOTH the tray (status line,
+// tooltip) and the chat relay (getEngineOwnership — two-legal-source upstream
+// rule) can read it lazily, long after bootstrap ordering details settle.
+const apiStatusRef: { current: ApiServerStatus | null } = { current: null }
+let trayController: TrayController | null = null
+
+/** One-line human description of the 11434 ownership state (tray + logs). */
+export function describeApiStatus(s: ApiServerStatus | null): string {
+  if (s === null) return 'API :11434 仲裁中…'
+  switch (s.mode) {
+    case 'embedded':
+      return 'API :11434 内置服务运行中'
+    case 'external-takeover':
+      return s.degraded
+        ? `API :11434 外部引擎 ${s.version ?? '未知版本'} 低于安全基线 ${ENGINE_MIN_OLLAMA_VERSION} — 请升级`
+        : `API :11434 外部引擎接管${s.version ? ` (${s.version})` : ''}`
+    case 'conflict':
+      return 'API :11434 端口冲突，服务未启动（端口固定，绝不换口）'
+    default: {
+      const unreachable: never = s.mode
+      throw new Error(`unknown api mode: ${String(unreachable)}`)
+    }
+  }
+}
 
 /** Restore/show/focus the primary window (used by second-instance + activate). */
 function focusMainWindow(): void {
@@ -110,9 +140,14 @@ function registerIpcHandlers(): void {
   const services = getServices()
 
   const relay = new ChatRelay({
-    services: () => ({ ensureSidecar: (name) => services.ensureSidecar(name) })
-    // getEngineOwnership is wired by todo10; absent ⇒ internal llama-server only
-    // (the embedded 11434 facade does not exist yet, so there is no self-loop).
+    services: () => ({ ensureSidecar: (name) => services.ensureSidecar(name) }),
+    // W1-10 arbitration: 'external-takeover' is the ONLY situation where the
+    // relay dials 11434; otherwise the internal llama-server on its resolved
+    // dynamic port. The embedded facade is never self-called (no loop).
+    getEngineOwnership: () => {
+      const s = apiStatusRef.current
+      return s === null ? undefined : { mode: s.mode }
+    }
   })
   const downloads = new DownloadManager({ emit: (event) => broadcastEvent('download:progress', event) })
 
@@ -148,6 +183,72 @@ function registerIpcHandlers(): void {
   })
 }
 
+// 11434 arbitration + embedded server (todo10). Fire-and-forget: every outcome
+// is surfaced through onStatus (tray/relay) and notify (persistent toast on
+// conflict); a hard failure only ever logs — the desktop shell stays usable.
+function bootstrapApiServer(): void {
+  void startApiServer({
+    notify: (event) => broadcastEvent('app:notification', event),
+    onStatus: (status) => {
+      apiStatusRef.current = status
+      getMainLogger().info({ api: status }, 'api server status')
+      trayController?.refresh()
+      if (status.mode === 'external-takeover' && status.degraded) {
+        // r2: takeover continues (never kill user processes) but the
+        // sub-baseline warning is loud — tray tooltip + renderer banner.
+        broadcastEvent('app:notification', {
+          level: 'warning',
+          title: '外部引擎低于安全基线',
+          message: `11434 上的外部引擎 ${status.version ?? '版本未知'} 低于安全基线 ${ENGINE_MIN_OLLAMA_VERSION}，建议升级后继续使用。`,
+          code: 'external-engine-degraded'
+        })
+      }
+    }
+  }).catch((error: unknown) => {
+    getMainLogger().error({ err: error }, 'api server bootstrap failed')
+  })
+}
+
+// Tray wiring (todo10): sidecar statuses live through the services container
+// (lazy managers appear as they spawn; a stopped-adapter covers absent ones).
+// Model switching stays inert until the engine resolver lands (todo30/31).
+function bootstrapTray(): void {
+  const services = getServices()
+  const statusAdapters = SIDECAR_NAMES.map((name: SidecarName): SidecarManager => {
+    const fallback: SidecarStatus = {
+      name,
+      running: false,
+      port: 0,
+      healthUrl: `http://${SIDECAR_HOST}:0/health`,
+      failures: 0,
+      restarts: 0,
+      state: 'stopped'
+    }
+    return {
+      getStatus: () => services.sidecarStatuses().find((s) => s.name === name) ?? fallback
+    } as unknown as SidecarManager
+  })
+
+  const controller = new TrayController({
+    managers: statusAdapters,
+    getModels: () => services.registry.getModels(),
+    getWindow: () => mainWindow,
+    getStatusLines: () => [describeApiStatus(apiStatusRef.current)],
+    getTooltip: () => `Local AI Suite — ${describeApiStatus(apiStatusRef.current)}`,
+    onSwitchModel: () => undefined
+  })
+  controller.create()
+  trayController = controller
+  for (const name of SIDECAR_NAMES) {
+    services.onSidecarEvent(name, () => controller.refresh())
+  }
+  // Destroy the tray first on quit (LIFO — registered after the container hooks).
+  registerShutdownHook(() => {
+    controller.destroy()
+    if (trayController === controller) trayController = null
+  })
+}
+
 app.whenReady().then(() => {
   // Service container (todo7): lazy — spawns nothing; watch + handshake start
   // here. Created BEFORE the handlers so the singleton carries the logger sink
@@ -161,6 +262,8 @@ app.whenReady().then(() => {
   })
   registerIpcHandlers()
   createWindow()
+  bootstrapApiServer()
+  bootstrapTray()
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()

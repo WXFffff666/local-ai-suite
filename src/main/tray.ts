@@ -22,6 +22,10 @@ export type TraySetupOptions = {
   currentModelPath?: string
   onSwitchModel?: (model: ModelEntry) => void | Promise<void>
   getWindow?: () => InstanceType<typeof BrowserWindow> | null
+  /** W1-10: extra read-only lines in the 服务状态 submenu (API server state...). */
+  getStatusLines?: () => string[]
+  /** W1-10: dynamic tooltip (reflects arbitration / errors). */
+  getTooltip?: () => string
   deps?: Partial<TrayDeps>
   platform?: NodeJS.Platform
 }
@@ -85,7 +89,10 @@ export function buildTrayTemplate(opts: TraySetupOptions): MenuItemLike[] {
         },
       }))
 
-  const statusSubmenu: MenuItemLike[] = managers.length === 0
+  const extraLines = (() => {
+    try { return opts.getStatusLines?.() ?? [] } catch { return [] }
+  })()
+  const managerLines: MenuItemLike[] = managers.length === 0
     ? [{ label: "无服务", enabled: false }]
     : managers.map((mgr) => {
         const s = mgr.getStatus()
@@ -93,6 +100,10 @@ export function buildTrayTemplate(opts: TraySetupOptions): MenuItemLike[] {
         const label = `${icon} ${s.name} :${s.port} ${s.running ? "运行中" : "未运行"}${s.pid ? " pid=" + s.pid : ""} 失败${s.failures} 重启${s.restarts}`
         return { label, enabled: false }
       })
+  const statusSubmenu: MenuItemLike[] = [
+    ...managerLines,
+    ...extraLines.map((label) => ({ label, enabled: false })),
+  ]
 
   const template: MenuItemLike[] = [
     {
@@ -161,7 +172,7 @@ export class TrayController {
       } catch { return this.deps.nativeImage.createEmpty() }
     })()
     this.tray = new this.deps.Tray(img)
-    try { this.tray.setToolTip(this.opts.tooltip ?? "Local AI Suite") } catch {}
+    this.updateTooltip()
     this.refresh()
     try {
       const toggle = () => {
@@ -186,8 +197,17 @@ export class TrayController {
     return this.tray
   }
 
+  /** W1-10: re-resolve the tooltip (getTooltip wins over the static fallback). */
+  updateTooltip(): void {
+    if (!this.tray) return
+    let text: string
+    try { text = this.opts.getTooltip?.() ?? this.opts.tooltip ?? "Local AI Suite" } catch { text = this.opts.tooltip ?? "Local AI Suite" }
+    try { this.tray.setToolTip(text) } catch {}
+  }
+
   refresh(): void {
     if (!this.tray) return
+    this.updateTooltip()
     const template = buildTrayTemplate(this.opts)
     try {
       const menu = this.deps.Menu.buildFromTemplate(template)

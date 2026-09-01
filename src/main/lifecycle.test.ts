@@ -84,8 +84,16 @@ const mocks = vi.hoisted(() => {
         reuse: vi.fn()
       },
       search: { search: vi.fn() },
-      ensureSidecar: vi.fn()
+      ensureSidecar: vi.fn(),
+      sidecarStatuses: vi.fn((): unknown[] => []),
+      onSidecarEvent: vi.fn((): (() => void) => () => undefined)
     },
+    startApiServer: vi.fn(() =>
+      Promise.resolve({ status: { mode: 'embedded', port: 11434 }, stop: async () => undefined })
+    ),
+    trayCreate: vi.fn(),
+    trayRefresh: vi.fn(),
+    trayDestroy: vi.fn(),
     mainLogger: {
       fatal: vi.fn(),
       error: vi.fn(),
@@ -128,7 +136,24 @@ vi.mock('./shutdown', async (importOriginal) => {
 // index.ts only needs to prove it calls initServices() after whenReady.
 vi.mock('./services', () => ({
   initServices: mocks.initServices,
-  getServices: (): unknown => mocks.servicesStub
+  getServices: (): unknown => mocks.servicesStub,
+  SIDECAR_NAMES: ['llama', 'ollama', 'sd']
+}))
+
+vi.mock('./apiServer', () => ({
+  startApiServer: mocks.startApiServer,
+  ENGINE_MIN_OLLAMA_VERSION: '0.1.13'
+}))
+
+// The real tray module needs six electron surfaces the baseline mock above does
+// not provide; lifecycle only proves bootstrap ordering.
+vi.mock('./tray', () => ({
+  TrayController: class {
+    create = mocks.trayCreate
+    refresh = mocks.trayRefresh
+    destroy = mocks.trayDestroy
+    updateTooltip = vi.fn()
+  }
 }))
 
 vi.mock('./logger', async (importOriginal) => {
@@ -229,6 +254,10 @@ describe('lifecycle — src/main/index.ts 生命周期接线', () => {
     if (win === undefined) throw new Error('whenReady did not create the main window')
     expect(mocks.ipcMain.handle).toHaveBeenCalled()
     expect(mocks.initServices).toHaveBeenCalledTimes(1)
+    // W1-10 boot ordering: arbitration starts and the tray is created once
+    // the window exists (window getter + tooltip need it).
+    expect(mocks.startApiServer).toHaveBeenCalledTimes(1)
+    expect(mocks.trayCreate).toHaveBeenCalledTimes(1)
 
     win.isMinimizedValue = true
     win.isVisibleValue = false
