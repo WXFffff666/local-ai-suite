@@ -33,6 +33,7 @@ import * as http from 'http'
 import { AddressInfo } from 'net'
 import { createOpenAiServer, OPENAI_HOST, OPENAI_PORT, MODELS_PATH } from '../api/openai'
 import { registerShutdownHook } from './shutdown'
+import { E2E_API_PORT } from './testSupport'
 import type { AppNotificationEvent } from './ipc/whitelist'
 
 export const API_PORT = OPENAI_PORT
@@ -217,7 +218,9 @@ export type StartApiServerDeps = {
 }
 
 export async function startApiServer(deps: StartApiServerDeps = {}): Promise<ApiServerHandle> {
-  const port = deps.port ?? API_PORT
+  // E2E_API_PORT: undefined in production (hook module reads an env var no
+  // packaged run sets); see src/main/testSupport.ts for the host-EACCES rationale.
+  const port = deps.port ?? E2E_API_PORT ?? API_PORT
   const probeTimeoutMs = deps.probeTimeoutMs ?? PROBE_TIMEOUT_MS
   const fetchImpl: FetchLike = deps.fetchImpl ?? ((url, init) => globalThis.fetch(url, init))
   const sleep = deps.sleep ?? ((ms: number) => new Promise<void>((r) => setTimeout(r, ms)))

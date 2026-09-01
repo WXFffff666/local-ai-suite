@@ -146,7 +146,9 @@ function registerIpcHandlers(): void {
     // dynamic port. The embedded facade is never self-called (no loop).
     getEngineOwnership: () => {
       const s = apiStatusRef.current
-      return s === null ? undefined : { mode: s.mode }
+      // carry the arbitrated port so a relocated e2e dial (testSupport) matches
+      // the probe; in production s.port === API_PORT (11434 fixed promise).
+      return s === null ? undefined : { mode: s.mode, port: s.port }
     }
   })
   const downloads = new DownloadManager({ emit: (event) => broadcastEvent('download:progress', event) })

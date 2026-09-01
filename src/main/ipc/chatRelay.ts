@@ -28,7 +28,15 @@ export type RelayServices = {
   ensureSidecar: (name: 'llama') => Promise<{ running: boolean; port: number; state: string }>
 }
 
-export type EngineOwnershipView = { mode: 'external-takeover' | 'embedded' | 'conflict' | 'unknown' }
+export type EngineOwnershipView = {
+  mode: 'external-takeover' | 'embedded' | 'conflict' | 'unknown'
+  /**
+   * Arbitrated port from ApiServerStatus (production is always 11434; the
+   * todo12 e2e test-support hook may relocate it on WinNAT-excluded hosts).
+   * Absent => the fixed OLLAMA_PORT default below.
+   */
+  port?: number
+}
 
 export type ChatRelayDeps = {
   services: () => RelayServices
@@ -74,7 +82,9 @@ export class ChatRelay {
     const ownership = this.deps.getEngineOwnership?.()
     if (ownership?.mode === 'external-takeover') {
       // The external engine owns 11434; our facade is not listening ⇒ legal dial.
-      return { kind: 'external-ollama', port: OLLAMA_PORT }
+      // ownership.port is the arbitrated coordinate (production: 11434; the
+      // todo12 e2e hook relocates it only on WinNAT-excluded hosts).
+      return { kind: 'external-ollama', port: ownership.port ?? OLLAMA_PORT }
     }
     const status = await this.deps.services().ensureSidecar('llama')
     if (!status.running) {
