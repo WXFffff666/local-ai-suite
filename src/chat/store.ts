@@ -12,7 +12,7 @@
  * - store 数据形状不变（见 types.ts；SSE 解析兼容实现见 sse.ts，此处 re-export）
  */
 import { create } from 'zustand'
-import type { ChatDeltaEvent, ChatDoneEvent, ChatErrorEvent } from '../main/ipc/whitelist'
+import type { AllowedChannel, ChatDeltaEvent, ChatDoneEvent, ChatErrorEvent } from '../main/ipc/whitelist'
 import type { ChatMessage, ChatSession, ChatSendOptions, Role } from './types'
 import { genId, newAssistantPlaceholder, newSession } from './types'
 import type { ChatIpcApi, ChatSendAck, ChatSendPayload } from './ipc'
@@ -28,16 +28,41 @@ export { getChatIpcApi, IPC_UNAVAILABLE_MESSAGE, DEFAULT_CHAT_MODEL } from './ip
 // ---------------------------------------------------------------------------
 // Zustand store
 // ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// todo17 conversation bridge (ADDITIVE ONLY — sessions/messages shapes frozen)
+// ---------------------------------------------------------------------------
+/** Minimal seam the store uses to persist finalized messages into chat.db.
+ *  The sidebar owns conversation selection; the store only appends. */
+export type ConversationBridge = {
+  appendMessage(chatId: string, role: Role, content: string): Promise<unknown>
+}
+
+/** Resolve a bridge over window.api ('conversations:appendMessage'); null outside Electron. */
+export function getConversationBridge(): ConversationBridge | null {
+  if (typeof window === 'undefined') return null
+  const api = (window as unknown as { api?: { invoke?: (channel: AllowedChannel, ...args: unknown[]) => Promise<unknown> } }).api
+  if (!api || typeof api.invoke !== 'function') return null
+  const invoke = api.invoke.bind(api)
+  return {
+    appendMessage: (chatId, role, content) => invoke('conversations:appendMessage', { chatId, role, content })
+  }
+}
+
 export type ChatStoreState = {
   sessions: ChatSession[]
   currentId: string | null
   streaming: boolean
   error: string | null
+  /** chat.db conversation id backing currentId, set by the sidebar (todo17). */
+  activeConversationId: string | null
   // actions
   createSession: (title?: string) => string
   deleteSession: (id: string) => void
   switchSession: (id: string) => void
   renameSession: (id: string, title: string) => void
+  /** Replace/insert a full session loaded from chat.db and make it current. */
+  loadConversation: (session: ChatSession) => void
+  setActiveConversation: (id: string | null) => void
   clearCurrentMessages: () => void
   abort: () => void
   retry: (opts?: ChatSendOptions) => Promise<void>
@@ -72,8 +97,11 @@ function ackErrorMessage(ack: unknown): string {
   return 'chat:send was rejected by the main process'
 }
 
-export function createChatStore(deps: { resolveApi?: () => ChatIpcApi | null } = {}) {
+export function createChatStore(
+  deps: { resolveApi?: () => ChatIpcApi | null; conversations?: () => ConversationBridge | null } = {},
+) {
   const resolveApi = deps.resolveApi ?? getChatIpcApi
+  const resolveConversations = deps.conversations ?? getConversationBridge
   // Active relay streams, keyed by assistant message id. Deliberately outside
   // zustand state: transient subscriptions, never rendered or persisted.
   const streams = new Map<string, StreamHandle>()
@@ -90,6 +118,22 @@ export function createChatStore(deps: { resolveApi?: () => ChatIpcApi | null } =
     }
 
     const refreshStreaming = () => set({ streaming: streams.size > 0 })
+
+    /**
+     * todo17 persistence seam: append a finalized message to chat.db via the
+     * injected bridge. Only the active conversation persists (sessions created
+     * in-memory without a chat.db row stay ephemeral); empty content is skipped
+     * (aborted-before-first-token). Bridge rejections surface in store.error.
+     */
+    const persistMessage = (sessionId: string, role: Role, content: string): void => {
+      if (content.length === 0) return
+      if (get().activeConversationId !== sessionId) return
+      const bridge = resolveConversations()
+      if (!bridge) return
+      void bridge.appendMessage(sessionId, role, content).catch((e: unknown) => {
+        set({ error: e instanceof Error ? e.message : String(e) })
+      })
+    }
 
     /**
      * Launch a relay stream for an already-inserted assistant placeholder.
@@ -113,8 +157,10 @@ export function createChatStore(deps: { resolveApi?: () => ChatIpcApi | null } =
       const finished = new Promise<void>((resolve) => {
         settle = resolve
       })
-      /** Final message state + store error + teardown, exactly once. */
-      const terminate = (finalPatch: Partial<ChatMessage>, storeError: string | null, bumpSessionTime: boolean) => {
+      /** Final message state + store error + teardown, exactly once.
+       *  persistAssistant = the stream reached chat:done (normal or aborted):
+       *  the partial/full answer belongs in chat.db. Error paths never persist. */
+      const terminate = (finalPatch: Partial<ChatMessage>, storeError: string | null, bumpSessionTime: boolean, persistAssistant = false) => {
         if (bumpSessionTime) {
           set((st) => ({
             sessions: updateSession(st.sessions, sessionId, (s) => ({
@@ -127,6 +173,10 @@ export function createChatStore(deps: { resolveApi?: () => ChatIpcApi | null } =
           patchAssistant(sessionId, assistantId, finalPatch)
         }
         if (storeError !== null) set({ error: storeError })
+        if (persistAssistant) {
+          const msg = get().sessions.find((s) => s.id === sessionId)?.messages.find((m) => m.id === assistantId)
+          if (msg) persistMessage(sessionId, 'assistant', msg.content)
+        }
         streams.get(assistantId)?.dispose()
         settle()
       }
@@ -154,9 +204,9 @@ export function createChatStore(deps: { resolveApi?: () => ChatIpcApi | null } =
       const offDone = api.on('chat:done', (e: ChatDoneEvent) => {
         if (e.id !== assistantId) return
         if (e.aborted) {
-          terminate({ pending: false, error: 'aborted' }, 'aborted', false)
+          terminate({ pending: false, error: 'aborted' }, 'aborted', false, true)
         } else {
-          terminate({ pending: false }, null, true)
+          terminate({ pending: false }, null, true, true)
         }
       })
       const offError = api.on('chat:error', (e: ChatErrorEvent) => {
@@ -210,6 +260,7 @@ export function createChatStore(deps: { resolveApi?: () => ChatIpcApi | null } =
       currentId: null,
       streaming: false,
       error: null,
+      activeConversationId: null,
 
       createSession: (title) => {
         const s = newSession(title)
@@ -236,6 +287,19 @@ export function createChatStore(deps: { resolveApi?: () => ChatIpcApi | null } =
         set((st) => ({ sessions: updateSession(st.sessions, id, (s) => ({ ...s, title, updatedAt: Date.now() })) }))
       },
 
+      loadConversation: (session) => {
+        set((st) => ({
+          sessions: st.sessions.some((s) => s.id === session.id)
+            ? st.sessions.map((s) => (s.id === session.id ? session : s))
+            : [...st.sessions, session],
+          currentId: session.id,
+          activeConversationId: session.id,
+          error: null,
+        }))
+      },
+
+      setActiveConversation: (id) => set({ activeConversationId: id }),
+
       clearCurrentMessages: () => {
         const cur = get().currentId
         if (!cur) return
@@ -256,6 +320,9 @@ export function createChatStore(deps: { resolveApi?: () => ChatIpcApi | null } =
         patchAssistant(cur, targetId, { pending: false, error: 'aborted' })
         set({ error: 'aborted' })
         refreshStreaming()
+        // chat:done will never arrive after local dispose — persist the partial answer here
+        const abortedMsg = get().sessions.find((s) => s.id === cur)?.messages.find((m) => m.id === targetId)
+        if (abortedMsg) persistMessage(cur, 'assistant', abortedMsg.content)
         // the send() promise must not dangle waiting for a terminal event we just unsubscribed from
         handle?.settle()
         void resolveApi()?.invoke('chat:abort', { id: targetId })
@@ -312,6 +379,7 @@ export function createChatStore(deps: { resolveApi?: () => ChatIpcApi | null } =
           error: null,
         }))
 
+        persistMessage(sessionId, 'user', text)
         await launch(sessionId, placeholder.id, historyWithout(sessionId, placeholder.id), opts ?? {})
       },
     }

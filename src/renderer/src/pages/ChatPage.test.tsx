@@ -110,7 +110,10 @@ describe('ChatPage IPC 流式模式', () => {
       await Promise.resolve()
     })
     expect(fake.invoke).toHaveBeenCalledWith('chat:send', expect.objectContaining({ model: 'local' }))
-    const streamId = (fake.invoke.mock.calls[0] as unknown as [string, { id: string }])[1].id
+    // todo17 起 window.api 是共享面：侧栏会先调 conversations:*。streamId 必须从
+    // chat:send 那一次调用取，而不是固定的 calls[0]。
+    const sendCall = fake.invoke.mock.calls.find((c) => c[0] === 'chat:send')
+    const streamId = (sendCall as unknown as [string, { id: string }])[1].id
 
     await act(async () => {
       fake.emit('chat:delta', { id: streamId, delta: 'pong' })

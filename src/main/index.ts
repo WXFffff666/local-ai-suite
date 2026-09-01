@@ -10,6 +10,7 @@ import { getMainLogger, registerGlobalErrorLogging } from './logger'
 import { registerShutdownHook, shutdownServices, type ShutdownResult } from './shutdown'
 import { getServices, initServices, SIDECAR_NAMES, type SidecarName } from './services'
 import { startApiServer, ENGINE_MIN_OLLAMA_VERSION, type ApiServerStatus } from './apiServer'
+import { createConversationService } from './storage/conversations'
 import { TrayController } from './tray'
 import type { SidecarManager } from '../core/SidecarManager'
 import type { SidecarStatus } from '../core/types'
@@ -153,13 +154,19 @@ function registerIpcHandlers(): void {
   })
   const downloads = new DownloadManager({ emit: (event) => broadcastEvent('download:progress', event) })
 
+  // todo17: real sqlite-backed conversations replace the honest not-ready seam.
+  // The service is IO-free until its first verb runs (getDb opens chat.db lazily),
+  // so a db failure surfaces as a rejected invoke the renderer reports honestly.
+  const conversations = createConversationService()
+
   const handlers = buildIpcHandlers({
     services,
     relay,
     downloads,
     hfSearch: searchHF,
     dialog,
-    safeStorage
+    safeStorage,
+    conversations: () => conversations
   })
 
   for (const [channel, fn] of Object.entries(handlers) as [AllowedChannel, (typeof handlers)[AllowedChannel]][]) {
