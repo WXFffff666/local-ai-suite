@@ -1,0 +1,336 @@
+/**
+ * market.css — todo14 市场页样式
+ * 颜色一律取 App.css 的 --las-* 主题令牌（theme/theme.tsx 为单一事实源），
+ * 成功/失败点缀色用带 alpha 的固定语义色，深浅主题皆可读。
+ */
+
+.las-market-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .las-market-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---- 搜索栏 ---- */
+.las-market-search {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.las-market-search-input {
+  flex: 1 1 220px;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--las-border);
+  border-radius: 6px;
+  background: var(--las-card);
+  color: var(--las-fg);
+  font: inherit;
+}
+
+.las-market-search-select {
+  padding: 8px 10px;
+  border: 1px solid var(--las-border);
+  border-radius: 6px;
+  background: var(--las-card);
+  color: var(--las-fg);
+  font: inherit;
+}
+
+.las-market-search-toggle {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  color: var(--las-muted);
+  font-size: 13px;
+  user-select: none;
+}
+
+.las-market-search-submit,
+.las-market-card-download {
+  padding: 8px 14px;
+  border: 1px solid var(--las-border);
+  border-radius: 6px;
+  background: var(--las-fg);
+  color: var(--las-bg);
+  font: inherit;
+  cursor: pointer;
+}
+
+.las-market-search-submit:disabled,
+.las-market-card-download:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---- 提示 / 状态条 ---- */
+.las-market-note {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px dashed var(--las-border);
+  border-radius: 6px;
+  color: var(--las-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.las-market-error {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(220, 80, 80, 0.45);
+  border-radius: 6px;
+  background: rgba(220, 80, 80, 0.08);
+  color: #d86a6a;
+  font-size: 13px;
+}
+
+.las-market-status {
+  margin: 0 0 12px;
+  color: var(--las-muted);
+  font-size: 13px;
+}
+
+/* ---- 结果卡 ---- */
+.las-market-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.las-market-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 1px solid var(--las-border);
+  border-radius: 8px;
+  background: var(--las-card);
+}
+
+.las-market-card-head {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.las-market-card-name {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--las-fg);
+  overflow-wrap: anywhere;
+}
+
+.las-market-card-quant {
+  flex: none;
+  padding: 1px 7px;
+  border: 1px solid var(--las-border);
+  border-radius: 999px;
+  color: var(--las-muted);
+  font-size: 11px;
+}
+
+.las-market-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  color: var(--las-muted);
+  font-size: 12px;
+}
+
+.las-market-card-nonGGUF {
+  padding: 0 6px;
+  border-radius: 4px;
+  background: rgba(220, 160, 60, 0.15);
+  color: #c9973f;
+}
+
+.las-market-card-desc {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: var(--las-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.las-market-card-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.las-market-card-link {
+  color: var(--las-muted);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.las-market-card-link:hover {
+  color: var(--las-fg);
+  text-decoration: underline;
+}
+
+/* ---- 下载任务面板 ---- */
+.las-market-downloads {
+  position: sticky;
+  top: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--las-border);
+  border-radius: 8px;
+  background: var(--las-card);
+}
+
+.las-market-downloads-title {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--las-fg);
+}
+
+.las-market-downloads-empty {
+  margin: 0;
+  color: var(--las-muted);
+  font-size: 12px;
+}
+
+.las-market-job-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.las-market-job {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.las-market-job-head {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.las-market-job-name {
+  overflow: hidden;
+  color: var(--las-fg);
+  font-size: 12px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.las-market-job-state {
+  flex: none;
+  padding: 0 6px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.las-market-job-state-downloading {
+  background: rgba(90, 140, 220, 0.15);
+  color: #7ea3dd;
+}
+
+.las-market-job-state-done {
+  background: rgba(80, 180, 110, 0.15);
+  color: #6cc08a;
+}
+
+.las-market-job-state-error {
+  background: rgba(220, 80, 80, 0.15);
+  color: #d86a6a;
+}
+
+/* 进度条：total 已知 → 按百分比；total===0 → 不定长 shimmer */
+.las-market-job-bar {
+  position: relative;
+  overflow: hidden;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--las-border);
+}
+
+.las-market-job-bar-fill {
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  background: #5b8dee;
+  transition: width 240ms ease;
+}
+
+.las-market-job-bar-indeterminate .las-market-job-bar-fill {
+  width: 40%;
+  animation: las-market-shimmer 1.2s ease-in-out infinite;
+}
+
+@keyframes las-market-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .las-market-job-bar-indeterminate .las-market-job-bar-fill {
+    animation: none;
+    width: 100%;
+    opacity: 0.5;
+  }
+}
+
+.las-market-job-foot {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.las-market-job-size {
+  color: var(--las-muted);
+  font-size: 11px;
+}
+
+.las-market-job-cancel {
+  padding: 1px 8px;
+  border: 1px solid var(--las-border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--las-muted);
+  font: inherit;
+  font-size: 11px;
+}
+
+.las-market-job-cancel:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.las-market-job-error {
+  margin: 0;
+  color: #d86a6a;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
