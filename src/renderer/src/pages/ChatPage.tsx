@@ -1,13 +1,15 @@
-/** Chat 页占位 — 由 todo11（IPC 流式）/ todo15（markdown 打磨）接入实装 */
+/** Chat 页 — todo11 实装：IPC 流式对话（chat:send / chat:abort + delta/done/error 事件） */
+import { Chat } from '../../../chat/Chat'
+
 export function ChatPage(): React.JSX.Element {
   return (
-    <section className="las-page" aria-labelledby="page-title-chat">
+    <section className="las-page" aria-labelledby="page-title-chat" style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
       <h1 id="page-title-chat" className="las-page-title">
         Chat
       </h1>
-      <p className="las-page-subtitle">本地模型对话</p>
-      <div className="las-page-card">
-        占位页面 — 由 todo 11（chat:send IPC 流式 + abort）与 todo 15（markdown/代码块/预设）接线实装。
+      <p className="las-page-subtitle">本地模型对话 · 主进程转发流式</p>
+      <div className="las-page-card" style={{ flex: 1, minHeight: 0, overflow: 'hidden', padding: 0 }}>
+        <Chat />
       </div>
     </section>
   )
