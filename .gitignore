@@ -56,3 +56,4 @@ userData/
 !src/renderer/src/features/cache/clearCache.ts
 !src/renderer/src/features/coverage/overwriteCoverage.ts
 !src/renderer/src/features/release/publishRelease.ts
+!src/main/ipc/secrets.ts

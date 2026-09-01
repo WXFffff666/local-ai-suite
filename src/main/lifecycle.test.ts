@@ -65,6 +65,27 @@ const mocks = vi.hoisted(() => {
     shutdownServices: vi.fn(),
     registerShutdownHook: vi.fn(),
     initServices: vi.fn(() => Promise.resolve(undefined)),
+    // Structural stand-in for the W1-8 container surface registerIpcHandlers()
+    // consumes (getServices is called synchronously inside whenReady).
+    servicesStub: {
+      registry: { getModels: vi.fn((): unknown[] => []) },
+      imageQueue: {
+        enqueue: vi.fn((): string => 'job-1'),
+        getJob: vi.fn((): unknown => undefined),
+        listJobs: vi.fn((): unknown[] => []),
+        subscribe: vi.fn((): (() => void) => () => undefined),
+        pending: 0
+      },
+      gallery: {
+        list: vi.fn((): unknown[] => []),
+        save: vi.fn(),
+        copy: vi.fn(),
+        insert: vi.fn(),
+        reuse: vi.fn()
+      },
+      search: { search: vi.fn() },
+      ensureSidecar: vi.fn()
+    },
     mainLogger: {
       fatal: vi.fn(),
       error: vi.fn(),
@@ -106,7 +127,8 @@ vi.mock('./shutdown', async (importOriginal) => {
 // The real container would spin chokidar + real fs watches during these tests;
 // index.ts only needs to prove it calls initServices() after whenReady.
 vi.mock('./services', () => ({
-  initServices: mocks.initServices
+  initServices: mocks.initServices,
+  getServices: (): unknown => mocks.servicesStub
 }))
 
 vi.mock('./logger', async (importOriginal) => {

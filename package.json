@@ -36,6 +36,7 @@
     "sqlite-vec-linux-arm64": "^0.1.9",
     "sqlite-vec-linux-x64": "^0.1.9",
     "sqlite-vec-windows-x64": "^0.1.9",
+    "zod": "^4.5.4",
     "zustand": "^5.0.14"
   },
   "devDependencies": {

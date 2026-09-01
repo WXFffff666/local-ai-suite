@@ -1,18 +1,41 @@
 import { describe, it, expect } from 'vitest'
-import { ALLOWED_CHANNELS, assertAllowedChannel, isAllowedChannel } from './whitelist'
+import {
+  ALLOWED_CHANNELS,
+  ALLOWED_EVENT_CHANNELS,
+  assertAllowedChannel,
+  assertAllowedEventChannel,
+  isAllowedChannel,
+  isAllowedEventChannel
+} from './whitelist'
 
 describe('ipc whitelist', () => {
   it('合法 channel 通过 — ALLOWED 中所有通道均被 isAllowedChannel 接受', () => {
     for (const ch of ALLOWED_CHANNELS) {
       expect(isAllowedChannel(ch)).toBe(true)
     }
-    // 逐项断言，确保 10 项齐全（含 dialog:confirmDestructive + 4 destructive guards）
+    // W1-8 全集：原 12 项 + chat:abort + image:queue:status + gallery 五动词 +
+    // search:run + hf:search + conversations 六通道（todo17 预列）。
     expect(ALLOWED_CHANNELS).toEqual([
       'health:pulse',
       'models:list',
       'models:download',
       'chat:send',
+      'chat:abort',
       'image:generate',
+      'image:queue:status',
+      'gallery:list',
+      'gallery:save',
+      'gallery:copy',
+      'gallery:insert',
+      'gallery:reuse',
+      'search:run',
+      'hf:search',
+      'conversations:list',
+      'conversations:create',
+      'conversations:rename',
+      'conversations:delete',
+      'conversations:appendMessage',
+      'conversations:listMessages',
       'dialog:confirmDestructive',
       'workspace:delete',
       'coverage:overwrite',
@@ -24,22 +47,66 @@ describe('ipc whitelist', () => {
   })
 
   it('非法 channel 被拒 — 未知通道返回 false 且 assert 抛错', () => {
-    const illegal = ['evil:channel', 'health:pulse ', 'chat:send:extra', '', 'ipcRenderer', 'models:Delete']
+    const illegal = [
+      'evil:channel',
+      'health:pulse ',
+      'chat:send:extra',
+      '',
+      'ipcRenderer',
+      'models:Delete',
+      // agent:* invoke 通道由 todo23/24 自行注册，绝不在此预留
+      'agent:start',
+      'agent:status',
+      'agent:cancel'
+    ]
     for (const ch of illegal) {
       expect(isAllowedChannel(ch)).toBe(false)
       expect(() => assertAllowedChannel(ch)).toThrow(/not allowed/)
     }
   })
 
-  it('preload 仅暴露白名单 — ALLOWED 为只读 12 项且无通配/全量暴露', () => {
-    expect(ALLOWED_CHANNELS).toHaveLength(12)
-    // 确保无通配符或空字符串混入
+  it('preload invoke 面仅暴露白名单 — 无通配/全量暴露', () => {
     for (const ch of ALLOWED_CHANNELS) {
-      expect(ch).toMatch(/^[a-z]+:[a-zA-Z-]+$/)
+      expect(ch).toMatch(/^[a-z]+(?::[a-zA-Z-]+)+$/)
     }
-    // assert 在白名单通道上不抛错
     for (const ch of ALLOWED_CHANNELS) {
       expect(() => assertAllowedChannel(ch)).not.toThrow()
+    }
+  })
+})
+
+describe('ipc event whitelist (main -> renderer)', () => {
+  it('事件白名单精确集 — 计划规定通道 + agent:* 预留 + app:notification', () => {
+    expect(ALLOWED_EVENT_CHANNELS).toEqual([
+      'chat:delta',
+      'chat:done',
+      'chat:error',
+      'download:progress',
+      'image:queue:status',
+      'app:notification',
+      'agent:event',
+      'agent:term'
+    ])
+    for (const ch of ALLOWED_EVENT_CHANNELS) {
+      expect(isAllowedEventChannel(ch)).toBe(true)
+      expect(() => assertAllowedEventChannel(ch)).not.toThrow()
+    }
+  })
+
+  it('invoke 通道不等于事件通道 — 两套独立门禁', () => {
+    // chat:send 可 invoke 但不可作为 main->renderer 事件订阅
+    expect(isAllowedChannel('chat:send')).toBe(true)
+    expect(isAllowedEventChannel('chat:send')).toBe(false)
+    // chat:delta 可订阅但不可 invoke
+    expect(isAllowedEventChannel('chat:delta')).toBe(true)
+    expect(isAllowedChannel('chat:delta')).toBe(false)
+  })
+
+  it('未列入事件通道被拒 — assert 抛错', () => {
+    const illegal = ['evil:event', 'webContents', 'chat:delta ', '', 'shell:exec']
+    for (const ch of illegal) {
+      expect(isAllowedEventChannel(ch)).toBe(false)
+      expect(() => assertAllowedEventChannel(ch)).toThrow(/not allowed/)
     }
   })
 })
