@@ -142,6 +142,40 @@ describe('chat store — IPC relay: send / abort / retry / events', () => {
     expect(use.getState().sessions[0]!.messages[1]!.content).toBe('ok')
   })
 
+  it('reasoning deltas accumulate into message.reasoning, content stays separate (todo11b)', async () => {
+    const fake = makeFakeApi()
+    const use = createChatStore({ resolveApi: () => fake.api })
+    use.getState().createSession('r11b')
+    const done = use.getState().send('think for me')
+    const id = (fake.invoke.mock.calls[0] as unknown as [string, { id: string }])[1].id
+
+    fake.emit.delta({ id, delta: '', reasoning: 'step 1: ' })
+    fake.emit.delta({ id, delta: '', reasoning: 'check' })
+    fake.emit.delta({ id, delta: 'answer', reasoning: ' + final' })
+    fake.emit.delta({ id, delta: ' plain' }) // content-only: reasoning untouched
+    fake.emit.done({ id, model: 'local' })
+    await done
+
+    const assistant = use.getState().sessions[0]!.messages[1]!
+    expect(assistant.content).toBe('answer plain')
+    expect(assistant.reasoning).toBe('step 1: check + final')
+    expect(assistant.pending).toBe(false)
+  })
+
+  it('empty content-only delta is a no-op (no spurious state writes)', async () => {
+    const fake = makeFakeApi()
+    const use = createChatStore({ resolveApi: () => fake.api })
+    use.getState().createSession('noop')
+    const done = use.getState().send('hi')
+    const id = (fake.invoke.mock.calls[0] as unknown as [string, { id: string }])[1].id
+    const before = use.getState().sessions[0]!.messages[1]!
+    fake.emit.delta({ id, delta: '' })
+    const after = use.getState().sessions[0]!.messages[1]!
+    expect(after).toBe(before) // same object reference — store untouched
+    fake.emit.done({ id })
+    await done
+  })
+
   it('abort → chat:abort invoke + local aborted state; late done{aborted} is a no-op', async () => {
     const fake = makeFakeApi()
     const use = createChatStore({ resolveApi: () => fake.api })
