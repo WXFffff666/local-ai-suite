@@ -114,6 +114,18 @@ describe('ChatRelay stream pump', () => {
     expect(c.errors).toHaveLength(0)
   })
 
+  it('content-only deltas carry NO reasoning key (byte-identical pre-11b wire shape)', async () => {
+    const { relay } = relayFor({})
+    const c = collector()
+    relay.start(payload(), c.send)
+    await vi.waitFor(() => expect(c.dones).toHaveLength(1))
+    expect(c.deltas.length).toBeGreaterThan(0)
+    for (const d of c.deltas) {
+      expect('reasoning' in d).toBe(false)
+      expect(d).toEqual({ id: 's1', delta: d.delta })
+    }
+  })
+
   it('handles SSE frames split across network chunks', async () => {
     const { relay } = relayFor({
       upstream: async () => {
@@ -126,6 +138,64 @@ describe('ChatRelay stream pump', () => {
     relay.start(payload(), c.send)
     await vi.waitFor(() => expect(c.dones).toHaveLength(1))
     expect(c.deltas.map((d) => d.delta)).toEqual(['part'])
+  })
+
+  it('maps OpenAI-compat delta.reasoning_content (llama.cpp /v1) into the delta event', async () => {
+    const think = (r: string): string =>
+      `data: ${JSON.stringify({ choices: [{ index: 0, delta: { reasoning_content: r }, finish_reason: null }] })}\n\n`
+    const { relay } = relayFor({
+      upstream: async () =>
+        sseResponse([think('2+2'), think(' =4'), openAiChunk('Answer: '), 'data: [DONE]\n\n'])
+    })
+    const c = collector()
+    relay.start(payload(), c.send)
+    await vi.waitFor(() => expect(c.dones).toHaveLength(1))
+    expect(c.deltas).toEqual([
+      { id: 's1', delta: '', reasoning: '2+2' },
+      { id: 's1', delta: '', reasoning: ' =4' },
+      { id: 's1', delta: 'Answer: ' }
+    ])
+    expect(c.errors).toHaveLength(0)
+  })
+
+  it('maps a combined content+reasoning chunk into one delta event', async () => {
+    const both = `data: ${JSON.stringify({ choices: [{ delta: { content: 'hi', reasoning: 'thinking' } }] })}\n\n`
+    const { relay } = relayFor({ upstream: async () => sseResponse([both, 'data: [DONE]\n\n']) })
+    const c = collector()
+    relay.start(payload(), c.send)
+    await vi.waitFor(() => expect(c.dones).toHaveLength(1))
+    expect(c.deltas).toEqual([{ id: 's1', delta: 'hi', reasoning: 'thinking' }])
+  })
+
+  it('maps llama.cpp native completion token shape (content + reasoning_content at top level)', async () => {
+    const tok = (content: string, reasoning?: string): string =>
+      `data: ${JSON.stringify({ content, ...(reasoning ? { reasoning_content: reasoning } : {}), stop: false })}\n\n`
+    const { relay } = relayFor({
+      upstream: async () => sseResponse([tok('', 'deep'), tok(' think'), tok('out')])
+    })
+    const c = collector()
+    relay.start(payload(), c.send)
+    await vi.waitFor(() => expect(c.dones).toHaveLength(1))
+    expect(c.deltas).toEqual([
+      { id: 's1', delta: '', reasoning: 'deep' },
+      { id: 's1', delta: ' think' },
+      { id: 's1', delta: 'out' }
+    ])
+  })
+
+  it('maps Ollama native chat line shape (message.content + message.thinking)', async () => {
+    const line = (content: string, thinking?: string): string =>
+      `data: ${JSON.stringify({ message: { role: 'assistant', content, ...(thinking ? { thinking } : {}) }, done: false })}\n\n`
+    const { relay } = relayFor({
+      upstream: async () => sseResponse([line('', 'hmm'), line('yes'), 'data: [DONE]\n\n'])
+    })
+    const c = collector()
+    relay.start(payload(), c.send)
+    await vi.waitFor(() => expect(c.dones).toHaveLength(1))
+    expect(c.deltas).toEqual([
+      { id: 's1', delta: '', reasoning: 'hmm' },
+      { id: 's1', delta: 'yes' }
+    ])
   })
 
   it('upstream non-200 → chat:error with status', async () => {
