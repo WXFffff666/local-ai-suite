@@ -101,8 +101,13 @@ export function assertAllowedEventChannel(channel: string): asserts channel is A
 // Event payload contracts (exact shapes — consumed by todo9/11/12/14/17/23/28)
 // ---------------------------------------------------------------------------
 
-/** chat:send relay stream chunk (one assistant-text fragment). */
-export type ChatDeltaEvent = { id: string; delta: string }
+/**
+ * chat:send relay stream chunk (one assistant fragment).
+ * `reasoning` carries thinking/reasoning_content deltas (todo11b parity);
+ * it is OMITTED (not empty-string) when absent, so content-only deltas
+ * stay byte-identical to the pre-11b wire shape (back-compat contract).
+ */
+export type ChatDeltaEvent = { id: string; delta: string; reasoning?: string }
 /** Stream finished normally, or was cancelled via chat:abort (aborted: true). */
 export type ChatDoneEvent = { id: string; model?: string; aborted?: boolean }
 export type ChatErrorEvent = { id: string; message: string }
