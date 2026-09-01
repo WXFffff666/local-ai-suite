@@ -185,13 +185,53 @@ function handleSseLine(line: string, id: string, model: string, emit: SendEvent)
     return true
   }
   try {
-    const chunk = JSON.parse(data) as { choices?: Array<{ delta?: { content?: unknown } }> }
-    const content = chunk.choices?.[0]?.delta?.content
-    if (typeof content === 'string' && content.length > 0) {
-      emit('chat:delta', { id, delta: content })
-    }
+    const parsed: unknown = JSON.parse(data)
+    if (!parsed || typeof parsed !== 'object') return false
+    const { content, reasoning } = pickStreamTexts(parsed as Record<string, unknown>)
+    if (!content && !reasoning) return false
+    const event: ChatDeltaEvent = { id, delta: content }
+    // reasoning is OMITTED when absent: content-only deltas stay
+    // byte-identical to the pre-11b wire shape (todo11b back-compat rule).
+    if (reasoning) event.reasoning = reasoning
+    emit('chat:delta', event)
   } catch {
     /* malformed keep-alive/comment line — ignore */
   }
   return false
+}
+
+function str(value: unknown): string {
+  return typeof value === 'string' ? value : ''
+}
+
+function record(value: unknown): Record<string, unknown> | undefined {
+  return value && typeof value === 'object' ? (value as Record<string, unknown>) : undefined
+}
+
+/**
+ * Extracts (content, reasoning) from the three upstream SSE chunk shapes the
+ * relay may see:
+ * - OpenAI chat.completion.chunk — llama.cpp /v1 puts thinking in
+ *   delta.reasoning_content, Ollama /v1 in delta.reasoning;
+ * - OpenAI-compat initial frame with choices[0].message (non-streaming echo);
+ * - llama.cpp native /completion token: {content, reasoning_content, stop};
+ * - Ollama native /api/chat line: {message: {content, thinking}, done}.
+ */
+function pickStreamTexts(obj: Record<string, unknown>): { content: string; reasoning: string } {
+  const choices = obj['choices']
+  if (Array.isArray(choices) && choices.length > 0) {
+    const choice = record(choices[0])
+    const delta = record(choice?.['delta']) ?? record(choice?.['message'])
+    if (delta) {
+      return {
+        content: str(delta['content']),
+        reasoning: str(delta['reasoning_content']) || str(delta['reasoning']) || str(delta['thinking']),
+      }
+    }
+  }
+  const message = record(obj['message'])
+  if (message) {
+    return { content: str(message['content']), reasoning: str(message['thinking']) }
+  }
+  return { content: str(obj['content']), reasoning: str(obj['reasoning_content']) || str(obj['reasoning']) }
 }
