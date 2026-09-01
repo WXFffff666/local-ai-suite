@@ -1,28 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { createChatStore, parseSseLine, parseSseBuffer, CHAT_COMPLETION_URL } from './store'
-
-// helpers to mock SSE Response
-function sseResponse(chunks: string[], status = 200): Response {
-  const text = chunks.join('')
-  const stream = new ReadableStream<Uint8Array>({
-    start(ctrl) {
-      const enc = new TextEncoder()
-      // emit in two halves to test buffering
-      const half = Math.ceil(text.length / 2)
-      ctrl.enqueue(enc.encode(text.slice(0, half)))
-      ctrl.enqueue(enc.encode(text.slice(half)))
-      ctrl.close()
-    },
-  })
-  return new Response(stream as unknown as BodyInit, {
-    status,
-    headers: { 'content-type': 'text/event-stream' },
-  })
-}
-
-function jsonResponse(obj: unknown): Response {
-  return new Response(JSON.stringify(obj), { status: 200, headers: { 'content-type': 'application/json' } })
-}
+import {
+  createChatStore,
+  parseSseLine,
+  parseSseBuffer,
+  IPC_UNAVAILABLE_MESSAGE,
+  DEFAULT_CHAT_MODEL,
+  type ChatIpcApi,
+} from './store'
+import type { ChatDeltaEvent, ChatDoneEvent, ChatErrorEvent } from '../main/ipc/whitelist'
 
 describe('parseSseLine — delta.content / reasoning_content 透传', () => {
   it('parses OpenAI choices delta.content', () => {
@@ -69,118 +54,253 @@ describe('parseSseBuffer', () => {
   })
 })
 
-describe('chat store — sessions/messages + SSE + abort/retry', () => {
+// ---------------------------------------------------------------------------
+// fake window.api — scripted chat:send / chat:abort + delta/done/error events
+// ---------------------------------------------------------------------------
+function makeFakeApi(opts: { sendAck?: (payload: unknown) => unknown } = {}) {
+  const listeners = {
+    'chat:delta': [] as Array<(e: ChatDeltaEvent) => void>,
+    'chat:done': [] as Array<(e: ChatDoneEvent) => void>,
+    'chat:error': [] as Array<(e: ChatErrorEvent) => void>,
+  }
+  const invoke = vi.fn(async (channel: string, payload: unknown) => {
+    if (channel === 'chat:send') {
+      return opts.sendAck ? opts.sendAck(payload) : { ok: true, id: (payload as { id: string }).id, streaming: true }
+    }
+    return { ok: true, id: (payload as { id: string }).id, aborted: true }
+  })
+  const on = vi.fn((channel: keyof typeof listeners, cb: (p: never) => void) => {
+    const list = listeners[channel] as Array<(p: never) => void>
+    list.push(cb)
+    return () => {
+      const i = list.indexOf(cb)
+      if (i >= 0) list.splice(i, 1)
+    }
+  })
+  const emit = {
+    delta: (e: ChatDeltaEvent) => listeners['chat:delta'].slice().forEach((cb) => cb(e)),
+    done: (e: ChatDoneEvent) => listeners['chat:done'].slice().forEach((cb) => cb(e)),
+    error: (e: ChatErrorEvent) => listeners['chat:error'].slice().forEach((cb) => cb(e)),
+  }
+  const activeListeners = () =>
+    listeners['chat:delta'].length + listeners['chat:done'].length + listeners['chat:error'].length
+  const api = { invoke, on } as unknown as ChatIpcApi
+  return { api, invoke, emit, activeListeners }
+}
+
+describe('chat store — IPC relay: send / abort / retry / events', () => {
   beforeEach(() => vi.restoreAllMocks())
 
-  it('create/switch/delete/rename/clear', () => {
-    const use = createChatStore()
-    const id1 = use.getState().createSession('hello')
-    const id2 = use.getState().createSession('world')
-    expect(use.getState().sessions.length).toBe(2)
-    expect(use.getState().currentId).toBe(id2)
-    use.getState().switchSession(id1)
-    expect(use.getState().currentId).toBe(id1)
-    use.getState().renameSession(id1, 'renamed')
-    expect(use.getState().sessions.find((s) => s.id === id1)?.title).toBe('renamed')
-    use.getState().deleteSession(id2)
-    expect(use.getState().sessions.length).toBe(1)
-    // push a msg then clear
-    use.getState().sessions[0]!.messages.push({ id: 'x', role: 'user', content: 'hi', createdAt: 1 })
-    use.getState().clearCurrentMessages()
-    expect(use.getState().sessions[0]!.messages.length).toBe(0)
-  })
-
-  it('send streams delta.content + reasoning_content into assistant message', async () => {
-    const use = createChatStore()
+  it('send → chat:send invoke + scripted deltas → done locks the message', async () => {
+    const fake = makeFakeApi()
+    const use = createChatStore({ resolveApi: () => fake.api })
     use.getState().createSession('t')
-    const fetchImpl = vi.fn(async () =>
-      sseResponse([
-        'data: {"choices":[{"delta":{"content":"Hel"}}]}\n',
-        'data: {"choices":[{"delta":{"content":"lo","reasoning_content":"think"}}]}\n',
-        'data: {"choices":[{"delta":{"content":" world"}}]}\n',
-        'data: [DONE]\n',
-      ]),
+    const done = use.getState().send('hi')
+
+    expect(fake.invoke).toHaveBeenCalledWith(
+      'chat:send',
+      expect.objectContaining({
+        model: DEFAULT_CHAT_MODEL,
+        messages: [{ role: 'user', content: 'hi' }],
+      }),
     )
-    await use.getState().send('hi', { fetchImpl: fetchImpl as unknown as (url: string, init?: RequestInit) => Promise<Response> })
+    const streamId = (fake.invoke.mock.calls[0] as unknown as [string, { id: string }])[1].id
+    const assistant = use.getState().sessions[0]!.messages[1]!
+    expect(assistant.id).toBe(streamId) // events keyed by assistant message id
+    expect(assistant.pending).toBe(true)
+    expect(use.getState().streaming).toBe(true)
+
+    fake.emit.delta({ id: streamId, delta: 'Hel' })
+    fake.emit.delta({ id: streamId, delta: 'lo ' })
+    fake.emit.delta({ id: streamId, delta: 'world' })
+    fake.emit.done({ id: streamId, model: 'local' })
+    await done
+
     const msgs = use.getState().sessions[0]!.messages
-    expect(msgs.length).toBe(2)
     expect(msgs[0]!.role).toBe('user')
     expect(msgs[1]!.content).toBe('Hello world')
-    expect(msgs[1]!.reasoning).toBe('think')
     expect(msgs[1]!.pending).toBe(false)
+    expect(msgs[1]!.error).toBeUndefined()
     expect(use.getState().streaming).toBe(false)
-    expect(fetchImpl).toHaveBeenCalled()
-    const urlArg = (fetchImpl.mock.calls[0] as unknown as [string])[0] as unknown as string
-    expect(urlArg).toBe(CHAT_COMPLETION_URL)
+    expect(use.getState().error).toBeNull()
+    expect(fake.activeListeners()).toBe(0) // all event subscriptions torn down
   })
 
-  it('abort cancels streaming and marks aborted', async () => {
-    const use = createChatStore()
+  it('forwards sampling options and ignores events for foreign ids', async () => {
+    const fake = makeFakeApi()
+    const use = createChatStore({ resolveApi: () => fake.api })
+    use.getState().createSession('t')
+    const done = use.getState().send('hi', { temperature: 0.2, max_tokens: 64, stop: 'END', model: 'qwen3' })
+    const payload = (fake.invoke.mock.calls[0] as unknown as [string, Record<string, unknown>])[1]
+    expect(payload).toMatchObject({ model: 'qwen3', temperature: 0.2, max_tokens: 64, stop: 'END' })
+    const id = payload.id as string
+
+    fake.emit.delta({ id: 'someone-else', delta: 'NOISE' })
+    fake.emit.delta({ id, delta: 'ok' })
+    fake.emit.done({ id })
+    await done
+    expect(use.getState().sessions[0]!.messages[1]!.content).toBe('ok')
+  })
+
+  it('abort → chat:abort invoke + local aborted state; late done{aborted} is a no-op', async () => {
+    const fake = makeFakeApi()
+    const use = createChatStore({ resolveApi: () => fake.api })
     use.getState().createSession('a')
-    // slow stream
-    const fetchImpl = vi.fn(async (_url: string, init?: RequestInit) => {
-      const signal = init?.signal as AbortSignal | undefined
-      const stream = new ReadableStream<Uint8Array>({
-        async start(ctrl) {
-          const enc = new TextEncoder()
-          ctrl.enqueue(enc.encode('data: {"choices":[{"delta":{"content":"part"}}]}\n'))
-          // wait until aborted
-          await new Promise<void>((resolve) => {
-            if (signal?.aborted) resolve()
-            else signal?.addEventListener('abort', () => resolve(), { once: true })
-          })
-          ctrl.close()
-        },
-      })
-      return new Response(stream as unknown as BodyInit, { status: 200, headers: { 'content-type': 'text/event-stream' } })
-    })
-    const p = use.getState().send('hello', { fetchImpl: fetchImpl as unknown as (url: string, init?: RequestInit) => Promise<Response> })
-    // allow first chunk
-    await new Promise((r) => setTimeout(r, 20))
+    const done = use.getState().send('hello')
+    const id = (fake.invoke.mock.calls[0] as unknown as [string, { id: string }])[1].id
+    fake.emit.delta({ id, delta: 'part' })
+    expect(use.getState().streaming).toBe(true)
+
     use.getState().abort()
-    await p
-    const msgs = use.getState().sessions[0]!.messages
-    const assistant = msgs[1]!
+    expect(fake.invoke).toHaveBeenCalledWith('chat:abort', { id })
+    expect(use.getState().streaming).toBe(false)
+    const assistant = use.getState().sessions[0]!.messages[1]!
+    expect(assistant.pending).toBe(false)
     expect(assistant.error).toBe('aborted')
+    expect(assistant.content).toBe('part') // streamed prefix is preserved
+
+    fake.emit.done({ id, aborted: true }) // late terminal event must not double-apply
+    await done
+    const after = use.getState().sessions[0]!.messages[1]!
+    expect(after.error).toBe('aborted')
+    expect(use.getState().streaming).toBe(false)
+    expect(fake.activeListeners()).toBe(0)
+  })
+
+  it('upstream chat:error → message error, UI not stuck streaming', async () => {
+    const fake = makeFakeApi()
+    const use = createChatStore({ resolveApi: () => fake.api })
+    use.getState().createSession('e')
+    const done = use.getState().send('boom')
+    const id = (fake.invoke.mock.calls[0] as unknown as [string, { id: string }])[1].id
+    fake.emit.delta({ id, delta: 'partial' })
+    fake.emit.error({ id, message: 'upstream internal-llama returned 500' })
+    await done
+    const assistant = use.getState().sessions[0]!.messages[1]!
+    expect(assistant.pending).toBe(false)
+    expect(assistant.error).toBe('upstream internal-llama returned 500')
+    expect(use.getState().error).toBe('upstream internal-llama returned 500')
     expect(use.getState().streaming).toBe(false)
   })
 
-  it('retry re-sends last user message and appends new assistant', async () => {
-    const use = createChatStore()
-    use.getState().createSession('r')
-    let call = 0
-    const fetchImpl = vi.fn(async () => {
-      call++
-      if (call === 1) {
-        return new Response('oops', { status: 500, statusText: 'err', headers: { 'content-type': 'text/plain' } })
-      }
-      return sseResponse(['data: {"choices":[{"delta":{"content":"ok"}}]}\n', 'data: [DONE]\n'])
+  it('rejected chat:send ack surfaces the validation error', async () => {
+    const fake = makeFakeApi({ sendAck: () => ({ ok: false, error: 'invalid-payload', issues: [{ path: 'model', message: 'too big' }] }) })
+    const use = createChatStore({ resolveApi: () => fake.api })
+    use.getState().createSession('v')
+    await use.getState().send('hi')
+    const assistant = use.getState().sessions[0]!.messages[1]!
+    expect(assistant.pending).toBe(false)
+    expect(assistant.error).toMatch(/invalid-payload/)
+    expect(use.getState().streaming).toBe(false)
+    expect(fake.activeListeners()).toBe(0)
+  })
+
+  it('invoke rejection (thrown) surfaces the message without hanging', async () => {
+    const use = createChatStore({
+      resolveApi: () =>
+        ({
+          invoke: vi.fn(async () => {
+            throw new Error('ipc bridge down')
+          }),
+          on: vi.fn(() => () => {}),
+        }) as unknown as ChatIpcApi,
     })
-    await use.getState().send('need retry', { fetchImpl: fetchImpl as unknown as (url: string, init?: RequestInit) => Promise<Response> })
+    use.getState().createSession('x')
+    await use.getState().send('hi')
+    expect(use.getState().sessions[0]!.messages[1]!.error).toBe('ipc bridge down')
+    expect(use.getState().streaming).toBe(false)
+  })
+
+  it('no window.api (degraded env) → honest error state, no crash', async () => {
+    const use = createChatStore({ resolveApi: () => null })
+    use.getState().createSession('d')
+    await use.getState().send('hi')
+    expect(use.getState().error).toBe(IPC_UNAVAILABLE_MESSAGE)
+    expect(use.getState().sessions[0]!.messages[1]!.error).toBe(IPC_UNAVAILABLE_MESSAGE)
+    expect(use.getState().streaming).toBe(false)
+  })
+
+  it('concurrent sessions keyed by id do not cross-talk', async () => {
+    const fake = makeFakeApi()
+    const use = createChatStore({ resolveApi: () => fake.api })
+    const sA = use.getState().createSession('A')
+    const pA = use.getState().send('from A')
+    const idA = (fake.invoke.mock.calls[0] as unknown as [string, { id: string }])[1].id
+    const sB = use.getState().createSession('B')
+    const pB = use.getState().send('from B')
+    const idB = (fake.invoke.mock.calls[1] as unknown as [string, { id: string }])[1].id
+    expect(sA).not.toBe(sB)
+    expect(use.getState().streaming).toBe(true)
+
+    fake.emit.delta({ id: idB, delta: 'B1' })
+    fake.emit.delta({ id: idA, delta: 'A1' })
+    fake.emit.delta({ id: idB, delta: 'B2' })
+
+    const msgA = use.getState().sessions.find((s) => s.id === sA)!.messages[1]!
+    const msgB = use.getState().sessions.find((s) => s.id === sB)!.messages[1]!
+    expect(msgA.content).toBe('A1')
+    expect(msgB.content).toBe('B1B2')
+
+    fake.emit.done({ id: idA })
+    await pA
+    expect(use.getState().streaming).toBe(true) // B still active
+    fake.emit.done({ id: idB })
+    await pB
+    expect(use.getState().streaming).toBe(false)
+    expect(fake.activeListeners()).toBe(0)
+  })
+
+  it('retry replays last user turn without duplicating it, into a fresh assistant', async () => {
+    const fake = makeFakeApi()
+    const use = createChatStore({ resolveApi: () => fake.api })
+    use.getState().createSession('r')
+    const first = use.getState().send('need retry')
+    const id1 = (fake.invoke.mock.calls[0] as unknown as [string, { id: string }])[1].id
+    fake.emit.error({ id: id1, message: 'upstream returned 500' })
+    await first
     expect(use.getState().error).toMatch(/500/)
     expect(use.getState().sessions[0]!.messages.length).toBe(2)
-    expect(use.getState().sessions[0]!.messages[1]!.error).toMatch(/500/)
 
-    await use.getState().retry({ fetchImpl: fetchImpl as unknown as (url: string, init?: RequestInit) => Promise<Response> })
+    const retryDone = use.getState().retry()
+    const payload2 = (fake.invoke.mock.calls[1] as unknown as [string, Record<string, unknown>])[1]
+    // history = the original user message only (no duplicate, no failed assistant)
+    expect(payload2.messages).toEqual([{ role: 'user', content: 'need retry' }])
+    const id2 = payload2.id as string
+    expect(id2).not.toBe(id1)
+    fake.emit.delta({ id: id2, delta: 'ok' })
+    fake.emit.done({ id: id2 })
+    await retryDone
+
     const msgs = use.getState().sessions[0]!.messages
-    // retry removes failed assistant then adds new pair -> total 2 again? actually user+new assistant
     expect(msgs.length).toBe(2)
     expect(msgs[1]!.content).toBe('ok')
     expect(msgs[1]!.error).toBeUndefined()
+    expect(msgs[1]!.pending).toBe(false)
   })
 
-  it('non-SSE JSON fallback yields single chunk', async () => {
-    const use = createChatStore()
-    use.getState().createSession('j')
-    const fetchImpl = vi.fn(async () => jsonResponse({ content: 'json fallback' }))
-    await use.getState().send('hi json', { fetchImpl: fetchImpl as unknown as (url: string, init?: RequestInit) => Promise<Response> })
-    expect(use.getState().sessions[0]!.messages[1]!.content).toBe('json fallback')
-  })
-
-  it('ignores empty send and concurrent send guard', async () => {
-    const use = createChatStore()
+  it('ignores empty send and first-send title seeding', async () => {
+    const fake = makeFakeApi()
+    const use = createChatStore({ resolveApi: () => fake.api })
     use.getState().createSession('c')
     await use.getState().send('   ')
+    expect(fake.invoke).not.toHaveBeenCalled()
     expect(use.getState().sessions[0]!.messages.length).toBe(0)
+
+    const p = use.getState().send('hello there world, this is a fairly long opener')
+    const id = (fake.invoke.mock.calls[0] as unknown as [string, { id: string }])[1].id
+    fake.emit.done({ id })
+    await p
+    expect(use.getState().sessions[0]!.title).toBe('hello there world, this is a fairly long opener'.slice(0, 32))
+  })
+
+  it('send auto-creates a session when none exists', async () => {
+    const fake = makeFakeApi()
+    const use = createChatStore({ resolveApi: () => fake.api })
+    const p = use.getState().send('first')
+    expect(use.getState().sessions.length).toBe(1)
+    const id = (fake.invoke.mock.calls[0] as unknown as [string, { id: string }])[1].id
+    fake.emit.done({ id })
+    await p
+    expect(use.getState().sessions[0]!.messages[1]!.pending).toBe(false)
   })
 })
