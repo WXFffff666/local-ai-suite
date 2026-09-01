@@ -1,0 +1,147 @@
+/**
+ * App.css — todo9 应用壳样式
+ * 令牌单一事实源：src/theme/theme.tsx 的 themeTokens（light/dark 各 5 色），
+ * 此处仅将其映射为 CSS 自定义属性，按 html[data-theme] 切换。
+ * 字体：@fontsource-variable/inter 本地自托管（离线红线，禁止 CDN）。
+ */
+
+html[data-theme='light'],
+html:not([data-theme='dark']) {
+  --las-bg: #ffffff;
+  --las-fg: #0f0f0f;
+  --las-muted: #666666;
+  --las-border: #e5e5e5;
+  --las-card: #f6f6f6;
+}
+
+html[data-theme='dark'] {
+  --las-bg: #0f0f0f;
+  --las-fg: #e8e8e8;
+  --las-muted: #999999;
+  --las-border: #222222;
+  --las-card: #141414;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--las-bg);
+  color: var(--las-fg);
+  font-family: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.las-shell {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ---- 左侧导航 rail ---- */
+.las-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  height: 100%;
+  padding: 12px 0;
+  background: var(--las-card);
+  border-right: 1px solid var(--las-border);
+  user-select: none;
+}
+
+.las-nav-brand {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--las-muted);
+  margin-bottom: 12px;
+}
+
+.las-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  width: 56px;
+  padding: 8px 0 6px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--las-muted);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.las-nav-item:hover {
+  background: var(--las-border);
+  color: var(--las-fg);
+}
+
+.las-nav-item[aria-current='page'] {
+  background: var(--las-bg);
+  color: var(--las-fg);
+  box-shadow: inset 0 0 0 1px var(--las-border);
+}
+
+.las-nav-label {
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+/* ---- 内容区 ---- */
+.las-page {
+  height: 100%;
+  overflow: auto;
+  padding: 32px 40px;
+  background: var(--las-bg);
+}
+
+.las-page-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.las-page-subtitle {
+  margin: 0 0 20px;
+  color: var(--las-muted);
+  font-size: 14px;
+}
+
+.las-page-card {
+  border: 1px solid var(--las-border);
+  border-radius: 8px;
+  background: var(--las-card);
+  padding: 16px 20px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--las-muted);
+  max-width: 640px;
+}
+
+.las-detail-panel {
+  height: 100%;
+  overflow: auto;
+  background: var(--las-card);
+  border-left: 1px solid var(--las-border);
+  padding: 16px;
+  font-size: 13px;
+  color: var(--las-muted);
+}
+
+.las-resize-handle {
+  width: 4px;
+  background: transparent;
+  transition: background-color 120ms ease;
+}
+
+.las-resize-handle:hover,
+.las-resize-handle[data-resize-handle-active] {
+  background: var(--las-border);
+}
