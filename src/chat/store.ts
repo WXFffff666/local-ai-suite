@@ -132,13 +132,21 @@ export function createChatStore(deps: { resolveApi?: () => ChatIpcApi | null } =
       }
       const offDelta = api.on('chat:delta', (e: ChatDeltaEvent) => {
         if (e.id !== assistantId) return
-        if (typeof e.delta !== 'string' || e.delta.length === 0) return
+        const content = typeof e.delta === 'string' ? e.delta : ''
+        // todo11b parity: reasoning?: string carried beside content (omitted
+        // when absent). Thinking text accumulates in ChatMessage.reasoning;
+        // content-only deltas leave the reasoning field untouched.
+        const reasoning = typeof e.reasoning === 'string' ? e.reasoning : ''
+        if (!content && !reasoning) return
         set((st) => ({
           sessions: updateSession(st.sessions, sessionId, (s) => ({
             ...s,
-            messages: s.messages.map((m) =>
-              m.id === assistantId ? { ...m, content: m.content + e.delta } : m,
-            ),
+            messages: s.messages.map((m) => {
+              if (m.id !== assistantId) return m
+              const next: ChatMessage = { ...m, content: m.content + content }
+              if (reasoning) next.reasoning = (m.reasoning ?? '') + reasoning
+              return next
+            }),
             updatedAt: Date.now(),
           })),
         }))
