@@ -1,10 +1,18 @@
 /**
- * Chat store — Todo 14 Wave4
- * Zustand sessions/messages + SSE delta.content / reasoning_content 透传 + abort/retry
+ * Chat store — todo11 (IPC-relayed streaming)
+ * Zustand sessions/messages; 流式一律经主进程 ChatRelay:
+ *   window.api.invoke('chat:send'|'chat:abort') + on('chat:delta'|'chat:done'|'chat:error')
+ * 事件以 assistant 消息 id 为键路由，多会话并发互不串扰。
+ *
+ * 直连侧车路径（CHAT_COMPLETION_URL / streamSse fetch）已在本 todo 移除 —
+ * 渲染层绝不 dial 侧车端口；上游仲裁（external-takeover 11434 vs 内部分配端口）
+ * 归 src/main/ipc/chatRelay.ts（todo8/10 已落地）。
+ *
  * - MIT only, no AGPL
- * - SSE shape compatible with OpenAI / llama.cpp / ollama (choices[0].delta.content, reasoning_content, content)
+ * - store 数据形状不变（Thinking / reasoning 解析兼容，见下方 SSE 解析纯函数）
  */
 import { create } from 'zustand'
+import type { ChatDeltaEvent, ChatDoneEvent, ChatErrorEvent } from '../main/ipc/whitelist'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -38,6 +46,43 @@ export type SseDelta = {
 }
 
 // ---------------------------------------------------------------------------
+// IPC contract (landing surface of src/main/ipc/chatRelay.ts, todo8/10)
+// ---------------------------------------------------------------------------
+export type ChatSendPayload = {
+  id: string
+  model: string
+  messages: Array<{ role: Role; content: string }>
+  temperature?: number
+  top_p?: number
+  max_tokens?: number
+  stop?: string | string[]
+}
+
+export type ChatSendAck = { ok: true; id: string; streaming: true } | { ok?: false; error?: string; issues?: unknown }
+
+/** Minimal structural view of the preload WindowApi the chat store needs. */
+export type ChatIpcApi = {
+  invoke(channel: 'chat:send', payload: ChatSendPayload): Promise<unknown>
+  invoke(channel: 'chat:abort', payload: { id: string }): Promise<unknown>
+  on(channel: 'chat:delta', listener: (e: ChatDeltaEvent) => void): () => void
+  on(channel: 'chat:done', listener: (e: ChatDoneEvent) => void): () => void
+  on(channel: 'chat:error', listener: (e: ChatErrorEvent) => void): () => void
+}
+
+/** Resolve window.api when present; null outside the Electron shell (vitest node env, plain browser). */
+export function getChatIpcApi(): ChatIpcApi | null {
+  if (typeof window === 'undefined') return null
+  const api = (window as unknown as { api?: Partial<ChatIpcApi> }).api
+  if (api && typeof api.invoke === 'function' && typeof api.on === 'function') return api as ChatIpcApi
+  return null
+}
+
+export const IPC_UNAVAILABLE_MESSAGE = 'IPC 不可用：聊天需要 Electron 主进程转发（非桌面环境时降级为只读）'
+
+/** Default upstream model tag; relay/resolver decides the real engine. */
+export const DEFAULT_CHAT_MODEL = 'local'
+
+// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 function genId(prefix = 'm'): string {
@@ -56,7 +101,9 @@ export function newSession(title?: string): ChatSession {
 }
 
 // ---------------------------------------------------------------------------
-// SSE parsing — delta.content / reasoning_content透传
+// SSE parsing — delta.content / reasoning_content 透传
+// (legacy-compatible pure parsers: the main-process relay delivers parsed
+//  strings via chat:delta, but these stay exported for store-shape parity)
 // ---------------------------------------------------------------------------
 /**
  * Parse single SSE line `data: {...}` or `data: [DONE]`.
@@ -138,93 +185,21 @@ export function parseSseBuffer(buf: string): { deltas: SseDelta[]; remainder: st
 }
 
 // ---------------------------------------------------------------------------
-// Streaming helper — consumes fetch Response as SSE async generator
-// ---------------------------------------------------------------------------
-export type FetchLike = (url: string, init?: RequestInit) => Promise<Response>
-
-export async function* streamSse(
-  url: string,
-  body: unknown,
-  opts: { fetchImpl?: FetchLike; signal?: AbortSignal; headers?: Record<string, string> } = {},
-): AsyncGenerator<SseDelta, void, unknown> {
-  const doFetch: FetchLike = opts.fetchImpl ?? ((u, i) => fetch(u, i))
-  const res = await doFetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream', ...(opts.headers ?? {}) },
-    body: JSON.stringify(body),
-    signal: opts.signal,
-  })
-  if (!res.ok) {
-    const text = await res.text().catch(() => '')
-    throw new Error(`chat SSE failed ${res.status} ${res.statusText} ${text}`.trim())
-  }
-  const ctype = res.headers.get('content-type') ?? ''
-  if (!ctype.includes('text/event-stream')) {
-    const json = (await res.json().catch(async () => ({ content: await res.text() }))) as Record<string, unknown>
-    // non-stream fallback: interpret as single delta
-    const text = typeof json['content'] === 'string' ? (json['content'] as string) : JSON.stringify(json)
-    if (text) yield { content: text, done: true, raw: json }
-    return
-  }
-  const stream = res.body as unknown as ReadableStream<Uint8Array> | null
-  if (!stream) throw new Error('SSE response has no body')
-  const reader = (stream as ReadableStream<Uint8Array>).getReader?.() as
-    | ReadableStreamDefaultReader<Uint8Array>
-    | undefined
-  if (!reader) {
-    const text = await res.text()
-    for (const line of text.split('\n')) {
-      const d = parseSseLine(line)
-      if (d) yield d
-    }
-    return
-  }
-  const decoder = new TextDecoder()
-  let buf = ''
-  try {
-    while (true) {
-      const { done, value } = await reader.read()
-      if (done) break
-      buf += decoder.decode(value, { stream: true })
-      const lines = buf.split('\n')
-      buf = lines.pop() ?? ''
-      for (const line of lines) {
-        const d = parseSseLine(line)
-        if (d) {
-          yield d
-          if (d.done && !d.content && !d.reasoning) {
-            // still continue to allow final flush
-          }
-        }
-      }
-      if (opts.signal?.aborted) {
-        await reader.cancel().catch(() => {})
-        throw new DOMException('Aborted', 'AbortError')
-      }
-    }
-    if (buf.trim()) {
-      const d = parseSseLine(buf)
-      if (d) yield d
-    }
-  } finally {
-    try {
-      reader.releaseLock()
-    } catch {}
-  }
-}
-
-// ---------------------------------------------------------------------------
 // Zustand store
 // ---------------------------------------------------------------------------
-export const CHAT_COMPLETION_URL = 'http://127.0.0.1:11435/v1/chat/completions' as const
+export type ChatSendOptions = {
+  model?: string
+  temperature?: number
+  top_p?: number
+  max_tokens?: number
+  stop?: string | string[]
+}
 
 export type ChatStoreState = {
   sessions: ChatSession[]
   currentId: string | null
   streaming: boolean
   error: string | null
-  // transient, not persisted: abort controller for current stream
-  _abortCtrl: AbortController | null
   // actions
   createSession: (title?: string) => string
   deleteSession: (id: string) => void
@@ -232,8 +207,8 @@ export type ChatStoreState = {
   renameSession: (id: string, title: string) => void
   clearCurrentMessages: () => void
   abort: () => void
-  retry: (opts?: { fetchImpl?: FetchLike; url?: string }) => Promise<void>
-  send: (content: string, opts?: { fetchImpl?: FetchLike; url?: string; signal?: AbortSignal }) => Promise<void>
+  retry: (opts?: ChatSendOptions) => Promise<void>
+  send: (content: string, opts?: ChatSendOptions) => Promise<void>
 }
 
 function updateSession(
@@ -244,260 +219,279 @@ function updateSession(
   return sessions.map((s) => (s.id === id ? updater(s) : s))
 }
 
-export function createChatStore() {
-  return create<ChatStoreState>()((set, get) => ({
-    sessions: [],
-    currentId: null,
-    streaming: false,
-    error: null,
-    _abortCtrl: null,
+type StreamHandle = {
+  sessionId: string
+  /** unsubscribe all three event listeners + drop from the registry */
+  dispose: () => void
+  /** resolve the send() promise (used by local abort, which races the terminal event) */
+  settle: () => void
+}
 
-    createSession: (title) => {
-      const s = newSession(title)
-      set((st) => ({ sessions: [...st.sessions, s], currentId: s.id, error: null }))
-      return s.id
-    },
+function ackErrorMessage(ack: unknown): string {
+  if (ack && typeof ack === 'object') {
+    const a = ack as { error?: unknown; issues?: unknown }
+    if (typeof a.error === 'string') {
+      return Array.isArray(a.issues) && a.issues.length > 0
+        ? `${a.error}: ${JSON.stringify(a.issues)}`
+        : a.error
+    }
+  }
+  return 'chat:send was rejected by the main process'
+}
 
-    deleteSession: (id) => {
-      set((st) => {
-        const next = st.sessions.filter((s) => s.id !== id)
-        let cur = st.currentId
-        if (cur === id) cur = next[0]?.id ?? null
-        return { sessions: next, currentId: cur }
-      })
-    },
+export function createChatStore(deps: { resolveApi?: () => ChatIpcApi | null } = {}) {
+  const resolveApi = deps.resolveApi ?? getChatIpcApi
+  // Active relay streams, keyed by assistant message id. Deliberately outside
+  // zustand state: transient subscriptions, never rendered or persisted.
+  const streams = new Map<string, StreamHandle>()
 
-    switchSession: (id) => {
-      const exists = get().sessions.some((s) => s.id === id)
-      if (!exists) return
-      set({ currentId: id, error: null })
-    },
-
-    renameSession: (id, title) => {
-      set((st) => ({ sessions: updateSession(st.sessions, id, (s) => ({ ...s, title, updatedAt: Date.now() })) }))
-    },
-
-    clearCurrentMessages: () => {
-      const cur = get().currentId
-      if (!cur) return
-      set((st) => ({ sessions: updateSession(st.sessions, cur, (s) => ({ ...s, messages: [], updatedAt: Date.now() })) }))
-    },
-
-    abort: () => {
-      const c = get()._abortCtrl
-      if (c) {
-        try {
-          c.abort()
-        } catch {}
-      }
-      // streaming flag cleared on next tick by send's finally; also clear here for immediate UI feedback
-      set({ streaming: false, _abortCtrl: null })
-      // mark pending assistant msg as aborted
-      const cur = get().currentId
-      if (cur) {
-        set((st) => ({
-          sessions: updateSession(st.sessions, cur, (s) => {
-            const msgs = [...s.messages]
-            const last = msgs[msgs.length - 1]
-            if (last && last.role === 'assistant' && last.pending) {
-              msgs[msgs.length - 1] = { ...last, pending: false, error: 'aborted' }
-            }
-            return { ...s, messages: msgs }
-          }),
-        }))
-      }
-    },
-
-    retry: async (opts) => {
-      const st = get()
-      const curId = st.currentId
-      if (!curId) return
-      if (get().streaming) return
-      const sess = st.sessions.find((s) => s.id === curId)
-      if (!sess || sess.messages.length === 0) return
-      // find last user message
-      let lastUserIndex = -1
-      for (let i = sess.messages.length - 1; i >= 0; i--) {
-        if (sess.messages[i]!.role === 'user') {
-          lastUserIndex = i
-          break
-        }
-      }
-      if (lastUserIndex === -1) return
-      const url = opts?.url ?? CHAT_COMPLETION_URL
-      // if last assistant is pending/error, remove it before retry
-      const last = sess.messages[sess.messages.length - 1]
-      if (last && last.role === 'assistant' && (last.pending || last.error)) {
-        set((prev) => ({
-          sessions: updateSession(prev.sessions, curId, (s) => ({
-            ...s,
-            messages: s.messages.slice(0, -1),
-            updatedAt: Date.now(),
-          })),
-        }))
-      }
-      // create fresh assistant placeholder (do NOT duplicate user)
-      const assistantId = genId('a')
-      const assistantMsg: ChatMessage = { id: assistantId, role: 'assistant', content: '', reasoning: '', createdAt: Date.now(), pending: true }
-      set((prev) => ({
-        sessions: updateSession(prev.sessions, curId, (s) => ({ ...s, messages: [...s.messages, assistantMsg], updatedAt: Date.now() })),
-        streaming: true,
-        error: null,
-      }))
-      const ctrl = new AbortController()
-      set({ _abortCtrl: ctrl })
-      const signal = ctrl.signal
-      const sessNow = get().sessions.find((s) => s.id === curId)!
-      const history = sessNow.messages.filter((m) => m.id !== assistantId && !m.pending).map((m) => ({ role: m.role, content: m.content }))
-      const payload = { model: 'local', stream: true, messages: history }
-      try {
-        for await (const delta of streamSse(url, payload, { fetchImpl: opts?.fetchImpl, signal })) {
-          if (delta.done && !delta.content && !delta.reasoning) continue
-          if (signal.aborted) throw new DOMException('Aborted', 'AbortError')
-          if (delta.content || delta.reasoning) {
-            set((prev2) => ({
-              sessions: updateSession(prev2.sessions, curId, (s) => ({
-                ...s,
-                messages: s.messages.map((m) => (m.id === assistantId ? { ...m, content: m.content + (delta.content ?? ''), reasoning: (m.reasoning ?? '') + (delta.reasoning ?? '') } : m)),
-                updatedAt: Date.now(),
-              })),
-            }))
-          }
-          if (delta.done || delta.stop) break
-        }
-      } catch (e: unknown) {
-        const err = e as Error
-        const isAbort = err?.name === 'AbortError' || /aborted/i.test(err?.message ?? '')
-        const msg = isAbort ? 'aborted' : err?.message ?? String(e)
-        set((prev2) => ({
-          sessions: updateSession(prev2.sessions, curId, (s) => ({
-            ...s,
-            messages: s.messages.map((m) => (m.id === assistantId ? { ...m, pending: false, error: msg } : m)),
-          })),
-          error: msg,
-        }))
-      } finally {
-        set((prev2) => ({
-          sessions: updateSession(prev2.sessions, curId, (s) => ({
-            ...s,
-            messages: s.messages.map((m) => (m.id === assistantId ? { ...m, pending: false } : m)),
-            updatedAt: Date.now(),
-          })),
-          streaming: false,
-          _abortCtrl: null,
-        }))
-      }
-    },
-
-    send: async (content, opts) => {
-      const text = content.trim()
-      if (!text) return
-      if (get().streaming) return // prevent concurrent sends
-
-      let curId = get().currentId
-      if (!curId) {
-        curId = get().createSession()
-      }
-      const sessionId = curId!
-      const url = opts?.url ?? CHAT_COMPLETION_URL
-
-      const userMsg: ChatMessage = { id: genId('u'), role: 'user', content: text, createdAt: Date.now() }
-      const assistantId = genId('a')
-      const assistantMsg: ChatMessage = {
-        id: assistantId,
-        role: 'assistant',
-        content: '',
-        reasoning: '',
-        createdAt: Date.now(),
-        pending: true,
-      }
-
+  return create<ChatStoreState>()((set, get) => {
+    /** Rewrite one assistant message inside a session. */
+    const patchAssistant = (sessionId: string, assistantId: string, patch: Partial<ChatMessage>) => {
       set((st) => ({
         sessions: updateSession(st.sessions, sessionId, (s) => ({
           ...s,
-          title: s.messages.length === 0 ? text.slice(0, 32) : s.title,
-          messages: [...s.messages, userMsg, assistantMsg],
-          updatedAt: Date.now(),
+          messages: s.messages.map((m) => (m.id === assistantId ? { ...m, ...patch } : m)),
         })),
-        streaming: true,
-        error: null,
       }))
+    }
 
-      const ctrl = opts?.signal ? null : new AbortController()
-      const signal = opts?.signal ?? ctrl!.signal
-      if (ctrl) set({ _abortCtrl: ctrl })
+    const refreshStreaming = () => set({ streaming: streams.size > 0 })
 
-      // Build OpenAI-compatible payload; include history
-      const sessNow = get().sessions.find((s) => s.id === sessionId)!
-      const history = sessNow.messages
-        .filter((m) => m.id !== assistantId && !m.pending)
-        .map((m) => ({ role: m.role, content: m.content }))
-
-      const payload = {
-        model: 'local',
-        stream: true,
-        messages: history,
+    /**
+     * Launch a relay stream for an already-inserted assistant placeholder.
+     * Returns a promise that settles when the stream terminates
+     * (done / error / rejected ack) — events are routed by message id, so
+     * concurrent sessions never cross-talk.
+     */
+    const launch = async (
+      sessionId: string,
+      assistantId: string,
+      history: Array<{ role: Role; content: string }>,
+      opts: ChatSendOptions,
+    ): Promise<void> => {
+      const api = resolveApi()
+      if (!api) {
+        patchAssistant(sessionId, assistantId, { pending: false, error: IPC_UNAVAILABLE_MESSAGE })
+        set({ error: IPC_UNAVAILABLE_MESSAGE })
+        return
       }
-
-      try {
-        for await (const delta of streamSse(url, payload, { fetchImpl: opts?.fetchImpl, signal })) {
-          if (delta.done && !delta.content && !delta.reasoning) {
-            // stream end sentinel
-            continue
-          }
-          if (signal.aborted) throw new DOMException('Aborted', 'AbortError')
-          if (delta.content || delta.reasoning) {
-            set((st) => ({
-              sessions: updateSession(st.sessions, sessionId, (s) => {
-                const msgs = s.messages.map((m) =>
-                  m.id === assistantId
-                    ? {
-                        ...m,
-                        content: m.content + (delta.content ?? ''),
-                        reasoning: (m.reasoning ?? '') + (delta.reasoning ?? ''),
-                      }
-                    : m,
-                )
-                return { ...s, messages: msgs, updatedAt: Date.now() }
-              }),
-            }))
-          }
-          if (delta.done || delta.stop) break
-        }
-      } catch (e: unknown) {
-        const err = e as Error
-        const isAbort = err?.name === 'AbortError' || /aborted/i.test(err?.message ?? '')
-        const msg = isAbort ? 'aborted' : err?.message ?? String(e)
-        if (isAbort) {
-          set((st) => ({
-            sessions: updateSession(st.sessions, sessionId, (s) => ({
-              ...s,
-              messages: s.messages.map((m) => (m.id === assistantId ? { ...m, pending: false, error: 'aborted' } : m)),
-            })),
-            error: 'aborted',
-          }))
+      let settle: () => void = () => {}
+      const finished = new Promise<void>((resolve) => {
+        settle = resolve
+      })
+      const offDelta = api.on('chat:delta', (e: ChatDeltaEvent) => {
+        if (e.id !== assistantId) return
+        if (typeof e.delta !== 'string' || e.delta.length === 0) return
+        set((st) => ({
+          sessions: updateSession(st.sessions, sessionId, (s) => ({
+            ...s,
+            messages: s.messages.map((m) =>
+              m.id === assistantId ? { ...m, content: m.content + e.delta } : m,
+            ),
+            updatedAt: Date.now(),
+          })),
+        }))
+      })
+      const offDone = api.on('chat:done', (e: ChatDoneEvent) => {
+        if (e.id !== assistantId) return
+        if (e.aborted) {
+          patchAssistant(sessionId, assistantId, { pending: false, error: 'aborted' })
+          set({ error: 'aborted' })
         } else {
           set((st) => ({
             sessions: updateSession(st.sessions, sessionId, (s) => ({
               ...s,
-              messages: s.messages.map((m) => (m.id === assistantId ? { ...m, pending: false, error: msg } : m)),
+              messages: s.messages.map((m) => (m.id === assistantId ? { ...m, pending: false } : m)),
+              updatedAt: Date.now(),
             })),
-            error: msg,
           }))
         }
-      } finally {
+        streams.get(assistantId)?.dispose()
+        settle()
+      })
+      const offError = api.on('chat:error', (e: ChatErrorEvent) => {
+        if (e.id !== assistantId) return
+        patchAssistant(sessionId, assistantId, { pending: false, error: e.message })
+        set({ error: e.message })
+        streams.get(assistantId)?.dispose()
+        settle()
+      })
+      streams.set(assistantId, {
+        sessionId,
+        dispose: () => {
+          offDelta()
+          offDone()
+          offError()
+          streams.delete(assistantId)
+          refreshStreaming()
+        },
+        settle,
+      })
+      refreshStreaming()
+      const payload: ChatSendPayload = {
+        id: assistantId,
+        model: opts.model ?? DEFAULT_CHAT_MODEL,
+        messages: history,
+      }
+      if (opts.temperature !== undefined) payload.temperature = opts.temperature
+      if (opts.top_p !== undefined) payload.top_p = opts.top_p
+      if (opts.max_tokens !== undefined) payload.max_tokens = opts.max_tokens
+      if (opts.stop !== undefined) payload.stop = opts.stop
+      try {
+        const ack = await api.invoke('chat:send', payload)
+        if (!ack || (ack as ChatSendAck).ok !== true) {
+          const msg = ackErrorMessage(ack)
+          patchAssistant(sessionId, assistantId, { pending: false, error: msg })
+          set({ error: msg })
+          streams.get(assistantId)?.dispose()
+          settle()
+        }
+      } catch (e: unknown) {
+        const msg = e instanceof Error ? e.message : String(e)
+        patchAssistant(sessionId, assistantId, { pending: false, error: msg })
+        set({ error: msg })
+        streams.get(assistantId)?.dispose()
+        settle()
+      }
+      await finished
+    }
+
+    return {
+      sessions: [],
+      currentId: null,
+      streaming: false,
+      error: null,
+
+      createSession: (title) => {
+        const s = newSession(title)
+        set((st) => ({ sessions: [...st.sessions, s], currentId: s.id, error: null }))
+        return s.id
+      },
+
+      deleteSession: (id) => {
+        set((st) => {
+          const next = st.sessions.filter((s) => s.id !== id)
+          let cur = st.currentId
+          if (cur === id) cur = next[0]?.id ?? null
+          return { sessions: next, currentId: cur }
+        })
+      },
+
+      switchSession: (id) => {
+        const exists = get().sessions.some((s) => s.id === id)
+        if (!exists) return
+        set({ currentId: id, error: null })
+      },
+
+      renameSession: (id, title) => {
+        set((st) => ({ sessions: updateSession(st.sessions, id, (s) => ({ ...s, title, updatedAt: Date.now() })) }))
+      },
+
+      clearCurrentMessages: () => {
+        const cur = get().currentId
+        if (!cur) return
+        set((st) => ({ sessions: updateSession(st.sessions, cur, (s) => ({ ...s, messages: [], updatedAt: Date.now() })) }))
+      },
+
+      abort: () => {
+        const cur = get().currentId
+        // most recent active stream of the current session
+        let targetId: string | null = null
+        for (const [id, h] of streams) {
+          if (h.sessionId === cur) targetId = id
+        }
+        if (!targetId) return
+        const handle = streams.get(targetId)
+        handle?.dispose()
+        patchAssistant(cur!, targetId, { pending: false, error: 'aborted' })
+        set({ error: 'aborted' })
+        refreshStreaming()
+        // the send() promise must not dangle waiting for a terminal event we just unsubscribed from
+        handle?.settle()
+        void resolveApi()?.invoke('chat:abort', { id: targetId })
+      },
+
+      retry: async (opts) => {
+        const st = get()
+        const curId = st.currentId
+        if (!curId) return
+        const sess = st.sessions.find((s) => s.id === curId)
+        if (!sess || sess.messages.length === 0) return
+        // find last user message
+        let lastUserIndex = -1
+        for (let i = sess.messages.length - 1; i >= 0; i--) {
+          if (sess.messages[i]!.role === 'user') {
+            lastUserIndex = i
+            break
+          }
+        }
+        if (lastUserIndex === -1) return
+        // if last assistant is pending/error, remove it before retry
+        const last = sess.messages[sess.messages.length - 1]
+        if (last && last.role === 'assistant' && (last.pending || last.error)) {
+          set((prev) => ({
+            sessions: updateSession(prev.sessions, curId, (s) => ({
+              ...s,
+              messages: s.messages.slice(0, -1),
+              updatedAt: Date.now(),
+            })),
+          }))
+        }
+        // create fresh assistant placeholder (do NOT duplicate user)
+        const assistantId = genId('a')
+        const assistantMsg: ChatMessage = { id: assistantId, role: 'assistant', content: '', reasoning: '', createdAt: Date.now(), pending: true }
+        set((prev) => ({
+          sessions: updateSession(prev.sessions, curId, (s) => ({ ...s, messages: [...s.messages, assistantMsg], updatedAt: Date.now() })),
+          error: null,
+        }))
+        const sessNow = get().sessions.find((s) => s.id === curId)!
+        const history = sessNow.messages
+          .filter((m) => m.id !== assistantId && !m.pending)
+          .map((m) => ({ role: m.role, content: m.content }))
+        await launch(curId, assistantId, history, opts ?? {})
+      },
+
+      send: async (content, opts) => {
+        const text = content.trim()
+        if (!text) return
+
+        let curId = get().currentId
+        if (!curId) {
+          curId = get().createSession()
+        }
+        const sessionId = curId
+
+        const userMsg: ChatMessage = { id: genId('u'), role: 'user', content: text, createdAt: Date.now() }
+        const assistantId = genId('a')
+        const assistantMsg: ChatMessage = {
+          id: assistantId,
+          role: 'assistant',
+          content: '',
+          reasoning: '',
+          createdAt: Date.now(),
+          pending: true,
+        }
+
         set((st) => ({
           sessions: updateSession(st.sessions, sessionId, (s) => ({
             ...s,
-            messages: s.messages.map((m) => (m.id === assistantId ? { ...m, pending: false } : m)),
+            title: s.messages.length === 0 ? text.slice(0, 32) : s.title,
+            messages: [...s.messages, userMsg, assistantMsg],
             updatedAt: Date.now(),
           })),
-          streaming: false,
-          _abortCtrl: null,
+          error: null,
         }))
-      }
-    },
-  }))
+
+        const sessNow = get().sessions.find((s) => s.id === sessionId)!
+        const history = sessNow.messages
+          .filter((m) => m.id !== assistantId && !m.pending)
+          .map((m) => ({ role: m.role, content: m.content }))
+
+        await launch(sessionId, assistantId, history, opts ?? {})
+      },
+    }
+  })
 }
 
 // Singleton for app
