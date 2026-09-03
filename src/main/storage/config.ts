@@ -49,6 +49,17 @@ export type AppConfig = {
   speechEnabled: boolean
   /** todo36: absolute whisper ggml/gguf model path ('' = not configured) */
   whisperModelPath: string
+  /**
+   * todo39: RAG query精排 via llama.cpp /v1/rerank. The endpoint is OFF by
+   * default server-side too — services.launchModel adds `--rerank` when a
+   * rerank-named GGUF is loaded; toggling this with no rerank instance up
+   * degrades gracefully (fusion-only results + a UI notice).
+   */
+  rerankEnabled: boolean
+  /** todo39: served reranker model name (llama.cpp --model identity at /v1/rerank) */
+  rerankModel: string
+  /** todo39: served embedding model name ('' = auto-detect / hash-degraded) */
+  embeddingModel: string
   /** Encrypted secrets (todo16) — see SecretPayloads contract above */
   secrets?: SecretPayloads
 }
@@ -66,6 +77,9 @@ export const DEFAULT_CONFIG: AppConfig = {
   onboardingCompleted: false,
   speechEnabled: true,
   whisperModelPath: '',
+  rerankEnabled: false,
+  rerankModel: 'bge-reranker-v2-m3',
+  embeddingModel: '',
 }
 
 /** Resolve userData/config.json path — Electron userData in prod, ./userData/config.json fallback for tests. */

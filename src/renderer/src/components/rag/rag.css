@@ -1,0 +1,196 @@
+/* rag.css — todo39 引用卡片 / 混合检索结果样式（token 取自 App.css 变量） */
+
+.las-cites {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.las-cites--cards {
+  flex-direction: column;
+}
+
+.las-cite-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--las-border, #333);
+  background: var(--las-surface, #1a1a1a);
+  color: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.las-cite-item:hover {
+  border-color: var(--las-accent, #7a5af5);
+}
+
+.las-cite-card-btn {
+  align-items: flex-start;
+  border-radius: 10px;
+  padding: 10px 12px;
+  width: 100%;
+  text-align: left;
+}
+
+.las-cite-n {
+  font-weight: 700;
+  color: var(--las-accent, #7a5af5);
+}
+
+.las-cite-n--big {
+  font-size: 18px;
+}
+
+.las-cite-src {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.las-cite-badge {
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 11px;
+  background: rgba(122, 90, 245, 0.18);
+  color: var(--las-accent, #a58bff);
+}
+
+.las-cite-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+}
+
+.las-cite-lane {
+  font-size: 11px;
+  opacity: 0.75;
+}
+
+.las-cite-page {
+  font-size: 11px;
+  opacity: 0.65;
+}
+
+.las-cite-snippet-inline {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 13px;
+  white-space: normal;
+}
+
+.las-cite-score {
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.las-cite-dialog {
+  border: 1px solid var(--las-border, #333);
+  border-radius: 12px;
+  background: var(--las-surface, #161616);
+  color: var(--las-fg, #e6e6e6);
+  max-width: 640px;
+  width: min(92vw, 640px);
+  padding: 0;
+}
+
+.las-cite-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.las-cite-detail {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.las-cite-detail-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.las-cite-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.las-cite-meta span {
+  font-size: 12px;
+  opacity: 0.7;
+  overflow-wrap: anywhere;
+}
+
+.las-cite-close {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.las-cite-snippet {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  max-height: 50vh;
+  overflow: auto;
+}
+
+/* SearchPage 表单条 */
+.las-rag-toolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.las-rag-input {
+  flex: 1;
+  min-width: 220px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--las-border, #333);
+  background: var(--las-surface, #0f0f0f);
+  color: inherit;
+}
+
+.las-rag-banner {
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.las-rag-banner--warn {
+  background: rgba(240, 180, 90, 0.14);
+  color: #e8b45a;
+}
+
+.las-rag-banner--error {
+  background: rgba(240, 90, 90, 0.12);
+  color: #f0b4b4;
+}
+
+.las-rag-hint {
+  font-size: 12px;
+  opacity: 0.65;
+}

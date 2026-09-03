@@ -4,6 +4,8 @@
  * Thinking / reasoning_content 透传兼容契约的载体，事件流由 IPC 到达后
  * 仍以这些形状渲染（见 Chat.tsx / Thinking.tsx）。
  */
+import type { RagCitation } from '../main/ipc/whitelist'
+
 export type Role = 'user' | 'assistant' | 'system'
 
 export type ChatMessage = {
@@ -20,6 +22,19 @@ export type ChatMessage = {
    * the zod gate accepts ever land here; renderers must refuse anything else.
    */
   images?: string[]
+  /**
+   * todo39 (ADDITIVE — RAG v1 lane): [n] citation cards for a knowledge-base
+   * grounded turn, carried on the USER message that triggered retrieval.
+   * Optional; when absent the bubble renders byte-identical to pre-39
+   * (pinned by Chat.characterization.test). Never persisted to chat.db
+   * (ephemeral session view; the sidebar only stores role/content).
+   */
+  citations?: RagCitation[]
+  /**
+   * todo39 (ADDITIVE): retrieved-knowledge preamble injected into the WIRE
+   * content of this user turn (toWireContent), never displayed or persisted.
+   */
+  ragContext?: string
 }
 
 export type ChatSession = {

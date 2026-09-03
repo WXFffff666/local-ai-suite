@@ -50,6 +50,10 @@ describe('ipc whitelist', () => {
       'gallery:reuse',
       'search:run',
       'hf:search',
+      // todo39: RAG v1 hybrid retrieval (status probe / file|dir ingest / query)
+      'rag:status',
+      'rag:ingest',
+      'rag:query',
       // todo30b: engine availability matrix + GPU pack download (events ride 'engines:progress')
       'engines:status',
       'engines:gpuDownload',

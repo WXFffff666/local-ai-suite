@@ -15,6 +15,7 @@ import '../components/settingspage/settingspage.css'
 import { EngineStatus } from '../components/settingspage/EngineStatus'
 import { SpeechSection } from '../components/settingspage/SpeechSection'
 import { OcrSection } from '../components/settingspage/OcrSection'
+import { SearchSection } from '../components/settingspage/SearchSection'
 import { SecretRow } from '../components/settingspage/SecretRow'
 import type {
   ConfigGetReply,
@@ -221,6 +222,9 @@ export function SettingsPage(): React.JSX.Element {
 
       {/* todo37 — 本地 OCR 引擎按需下载（ocr:* 通道，进度走 ocr:progress 事件） */}
       <OcrSection />
+
+      {/* todo39 — 检索区：嵌入三态 / 本地精排开关 / 知识库统计（rag:* 通道） */}
+      <SearchSection />
     </section>
   )
 }

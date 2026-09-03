@@ -50,6 +50,19 @@ export type BuildLlamaArgsOptions = {
   port?: number
   /** Override host (default 127.0.0.1). Must stay 127.0.0.1. */
   host?: string
+  /**
+   * todo39: serve the embeddings API (OpenAI-compatible /v1/embeddings +
+   * native /embeddings). Emits `--embeddings` (== LLAMA_ARG_EMBEDDINGS).
+   * Required for the RAG 'internal' embedding arm: a plain chat instance
+   * answers /v1/embeddings with 4xx and the tri-state resolver never picks it.
+   */
+  embeddings?: boolean
+  /**
+   * todo39: enable the reranking endpoint (POST /v1/rerank). R3b LIVE anchor:
+   * the endpoint EXISTS in llama.cpp but is DEFAULT-OFF — without this flag a
+   * bge-reranker gguf still cannot rerank. Emits `--rerank` (== LLAMA_ARG_RERANKING).
+   */
+  rerank?: boolean
   /** Extra passthrough args appended as-is. */
   extraArgs?: string[]
   /** fs existence seam for mmprojPath validation (tests inject a fake). */
@@ -83,6 +96,13 @@ export function buildLlamaArgs(opts: BuildLlamaArgsOptions = {}): string[] {
       throw new Error(`mmprojPath does not exist: ${opts.mmprojPath}`)
     }
     args.push('--mmproj', opts.mmprojPath)
+  }
+
+  if (opts.embeddings === true) {
+    args.push('--embeddings')
+  }
+  if (opts.rerank === true) {
+    args.push('--rerank')
   }
 
   if (opts.extraArgs?.length) {

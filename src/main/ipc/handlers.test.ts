@@ -396,6 +396,105 @@ describe('search / hf channels', () => {
   })
 })
 
+// todo39 — rag:* channels (registration + zod gate + honest error arms).
+// The manager itself is unit-tested in src/rag/manager.test.ts; the seam here
+// proves the IPC contract (validation, path confinement, reply shapes).
+describe('rag channels (todo39)', () => {
+  function ragHarness(overrides: {
+    status?: () => Promise<unknown>
+    ingest?: (path: string) => Promise<unknown>
+    query?: (q: string, opts: { topK?: number; rerank?: boolean }) => Promise<unknown>
+  } = {}) {
+    const h = makeHarness()
+    const rag = {
+      status: vi.fn(overrides.status ?? (async () => ({ mode: 'hash', docs: [], chunks: 0, ftsAvailable: true, rerankEnabled: false }))),
+      ingest: vi.fn(overrides.ingest ?? (async (p: string) => ({ docs: [p], chunks: 2, mode: 'hash' }))),
+      query: vi.fn(overrides.query ?? (async () => ({ citations: [], mode: 'hash', rerank: { attempted: false, ok: false } }))),
+      invalidateEmbeddingMode: vi.fn(),
+    }
+    const handlers = buildIpcHandlers({ ...h.deps, rag: () => rag as never })
+    return { ...h, handlers, rag }
+  }
+
+  it('rag:status forwards the manager outcome', async () => {
+    const { handlers, rag } = ragHarness()
+    const res = await handlers['rag:status']([{}], { send: vi.fn() })
+    expect(res).toMatchObject({ ok: true, mode: 'hash', ftsAvailable: true })
+    expect(rag.status).toHaveBeenCalled()
+  })
+
+  it('rag:ingest rejects relative paths without touching the manager', async () => {
+    const { handlers, rag } = ragHarness()
+    const res = await handlers['rag:ingest']([{ path: 'relative/doc.md' }], { send: vi.fn() })
+    expect(res).toEqual({ ok: false, error: 'path-not-absolute' })
+    expect(rag.ingest).not.toHaveBeenCalled()
+  })
+
+  it('rag:ingest rejects missing absolute paths (existence gate)', async () => {
+    const { handlers, rag } = ragHarness()
+    const res = await handlers['rag:ingest']([{ path: 'Z:/definitely/missing/doc.md' }], { send: vi.fn() })
+    expect(res).toEqual({ ok: false, error: 'path-not-found' })
+    expect(rag.ingest).not.toHaveBeenCalled()
+  })
+
+  it('rag:ingest forwards an existing file and maps manager throws to codes', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'las-rag-ipc-'))
+    const file = join(dir, 'note.md')
+    writeFileSync(file, 'hello rag', 'utf-8')
+    const { handlers, rag } = ragHarness({
+      ingest: async () => {
+        throw new Error('unsupported file type: x')
+      },
+    })
+    const ok = ragHarness({ ingest: async (p: string) => ({ docs: [p], chunks: 1, mode: 'hash' }) })
+    await expect(ok.handlers['rag:ingest']([{ path: file }], { send: vi.fn() })).resolves.toMatchObject({ ok: true, chunks: 1 })
+    await expect(handlers['rag:ingest']([{ path: file }], { send: vi.fn() })).resolves.toMatchObject({ ok: false, error: 'unsupported-type' })
+    rmSync(dir, { recursive: true, force: true })
+  })
+
+  it('rag:query validates q/topK and forwards knobs', async () => {
+    const { handlers, rag } = ragHarness({
+      query: async (q, opts) => ({ citations: [], mode: 'hash' as const, rerank: { attempted: Boolean(opts.rerank), ok: false }, echo: { q, opts } }),
+    })
+    const res = (await handlers['rag:query']([{ q: 'what is rrf', topK: 3, rerank: true }], { send: vi.fn() })) as { ok: boolean }
+    expect(res.ok).toBe(true)
+    expect(rag.query).toHaveBeenCalledWith('what is rrf', { topK: 3, rerank: true })
+    await expect(handlers['rag:query']([{ q: '' }], { send: vi.fn() })).resolves.toMatchObject(invalidShape)
+    await expect(handlers['rag:query']([{ q: 'ok', topK: 99 }], { send: vi.fn() })).resolves.toMatchObject(invalidShape)
+  })
+
+  it('rag:query maps a manager throw to the honest error arm', async () => {
+    const { handlers } = ragHarness({
+      query: async () => {
+        throw new Error('rag storage unavailable (vec.db could not open)')
+      },
+    })
+    const res = await handlers['rag:query']([{ q: 'boom' }], { send: vi.fn() })
+    expect(res).toMatchObject({ ok: false, error: expect.any(String) })
+  })
+})
+
+describe('config:set rag prefs (todo39)', () => {
+  it('persists rerankEnabled / embeddingModel and echoes them back', async () => {
+    const { handlers } = makeHarness()
+    const res = (await handlers['config:set']([{ rerankEnabled: true, embeddingModel: 'bge-m3' }], { send: vi.fn() })) as {
+      ok: boolean
+      config: Record<string, unknown>
+    }
+    expect(res.ok).toBe(true)
+    expect(res.config.rerankEnabled).toBe(true)
+    expect(res.config.embeddingModel).toBe('bge-m3')
+    const read = (await handlers['config:get']([{}], { send: vi.fn() })) as { config: Record<string, unknown> }
+    expect(read.config.rerankEnabled).toBe(true)
+    expect(read.config.embeddingModel).toBe('bge-m3')
+  })
+
+  it('rejects unknown config keys (strict schema unchanged)', async () => {
+    const { handlers } = makeHarness()
+    await expect(handlers['config:set']([{ evil: true }], { send: vi.fn() })).resolves.toMatchObject(invalidShape)
+  })
+})
+
 describe('conversations channels (todo17 pre-list)', () => {
   it('without provider every verb answers the honest not-ready shape', async () => {
     const { handlers } = makeHarness()

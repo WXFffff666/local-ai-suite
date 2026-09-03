@@ -55,6 +55,12 @@ export const ALLOWED_CHANNELS = [
   'gallery:reuse',
   'search:run',
   'hf:search',
+  // todo39: RAG v1 hybrid retrieval (FTS5 BM25 × sqlite-vec → RRF fusion,
+  // optional llama.cpp /v1/rerank精排). status is probe-only (no ingest),
+  // ingest reads a main-resolved file/dir, query returns fused [n] citations.
+  'rag:status',
+  'rag:ingest',
+  'rag:query',
   // todo30b: detection-first engine matrix + GPU pack download (progress
   // streams on the 'engines:progress' event; quarantine is a terminal state)
   'engines:status',
@@ -579,3 +585,68 @@ export type OcrRecognizeReply =
       /** engine error text for UI diagnostics (never trusted). */
       detail?: string
     }
+
+// ---------------------------------------------------------------------------
+// RAG hybrid retrieval (todo39) wire contracts. Self-contained mirror of
+// src/rag/** (outside tsconfig.web's include set — permission/engines wire
+// precedent): the renderer consumes ONLY these shapes; citations carry the
+// FTS5 page/line anchor so a [n] chip can locate the original chunk.
+// ---------------------------------------------------------------------------
+
+/** embeddings 三态裁决 (r2-fix): ollama /api/embeddings | internal llama-server --embeddings | hash 占位降级. */
+export const RAG_EMBEDDING_MODES = ['ollama', 'internal', 'hash'] as const
+export type RagEmbeddingModeWire = (typeof RAG_EMBEDDING_MODES)[number]
+
+/** One [n] citation card, best-first (fusion or rerank order). */
+export type RagCitation = {
+  /** 1-based [n] index (dense from 1 in the final order) */
+  n: number
+  chunkId: string
+  /** source document path (identity in the library) */
+  source: string
+  /** 0-based chunk page within source */
+  page: number
+  /** 1-based line of the first matched term within the chunk */
+  line: number
+  /** 0-based char offset of the first matched term */
+  charOffset: number
+  /** display snippet window around the match */
+  snippet: string
+  /** RRF fused score (Σ 1/(60+rank)) */
+  rrf: number
+  /** lane -> 1-based rank provenance (bm25 / vector) */
+  ranks: Record<string, number>
+  bm25Score?: number
+  /** present only when the rerank lane answered */
+  rerankScore?: number
+}
+
+/** rerank lane state for the UI badge (attempted but unavailable ≠ error). */
+export type RagRerankState = {
+  attempted: boolean
+  ok: boolean
+  reason?: string
+}
+
+/** rag:status reply (mode + library size + FTS/rerank availability). */
+export type RagStatusReply =
+  | {
+      ok: true
+      mode: RagEmbeddingModeWire
+      model?: string
+      docs: string[]
+      chunks: number
+      ftsAvailable: boolean
+      rerankEnabled: boolean
+    }
+  | { ok: false; error: string }
+
+/** rag:ingest reply ({ path: file|dir }). docs lists ingested source paths. */
+export type RagIngestReply =
+  | { ok: true; docs: string[]; chunks: number; mode: RagEmbeddingModeWire }
+  | { ok: false; error: 'path-not-absolute' | 'path-not-found' | 'unsupported-type' | 'file-too-large' | 'ingest-failed'; detail?: string }
+
+/** rag:query reply — fused (or reranked) citations + degraded banner hints. */
+export type RagQueryReply =
+  | { ok: true; citations: RagCitation[]; mode: RagEmbeddingModeWire; rerank: RagRerankState }
+  | { ok: false; error: string }

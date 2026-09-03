@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { EventEmitter } from 'events'
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'fs'
 import { tmpdir } from 'os'
 import { join } from 'path'
 
-import { getServices, initServices, resetServices, SIDECAR_NAMES, type ServicesOptions } from './services'
+import { getServices, initServices, resetServices, llamaServeFlags, SIDECAR_NAMES, type ServicesOptions } from './services'
 import { resetShutdownState, shutdownServices } from './shutdown'
 import { readSidecarsJson, SIDECARS_FILENAME } from '../core/handshake'
 import { deterministicPort } from '../core/ports'
@@ -362,5 +362,45 @@ describe('services engine resolver integration (todo30)', () => {
     const lastArgs = h.spawnCalls[1]?.args ?? []
     expect(lastArgs).toContain(b)
     await shutdownServices()
+  })
+
+  // todo39 — launchModel derives the llama-server capability flags from the
+  // registry entry; embedding/rerank GGUFs spawn with --embeddings/--rerank.
+  it('launchModel of an embedding-directory model spawns llama with --embeddings', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'las-embed-'))
+    tmpRoots.push(dir)
+    const embedDir = join(dir, 'embedding')
+    mkdirSync(embedDir)
+    const modelPath = join(embedDir, 'bge-m3.gguf')
+    writeFileSync(modelPath, 'GGUF' + 'x'.repeat(200))
+    const h = createHarness({ engineResolver: null, modelsDir: dir })
+    h.services.registry.reloadModels()
+    await h.services.launchModel('bge-m3')
+    const argv = (h.spawnCalls[0]?.args ?? []).join(' ')
+    expect(argv).toContain('--embeddings')
+    expect(argv).not.toContain('--rerank')
+    await shutdownServices()
+  })
+
+  it('launchModel of a rerank-named model spawns llama with --rerank', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'las-rerank-'))
+    tmpRoots.push(dir)
+    const modelPath = join(dir, 'bge-reranker-v2-m3.gguf')
+    writeFileSync(modelPath, 'GGUF' + 'x'.repeat(200))
+    const h = createHarness({ engineResolver: null, modelsDir: dir })
+    h.services.registry.reloadModels()
+    await h.services.launchModel('bge-reranker-v2-m3')
+    const argv = (h.spawnCalls[0]?.args ?? []).join(' ')
+    expect(argv).toContain('--rerank')
+    await shutdownServices()
+  })
+
+  it('llamaServeFlags — pure capability detection from registry name/file', () => {
+    expect(llamaServeFlags({ name: 'bge-m3', file: 'embedding/bge-m3.gguf' })).toEqual({ embeddings: true })
+    expect(llamaServeFlags({ name: 'bge-reranker-v2-m3', file: 'llm/bge-reranker.gguf' })).toEqual({ rerank: true })
+    expect(llamaServeFlags({ name: 'nomic-embed-text', file: 'llm/nomic-embed-text.gguf' })).toEqual({ embeddings: true })
+    expect(llamaServeFlags({ name: 'qwen3-4b', file: 'llm/qwen3-4b.gguf' })).toEqual({})
+    // rerank wins over embed token (bge-reranker has no embed match anyway)
+    expect(llamaServeFlags({ name: 'bge-reranker', file: 'embedding/bge-reranker.gguf' })).toEqual({ rerank: true })
   })
 })

@@ -12,7 +12,7 @@
  * - store 数据形状不变（见 types.ts；SSE 解析兼容实现见 sse.ts，此处 re-export）
  */
 import { create } from 'zustand'
-import type { AllowedChannel, ChatDeltaEvent, ChatDoneEvent, ChatErrorEvent } from '../main/ipc/whitelist'
+import type { AllowedChannel, ChatDeltaEvent, ChatDoneEvent, ChatErrorEvent, RagCitation } from '../main/ipc/whitelist'
 import type { ChatMessage, ChatSession, ChatSendOptions, Role } from './types'
 import { genId, newAssistantPlaceholder, newSession } from './types'
 import type { ChatIpcApi, ChatSendAck, ChatSendPayload } from './ipc'
@@ -67,7 +67,10 @@ export type ChatStoreState = {
   abort: () => void
   retry: (opts?: ChatSendOptions) => Promise<void>
   /** todo21: images = base64 data-URLs attached to the user turn (≤2, additive param). */
-  send: (content: string, opts?: ChatSendOptions, images?: readonly string[]) => Promise<void>
+  /** todo39: rag = knowledge-grounded turn (additive 4th param; citations ride
+   *  the USER message for the chips UI, the context only reaches the wire via
+   *  toWireContent — never display or chat.db). */
+  send: (content: string, opts?: ChatSendOptions, images?: readonly string[], rag?: { context: string; citations: RagCitation[] }) => Promise<void>
 }
 
 function updateSession(
@@ -357,7 +360,7 @@ export function createChatStore(
         await launch(curId, placeholder.id, historyWithout(curId, placeholder.id), opts ?? {})
       },
 
-      send: async (content, opts, images) => {
+      send: async (content, opts, images, rag) => {
         const text = content.trim()
         const attached = (images ?? []).slice(0, 2)
         if (!text && attached.length === 0) return
@@ -374,6 +377,8 @@ export function createChatStore(
           content: text,
           createdAt: Date.now(),
           ...(attached.length > 0 ? { images: attached } : {}),
+          ...(rag && rag.citations.length > 0 ? { citations: rag.citations } : {}),
+          ...(rag && rag.context.length > 0 ? { ragContext: rag.context } : {}),
         }
         const placeholder = newAssistantPlaceholder()
 

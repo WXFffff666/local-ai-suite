@@ -45,10 +45,30 @@ export type SidecarName = (typeof SIDECAR_NAMES)[number]
 /**
  * todo21 last hop: model + paired projector injected into the llama sidecar.
  * Routed through buildLlamaArgs ({modelPath, mmprojPath} → --model/--mmproj).
+ * todo39 adds the two capability flags (embeddings/rerank); launchModel
+ * derives them from the registry entry (embedding GGUFs live under
+ * models/embedding/** or carry embed/rerank name tokens — README layout).
  */
 export type LlamaLaunchOptions = {
   modelPath?: string
   mmprojPath?: string
+  /** --embeddings: serve /v1/embeddings from this instance (RAG internal arm). */
+  embeddings?: boolean
+  /** --rerank: serve /v1/rerank (llama.cpp default is OFF — flag required). */
+  rerank?: boolean
+}
+
+/** Registry-entry -> llama-server capability flags (todo39 launch glue). */
+export function llamaServeFlags(entry: Pick<import('../models/registry').ModelEntry, 'name' | 'file'>): {
+  embeddings?: boolean
+  rerank?: boolean
+} {
+  // 'embedding/<dir>' (README layout) or an 'embed'/'rerank' name token, each
+  // matched at a word boundary so qwen3-4b / llama3 never trip the detector.
+  const hay = `${entry.file} ${entry.name}`.toLowerCase()
+  if (/\brerank/.test(hay)) return { rerank: true }
+  if (/(^|[\/\s._-])embed(ding|ings|s|ed)?([\/\s._-]|$)/.test(hay)) return { embeddings: true }
+  return {}
 }
 
 export type ServicesOptions = {
@@ -272,6 +292,7 @@ export class Services {
     return this.ensureSidecar('llama', {
       modelPath: entry.path,
       ...(entry.projectorPath === undefined ? {} : { mmprojPath: entry.projectorPath }),
+      ...llamaServeFlags(entry),
     })
   }
 
@@ -334,6 +355,8 @@ export class Services {
           ...(bin === undefined ? {} : { bin }),
           ...(this.llamaLaunch.modelPath === undefined ? {} : { modelPath: this.llamaLaunch.modelPath }),
           ...(this.llamaLaunch.mmprojPath === undefined ? {} : { mmprojPath: this.llamaLaunch.mmprojPath }),
+          ...(this.llamaLaunch.embeddings === undefined ? {} : { embeddings: this.llamaLaunch.embeddings }),
+          ...(this.llamaLaunch.rerank === undefined ? {} : { rerank: this.llamaLaunch.rerank }),
           ...shared,
         })
         break

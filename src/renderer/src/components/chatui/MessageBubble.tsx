@@ -13,6 +13,7 @@ import type { ChatMessage } from '../../../../chat/types'
 import { isRenderableImageSrc } from '../../../../chat/vision'
 import { Thinking } from '../../../../chat/Thinking'
 import { MarkdownMessage } from './MarkdownMessage'
+import { CitationChips } from '../rag/CitationChips'
 
 /**
  * todo37 (ADDITIVE): OCR bridge handed down from Chat (ocr:status gates
@@ -148,6 +149,12 @@ export function MessageBubble({ message: m, ocr, onOcrInsert }: MessageBubblePro
         </>
       ) : pending ? (
         <span className="las-bubble-pending">…</span>
+      ) : null}
+      {m.citations && m.citations.length > 0 ? (
+        <div className="las-msg-citations" data-testid="msg-citations">
+          <span className="las-msg-citations-label">本地知识库来源</span>
+          <CitationChips citations={m.citations} variant="compact" />
+        </div>
       ) : null}
       {lightbox !== null && (
         <dialog

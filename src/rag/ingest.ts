@@ -6,6 +6,7 @@
 import { existsSync, readFileSync } from 'fs'
 import { extname } from 'path'
 import type { Database as BetterSqlite3Database } from 'better-sqlite3'
+import { fuseRankedIds } from '../search/hybrid'
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -18,6 +19,10 @@ export const DEFAULT_CHUNK_SIZE = 800
 export const DEFAULT_CHUNK_OVERLAP = 100
 export const DEFAULT_EMBED_DIM = 64
 export const DEFAULT_TOP_K = 5
+/** Hybrid lane truncation (plan: BM25 top20 + vector top20 → RRF). */
+export const LANE_DEPTH_DEFAULT = 20
+/** One Han/Hiragana range run (buildFtsMatch prefixes these with '*'). */
+const CJK_RUN_RE = /^[\u3400-\u9fff\uf900-\ufaff]+$/i
 
 // ---------------------------------------------------------------------------
 // Types
@@ -29,6 +34,19 @@ export type Chunk = {
   source: string
   index: number
   createdAt: number
+}
+
+/** One BM25-lane hit (todo39): chunk fields + flipped bm25 score. */
+export type Bm25Hit = Chunk & { score: number }
+
+/** One fused hit of the hybrid pipeline (RRF over the BM25 + vector lanes). */
+export type HybridHit = {
+  chunk: Chunk
+  /** Σ 1/(60+rank) across the lanes the chunk appeared in */
+  rrf: number
+  /** lane name -> 1-based rank (absent lane = not in that lane's top-20) */
+  ranks: Record<string, number>
+  bm25Score?: number
 }
 
 export type IngestFileInput = {
@@ -274,6 +292,7 @@ function ensureSchema(db: BetterSqlite3Database, _embedDim: number, vecAvailable
       created_at INTEGER NOT NULL
     );
     CREATE INDEX IF NOT EXISTS idx_rag_chunks_source ON rag_chunks(source);
+    CREATE INDEX IF NOT EXISTS idx_rag_chunks_id ON rag_chunks(id);
   `)
   if (vecAvailable) {
     // vec0 table stores same rowid -> embedding mapping for vector search.
@@ -285,6 +304,46 @@ function ensureSchema(db: BetterSqlite3Database, _embedDim: number, vecAvailable
     } catch {
       // ignore if extension rejects (dim mismatch); fallback still works
     }
+  }
+  // FTS5 (todo39) — external-content index over rag_chunks, kept in sync by
+  // triggers so any ingest write (below) is bm25-searchable with zero extra
+  // code. Guarded: a build without the fts5 module leaves BM25 unavailable and
+  // hybrid degrades to the vector lane. Same DDL as migrations/003-fts.sql.
+  try {
+    db.exec(`
+      CREATE VIRTUAL TABLE IF NOT EXISTS rag_chunks_fts USING fts5(
+        content, source UNINDEXED, chunk_index UNINDEXED,
+        content='rag_chunks', content_rowid='rowid', tokenize='porter unicode61'
+      );
+      CREATE TRIGGER IF NOT EXISTS rag_chunks_fts_ai AFTER INSERT ON rag_chunks BEGIN
+        INSERT INTO rag_chunks_fts(rowid, content, source, chunk_index)
+        VALUES (new.rowid, new.content, new.source, new.chunk_index);
+      END;
+      CREATE TRIGGER IF NOT EXISTS rag_chunks_fts_ad AFTER DELETE ON rag_chunks BEGIN
+        INSERT INTO rag_chunks_fts(rag_chunks_fts, rowid, content, source, chunk_index)
+        VALUES ('delete', old.rowid, old.content, old.source, old.chunk_index);
+      END;
+      CREATE TRIGGER IF NOT EXISTS rag_chunks_fts_au AFTER UPDATE ON rag_chunks BEGIN
+        INSERT INTO rag_chunks_fts(rag_chunks_fts, rowid, content, source, chunk_index)
+        VALUES ('delete', old.rowid, old.content, old.source, old.chunk_index);
+        INSERT INTO rag_chunks_fts(rowid, content, source, chunk_index)
+        VALUES (new.rowid, new.content, new.source, new.chunk_index);
+      END;
+    `)
+  } catch {
+    // fts5 unavailable — bm25Search reports false, hybrid stays vector-only
+  }
+}
+
+/** FTS5 is present iff its shadow tables exist (checked once per open). */
+function ftsAvailable(db: BetterSqlite3Database): boolean {
+  try {
+    const row = db
+      .prepare(`SELECT count(*) AS c FROM sqlite_master WHERE type='table' AND name='rag_chunks_fts'`)
+      .get() as { c: number }
+    return row.c > 0
+  } catch {
+    return false
   }
 }
 
@@ -314,6 +373,7 @@ export class RagStore {
   readonly embedFn: EmbedFn
   readonly db: BetterSqlite3Database
   private vecAvailable: boolean
+  private ftsUp: boolean
   private ownedDb: boolean
 
   constructor(opts: RagStoreOptions = {}) {
@@ -335,10 +395,16 @@ export class RagStore {
       this.vecAvailable = opened.vecAvailable
       this.ownedDb = true
     }
+    this.ftsUp = ftsAvailable(this.db)
   }
 
   isVecAvailable(): boolean {
     return this.vecAvailable
+  }
+
+  /** FTS5 BM25 lane ready (todo39 hybrid retrieval). */
+  isFtsAvailable(): boolean {
+    return this.ftsUp
   }
 
   close(): void {
@@ -381,27 +447,49 @@ export class RagStore {
     )
 
     const insertChunk = this.db.prepare(
-      'INSERT OR REPLACE INTO rag_chunks (id, content, source, chunk_index, embedding, created_at) VALUES (?, ?, ?, ?, ?, ?)',
+      'INSERT INTO rag_chunks (id, content, source, chunk_index, embedding, created_at) VALUES (?, ?, ?, ?, ?, ?)',
     )
+    // todo39: INSERT OR REPLACE would skip the AFTER DELETE trigger (recursive
+    // triggers are OFF), corrupting the external-content FTS index and leaking
+    // vec_rag rows on re-ingest. Explicit delete-first keeps triggers honest.
+    const deleteChunk = this.db.prepare('DELETE FROM rag_chunks WHERE id = ?')
 
     // separate prep for vec table if available
     let insertVec: ReturnType<BetterSqlite3Database['prepare']> | null = null
+    let deleteVec: ReturnType<BetterSqlite3Database['prepare']> | null = null
     if (this.vecAvailable) {
       try {
         insertVec = this.db.prepare('INSERT OR REPLACE INTO vec_rag (rowid, embedding) VALUES (?, vec_f32(?))')
+        deleteVec = this.db.prepare('DELETE FROM vec_rag WHERE rowid = ?')
       } catch {
         insertVec = null
+        deleteVec = null
       }
     }
+    const getRowid = this.db.prepare('SELECT rowid AS rowid FROM rag_chunks WHERE id = ?')
 
+    const store = this
     const tx = (this.db as unknown as { transaction: (fn: () => void) => () => void }).transaction(() => {
       for (let i = 0; i < chunks.length; i++) {
         const ch = chunks[i]!
         const emb = embeddings[i]!
         const blob = embeddingToBlob(emb)
+        const prev = getRowid.get(ch.id) as { rowid: number | bigint } | undefined
+        if (prev !== undefined) {
+          deleteChunk.run(ch.id)
+          if (deleteVec) {
+            try {
+              deleteVec.run(Number(prev.rowid))
+            } catch {
+              // vec row may already be gone — never fatal
+            }
+          }
+        }
         const res = insertChunk.run(ch.id, ch.content, ch.source, ch.index, blob, ch.createdAt) as unknown as { lastInsertRowid: number | bigint }
-        // also insert into vec table with same rowid for vector search
-        if (insertVec) {
+        // also insert into vec table with same rowid for vector search; only
+        // while the vector dim matches the table's declared dim (mode switch
+        // to a real embedding model keeps brute-force cosine, not vec0).
+        if (insertVec && emb.length === store.embedDim) {
           try {
             const rowid = Number(res.lastInsertRowid)
             // vec_f32 expects JSON array string
@@ -421,6 +509,7 @@ export class RagStore {
         const ch = chunks[i]!
         const emb = embeddings[i]!
         const blob = embeddingToBlob(emb)
+        deleteChunk.run(ch.id)
         insertChunk.run(ch.id, ch.content, ch.source, ch.index, blob, ch.createdAt)
       }
     }
@@ -467,7 +556,12 @@ export class RagStore {
       source: r.source,
       index: r.chunkIndex,
       createdAt: r.createdAt,
-      embedding: r.embedding ? blobToEmbedding(r.embedding as unknown as Buffer, this.embedDim) : new Array(this.embedDim).fill(0),
+      // actual stored vector length wins (todo39): hash mode is embedDim, but
+      // a real embedding model (ollama/internal lane) may store larger blobs;
+      // brute-force cosine pairs them at min(len) deterministically.
+      embedding: r.embedding
+        ? blobToEmbedding(r.embedding as unknown as Buffer, Math.max(this.embedDim, Math.floor((r.embedding as unknown as Buffer).length / 4)))
+        : new Array(this.embedDim).fill(0),
     }))
   }
 
@@ -480,8 +574,10 @@ export class RagStore {
     // embedding for query
     const [qEmb] = (await this.embedFn([query], this.embedDim)) as number[][]
 
-    // Prefer sqlite-vec native search when available and table populated
-    if (this.vecAvailable) {
+    // Prefer sqlite-vec native search when available and table populated.
+    // Skip when the query vector dim differs from the vec table's declared dim
+    // (todo39: real-embedding modes keep brute-force cosine as the vector lane).
+    if (this.vecAvailable && qEmb.length === this.embedDim) {
       try {
         const json = JSON.stringify(qEmb)
         // vec_rag rowid corresponds to rag_chunks rowid
@@ -528,6 +624,115 @@ export class RagStore {
       return fallback.map((s) => ({ id: s.c.id, content: s.c.content, source: s.c.source, index: s.c.index, createdAt: s.c.createdAt }))
     }
     return scored.map((s) => ({ id: s.c.id, content: s.c.content, source: s.c.source, index: s.c.index, createdAt: s.c.createdAt }))
+  }
+
+  // ---- BM25 / hybrid retrieval (todo39) ----
+
+  /**
+   * FTS5 MATCH expression from a free-text query. ASCII words are quoted
+   * verbatim (porter stems both sides); CJK runs are quoted with a trailing
+   * `*` — unicode61 keeps a whole Han run as ONE token, so exact-term and
+   * prefix matching are the only safe forms (a bare substring would always
+   * miss). Returns '' when nothing is matchable => caller reports no hits.
+   */
+  static buildFtsMatch(query: string): string {
+    const q = (query ?? '').trim()
+    if (!q) return ''
+    const parts: string[] = []
+    const re = /[a-z0-9_]+|[\u3400-\u9fff\uf900-\ufaff]+/gi
+    let m: RegExpExecArray | null
+    while ((m = re.exec(q))) {
+      const tok = m[0]
+      const escaped = tok.replace(/"/g, '""')
+      if (CJK_RUN_RE.test(tok)) parts.push(`"${escaped}"*`)
+      else parts.push(`"${escaped}"`)
+    }
+    return parts.join(' OR ')
+  }
+
+  /**
+   * BM25 lane: top-K chunks by FTS5 bm25() rank (smaller-is-more-relevant is
+   * normalised to higher-is-better by negation). Empty list when the FTS5
+   * lane is unavailable — never throws across the hybrid boundary.
+   */
+  bm25Search(query: string, topK: number = LANE_DEPTH_DEFAULT): Array<Bm25Hit> {
+    if (!this.ftsUp || topK <= 0 || !query.trim()) return []
+    const match = RagStore.buildFtsMatch(query)
+    if (!match) return []
+    try {
+      const rows = this.db
+        .prepare(
+          `SELECT c.id AS id, c.content AS content, c.source AS source,
+                  c.chunk_index AS chunkIndex, c.created_at AS createdAt,
+                  bm25(rag_chunks_fts) AS bm25
+           FROM rag_chunks_fts
+           JOIN rag_chunks c ON c.rowid = rag_chunks_fts.rowid
+           WHERE rag_chunks_fts MATCH ?
+           ORDER BY bm25 ASC
+           LIMIT ?`,
+        )
+        .all(match, topK) as Array<{
+        id: string
+        content: string
+        source: string
+        chunkIndex: number
+        createdAt: number
+        bm25: number
+      }>
+      return rows.map((r) => ({
+        id: r.id,
+        content: r.content,
+        source: r.source,
+        index: r.chunkIndex,
+        createdAt: r.createdAt,
+        // fts5 bm25(): NEGATIVE better. Flip so higher = better everywhere.
+        score: -r.bm25,
+      }))
+    } catch {
+      return []
+    }
+  }
+
+  /**
+   * Hybrid lane (plan todo39): BM25 top-20 + vector top-20 → RRF(k=60) → topN.
+   * Falls back to the pure vector lane when FTS5 is unavailable; falls back to
+   * BM25 when the store is empty of embeddings. Deterministic given inputs.
+   */
+  async hybridRetrieve(
+    query: string,
+    opts: { topK?: number; laneDepth?: number } = {},
+  ): Promise<HybridHit[]> {
+    const q = query.trim()
+    if (!q) return []
+    const topK = opts.topK ?? DEFAULT_TOP_K
+    const laneDepth = opts.laneDepth ?? LANE_DEPTH_DEFAULT
+    const bm25Hits = this.bm25Search(q, laneDepth)
+    const vecHits = await this.retrieve(q, { topK: laneDepth })
+
+    const fused = fuseRankedIds(
+      bm25Hits.map((h) => h.id),
+      vecHits.map((h) => h.id),
+      { topN: topK },
+    )
+
+    const bm25ById = new Map(bm25Hits.map((h) => [h.id, h]))
+    const vecById = new Map(vecHits.map((h) => [h.id, h]))
+    return fused.map((f) => {
+      const base = bm25ById.get(f.id) ?? vecById.get(f.id)!
+      const chunk: Chunk = {
+        id: base.id,
+        content: base.content,
+        source: base.source,
+        index: base.index,
+        createdAt: base.createdAt,
+      }
+      return {
+        chunk,
+        rrf: f.score,
+        ranks: f.ranks,
+        bm25Score: bm25ById.get(f.id)?.score,
+      }
+    })
   }
 
   async query(q: string, opts: QueryOptions = {}): Promise<QueryResult> {

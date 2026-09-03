@@ -432,3 +432,7 @@
   align-items: center;
   justify-content: center;
 }
+
+/* todo39: chat bubble citation strip */
+.las-msg-citations { margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+.las-msg-citations-label { font-size: 11px; opacity: 0.6; }

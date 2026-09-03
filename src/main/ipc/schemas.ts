@@ -153,6 +153,10 @@ export const configSetSchema = z
   .object({
     theme: z.enum(['light', 'dark', 'system']).optional(),
     locale: z.string().min(2).max(10).optional(),
+    /** todo39: RAG search prefs (see AppConfig field docs). */
+    rerankEnabled: z.boolean().optional(),
+    rerankModel: z.string().max(256).optional(),
+    embeddingModel: z.string().max(256).optional(),
     secrets: z
       .object({
         hfToken: secretPayloadSchema.optional(),
@@ -255,6 +259,34 @@ export const hfSearchSchema = z.object({
   direction: z.union([z.literal(-1), z.literal(1)]).optional()
 })
 export type HfSearchInput = z.infer<typeof hfSearchSchema>
+
+// --- rag / hybrid retrieval (todo39) -------------------------------------------
+
+/**
+ * rag:status is gesture-only (strict empty object). rag:ingest takes ONE
+ * absolute path — file or top-level directory — which the MAIN side re-checks
+ * (existsSync + supported ext / isDirectory + size cap); the zod gate only
+ * bounds the shape. rag:query carries the question + result knobs.
+ */
+export const ragStatusSchema = z.object({}).strict()
+export type RagStatusInput = z.infer<typeof ragStatusSchema>
+
+export const ragIngestSchema = z
+  .object({
+    path: z.string().min(1).max(1024),
+  })
+  .strict()
+export type RagIngestInput = z.infer<typeof ragIngestSchema>
+
+export const ragQuerySchema = z
+  .object({
+    q: z.string().min(1).max(2048),
+    topK: z.number().int().min(1).max(20).optional(),
+    /** per-query rerank override of the persisted rerankEnabled pref */
+    rerank: z.boolean().optional(),
+  })
+  .strict()
+export type RagQueryInput = z.infer<typeof ragQuerySchema>
 
 // --- conversations (channels pre-listed; service lands in todo17) ------------------
 

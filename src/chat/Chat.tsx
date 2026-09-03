@@ -9,7 +9,7 @@
  * 贴图入口禁用并提示（plan QA-fail 场景）。
  */
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Paperclip, X } from 'lucide-react'
+import { Paperclip, X, BookOpen } from 'lucide-react'
 import { useChatStore, getChatIpcApi, IPC_UNAVAILABLE_MESSAGE } from './store'
 import {
   MAX_IMAGES_PER_MESSAGE,
@@ -35,7 +35,8 @@ import { MicButton } from './MicButton'
 // todo37-style ADDITIVE: per-image "提取文字" (PaddleOCR-json sidecar). The
 // bridge self-hides (no buttons render) until ocr:status says installed.
 import type { MessageOcrApi } from '../renderer/src/components/chatui/MessageBubble'
-import type { OcrRecognizeReply, OcrStatusReply } from '../main/ipc/whitelist'
+import type { OcrRecognizeReply, OcrStatusReply, RagQueryReply, RagStatusReply } from '../main/ipc/whitelist'
+import { formatRagContext } from '../renderer/src/components/rag/api'
 
 export type ChatProps = {
   /** 对话预设（点击填充输入框）；传空数组隐藏预设行 */
@@ -61,6 +62,9 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
   const [vision, setVision] = useState(false)
   /** todo37: ocr:status 探测（mount 一次，spawn-free）；installed = 引擎可识别 */
   const [ocrInstalled, setOcrInstalled] = useState(false)
+  /** todo39 (ADDITIVE): 本地知识库问答开关（默认关，chat 发送路径逐字节不变）。 */
+  const [ragOn, setRagOn] = useState(false)
+  const [ragMode, setRagMode] = useState<'ollama' | 'internal' | 'hash' | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   // todo36: 转写文本插入到光标处需要 textarea 句柄
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -97,6 +101,27 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
       .then((reply) => {
         const r = reply as OcrStatusReply
         if (!cancelled && r?.ok === true) setOcrInstalled(r.supported && r.engine.source !== 'none')
+      })
+      .catch(() => {
+        /* honest unavailable */
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  // todo39: RAG 状态探测（rag:status 不入库、不 spawn；仅决定开关可见性 +
+  // hash 降级提示）。无 window.api / 探测失败时开关隐藏，发送路径不变。
+  useEffect(() => {
+    const api = typeof window === 'undefined' ? undefined : window.api
+    if (!api || typeof api.invoke !== 'function') return
+    let cancelled = false
+    void api
+      .invoke('rag:status', {})
+      .then((reply) => {
+        const r = reply as RagStatusReply
+        if (cancelled || r?.ok !== true) return
+        if (r.mode === 'ollama' || r.mode === 'internal' || r.mode === 'hash') setRagMode(r.mode)
       })
       .catch(() => {
         /* honest unavailable */
@@ -149,6 +174,20 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
     const attached = images
     setInput('')
     setImages([])
+    // todo39 (ADDITIVE): 知识库问答 — 开关在位时先混合检索，命中片段作为
+    // wire-only 上下文注入本轮提问，[n] 引用角标挂到本条 user 消息。
+    // 检索失败/无命中 → 原样发送（诚实降级，不阻塞对话）。
+    if (ragOn && t) {
+      try {
+        const reply = (await window.api.invoke('rag:query', { q: t, topK: 5 })) as RagQueryReply
+        if (reply?.ok === true && reply.citations.length > 0) {
+          await send(t, undefined, attached, { context: formatRagContext(reply.citations), citations: reply.citations })
+          return
+        }
+      } catch {
+        /* retrieval unavailable — plain turn below */
+      }
+    }
     await send(t, undefined, attached)
   }
 
@@ -301,6 +340,21 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
             </button>
             {/* todo36: push-to-talk（按住说话→松开转写→插入光标处） */}
             <MicButton onTranscript={insertAtCaret} />
+            {/* todo39: 本地知识库问答开关（rag:* 通道；hash 模式带降级提示） */}
+            {canStream && ragMode !== null && (
+              <button
+                type="button"
+                data-testid="rag-mode-toggle"
+                aria-pressed={ragOn}
+                title={ragMode === 'hash' ? '检索质量降级（无本地嵌入引擎）— 当前为哈希占位向量' : ragMode === 'ollama' ? '嵌入引擎：Ollama' : '嵌入引擎：内部 llama-server --embeddings'}
+                disabled={inAgent}
+                onClick={() => setRagOn((v) => !v)}
+                style={{ padding: '0 10px', cursor: inAgent ? 'not-allowed' : 'pointer', borderColor: ragOn ? '#7a5af5' : undefined }}
+              >
+                <BookOpen size={16} aria-hidden style={{ verticalAlign: 'middle', color: ragOn ? '#7a5af5' : undefined }} />
+                <span style={{ marginLeft: 4 }}>知识库</span>
+              </button>
+            )}
             <textarea
               ref={textareaRef}
               value={input}

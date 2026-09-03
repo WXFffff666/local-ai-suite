@@ -47,7 +47,7 @@ function ensureDbDir(): void {
 }
 
 /** Ordered list of migration files applied by migrate(). Keep append-only. */
-const MIGRATION_FILES = ['001-init.sql', '002-permissions.sql'] as const
+const MIGRATION_FILES = ['001-init.sql', '002-permissions.sql', '003-fts.sql'] as const
 
 /** Inline fallbacks so the db stays usable if the .sql files are missing from the package. */
 const MIGRATION_FALLBACKS: Record<string, string> = {
@@ -65,6 +65,15 @@ const MIGRATION_FALLBACKS: Record<string, string> = {
     CREATE INDEX IF NOT EXISTS idx_audit_log_ts ON audit_log(ts);
     CREATE TRIGGER IF NOT EXISTS audit_log_no_update BEFORE UPDATE ON audit_log BEGIN SELECT RAISE(ABORT, 'audit_log is append-only'); END;
     CREATE TRIGGER IF NOT EXISTS audit_log_no_delete BEFORE DELETE ON audit_log BEGIN SELECT RAISE(ABORT, 'audit_log is append-only'); END;
+  `,
+  '003-fts.sql': `
+    CREATE TABLE IF NOT EXISTS rag_chunks (rowid INTEGER PRIMARY KEY AUTOINCREMENT, id TEXT UNIQUE NOT NULL, content TEXT NOT NULL, source TEXT NOT NULL, chunk_index INTEGER NOT NULL, embedding BLOB, created_at INTEGER NOT NULL);
+    CREATE INDEX IF NOT EXISTS idx_rag_chunks_source ON rag_chunks(source);
+    CREATE INDEX IF NOT EXISTS idx_rag_chunks_id ON rag_chunks(id);
+    CREATE VIRTUAL TABLE IF NOT EXISTS rag_chunks_fts USING fts5(content, source UNINDEXED, chunk_index UNINDEXED, content='rag_chunks', content_rowid='rowid', tokenize='porter unicode61');
+    CREATE TRIGGER IF NOT EXISTS rag_chunks_fts_ai AFTER INSERT ON rag_chunks BEGIN INSERT INTO rag_chunks_fts(rowid, content, source, chunk_index) VALUES (new.rowid, new.content, new.source, new.chunk_index); END;
+    CREATE TRIGGER IF NOT EXISTS rag_chunks_fts_ad AFTER DELETE ON rag_chunks BEGIN INSERT INTO rag_chunks_fts(rag_chunks_fts, rowid, content, source, chunk_index) VALUES ('delete', old.rowid, old.content, old.source, old.chunk_index); END;
+    CREATE TRIGGER IF NOT EXISTS rag_chunks_fts_au AFTER UPDATE ON rag_chunks BEGIN INSERT INTO rag_chunks_fts(rag_chunks_fts, rowid, content, source, chunk_index) VALUES ('delete', old.rowid, old.content, old.source, old.chunk_index); INSERT INTO rag_chunks_fts(rowid, content, source, chunk_index) VALUES (new.rowid, new.content, new.source, new.chunk_index); END;
   `,
 }
 
@@ -92,6 +101,32 @@ export function migrate(db: Database): void {
   for (const file of MIGRATION_FILES) {
     const sql = resolveMigrationSql(file)
     db.exec(sql)
+  }
+  reconcileRagFts(db)
+}
+
+/**
+ * todo39 QA-fail scenario「旧库 FTS5 不可用/落后 → 自动迁移重建索引」: an
+ * external-content fts5 index does NOT pick up rows that existed before the
+ * table + triggers were created (CREATE VIRTUAL TABLE is empty; triggers only
+ * fire on future writes). rag_chunks_fts_docsize counts what is actually
+ * indexed; any drift against the base table triggers a one-time 'rebuild'.
+ * Best-effort: a db without the fts5 module (theoretical) just skips — the
+ * BM25 lane reports itself unavailable and hybrid degrades to the vector lane.
+ */
+export function reconcileRagFts(db: Database): void {
+  try {
+    const row = db
+      .prepare(
+        `SELECT (SELECT count(*) FROM rag_chunks) AS base,
+                (SELECT count(*) FROM rag_chunks_fts_docsize) AS indexed`,
+      )
+      .get() as { base: number; indexed: number }
+    if (row.base !== row.indexed) {
+      db.prepare(`INSERT INTO rag_chunks_fts(rag_chunks_fts) VALUES('rebuild')`).run()
+    }
+  } catch {
+    // fts5 shadow tables absent / module unavailable — degrade, never brick boot
   }
 }
 

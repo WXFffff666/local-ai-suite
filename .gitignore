@@ -51,6 +51,7 @@ userData/
 
 # === 源码路径显式豁免（防止全局/宽泛 ignore 规则吞掉源码）===
 !src/main/storage/migrations/001-init.sql
+!src/main/storage/migrations/003-fts.sql
 !src/models/registry.ts
 !src/models/registry.test.ts
 !src/renderer/src/features/cache/clearCache.ts

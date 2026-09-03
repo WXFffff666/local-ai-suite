@@ -191,6 +191,30 @@ describe('buildLlamaArgs', () => {
       '--host', '127.0.0.1', '--port', '11435', '--ctx-size', '4096', '--model', 'models/qwen.gguf',
     ])
   })
+
+  // todo39: RAG capability flags — /v1/embeddings + /v1/rerank 默认关闭，
+  // 必须显式旗标打开（Appendix A row 39 R3b LIVE：端点存在但默认 OFF）。
+  it('embeddings=true 追加 --embeddings（RAG internal 嵌入臂）', () => {
+    const argv = buildLlamaArgs({ modelPath: 'models/bge-m3.gguf', embeddings: true })
+    expect(argv).toContain('--embeddings')
+    expect(argv.indexOf('--embeddings')).toBeGreaterThan(argv.indexOf('--model'))
+  })
+
+  it('rerank=true 追加 --rerank（llama.cpp 默认关闭 /v1/rerank）', () => {
+    const argv = buildLlamaArgs({ modelPath: 'models/bge-reranker.gguf', rerank: true })
+    expect(argv).toContain('--rerank')
+  })
+
+  it('两旗标同时开启 + 旗标置后于 extraArgs 之前', () => {
+    const argv = buildLlamaArgs({ modelPath: 'm.gguf', embeddings: true, rerank: true, extraArgs: ['--verbose'] })
+    expect(argv.slice(argv.indexOf('--embeddings'))).toEqual(['--embeddings', '--rerank', '--verbose'])
+  })
+
+  it('旗标缺省/false 时 argv 与回归 pin 完全一致（默认关闭，不改变既有形态）', () => {
+    expect(buildLlamaArgs({ modelPath: 'models/qwen.gguf', embeddings: false, rerank: false })).toEqual([
+      '--host', '127.0.0.1', '--port', '11435', '--ctx-size', '4096', '--model', 'models/qwen.gguf',
+    ])
+  })
 })
 
 describe('createLlamaSidecarConfig / createLlamaSidecar (复用 SidecarManager)', () => {

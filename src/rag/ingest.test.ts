@@ -243,3 +243,88 @@ describe('常量与边界', () => {
     expect(DEFAULT_EMBED_DIM).toBe(64)
   })
 })
+
+// ---------------------------------------------------------------------------
+// todo39 — BM25 lane + hybrid fusion (检索质量回归)
+// ---------------------------------------------------------------------------
+
+describe('RagStore — BM25 通道 (todo39)', () => {
+  let store: RagStore
+  beforeEach(async () => {
+    store = memStore()
+    await store.ingestText('SQLite vector search with sqlite-vec extension for embeddings', 'db.md')
+    await store.ingestText('Ranking functions: bm25 and reciprocal rank fusion for search ranking', 'rank.md')
+    await store.ingestText('Hybrid search combines bm25 lexical ranking with vector embeddings for retrieval', 'mix.md')
+    await store.ingestText('完全无关的烹饪食谱内容与本查询无关', 'cook.md')
+  })
+
+  it('isFtsAvailable — 注入库同样自动建 fts 索引', () => {
+    expect(store.isFtsAvailable()).toBe(true)
+  })
+
+  it('bm25Search 命中含词文档并按相关度降序；topK 生效', () => {
+    const hits = store.bm25Search('bm25 ranking fusion', 10)
+    expect(hits.length).toBeGreaterThan(0)
+    const ids = hits.map((h) => h.id)
+    expect(ids).toContain('rank.md#0')
+    // scores are flipped so higher = better, strictly descending
+    for (let i = 1; i < hits.length; i++) expect(hits[i - 1]!.score).toBeGreaterThanOrEqual(hits[i]!.score)
+    expect(store.bm25Search('bm25 ranking fusion', 2).length).toBeLessThanOrEqual(2)
+  })
+
+  it('bm25Search 空查询/无命中 → 空数组；引号注入被安全转义', () => {
+    expect(store.bm25Search('   ')).toEqual([])
+    expect(store.bm25Search('zzzqqq nonexistent', 5)).toEqual([])
+    expect(() => store.bm25Search('rm -rf " \" OR match", 1')).not.toThrow()
+  })
+
+  it('buildFtsMatch — ASCII 精确词、CJK 前缀、引号转义', () => {
+    expect(RagStore.buildFtsMatch('hello world')).toBe('"hello" OR "world"')
+    expect(RagStore.buildFtsMatch('本地部署')).toBe('"本地部署"*')
+    expect(RagStore.buildFtsMatch('say "hi"')).toBe('"say" OR "hi"')
+    expect(RagStore.buildFtsMatch('')).toBe('')
+  })
+
+  it('CJK 整段前缀匹配可用（unicode61 单 token 语义）', async () => {
+    const s = memStore()
+    await s.ingestText('本地部署指南适用于飞牛 NAS', 'deploy.txt')
+    expect(s.bm25Search('本地部署', 5).map((h) => h.id)).toEqual(['deploy.txt#0'])
+  })
+
+  it('hybridRetrieve — 融合召回覆盖优于任一单路（固定语料确定性断言）', async () => {
+    const fused = await store.hybridRetrieve('hybrid bm25 vector ranking fusion', { topK: 3, laneDepth: 20 })
+    const fusedIds = new Set(fused.map((f) => f.chunk.id))
+    const bm25Ids = new Set(store.bm25Search('hybrid bm25 vector ranking fusion', 20).map((h) => h.id))
+    const vecIds = new Set((await store.retrieve('hybrid bm25 vector ranking fusion', { topK: 20 })).map((c) => c.id))
+    const relevant = new Set(['mix.md#0', 'rank.md#0', 'db.md#0'])
+    const hitsOf = (s: Set<string>): number => [...relevant].filter((r) => s.has(r)).length
+    // 融合 top-3 的相关命中数 >= 单路 top-3 命中数（两路互补时严格大于亦可）
+    const fusedTop3 = new Set(fused.slice(0, 3).map((f) => f.chunk.id))
+    expect(hitsOf(fusedTop3)).toBeGreaterThanOrEqual(Math.max(hitsOf(top3(bm25Ids)), hitsOf(top3(vecIds))))
+    void fusedIds
+    // 双路共同命中的文档必须排在单路文档之前
+    const dual = fused.filter((f) => f.ranks['bm25'] !== undefined && f.ranks['vector'] !== undefined)
+    const single = fused.filter((f) => !(f.ranks['bm25'] !== undefined && f.ranks['vector'] !== undefined))
+    if (dual.length > 0 && single.length > 0) {
+      const bestDualIdx = fused.findIndex((f) => f.chunk.id === dual[0]!.chunk.id)
+      const bestSingleIdx = fused.findIndex((f) => f.chunk.id === single[0]!.chunk.id)
+      expect(bestDualIdx).toBeLessThan(bestSingleIdx)
+    }
+  })
+
+  it('hybridRetrieve — 确定性（reranker 关闭时纯融合路径稳定）', async () => {
+    const a = await store.hybridRetrieve('vector ranking', { topK: 4 })
+    const b = await store.hybridRetrieve('vector ranking', { topK: 4 })
+    expect(a.map((x) => [x.chunk.id, x.rrf])).toEqual(b.map((x) => [x.chunk.id, x.rrf]))
+  })
+
+  it('hybridRetrieve — 空查询空结果；未入库时为空', async () => {
+    expect(await store.hybridRetrieve('')).toEqual([])
+    const empty = memStore()
+    expect(await empty.hybridRetrieve('anything')).toEqual([])
+  })
+})
+
+function top3<T>(s: Set<T>): Set<T> {
+  return new Set([...s].slice(0, 3))
+}

@@ -24,12 +24,17 @@ export type ChatSendPayload = {
  * images become trailing image_url parts, text (when present) a leading
  * text part. Attacker-supplied remote URLs cannot occur: ChatMessage.images
  * is only ever fed by the composer's local data-URL intake.
+ * todo39 (ADDITIVE): a knowledge-grounded user turn carries `ragContext` —
+ * the retrieved-chunk preamble goes to the MODEL only (display and chat.db
+ * keep the raw `content`). Without ragContext every projection is
+ * byte-identical to pre-39 (Chat.characterization + store suites pin it).
  */
 export function toWireContent(m: ChatMessage): ChatMessageContent {
+  const text = m.ragContext && m.ragContext.length > 0 ? `${m.ragContext}\n\n${m.content}` : m.content
   const images = m.images ?? []
-  if (images.length === 0) return m.content
+  if (images.length === 0) return text
   const parts: ChatContentPart[] = []
-  if (m.content.length > 0) parts.push({ type: 'text', text: m.content })
+  if (text.length > 0) parts.push({ type: 'text', text })
   for (const url of images) parts.push({ type: 'image_url', image_url: { url } })
   return parts
 }

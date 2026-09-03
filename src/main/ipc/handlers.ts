@@ -33,6 +33,7 @@ import { createImageGenerateHandler, createSaveTempImageHandler } from '../handl
 import { createSpeechHandlers, type SpeechServiceSurface } from '../../speech/ipc'
 import { createOcrHandlers } from '../../ocr/ipc'
 import { getOcrService, type OcrService } from '../../ocr/service'
+import { createRagHandlers, type RagManagerSurface } from '../../rag/ipc'
 import { createOverwriteCoverageHandler } from '../handlers/overwriteCoverage'
 import { createPublishReleaseHandler } from '../handlers/publishRelease'
 import { createClearCacheHandler } from '../handlers/clearCache'
@@ -180,7 +181,13 @@ export type HandlerDeps = {
     * lazy src/ocr singleton (spawns AND downloads nothing until an explicit
     * install/recognize); tests inject fakes through this seam.
     */
-    ocr?: () => OcrService
+     ocr?: () => OcrService
+   /**
+    * todo39: RAG hybrid-retrieval surface behind rag:*. Default is the lazy
+    * src/rag singleton (opens vec.db on first verb, probes the 127.0.0.1
+    * embedding engines for the 三态裁决); tests inject fakes through this seam.
+    */
+    rag?: () => RagManagerSurface
   /** destructive-action backends (same no-op wiring index.ts had pre-W1). */
   onDeleteWorkspace?: (id: string) => Promise<void>
   onOverwriteCoverage?: (opts: unknown) => Promise<void>
@@ -237,6 +244,12 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
   const ocrHandlers = createOcrHandlers({
     service: () => deps.ocr?.() ?? getOcrService({ userDataDir: services.userDataDir }),
     gallery: () => services.gallery,
+  })
+  // todo39: rag:* implementation lives in ../../rag/ipc.ts (registration-only
+  // here, speech/ocr precedent). The RagManager singleton owns the vec.db
+  // handle + embeddings 三态裁决; tests inject a fake through deps.rag.
+  const ragHandlers = createRagHandlers({
+    ...(deps.rag === undefined ? {} : { rag: deps.rag }),
   })
 
   const passthrough =
@@ -308,10 +321,14 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
     'config:set': async (args) => {
       const parsed = validatePayload(configSetSchema, first(args))
       if (!parsed.ok) return parsed
-      const { theme, locale, secrets } = parsed.data
+      const { theme, locale, secrets, rerankEnabled, rerankModel, embeddingModel } = parsed.data
       const partial: Partial<AppConfig> = {}
       if (theme !== undefined) partial.theme = theme
       if (locale !== undefined) partial.locale = locale
+      // todo39: RAG prefs (rerankEnabled toggles the optional精排 lane)
+      if (rerankEnabled !== undefined) partial.rerankEnabled = rerankEnabled
+      if (rerankModel !== undefined) partial.rerankModel = rerankModel
+      if (embeddingModel !== undefined) partial.embeddingModel = embeddingModel
       if (secrets !== undefined) {
         // field-wise merge; zod already rejected non-enc payloads
         partial.secrets = { ...getConfig().secrets, ...secrets }
@@ -559,7 +576,15 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
     // a chat dataURL or a main-resolved gallery path into the engine protocol.
     'ocr:status': ocrHandlers['ocr:status'],
     'ocr:install': ocrHandlers['ocr:install'],
-    'ocr:recognize': ocrHandlers['ocr:recognize']
+    'ocr:recognize': ocrHandlers['ocr:recognize'],
+
+    // --- rag / hybrid retrieval (todo39) --------------------------------------
+    // Registration-only: mode adjudication + FTS5/vec fusion + [n] citations
+    // live in ../../rag/**. status does not ingest; the embeddings 三态 probes
+    // only hit 127.0.0.1 engines; hash-mode degrades with a UI notice.
+    'rag:status': ragHandlers['rag:status'],
+    'rag:ingest': ragHandlers['rag:ingest'],
+    'rag:query': ragHandlers['rag:query']
   }
 
   return handlers
