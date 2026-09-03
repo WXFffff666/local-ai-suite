@@ -9,6 +9,7 @@
  *   node scripts/check-pack-size.mjs              # check release/ if exists
  *   node scripts/check-pack-size.mjs --strict     # fail if no artifact found
  *   node scripts/check-pack-size.mjs --dir out    # check out/ size
+ *   node scripts/check-pack-size.mjs --allow-missing-engines  # ack absent engine staging
  *   LIMIT_MB=150 node scripts/check-pack-size.mjs
  */
 
@@ -26,6 +27,13 @@ const LIMIT_BYTES = LIMIT_MB * 1024 * 1024
 
 const args = process.argv.slice(2)
 const strict = args.includes('--strict')
+// todo31: local builds have NO staged engine binaries (electron-builder.yml
+// extraResources is a commented placeholder until todo34's CI stages
+// build/engines). The <150 MB budget therefore covers app+Electron ONLY
+// locally; once engines ship inside resources/engines, todo34 updates this
+// baseline. Pass --allow-missing-engines to acknowledge the gap explicitly
+// (e.g. in pre-todo34 CI verify jobs) instead of getting the warning.
+const allowMissingEngines = args.includes('--allow-missing-engines')
 const dirArgIdx = args.indexOf('--dir')
 const checkDir = dirArgIdx !== -1 && args[dirArgIdx + 1] ? path.resolve(ROOT, args[dirArgIdx + 1]) : null
 
@@ -134,6 +142,17 @@ if (fs.existsSync(asarPath)) {
     console.error(`  ✗ app.asar exceeds ${LIMIT_MB} MB`)
     failed = true
   }
+}
+
+// 4) engine-binary accounting (todo31 note, todo34 baseline)
+const enginesDir = path.join(RELEASE_DIR, 'win-unpacked', 'resources', 'engines')
+if (fs.existsSync(enginesDir)) {
+  const r = walkSize(enginesDir)
+  console.log(`[check-pack-size] resources/engines staged: ${formatBytes(r.total)} (${r.files.length} files) — counted in the artifact sizes above`)
+} else if (fs.existsSync(path.join(RELEASE_DIR, 'win-unpacked'))) {
+  const msg = 'win-unpacked has NO resources/engines — size measured EXCLUDES engine binaries (todo34 CI staging pending)'
+  if (allowMissingEngines) console.log(`[check-pack-size] note: ${msg} (--allow-missing-engines acknowledged)`)
+  else console.warn(`[check-pack-size] WARN: ${msg}. Pass --allow-missing-engines to acknowledge.`)
 }
 
 if (failed) {
