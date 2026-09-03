@@ -315,6 +315,28 @@ export const permissionRespondSchema = z
   .strict()
 export type PermissionRespondInput = z.infer<typeof permissionRespondSchema>
 
+// --- engines / model launch (todo30b) -------------------------------------------
+
+/** engines:status takes no arguments; the empty-object shape is still gated. */
+export const enginesStatusSchema = z.object({}).strict()
+
+/**
+ * engines:gpuDownload. Engine keys mirror manifest MANIFEST_ENGINES (ollama is
+ * system-only, never a pack). Variant names are free-form (manifest-driven);
+ * unknown pairs are refused against the manifest in the handler.
+ */
+export const enginesGpuDownloadSchema = z
+  .object({
+    engine: z.enum(['llama', 'sd', 'whisper']),
+    variant: z.string().min(1).max(64),
+  })
+  .strict()
+export type EnginesGpuDownloadInput = z.infer<typeof enginesGpuDownloadSchema>
+
+/** models:launch — modelId is the models:list row identity (registry name). */
+export const modelsLaunchSchema = z.object({ modelId: z.string().min(1).max(256) }).strict()
+export type ModelsLaunchInput = z.infer<typeof modelsLaunchSchema>
+
 // --- validation funnel --------------------------------------------------------------
 
 export type IpcIssue = { path: string; message: string }
