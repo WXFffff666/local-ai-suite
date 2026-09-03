@@ -85,6 +85,15 @@ export class ToolRegistry implements ToolExecutor {
   }
 
   /**
+   * todo40: dynamic tool sets (MCP servers connect/stop at runtime) need the
+   * inverse of register. True when something was removed; unknown names are a
+   * no-op, not an error (reconciliation must be replay-safe).
+   */
+  unregister(name: string): boolean {
+    return this.tools.delete(name)
+  }
+
+  /**
    * ToolExecutor seam. argsJson arrives from the loop already repaired/parsed,
    * but this is the trust boundary for the executor's own consumers, so it
    * re-parses rather than trusting the string.

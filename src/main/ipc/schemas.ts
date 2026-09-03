@@ -452,6 +452,45 @@ export const ocrRecognizeSchema = z
   })
 export type OcrRecognizeInput = z.infer<typeof ocrRecognizeSchema>
 
+// --- mcp / stdio client manager (todo40) --------------------------------------
+// Server names double as rule-text fragments (MCP(<server>:<tool>)) and wire
+// tool-name prefixes, so the grammar is enforced AT the boundary (mirrors
+// MCP_SERVER_NAME_RE in src/mcp/types.ts — zod owns the IPC trust edge). Env
+// VALUES persist to config.json (plaintext on disk, same posture as every MCP
+// desktop client) but cross the reply boundary as KEYS only (McpServerView).
+
+const mcpNameSchema = z.string().regex(/^[A-Za-z0-9_-]{1,40}$/, 'server name must match [A-Za-z0-9_-]{1,40}')
+
+export const mcpListServersSchema = z.object({}).strict()
+
+export const mcpUpsertServerSchema = z
+  .object({
+    name: mcpNameSchema,
+    command: z.string().min(1).max(1024),
+    args: z.array(z.string().max(1024)).max(64).optional(),
+    env: z
+      .record(z.string().min(1).max(128).regex(/^[A-Za-z_][A-Za-z0-9_]*$/, 'env key must be an identifier'), z.string().max(4096))
+      .refine((e) => Object.keys(e).length <= 64, { message: 'too-many-env-keys' })
+      .optional(),
+    enabled: z.boolean().optional(),
+  })
+  .strict()
+export type McpUpsertServerInput = z.infer<typeof mcpUpsertServerSchema>
+
+export const mcpRemoveServerSchema = z.object({ name: mcpNameSchema }).strict()
+export const mcpSetEnabledSchema = z.object({ name: mcpNameSchema, enabled: z.boolean() }).strict()
+export const mcpListToolsSchema = z.object({ name: mcpNameSchema }).strict()
+
+export const mcpCallToolSchema = z
+  .object({
+    name: mcpNameSchema,
+    tool: z.string().min(1).max(128),
+    /** remote tool arguments ride as plain JSON; the SERVER validates semantics. */
+    args: z.record(z.string(), z.json()).optional(),
+  })
+  .strict()
+export type McpCallToolInput = z.infer<typeof mcpCallToolSchema>
+
 // --- validation funnel --------------------------------------------------------------
 
 export type IpcIssue = { path: string; message: string }

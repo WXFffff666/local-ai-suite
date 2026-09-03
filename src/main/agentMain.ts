@@ -19,6 +19,7 @@ import type { SidecarStatus } from '../core/types'
 import { SIDECAR_HOST } from '../core/types'
 import { isAvailable as jailIsAvailable } from '../agent/jail'
 import { PermissionEngine } from '../agent/policy/engine'
+import { getConfig } from './storage/config'
 import { getDb } from './storage/db'
 import { getMainLogger } from './logger'
 import { registerShutdownHook } from './shutdown'
@@ -49,6 +50,15 @@ export function createAgentMain(deps: AgentMainDeps): () => AgentWiring | null {
     if (win !== null && !win.isDestroyed()) win.webContents.send(channel, payload)
   }
 
+  // todo40: 'mcp:status' is app-wide chrome (Settings badges, like update:state)
+  // — every live frame gets every transition, not just the focused one.
+  const sendMcpStatus = (event: import('../mcp/types').McpStatusEvent): void => {
+    assertAllowedEventChannel('mcp:status')
+    for (const win of BrowserWindow.getAllWindows()) {
+      if (!win.webContents.isDestroyed()) win.webContents.send('mcp:status', event)
+    }
+  }
+
   const resolveUpstream = async (): Promise<string> => {
     const s = deps.getApiStatus()
     if (s !== null && s.mode === 'external-takeover') return `http://${SIDECAR_HOST}:${s.port}`
@@ -74,6 +84,10 @@ export function createAgentMain(deps: AgentMainDeps): () => AgentWiring | null {
         sendTerm: (event) => sendToUi('agent:term', event),
         resolveUpstream,
         log: { warn: (msg, meta) => log.warn(meta ?? {}, `[agent] ${msg}`) },
+        // todo40: MCP stdio pool (config.json is the truth; reads are fresh per
+        // access so Settings upserts apply without a rebuild).
+        mcpServers: () => getConfig().mcpServers ?? {},
+        sendMcpStatus,
       })
       registerShutdownHook(() => {
         wiring?.dispose()

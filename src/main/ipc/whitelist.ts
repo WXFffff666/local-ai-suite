@@ -101,7 +101,17 @@ export const ALLOWED_CHANNELS = [
   // renderer-supplied filesystem path.
   'ocr:status',
   'ocr:install',
-  'ocr:recognize'
+  'ocr:recognize',
+  // todo40: MCP stdio client manager (settings CRUD + lazy server lifecycle +
+  // tools discovery/debug call). Tool EXECUTION for the agent rides the gated
+  // registry, not these channels; mcp:callTool is the Settings test/debug
+  // button and passes through the SAME permission gate.
+  'mcp:listServers',
+  'mcp:upsertServer',
+  'mcp:removeServer',
+  'mcp:setEnabled',
+  'mcp:listTools',
+  'mcp:callTool'
 ] as const
 
 export type AllowedChannel = (typeof ALLOWED_CHANNELS)[number]
@@ -146,7 +156,9 @@ export const ALLOWED_EVENT_CHANNELS = [
   // todo32: electron-updater state machine fanout (see UpdateStateEvent below)
   'update:state',
   // todo37: OCR engine pack install progress (terminal states done/quarantined/error)
-  'ocr:progress'
+  'ocr:progress',
+  // todo40: MCP server lifecycle transitions (every state change of any server)
+  'mcp:status'
 ] as const
 
 export type AllowedEventChannel = (typeof ALLOWED_EVENT_CHANNELS)[number]
@@ -255,6 +267,7 @@ export type EventPayloads = {
   'engines:progress': EnginesProgressEvent
   'update:state': UpdateStateEvent
   'ocr:progress': OcrProgressEvent
+  'mcp:status': McpStatusEvent
 }
 
 // ---------------------------------------------------------------------------
@@ -650,3 +663,60 @@ export type RagIngestReply =
 export type RagQueryReply =
   | { ok: true; citations: RagCitation[]; mode: RagEmbeddingModeWire; rerank: RagRerankState }
   | { ok: false; error: string }
+
+// ---------------------------------------------------------------------------
+// MCP stdio client manager (todo40) wire contracts. Self-contained mirror of
+// src/mcp/** (outside tsconfig.web's include set — permission/engines/rag wire
+// precedent). mcp:status mirrors McpStatusEvent; the server view NEVER carries
+// env VALUES (keys only — the child gets values from the main-process pool).
+// ---------------------------------------------------------------------------
+
+export const MCP_SERVER_STATES_WIRE = ['stopped', 'starting', 'running', 'backoff', 'failed'] as const
+export type McpServerStateWire = (typeof MCP_SERVER_STATES_WIRE)[number]
+
+export type McpServerView = {
+  name: string
+  command: string
+  args: readonly string[]
+  envKeys: readonly string[]
+  enabled: boolean
+  state: McpServerStateWire
+  /** tools/list count after the first successful connect this process; null before */
+  toolCount: number | null
+  /** last spawn/protocol error (failed-state tooltip) */
+  lastError: string | null
+}
+
+/** 'mcp:status' payload (main -> renderer, broadcast on every transition). */
+export type McpStatusEvent = {
+  name: string
+  state: McpServerStateWire
+  error?: string
+}
+
+/** Honest not-ready + gate denial ride the shared error arms of every mcp reply. */
+export type McpRequestError =
+  | 'not-ready'
+  | 'invalid-payload'
+  | 'server-not-found'
+  | 'server-disabled'
+  | 'server-failed'
+  | 'server-start-failed'
+  | 'sdk-unavailable'
+  | 'tool-not-found'
+  | 'call-failed'
+  | 'permission-denied'
+
+export type McpListServersReply = { ok: true; servers: McpServerView[] } | { ok: false; error: McpRequestError }
+
+export type McpUpsertServerReply = { ok: true; server: McpServerView } | { ok: false; error: McpRequestError }
+export type McpRemoveServerReply = { ok: true } | { ok: false; error: McpRequestError }
+export type McpSetEnabledReply = { ok: true; server: McpServerView } | { ok: false; error: McpRequestError }
+
+export type McpToolEntry = { name: string; description?: string }
+export type McpListToolsReply = { ok: true; tools: McpToolEntry[] } | { ok: false; error: McpRequestError }
+
+/** mcp:callTool debug reply — result is the raw tools/call payload (JSON-serializable). */
+export type McpCallToolReply =
+  | { ok: true; result: unknown }
+  | { ok: false; error: McpRequestError; detail?: string }

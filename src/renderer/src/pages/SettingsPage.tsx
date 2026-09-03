@@ -15,6 +15,7 @@ import '../components/settingspage/settingspage.css'
 import { EngineStatus } from '../components/settingspage/EngineStatus'
 import { SpeechSection } from '../components/settingspage/SpeechSection'
 import { OcrSection } from '../components/settingspage/OcrSection'
+import { McpSection } from '../components/settingspage/McpSection'
 import { SearchSection } from '../components/settingspage/SearchSection'
 import { SecretRow } from '../components/settingspage/SecretRow'
 import type {
@@ -225,6 +226,9 @@ export function SettingsPage(): React.JSX.Element {
 
       {/* todo39 — 检索区：嵌入三态 / 本地精排开关 / 知识库统计（rag:* 通道） */}
       <SearchSection />
+
+      {/* todo40 — MCP 服务器：stdio client CRUD / enable / 工具探测 / 权限闸门调试（mcp:* 通道） */}
+      <McpSection />
     </section>
   )
 }

@@ -33,6 +33,7 @@ import { createImageGenerateHandler, createSaveTempImageHandler } from '../handl
 import { createSpeechHandlers, type SpeechServiceSurface } from '../../speech/ipc'
 import { createOcrHandlers } from '../../ocr/ipc'
 import { getOcrService, type OcrService } from '../../ocr/service'
+import { createMcpHandlers, type McpPoolSurface } from '../../mcp/ipc'
 import { createRagHandlers, type RagManagerSurface } from '../../rag/ipc'
 import { createOverwriteCoverageHandler } from '../handlers/overwriteCoverage'
 import { createPublishReleaseHandler } from '../handlers/publishRelease'
@@ -188,6 +189,13 @@ export type HandlerDeps = {
     * embedding engines for the 三态裁决); tests inject fakes through this seam.
     */
     rag?: () => RagManagerSurface
+  /**
+   * todo40: MCP stdio pool behind mcp:*. The pool is OWNED by the agent
+   * wiring (it needs the PermissionPort), so unlike speech/ocr there is no
+   * lazy module singleton — absent wiring is the honest not-ready shape
+   * (same `agent`/`permission` seam convention).
+   */
+  mcp?: () => McpPoolSurface | null
   /** destructive-action backends (same no-op wiring index.ts had pre-W1). */
   onDeleteWorkspace?: (id: string) => Promise<void>
   onOverwriteCoverage?: (opts: unknown) => Promise<void>
@@ -250,6 +258,12 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
   // handle + embeddings 三态裁决; tests inject a fake through deps.rag.
   const ragHandlers = createRagHandlers({
     ...(deps.rag === undefined ? {} : { rag: deps.rag }),
+  })
+  // todo40: mcp:* implementation lives in ../../mcp/ipc.ts (registration-only
+  // here, ocr/rag precedent). The pool arrives from the agent wiring (it owns
+  // the PermissionPort); no pool yet ⇒ honest not-ready on every channel.
+  const mcpHandlers = createMcpHandlers({
+    pool: () => deps.mcp?.() ?? null,
   })
 
   const passthrough =
@@ -584,7 +598,18 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
     // only hit 127.0.0.1 engines; hash-mode degrades with a UI notice.
     'rag:status': ragHandlers['rag:status'],
     'rag:ingest': ragHandlers['rag:ingest'],
-    'rag:query': ragHandlers['rag:query']
+    'rag:query': ragHandlers['rag:query'],
+
+    // --- mcp / stdio client manager (todo40) ----------------------------------
+    // Registration-only: config persistence + lazy pool lifecycle + the gated
+    // debug call live in ../../mcp/ipc.ts. listServers never spawns; listTools
+    // lazily starts; callTool passes the SAME permission gate as the agent path.
+    'mcp:listServers': mcpHandlers['mcp:listServers'],
+    'mcp:upsertServer': mcpHandlers['mcp:upsertServer'],
+    'mcp:removeServer': mcpHandlers['mcp:removeServer'],
+    'mcp:setEnabled': mcpHandlers['mcp:setEnabled'],
+    'mcp:listTools': mcpHandlers['mcp:listTools'],
+    'mcp:callTool': mcpHandlers['mcp:callTool']
   }
 
   return handlers

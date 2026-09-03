@@ -223,6 +223,8 @@ function registerIpcHandlers(): void {
     conversations: () => conversations,
     agent: () => agentMain()?.agent ?? null,
     permission: () => agentMain()?.permission ?? null,
+    // todo40: the MCP pool lives inside the agent wiring (shared PermissionPort).
+    mcp: () => agentMain()?.mcp ?? null,
     // todo32: thin ack handlers delegate here (state streams via update:state)
     updater: getUpdater
   })

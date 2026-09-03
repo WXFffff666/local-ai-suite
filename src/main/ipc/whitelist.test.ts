@@ -83,7 +83,15 @@ describe('ipc whitelist', () => {
       // spawn-free AND download-free; install is an explicit gesture
       'ocr:status',
       'ocr:install',
-      'ocr:recognize'
+      'ocr:recognize',
+      // todo40: MCP stdio client manager (CRUD + lazy lifecycle + debug tools/call;
+      // all gated through the permission engine, agent path rides the registry)
+      'mcp:listServers',
+      'mcp:upsertServer',
+      'mcp:removeServer',
+      'mcp:setEnabled',
+      'mcp:listTools',
+      'mcp:callTool'
     ])
   })
 
@@ -135,7 +143,9 @@ describe('ipc event whitelist (main -> renderer)', () => {
       // todo32: electron-updater state machine fanout
       'update:state',
       // todo37: OCR engine pack install progress (terminal done/quarantined/error)
-      'ocr:progress'
+      'ocr:progress',
+      // todo40: MCP server lifecycle transitions ({name,state})
+      'mcp:status'
     ])
     for (const ch of ALLOWED_EVENT_CHANNELS) {
       expect(isAllowedEventChannel(ch)).toBe(true)

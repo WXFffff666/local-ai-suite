@@ -25,6 +25,9 @@ import { PermissionEngine } from '../agent/policy/engine'
 import { RULE_KEYWORDS, actionValue } from '../agent/policy/rules'
 import type { PermissionAction } from '../agent/policy/types'
 import { ToolRegistry, registerFileTools, registerShellTools, shellGrantSuggestion, type PermissionPort } from '../agent/tools'
+import { McpPool } from '../mcp/pool'
+import { registerMcpTools } from '../mcp/tools'
+import type { McpSdkSurface, McpServersMap, McpStatusEvent } from '../mcp/types'
 import { createPermissionBridge, type PermissionBridge } from './ipc/permissionBridge'
 import type { PermissionPreview, PermissionRequestEvent, AgentTermEvent } from './ipc/whitelist'
 
@@ -49,11 +52,23 @@ export type AgentWiringDeps = {
   /** Resolve the OpenAI-compatible upstream origin (127.0.0.1 only). Rejects when no engine is available. */
   resolveUpstream: () => Promise<string>
   log?: AgentWiringLogger
+  /**
+   * todo40: config.json mcpServers reader. ABSENT ⇒ no pool is built (unit
+   * tests and degraded boots keep the pre-todo40 surface); present ⇒ the pool
+   * is constructed here because gating needs THIS lane's PermissionPort.
+   */
+  mcpServers?: () => McpServersMap
+  /** SDK seam (tests inject a fake @modelcontextprotocol/sdk surface). */
+  loadMcpSdk?: () => Promise<McpSdkSurface>
+  /** 'mcp:status' fanout (index.ts broadcasts to every renderer frame). */
+  sendMcpStatus?: (event: McpStatusEvent) => void
 }
 
 export type AgentWiring = {
   agent: AgentSurface
   permission: PermissionSurface
+  /** todo40: live MCP pool (null when deps.mcpServers was absent). */
+  mcp: McpPool | null
   /** Drop session-scope grants (app quit; persisted rules and audit stay). */
   dispose(): void
 }
@@ -226,5 +241,29 @@ export function buildAgentWiring(deps: AgentWiringDeps): AgentWiring {
 
   const sessions = new AgentSessions(registry)
   const agent = createAgentSurface(sessions, deps.resolveUpstream, deps.log)
-  return { agent, permission: bridge, dispose: () => deps.engine.destroy() }
+
+  // todo40: the MCP pool rides THIS lane because every remote call gates
+  // through the port above. Construction spawns nothing; startEnabled kicks
+  // only the servers the user enabled (lazy posture = ocr/speech precedent).
+  let mcp: McpPool | null = null
+  if (deps.mcpServers !== undefined) {
+    mcp = new McpPool({
+      readServers: deps.mcpServers,
+      permission: port,
+      log: deps.log,
+      ...(deps.loadMcpSdk === undefined ? {} : { loadSdk: deps.loadMcpSdk }),
+    })
+    registerMcpTools(registry, mcp)
+    if (deps.sendMcpStatus !== undefined) mcp.subscribe(deps.sendMcpStatus)
+    mcp.startEnabled()
+  }
+  return {
+    agent,
+    permission: bridge,
+    mcp,
+    dispose: () => {
+      mcp?.stopAll()
+      deps.engine.destroy()
+    },
+  }
 }

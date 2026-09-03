@@ -84,3 +84,22 @@ describe('ToolRegistry', () => {
     await expect(reg.execute('read_file', '[1]', ctx)).rejects.toThrow(/must be a JSON object/)
   })
 })
+
+describe('ToolRegistry.unregister (todo40 dynamic MCP sets)', () => {
+  it('removes exactly the named tool; unknown names are a replay-safe no-op', async () => {
+    const reg = new ToolRegistry()
+    reg.register(tool('mcp_demo__echo'))
+    reg.register(tool('read_file'))
+    expect(reg.unregister('mcp_demo__echo')).toBe(true)
+    expect(reg.unregister('mcp_demo__echo')).toBe(false)
+    expect(reg.list().map((d) => d.name)).toEqual(['read_file'])
+    await expect(reg.execute('mcp_demo__echo', '{}', ctx)).rejects.toThrow(/unknown tool/)
+  })
+
+  it('a name freed by unregister can be registered again (server re-sync)', () => {
+    const reg = new ToolRegistry()
+    reg.register(tool('mcp_demo__echo'))
+    reg.unregister('mcp_demo__echo')
+    expect(() => reg.register(tool('mcp_demo__echo'))).not.toThrow()
+  })
+})

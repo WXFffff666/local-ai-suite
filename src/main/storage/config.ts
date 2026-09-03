@@ -62,6 +62,14 @@ export type AppConfig = {
   embeddingModel: string
   /** Encrypted secrets (todo16) — see SecretPayloads contract above */
   secrets?: SecretPayloads
+  /**
+   * todo40: MCP stdio servers, keyed by name. Structural mirror of
+   * src/mcp/types McpServerEntry (this file must stay import-free of src/mcp
+   * to avoid a cycle — the pool is the consumer). Env VALUES are plaintext on
+   * disk here by design (same posture as Claude Desktop's config); IPC replies
+   * expose keys only.
+   */
+  mcpServers?: Record<string, import('../../mcp/types').McpServerEntry>
 }
 
 export const DEFAULT_CONFIG: AppConfig = {
