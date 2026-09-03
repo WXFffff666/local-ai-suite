@@ -1,0 +1,162 @@
+/**
+ * settingspage.css — todo16 设置页样式（令牌沿用 App.css --las-*）
+ */
+
+.las-settings-warn {
+  max-width: 640px;
+  margin: 0 0 16px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: rgba(220, 170, 60, 0.12);
+  border: 1px solid rgba(220, 170, 60, 0.35);
+  color: #db3;
+  font-size: 12px;
+}
+
+.las-settings-group {
+  max-width: 640px;
+  border: 1px solid var(--las-border);
+  border-radius: 8px;
+  background: var(--las-card);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+}
+
+.las-settings-group-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.las-settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.las-settings-label {
+  color: var(--las-muted);
+}
+
+.las-settings-value {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--las-bg);
+  border: 1px solid var(--las-border);
+}
+
+.las-settings-pills {
+  display: flex;
+  gap: 6px;
+}
+
+.las-settings-pill {
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--las-border);
+  background: var(--las-bg);
+  color: var(--las-muted);
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+}
+
+.las-settings-pill-on {
+  border-color: #4a8;
+  background: rgba(70, 160, 110, 0.15);
+  color: var(--las-fg);
+}
+
+.las-settings-note {
+  margin: 8px 0 0;
+  color: var(--las-muted);
+  font-size: 11px;
+}
+
+/* ---- 密钥行 ---- */
+
+.las-setting-secret {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--las-border);
+}
+
+.las-setting-secret:last-of-type {
+  border-bottom: 0;
+}
+
+.las-setting-secret-label {
+  display: block;
+  font-size: 12px;
+  color: var(--las-muted);
+  margin-bottom: 4px;
+}
+
+.las-setting-secret-view,
+.las-setting-secret-edit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.las-setting-secret-mask {
+  flex: 1;
+  font-size: 13px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: var(--las-bg);
+  border: 1px solid var(--las-border);
+  letter-spacing: 0.04em;
+}
+
+.las-setting-secret-input {
+  flex: 1;
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--las-border);
+  background: var(--las-bg);
+  color: var(--las-fg);
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.las-setting-secret-edit-btn,
+.las-setting-secret-save,
+.las-setting-secret-cancel {
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--las-border);
+  background: var(--las-bg);
+  color: var(--las-fg);
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+}
+
+.las-setting-secret-save:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.las-setting-secret-warning,
+.las-setting-secret-error {
+  margin: 6px 0 0;
+  font-size: 11px;
+}
+
+.las-setting-secret-warning {
+  color: #db3;
+}
+
+.las-setting-secret-error {
+  color: #e66;
+}
+
+.las-setting-secret-hint {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--las-muted);
+}

@@ -57,3 +57,4 @@ userData/
 !src/renderer/src/features/coverage/overwriteCoverage.ts
 !src/renderer/src/features/release/publishRelease.ts
 !src/main/ipc/secrets.ts
+!src/renderer/src/components/settingspage/SecretRow.tsx
