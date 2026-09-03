@@ -9,8 +9,12 @@ import type {
   ChatDoneEvent,
   ChatErrorEvent,
   DownloadProgressEvent,
+  EnginesGpuDownloadReply,
+  EnginesProgressEvent,
+  EnginesStatusReply,
   EventPayloads,
-  ImageQueueStatusEvent
+  ImageQueueStatusEvent,
+  ModelsLaunchReply
 } from '../main/ipc/whitelist'
 
 declare global {
@@ -34,5 +38,10 @@ export type {
   ImageQueueStatusEvent,
   AppNotificationEvent,
   AgentEventEvent,
-  AgentTermEvent
+  AgentTermEvent,
+  // todo30b: engine status / GPU pack download wire contracts
+  EnginesStatusReply,
+  EnginesProgressEvent,
+  EnginesGpuDownloadReply,
+  ModelsLaunchReply
 }
