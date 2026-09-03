@@ -25,9 +25,11 @@ import {
   MAX_AGENT_ITERATIONS,
   type AgentErrorCode,
   type AgentEvent,
+  type AgentFetch,
   type AgentLoopErrorInfo,
   type AgentLoopInput,
   type AgentMessage,
+  type AgentResponse,
   type AgentRunResult,
   type JsonValue,
   type OpenAiToolWire,
@@ -90,7 +92,7 @@ export async function runAgentLoop(input: AgentLoopInput): Promise<AgentRunResul
   const emit = (event: AgentEvent): void => {
     input.onEvent(event)
   }
-  const doFetch = input.fetchImpl ?? ((url, init) => globalThis.fetch(url, init))
+  const doFetch: AgentFetch = input.fetchImpl ?? globalThis.fetch
   // 25 is a HARD ceiling (LLM10): callers may lower it, never raise it.
   const cap = Math.min(input.maxIterations ?? MAX_AGENT_ITERATIONS, MAX_AGENT_ITERATIONS)
   const toolsWire: readonly OpenAiToolWire[] | undefined = input.tools.length > 0 ? toOpenAiTools(input.tools) : undefined
@@ -120,7 +122,7 @@ export async function runAgentLoop(input: AgentLoopInput): Promise<AgentRunResul
     }
     if (toolsWire !== undefined) body.tools = toolsWire
 
-    let res: Awaited<ReturnType<typeof doFetch>>
+    let res: AgentResponse
     try {
       res = await doFetch(url, {
         method: 'POST',
