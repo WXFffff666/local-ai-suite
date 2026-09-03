@@ -269,6 +269,36 @@ export const conversationsAppendMessageSchema = z.object({
 })
 export const conversationsListMessagesSchema = z.object({ chatId: idSchema })
 
+// --- agent (todo23 tool-calling loop) ---------------------------------------------
+
+/** Local engine origin only — same 127.0.0.1 confinement as every sidecar dial. */
+const agentBaseUrlSchema = z
+  .string()
+  .min(1)
+  .max(256)
+  .regex(/^http:\/\/127\.0\.0\.1(?::\d{2,5})?(?:\/.*)?$/, 'baseUrl must be http://127.0.0.1[:port]')
+
+export const agentStartSchema = z
+  .object({
+    sessionId: idSchema,
+    baseUrl: agentBaseUrlSchema,
+    /** Absent ⇒ the handler answers model-not-selected; the UI picks one (todo29). */
+    model: z.string().min(1).max(256).optional(),
+    goal: z.string().min(1).max(200_000),
+    /** Workspace root for the todo27/28 path fence; carried opaquely here. */
+    workspace: z.string().max(1024).optional(),
+    /** Optional LOWERING of the runner cap; the hard ceiling (25) lives in types.ts. */
+    maxIterations: z.number().int().min(1).max(25).optional()
+  })
+  .strict()
+export type AgentStartInput = z.infer<typeof agentStartSchema>
+
+export const agentStatusSchema = z.object({ sessionId: idSchema }).strict()
+export type AgentStatusInput = z.infer<typeof agentStatusSchema>
+
+export const agentCancelSchema = agentStatusSchema
+export type AgentCancelInput = z.infer<typeof agentCancelSchema>
+
 // --- validation funnel --------------------------------------------------------------
 
 export type IpcIssue = { path: string; message: string }

@@ -9,12 +9,15 @@
  *   preload on/once/off). Event channels are listed here once; payloads are
  *   typed by EventPayloads.
  *
- * agent:event / agent:term are pre-listed per plan (todo23/28 own their emit
- * sites); agent:* INVOKE channels are registered by todo23/24 themselves —
- * they are deliberately NOT part of ALLOWED_CHANNELS here.
+ * agent:* invoke channels (start/status/cancel) landed with todo23; the
+ * agent:event payload is the todo23 AgentEvent union (src/agent/runner/types
+ * — the single source both sides compile against). agent:term stays reserved
+ * for todo28's xterm output.
  *
  * Sidecars are bound to 127.0.0.1 (see src/main/index.ts).
  */
+
+import type { AgentEvent, AgentSessionStatus } from '../../agent/runner/types'
 
 export const ALLOWED_CHANNELS = [
   'health:pulse',
@@ -29,6 +32,11 @@ export const ALLOWED_CHANNELS = [
   'config:set',
   'chat:send',
   'chat:abort',
+  // todo23: agent tool-calling loop (permission decision channels ride with
+  // todo25; agent:term event stays reserved for todo28's xterm output)
+  'agent:start',
+  'agent:status',
+  'agent:cancel',
   'image:generate',
   'image:queue:status',
   'image:saveTempImage',
@@ -177,8 +185,8 @@ export type AppNotificationEvent = {
   code?: string
 }
 
-/** Reserved: agent runner events (todo23) / xterm chunks (todo28). */
-export type AgentEventEvent = Record<string, unknown>
+/** todo23: runner event union (see src/agent/runner/types.ts — exhaustive match there). */
+export type AgentEventEvent = AgentEvent
 export type AgentTermEvent = { id: string; chunk: string }
 
 /** Main-side send surface handed to handlers (bound to the sending frame). */
@@ -194,6 +202,19 @@ export type EventPayloads = {
   'agent:event': AgentEventEvent
   'agent:term': AgentTermEvent
 }
+
+// ---------------------------------------------------------------------------
+// Agent invoke reply contracts (todo23). Declared alongside the event payload
+// they pair with so todo29 renders from one file. Start rejections are
+// runner-level decisions (sessions.ts); validation rejections ride the
+// standard 400-shape from schemas.ts.
+// ---------------------------------------------------------------------------
+
+export type AgentStartReply =
+  | { ok: true; sessionId: string; started: true }
+  | { ok: false; error: 'session-already-running' | 'model-not-selected' | 'base-url-not-local' | 'invalid-base-url' }
+export type AgentStatusReply = { ok: true; status: AgentSessionStatus | null }
+export type AgentCancelReply = { ok: true; sessionId: string; cancelled: boolean }
 
 // ---------------------------------------------------------------------------
 // LoRA invoke reply contracts (todo19). Declared here — the one src/main file

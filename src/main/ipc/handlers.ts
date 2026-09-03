@@ -34,7 +34,12 @@ import { readLoraMetaFile, toLoraFiles } from './loraFs'
 import type { ChatRelay } from './chatRelay'
 import type { DownloadManager } from './downloadManager'
 import { createSecretsHandlers, type SafeStorageLike } from './secrets'
+import type { AgentSessions } from '../../agent/runner/sessions'
+import type { AgentEvent } from '../../agent/runner/types'
 import {
+  agentCancelSchema,
+  agentStartSchema,
+  agentStatusSchema,
   chatAbortSchema,
   chatSendSchema,
   configGetSchema,
@@ -56,7 +61,16 @@ import {
   searchRunSchema,
   validatePayload
 } from './schemas'
-import type { AllowedChannel, ImageQueueStatusEvent, IpcSendFn, LoraMetaReply, LoraScanReply } from './whitelist'
+import type {
+  AgentCancelReply,
+  AgentStartReply,
+  AllowedChannel,
+  AgentStatusReply,
+  ImageQueueStatusEvent,
+  IpcSendFn,
+  LoraMetaReply,
+  LoraScanReply
+} from './whitelist'
 
 export type HandlerContext = { send: IpcSendFn }
 export type IpcHandler = (args: unknown[], ctx: HandlerContext) => Promise<unknown>
@@ -99,6 +113,13 @@ export type HandlerDeps = {
   dialog: DialogLike
   safeStorage: SafeStorageLike
   conversations?: () => ConversationsProvider | null
+  /**
+   * todo23: agent session registry behind the agent:* channels. Absent until
+   * the container wires it (same honest not-ready pattern as conversations
+   * before todo17); todo29 injects it in main/index.ts alongside the tools
+   * registry (todo27/28).
+   */
+  agent?: () => AgentSessions | null
   /** destructive-action backends (same no-op wiring index.ts had pre-W1). */
   onDeleteWorkspace?: (id: string) => Promise<void>
   onOverwriteCoverage?: (opts: unknown) => Promise<void>
@@ -218,6 +239,39 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
       const parsed = validatePayload(chatAbortSchema, first(args))
       if (!parsed.ok) return parsed
       return deps.relay.abort(parsed.data)
+    },
+
+    // --- agent (todo23) ----------------------------------------------------------
+    // Thin registration only: validation + delegation. The tool-calling loop,
+    // session state and abort cascade live in src/agent/runner/** (pure, unit-
+    // tested there); agent:event flows to the STARTING frame's send fn, mirroring
+    // the chat:send rule. NOT_READY until todo29 injects the sessions container.
+    'agent:start': async (args, ctx) => {
+      const parsed = validatePayload(agentStartSchema, first(args))
+      if (!parsed.ok) return parsed
+      const sessions = deps.agent?.()
+      if (!sessions) return NOT_READY
+      const emit = (event: AgentEvent): void => {
+        ctx.send('agent:event', event)
+      }
+      const reply: AgentStartReply = sessions.start(parsed.data, emit)
+      return reply
+    },
+    'agent:status': async (args) => {
+      const parsed = validatePayload(agentStatusSchema, first(args))
+      if (!parsed.ok) return parsed
+      const sessions = deps.agent?.()
+      if (!sessions) return NOT_READY
+      const reply: AgentStatusReply = sessions.status(parsed.data.sessionId)
+      return reply
+    },
+    'agent:cancel': async (args) => {
+      const parsed = validatePayload(agentCancelSchema, first(args))
+      if (!parsed.ok) return parsed
+      const sessions = deps.agent?.()
+      if (!sessions) return NOT_READY
+      const reply: AgentCancelReply = sessions.cancel(parsed.data.sessionId)
+      return reply
     },
 
     // --- image queue -------------------------------------------------------------
