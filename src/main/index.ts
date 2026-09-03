@@ -11,6 +11,7 @@ import { registerShutdownHook, shutdownServices, type ShutdownResult } from './s
 import { getServices, initServices, SIDECAR_NAMES, type SidecarName } from './services'
 import { startApiServer, ENGINE_MIN_OLLAMA_VERSION, type ApiServerStatus } from './apiServer'
 import { createConversationService } from './storage/conversations'
+import { createAgentMain } from './agentMain'
 import { TrayController } from './tray'
 import type { SidecarManager } from '../core/SidecarManager'
 import type { SidecarStatus } from '../core/types'
@@ -133,6 +134,10 @@ export function broadcastEvent(channel: AllowedEventChannel, payload: unknown): 
   }
 }
 
+// Deliver a main->renderer event to the focused window, falling back to the
+// primary window (permission prompts + streamed shell output follow the UI
+// that is actually visible — plan 29 "no unattended background" posture).
+
 // Whitelisted IPC handlers — only ALLOWED channels are registered. Each handler
 // validates the channel again via isAllowedChannel for defense in depth, and is
 // given a per-frame `send` gated by the event whitelist (chat relay streaming).
@@ -159,6 +164,14 @@ function registerIpcHandlers(): void {
   // so a db failure surfaces as a rejected invoke the renderer reports honestly.
   const conversations = createConversationService()
 
+  // todo29: agent + permission deps via the lazy index-layer factory
+  // (src/main/agentMain.ts). services.ts stays untouched (lane-30 owner).
+  const agentMain = createAgentMain({
+    getMainWindow: () => mainWindow,
+    getApiStatus: () => apiStatusRef.current,
+    ensureSidecar: (name) => services.ensureSidecar(name),
+  })
+
   const handlers = buildIpcHandlers({
     services,
     relay,
@@ -166,7 +179,9 @@ function registerIpcHandlers(): void {
     hfSearch: searchHF,
     dialog,
     safeStorage,
-    conversations: () => conversations
+    conversations: () => conversations,
+    agent: () => agentMain()?.agent ?? null,
+    permission: () => agentMain()?.permission ?? null
   })
 
   for (const [channel, fn] of Object.entries(handlers) as [AllowedChannel, (typeof handlers)[AllowedChannel]][]) {
