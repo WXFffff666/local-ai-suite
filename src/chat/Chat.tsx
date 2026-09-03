@@ -22,6 +22,13 @@ import { CHAT_PRESETS, fillChatPreset, type ChatPreset } from '../presets/preset
 import { MessageList } from '../renderer/src/components/chatui/MessageList'
 import { PresetPicker } from '../renderer/src/components/chatui/PresetPicker'
 import '../renderer/src/components/chatui/chatui.css'
+// todo29 (ADDITIVE): agent mode surface. Default mode stays 'chat' — with no
+// window.api / no toggle interaction every branch below is byte-identical to
+// the pre-29 render (pinned by Chat.characterization.test.tsx).
+import AgentModeToggle from '../renderer/src/components/agentui/AgentModeToggle'
+import AgentTimeline from '../renderer/src/components/agentui/AgentTimeline'
+import { useAgentStore, DRAFT_KEY } from '../renderer/src/components/agentui/agentStore'
+import { isBusy } from '../renderer/src/components/agentui/timeline'
 
 export type ChatProps = {
   /** 对话预设（点击填充输入框）；传空数组隐藏预设行 */
@@ -50,6 +57,14 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
   const canStream = getChatIpcApi() !== null
   const streamingHere = Boolean(cur?.messages.some((m) => m.pending))
 
+  // todo29: agent mode (additive). sessionKey falls back to a draft bucket
+  // so the mode/timeline survive before any chat session exists.
+  const agentKey = currentId ?? DRAFT_KEY
+  const agentMode = useAgentStore((s) => s.modes[agentKey] ?? 'chat')
+  const agentBusy = useAgentStore((s) => isBusy(s.runs[agentKey]?.phase ?? 'idle'))
+  const startAgentRun = useAgentStore((s) => s.startRun)
+  const inAgent = agentMode === 'agent'
+
   useEffect(() => {
     let cancelled = false
     void probeVisionCapability().then((v) => {
@@ -76,6 +91,14 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
 
   const handleSend = async (): Promise<void> => {
     const t = input.trim()
+    // todo29: agent mode — the composer submits the goal to agent:start
+    // (贴图/presets belong to the chat path; agent takes plain text goals).
+    if (inAgent) {
+      if (!t || agentBusy) return
+      setInput('')
+      await startAgentRun(agentKey, t)
+      return
+    }
     if ((!t && images.length === 0) || streamingHere) return
     const attached = images
     setInput('')
@@ -130,9 +153,10 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
           <strong style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {cur ? cur.title : 'Select or create a chat'}
           </strong>
-          {cur && <button onClick={clearCurrentMessages} style={{ cursor: 'pointer' }}>Clear</button>}
-          {streamingHere && <button onClick={abort} style={{ cursor: 'pointer', color: '#f55' }}>Abort</button>}
-          {!streaming && error && error !== 'aborted' && (
+          <AgentModeToggle sessionKey={agentKey} />
+          {!inAgent && cur && <button onClick={clearCurrentMessages} style={{ cursor: 'pointer' }}>Clear</button>}
+          {!inAgent && streamingHere && <button onClick={abort} style={{ cursor: 'pointer', color: '#f55' }}>Abort</button>}
+          {!inAgent && !streaming && error && error !== 'aborted' && (
             <button onClick={() => void retry()} style={{ cursor: 'pointer' }}>Retry</button>
           )}
         </div>
@@ -144,20 +168,26 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
         )}
 
         <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', position: 'relative' }}>
-          {cur && cur.messages.length > 0 ? (
-            <MessageList key={cur.id} messages={cur.messages} />
+          {inAgent ? (
+            <AgentTimeline sessionKey={agentKey} />
           ) : (
-            <div style={{ padding: 16, color: '#666' }}>
-              {!cur && 'Create a new chat to start. 流式经主进程 chat:delta 事件转发。'}
-              {cur && cur.messages.length === 0 && 'No messages — say hello.'}
-            </div>
-          )}
-          {error && error !== 'aborted' && canStream && (
-            <div style={{ color: '#f88', fontSize: 12, padding: '0 16px 8px' }}>Error: {error}</div>
+            <>
+              {cur && cur.messages.length > 0 ? (
+                <MessageList key={cur.id} messages={cur.messages} />
+              ) : (
+                <div style={{ padding: 16, color: '#666' }}>
+                  {!cur && 'Create a new chat to start. 流式经主进程 chat:delta 事件转发。'}
+                  {cur && cur.messages.length === 0 && 'No messages — say hello.'}
+                </div>
+              )}
+              {error && error !== 'aborted' && canStream && (
+                <div style={{ color: '#f88', fontSize: 12, padding: '0 16px 8px' }}>Error: {error}</div>
+              )}
+            </>
           )}
         </div>
 
-        {presets.length > 0 && <PresetPicker presets={presets} onPick={applyPreset} />}
+        {!inAgent && presets.length > 0 && <PresetPicker presets={presets} onPick={applyPreset} />}
 
         <div style={{ padding: 12, borderTop: '1px solid #222' }}>
           {images.length > 0 && (
@@ -195,9 +225,9 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
               aria-label="attach-image"
               data-testid="attach-image-button"
               title={vision ? '添加图片（≤2 张）' : VISION_DISABLED_TOOLTIP}
-              disabled={!canStream || !vision || images.length >= MAX_IMAGES_PER_MESSAGE}
+              disabled={!canStream || !vision || images.length >= MAX_IMAGES_PER_MESSAGE || inAgent}
               onClick={() => fileInputRef.current?.click()}
-              style={{ padding: '0 10px', cursor: canStream && vision ? 'pointer' : 'not-allowed' }}
+              style={{ padding: '0 10px', cursor: canStream && vision && !inAgent ? 'pointer' : 'not-allowed' }}
             >
               <Paperclip size={16} aria-hidden />
             </button>
@@ -218,17 +248,27 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void handleSend() }
               }}
-              placeholder={canStream ? 'Type a message… (Enter to send, Shift+Enter newline; 支持粘贴图片)' : '桌面端运行时可发送消息'}
+              placeholder={
+                !canStream
+                  ? '桌面端运行时可发送消息'
+                  : inAgent
+                    ? '描述一个编码任务…（Enter 启动代理，工具执行前会逐一请求授权）'
+                    : 'Type a message… (Enter to send, Shift+Enter newline; 支持粘贴图片)'
+              }
               rows={2}
               style={{ flex: 1, resize: 'none', padding: 10, borderRadius: 8, border: '1px solid #333', background: '#0f0f0f', color: '#eee' }}
               disabled={!canStream}
             />
             <button
               onClick={() => void handleSend()}
-              disabled={!canStream || streamingHere || (!input.trim() && images.length === 0)}
-              style={{ padding: '0 18px', cursor: streamingHere ? 'not-allowed' : 'pointer' }}
+              disabled={
+                inAgent
+                  ? !canStream || agentBusy || !input.trim()
+                  : !canStream || streamingHere || (!input.trim() && images.length === 0)
+              }
+              style={{ padding: '0 18px', cursor: (inAgent ? agentBusy : streamingHere) ? 'not-allowed' : 'pointer' }}
             >
-              {streamingHere ? '…' : 'Send'}
+              {inAgent ? (agentBusy ? '…' : '运行') : streamingHere ? '…' : 'Send'}
             </button>
           </div>
         </div>

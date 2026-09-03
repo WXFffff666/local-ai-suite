@@ -130,3 +130,22 @@ describe('ChatPage IPC 流式模式', () => {
     expect(container.textContent).not.toContain('streaming…')
   })
 })
+
+describe('todo29 agent mode page smoke', () => {
+  it('头部模式开关切到代理后时间线挂载；PermissionDialogHost 无请求时不渲染遮罩', async () => {
+    const fake = makeFakeApi()
+    setFakeApi(fake.api)
+    mount()
+    expect(container.querySelector('[data-testid="agent-mode-toggle"]')).toBeTruthy()
+    expect(container.querySelector('[data-testid="agent-timeline"]')).toBeNull()
+    await act(async () => {
+      ;(container.querySelector('[data-testid="mode-agent"]') as HTMLButtonElement).click()
+      await Promise.resolve()
+    })
+    expect(container.querySelector('[data-testid="agent-timeline"]')).toBeTruthy()
+    expect(container.querySelector('[data-testid="agent-term-drawer"]')).toBeTruthy()
+    // 权限对话框宿主挂载但队列为空 -> 不渲染
+    expect(container.querySelector('[data-testid="permission-dialog"]')).toBeNull()
+    unmount()
+  })
+})
