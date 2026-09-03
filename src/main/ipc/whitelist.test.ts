@@ -28,6 +28,8 @@ describe('ipc whitelist', () => {
       'chat:abort',
       'image:generate',
       'image:queue:status',
+      // todo20: renderer drop/mask-brush PNG dataURLs land under userData/tmp
+      'image:saveTempImage',
       'gallery:list',
       'gallery:save',
       'gallery:copy',

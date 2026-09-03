@@ -320,6 +320,16 @@ export type SdGenerateRequest = {
    * body key: the sd-cli /generate parser ignores/derives on unknown fields.
    */
   loras?: SdLoraTag[]
+  /**
+   * img2img/inpaint (sd.cpp verified CLI flags `--init-img`/`--mask`/`--strength`
+   * per Appendix R3 §A row 18/20 — `--init-image` is a typo, not a real flag).
+   * Channel decision: transported via the /generate JSON body as snake_case
+   * mirrors of those flags (toGenerateBody); if a future sd-cli body branch
+   * drops them, the fallback is an argv sidecar restart with the same names.
+   */
+  initImagePath?: string
+  maskPath?: string
+  strength?: number
   // passthrough
   [key: string]: unknown
 }
@@ -365,8 +375,10 @@ function isGpuErrorMessage(msg: string): boolean {
  * other fields pass through untouched.
  */
 export function toGenerateBody(req: SdGenerateRequest): Record<string, unknown> {
-  const { loras, ...rest } = req
+  const { loras, initImagePath, maskPath, ...rest } = req
   const body: Record<string, unknown> = { ...rest }
+  if (initImagePath !== undefined) body['init_img'] = initImagePath
+  if (maskPath !== undefined) body['mask'] = maskPath
   if (loras && loras.length > 0) {
     body['prompt'] = buildLoraPromptTags(loras) + String(rest.prompt ?? '')
   }

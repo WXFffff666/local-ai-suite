@@ -172,6 +172,100 @@ describe('image channels', () => {
     expect(all.jobs).toHaveLength(1)
     expect(all.pending).toBe(3)
   })
+
+  // --- todo20 img2img/inpaint passthrough ------------------------------------
+
+  it('image:generate img2img mode carries initImagePath + default strength 0.75', async () => {
+    const { handlers, services } = makeHarness()
+    await handlers['image:generate']([{ prompt: 'cat', mode: 'img2img', initImagePath: 'C:\\t\\a.png' }], { send: vi.fn() })
+    expect(services.imageQueue.enqueue).toHaveBeenCalledWith({
+      prompt: 'cat',
+      mode: 'img2img',
+      initImagePath: 'C:\\t\\a.png',
+      strength: 0.75
+    })
+  })
+
+  it('image:generate img2img without initImagePath → 400-shape, no enqueue', async () => {
+    const { handlers, services } = makeHarness()
+    const res = await handlers['image:generate']([{ prompt: 'cat', mode: 'img2img' }], { send: vi.fn() })
+    expect(res).toMatchObject(invalidShape)
+    expect(services.imageQueue.enqueue).not.toHaveBeenCalled()
+  })
+
+  it('image:generate inpaint without maskPath → 400-shape (rejected msg for UI)', async () => {
+    const { handlers, services } = makeHarness()
+    const res = (await handlers['image:generate']([{ prompt: 'cat', mode: 'inpaint', initImagePath: 'C:\\t\\a.png' }], { send: vi.fn() })) as {
+      issues: Array<{ path: string; message: string }>
+    }
+    expect(res.issues.some((i) => i.path === 'maskPath')).toBe(true)
+    expect(services.imageQueue.enqueue).not.toHaveBeenCalled()
+  })
+
+  it('image:generate strength >1 → 400-shape', async () => {
+    const { handlers } = makeHarness()
+    const res = await handlers['image:generate']([{ prompt: 'cat', mode: 'img2img', initImagePath: 'C:\\a.png', strength: 1.5 }], { send: vi.fn() })
+    expect(res).toMatchObject(invalidShape)
+  })
+
+  it('image:generate loras pass through; illegal scale rejected', async () => {
+    const { handlers, services } = makeHarness()
+    await handlers['image:generate']([{ prompt: 'cat', loras: [{ name: 'm', scale: 0.7 }] }], { send: vi.fn() })
+    expect(services.imageQueue.enqueue).toHaveBeenCalledWith({ prompt: 'cat', loras: [{ name: 'm', scale: 0.7 }] })
+    const bad = await handlers['image:generate']([{ prompt: 'cat', loras: [{ name: 'm', scale: 9 }] }], { send: vi.fn() })
+    expect(bad).toMatchObject(invalidShape)
+  })
+})
+
+describe('image:saveTempImage channel (todo20 drop/mask import)', () => {
+  let tmpRoot: string
+  let userDataDir: string
+  beforeEach(() => {
+    tmpRoot = mkdtempSync(join(tmpdir(), 'las-savetemp-'))
+    userDataDir = join(tmpRoot, 'userData')
+    mkdirSync(userDataDir, { recursive: true })
+  })
+  afterEach(() => {
+    rmSync(tmpRoot, { recursive: true, force: true })
+  })
+
+  function harnessWithUserData() {
+    const { services, relay, downloads, hfSearch, dialog, safeStorage } = makeHarness()
+    const withUd = { ...services, userDataDir } as unknown as ServicesSurface
+    const handlers = buildIpcHandlers({ services: withUd, relay, downloads, hfSearch, dialog, safeStorage })
+    return { handlers, userDataDir }
+  }
+
+  it('合法 PNG dataURL → 落盘 userData/tmp/img-<ts>.png 并返回绝对路径', async () => {
+    const { handlers, userDataDir } = harnessWithUserData()
+    const png = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGP4//8/AAX+Av4N70a4AAAAAElFTkSuQmCC'
+    const res = (await handlers['image:saveTempImage']([{ dataURL: png }], { send: vi.fn() })) as {
+      ok: boolean
+      path: string
+    }
+    expect(res.ok).toBe(true)
+    expect(res.path.startsWith(join(userDataDir, 'tmp'))).toBe(true)
+    expect(res.path).toMatch(/img-\d+.*\.png$/)
+    const written = readFileSync(res.path)
+    expect(written.subarray(0, 8).toString('hex')).toBe('89504e470d0a1a0a')
+  })
+
+  it('非 PNG dataURL / 非 dataURL → 400-shape', async () => {
+    const { handlers } = harnessWithUserData()
+    await expect(handlers['image:saveTempImage']([{ dataURL: 'http://evil/x.png' }], { send: vi.fn() })).resolves.toMatchObject(invalidShape)
+    await expect(handlers['image:saveTempImage']([{ dataURL: 'data:image/jpeg;base64,QQ==' }], { send: vi.fn() })).resolves.toMatchObject(invalidShape)
+  })
+
+  it('解码后 >8MB → dataurl-too-large', async () => {
+    const { handlers } = harnessWithUserData()
+    const big = 'A'.repeat(9 * 1024 * 1024) // 9MB > 8MB cap
+    const b64 = Buffer.from(big, 'latin1').toString('base64')
+    const res = (await handlers['image:saveTempImage']([{ dataURL: `data:image/png;base64,${b64}` }], { send: vi.fn() })) as {
+      ok?: boolean
+      error?: string
+    }
+    expect(res).toEqual({ ok: false, error: 'dataurl-too-large' })
+  })
 })
 
 describe('gallery channels', () => {

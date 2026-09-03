@@ -28,6 +28,7 @@ export const ALLOWED_CHANNELS = [
   'chat:abort',
   'image:generate',
   'image:queue:status',
+  'image:saveTempImage',
   'gallery:list',
   'gallery:save',
   'gallery:copy',

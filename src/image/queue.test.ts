@@ -1,4 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
+import { mkdtempSync, writeFileSync } from 'fs'
+import { join } from 'path'
+import { tmpdir } from 'os'
 import {
   VRAM_THRESH_SD15_Q4_MB,
   VRAM_THRESH_SDXL_WARN_MB,
@@ -408,3 +411,79 @@ describe('ImageQueue SSE 监听器清理', () => {
     expect(q.listenerCount).toBe(0)
   })
 })
+
+// ---------------------------------------------------------------------------
+// todo20 — img2img/inpaint enqueue 前置校验（init image / mask 文件存在性）
+// ---------------------------------------------------------------------------
+
+describe('todo20 img2img/inpaint enqueue pre-validation', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'las-q-img2img-'))
+  const realFile = join(tmp, 'init.png')
+  writeFileSync(realFile, 'x')
+
+  it('initImagePath 非绝对路径 → 抛 init-image-missing', () => {
+    const q = new ImageQueue()
+    expect(() => q.enqueue({ prompt: 'p', initImagePath: 'relative/init.png' })).toThrow(/init-image-missing/)
+  })
+
+  it('initImagePath 文件不存在 → 抛 init-image-missing', () => {
+    const q = new ImageQueue()
+    expect(() => q.enqueue({ prompt: 'p', initImagePath: join(tmp, 'nope.png') })).toThrow(/init-image-missing/)
+  })
+
+  it('maskPath 文件不存在 → 抛 mask-missing', () => {
+    const q = new ImageQueue()
+    expect(() => q.enqueue({ prompt: 'p', initImagePath: realFile, maskPath: join(tmp, 'nope.png') })).toThrow(/mask-missing/)
+  })
+
+  it('合法 init/mask → job 透传 initImagePath/maskPath/strength/loras/mode', () => {
+    const q = new ImageQueue()
+    const maskFile = join(tmp, 'mask.png')
+    writeFileSync(maskFile, 'm')
+    const id = q.enqueue({
+      prompt: 'p',
+      mode: 'inpaint',
+      initImagePath: realFile,
+      maskPath: maskFile,
+      strength: 0.6,
+      loras: [{ name: 'marblesh', scale: 0.75 }],
+    })
+    const job = q.getJob(id)!
+    expect(job.mode).toBe('inpaint')
+    expect(job.initImagePath).toBe(realFile)
+    expect(job.maskPath).toBe(maskFile)
+    expect(job.strength).toBe(0.6)
+    expect(job.loras).toEqual([{ name: 'marblesh', scale: 0.75 }])
+  })
+
+  it('txt2img 无新字段 → 校验零开销回归（现有行为不变）', () => {
+    const q = new ImageQueue()
+    const id = q.enqueue({ prompt: 'plain' })
+    expect(q.getJob(id)!.status).toBe('queued')
+  })
+
+  it('POST /api/image/generate 带缺失 init 文件 → 400 init-image-missing', async () => {
+    const q = new ImageQueue()
+    const handler = createImageQueueHandler(q)
+    const res = await handler(new Request('http://127.0.0.1/api/image/generate', {
+      method: 'POST',
+      body: JSON.stringify({ prompt: 'p', initImagePath: join(tmp, 'ghost.png') }),
+    }))
+    expect(res.status).toBe(400)
+    const json = (await res.json()) as { error?: string }
+    expect(json.error).toBe('init-image-missing')
+  })
+
+  it('POST /api/image/generate inpaint 缺 maskPath → 400 mask-required', async () => {
+    const q = new ImageQueue()
+    const handler = createImageQueueHandler(q)
+    const res = await handler(new Request('http://127.0.0.1/api/image/generate', {
+      method: 'POST',
+      body: JSON.stringify({ prompt: 'p', mode: 'inpaint', initImagePath: realFile }),
+    }))
+    expect(res.status).toBe(400)
+    const json = (await res.json()) as { error?: string }
+    expect(json.error).toBe('mask-required')
+  })
+})
+

@@ -15,6 +15,7 @@ import {
   buildSdArgs,
   buildSdCpuFallbackArgs,
   buildLoraPromptTags,
+  toGenerateBody,
   getGenerateUrl,
   getHealthUrl,
   createSdSidecarConfig,
@@ -448,6 +449,38 @@ describe('todo18 — LoRA args / apply-mode / prompt tag builder', () => {
     const body = JSON.parse(String((fetchImpl.mock.calls[0] as [unknown, { body: string }])[1]?.body)) as Record<string, unknown>
     expect(body['prompt']).toBe('plain')
     expect('loras' in body).toBe(false)
+  })
+})
+
+describe('todo20 — img2img/inpaint body mapping (sd.cpp verified flags)', () => {
+  it('toGenerateBody: initImagePath/maskPath/strength → init_img/mask/strength（--init-img 系实证旗标，非 --init-image）', () => {
+    const body = toGenerateBody({
+      prompt: 'cat',
+      initImagePath: 'C:\\tmp\\img-1.png',
+      maskPath: 'C:\\tmp\\mask-1.png',
+      strength: 0.65,
+    })
+    expect(body['prompt']).toBe('cat')
+    expect(body['init_img']).toBe('C:\\tmp\\img-1.png')
+    expect(body['mask']).toBe('C:\\tmp\\mask-1.png')
+    expect(body['strength']).toBe(0.65)
+    expect('initImagePath' in body).toBe(false)
+    expect('maskPath' in body).toBe(false)
+  })
+
+  it('txt2img 请求 body 不含 img2img 键（回归）', () => {
+    const body = toGenerateBody({ prompt: 'cat' })
+    expect('init_img' in body).toBe(false)
+    expect('mask' in body).toBe(false)
+    expect('strength' in body).toBe(false)
+  })
+
+  it('generateImage POST body 走同一映射', async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse({ image: 'b64' }))
+    await generateImage({ prompt: 'cat', strength: 0.5, initImagePath: 'C:\\a.png' }, { fetchImpl: fetchImpl as never })
+    const body = JSON.parse(String((fetchImpl.mock.calls[0] as [unknown, { body: string }])[1].body)) as Record<string, unknown>
+    expect(body['init_img']).toBe('C:\\a.png')
+    expect(body['strength']).toBe(0.5)
   })
 })
 

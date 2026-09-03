@@ -20,12 +20,13 @@ import { SIDECAR_HOST } from '../../core/types'
 import type { ModelEntry } from '../../models/registry'
 import type { CopyPayload, GalleryItem, InsertPayload, ReuseParams, SaveOptions } from '../../gallery/gallery'
 import type { OrchestratorResult } from '../../search/orchestrator'
-import type { ImageJob, ImageJobOptions, QueueEvent } from '../../image/queue'
+import type { ImageJob, QueueEvent } from '../../image/queue'
 import type { HfModelCard, SearchOptions } from '../../market/hf'
 import { getConfig, setConfig, type AppConfig } from '../storage/config'
 import type { Services } from '../services'
 import { createDestructiveConfirmHandler, type DialogLike } from '../utils/dialogConfirm'
 import { createDeleteWorkspaceHandler } from '../handlers/deleteWorkspace'
+import { createImageGenerateHandler, createSaveTempImageHandler } from '../handlers/imageOps'
 import { createOverwriteCoverageHandler } from '../handlers/overwriteCoverage'
 import { createPublishReleaseHandler } from '../handlers/publishRelease'
 import { createClearCacheHandler } from '../handlers/clearCache'
@@ -46,7 +47,6 @@ import {
   galleryIdSchema,
   gallerySaveSchema,
   hfSearchSchema,
-  imageGenerateSchema,
   imageQueueStatusSchema,
   modelsDownloadSchema,
   modelsSetDirSchema,
@@ -70,6 +70,8 @@ export type ServicesSurface = {
   gallery: Pick<Services['gallery'], 'list' | 'save' | 'copy' | 'insert' | 'reuse'>
   search: Pick<Services['search'], 'search'>
   ensureSidecar: Services['ensureSidecar']
+  /** todo20: image:saveTempImage writes under <userDataDir>/tmp (real Services exposes this). */
+  userDataDir: Services['userDataDir']
 }
 
 export type HfSearchFn = (opts: SearchOptions) => Promise<HfModelCard[]>
@@ -198,23 +200,9 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
     },
 
     // --- image queue -------------------------------------------------------------
-    'image:generate': async (args) => {
-      const parsed = validatePayload(imageGenerateSchema, first(args))
-      if (!parsed.ok) return parsed
-      const input = parsed.data
-      const opts: ImageJobOptions = { prompt: input.prompt }
-      if (input.negative_prompt !== undefined) opts.negative_prompt = input.negative_prompt
-      if (input.width !== undefined) opts.width = input.width
-      if (input.height !== undefined) opts.height = input.height
-      if (input.steps !== undefined) opts.steps = input.steps
-      if (input.cfg_scale !== undefined) opts.cfg_scale = input.cfg_scale
-      if (input.seed !== undefined) opts.seed = input.seed
-      if (input.model !== undefined) opts.model = input.model
-      if (input.vramMB !== undefined) opts.vramMB = input.vramMB
-      const jobId = services.imageQueue.enqueue(opts)
-      const job = services.imageQueue.getJob(jobId)
-      return { ok: true, statusCode: 202, jobId, warning: job?.warning, effectiveModel: job?.effectiveModel }
-    },
+    // todo20: implementation lives in ../handlers/imageOps.ts (validation +
+    // queue/file side effects); the map below stays registration-only.
+    'image:generate': passthrough(createImageGenerateHandler({ imageQueue: services.imageQueue })),
     'image:queue:status': async (args) => {
       const parsed = validatePayload(imageQueueStatusSchema, first(args, {}))
       if (!parsed.ok) return parsed
@@ -225,6 +213,12 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
       const jobs: ImageJob[] = services.imageQueue.listJobs()
       return { ok: true, jobs, pending: services.imageQueue.pending }
     },
+
+    /**
+     * todo20 — renderer-synthesized PNG (drop / mask brush) → userData/tmp.
+     * Implementation in ../handlers/imageOps::createSaveTempImageHandler.
+     */
+    'image:saveTempImage': passthrough(createSaveTempImageHandler({ userDataDir: services.userDataDir })),
 
     // --- gallery (five verbs) -------------------------------------------------
     'gallery:list': async () => {

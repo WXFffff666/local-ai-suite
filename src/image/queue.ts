@@ -15,6 +15,11 @@
  * MIT, 无 AGPL. 仅依赖 Node/TS 标准.
  */
 
+import { existsSync, statSync } from 'fs'
+import { isAbsolute } from 'path'
+
+import type { SdLoraTag } from '../sidecars/sd'
+
 // ---------------------------------------------------------------------------
 // VRAM 分级
 // ---------------------------------------------------------------------------
@@ -185,6 +190,16 @@ export type ImageJobOptions = {
   maxRetries?: number
   /** 重试退避基数 ms (默认 400) */
   retryBackoffMs?: number
+  /** todo20 生成模式：文生图 / 图生图 / inpaint（默认 txt2img） */
+  mode?: 'txt2img' | 'img2img' | 'inpaint'
+  /** todo20 img2img 底图绝对路径 — enqueue 前置校验必须存在（映射 sd.cpp --init-img） */
+  initImagePath?: string
+  /** todo20 inpaint 蒙版绝对路径 — 存在性校验（映射 sd.cpp --mask） */
+  maskPath?: string
+  /** todo20 重绘强度 0..1（映射 sd.cpp --strength，body 透传键 strength） */
+  strength?: number
+  /** todo18 LoRA 选择 — 由 sd.ts 折叠为 prompt `<lora:name:w>` 标签 */
+  loras?: SdLoraTag[]
 }
 
 export type ImageJob = ImageJobOptions & {
@@ -231,6 +246,26 @@ export type QueueOptions = {
 function genId(): string {
   // 轻量 id，无需 uuid 依赖
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`
+}
+
+/**
+ * todo20 img2img/inpaint 前置校验 — initImagePath 必须是绝对路径且文件存在，
+ * 否则抛 'init-image-missing'（sd-cli 以绝对路径读盘，渲染层拖放导出的
+ * userData/tmp 路径在此把关）。maskPath 给出时同样校验存在性（'mask-missing'）。
+ */
+export function validateImg2ImgPaths(opts: Pick<ImageJobOptions, 'initImagePath' | 'maskPath'>): void {
+  if (opts.initImagePath !== undefined) {
+    const p = opts.initImagePath
+    if (!isAbsolute(p) || !existsSync(p) || !statSync(p).isFile()) {
+      throw new Error('init-image-missing')
+    }
+  }
+  if (opts.maskPath !== undefined) {
+    const p = opts.maskPath
+    if (!isAbsolute(p) || !existsSync(p) || !statSync(p).isFile()) {
+      throw new Error('mask-missing')
+    }
+  }
 }
 
 function isRetryableError(err: unknown): boolean {
@@ -353,8 +388,9 @@ export class ImageQueue {
     return [...this.jobs.values()].sort((a, b) => a.createdAt - b.createdAt)
   }
 
-  /** 入队 — 返回 jobId */
+  /** 入队 — 返回 jobId（todo20: img2img/inpaint 路径先过 validateImg2ImgPaths） */
   enqueue(opts: ImageJobOptions): string {
+    validateImg2ImgPaths(opts)
     const id = genId()
     const grade = gradeModelRequest(opts.vramMB ?? null, opts.model)
     const job: ImageJob = {
@@ -648,17 +684,43 @@ export function createImageQueueHandler(queue: ImageQueue = defaultImageQueue): 
       try { body = await req.json() as Record<string, unknown> } catch { return new Response(JSON.stringify({ error: 'invalid json' }), { status: 400, headers: { 'content-type': 'application/json' } }) }
       const prompt = typeof body['prompt'] === 'string' ? (body['prompt'] as string).trim() : ''
       if (!prompt) return new Response(JSON.stringify({ error: 'prompt is required' }), { status: 400, headers: { 'content-type': 'application/json' } })
-      const jobId = queue.enqueue({
-        prompt,
-        negative_prompt: typeof body['negative_prompt'] === 'string' ? body['negative_prompt'] as string : undefined,
-        width: body['width'] != null ? Number(body['width']) : (typeof body['size'] === 'string' ? Number(String(body['size']).split('x')[0]) : undefined),
-        height: body['height'] != null ? Number(body['height']) : (typeof body['size'] === 'string' ? Number(String(body['size']).split('x')[1]) : undefined),
-        steps: body['steps'] != null ? Number(body['steps']) : undefined,
-        seed: body['seed'] != null ? Number(body['seed']) : undefined,
-        model: typeof body['model'] === 'string' ? body['model'] as string : undefined,
-        vramMB: body['vramMB'] != null ? Number(body['vramMB']) : undefined,
-        maxRetries: body['maxRetries'] != null ? Number(body['maxRetries']) : undefined,
-      })
+      // todo20 — mode/init/mask/strength/loras 解析。mode 语义先行拒绝（400-shape），
+      // 文件存在性由 enqueue 内的 validateImg2ImgPaths 把关。
+      const rawMode = body['mode']
+      const mode = rawMode === 'img2img' || rawMode === 'inpaint' ? rawMode : 'txt2img'
+      const strOpt = (v: unknown): string | undefined => (typeof v === 'string' && v.length > 0 ? v : undefined)
+      const initImagePath = strOpt(body['initImagePath'])
+      const maskPath = strOpt(body['maskPath'])
+      if (mode !== 'txt2img' && initImagePath === undefined) {
+        return new Response(JSON.stringify({ error: 'init-image-missing' }), { status: 400, headers: { 'content-type': 'application/json' } })
+      }
+      if (mode === 'inpaint' && maskPath === undefined) {
+        return new Response(JSON.stringify({ error: 'mask-required' }), { status: 400, headers: { 'content-type': 'application/json' } })
+      }
+      const strengthRaw = body['strength']
+      const lorasRaw = body['loras']
+      let jobId: string
+      try {
+        jobId = queue.enqueue({
+          prompt,
+          negative_prompt: typeof body['negative_prompt'] === 'string' ? body['negative_prompt'] as string : undefined,
+          width: body['width'] != null ? Number(body['width']) : (typeof body['size'] === 'string' ? Number(String(body['size']).split('x')[0]) : undefined),
+          height: body['height'] != null ? Number(body['height']) : (typeof body['size'] === 'string' ? Number(String(body['size']).split('x')[1]) : undefined),
+          steps: body['steps'] != null ? Number(body['steps']) : undefined,
+          seed: body['seed'] != null ? Number(body['seed']) : undefined,
+          model: typeof body['model'] === 'string' ? body['model'] as string : undefined,
+          vramMB: body['vramMB'] != null ? Number(body['vramMB']) : undefined,
+          maxRetries: body['maxRetries'] != null ? Number(body['maxRetries']) : undefined,
+          mode,
+          ...(initImagePath !== undefined ? { initImagePath } : {}),
+          ...(maskPath !== undefined ? { maskPath } : {}),
+          ...(typeof strengthRaw === 'number' ? { strength: strengthRaw } : {}),
+          ...(Array.isArray(lorasRaw) ? { loras: lorasRaw as SdLoraTag[] } : {}),
+        })
+      } catch (e) {
+        // enqueue 同步校验失败（init-image-missing / mask-missing）→ 400，不炸服务
+        return new Response(JSON.stringify({ error: (e as Error).message }), { status: 400, headers: { 'content-type': 'application/json' } })
+      }
       const job = queue.getJob(jobId)!
       return new Response(JSON.stringify({ jobId, status: job.status, warning: job.warning, effectiveModel: job.effectiveModel, grade: job.grade }), {
         status: 202, headers: { 'content-type': 'application/json' },
