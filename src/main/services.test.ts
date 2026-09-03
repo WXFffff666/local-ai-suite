@@ -8,6 +8,7 @@ import { getServices, initServices, resetServices, SIDECAR_NAMES, type ServicesO
 import { resetShutdownState, shutdownServices } from './shutdown'
 import { readSidecarsJson, SIDECARS_FILENAME } from '../core/handshake'
 import { deterministicPort } from '../core/ports'
+import type { EngineResolver, ResolvedEngine } from '../engines/resolver'
 
 // --- fakes: no real spawn / net / electron / chokidar ------------------------
 
@@ -74,6 +75,8 @@ function createHarness(overrides: Partial<ServicesOptions> = {}, probePort: Prob
   // All AppConfig-derived defaults are injected here on purpose:
   // resolveOptions() then never calls getConfig(), so require('electron')
   // is never touched (learnings.md: real electron package load stalls vitest).
+  // engineResolver: null keeps the todo7 spawn baseline (env-only bin default);
+  // todo30 resolver behavior is covered by dedicated harnesses below.
   const options: ServicesOptions = {
     userDataDir,
     modelsDir,
@@ -82,6 +85,7 @@ function createHarness(overrides: Partial<ServicesOptions> = {}, probePort: Prob
     llamaPort: 11435,
     ollamaPort: 11434,
     sdPort: 11436,
+    engineResolver: null,
     warn: (message, error) => warns.push({ message, error }),
     sidecarOptions: {
       spawner: ((bin: string, args: string[]) => {
@@ -225,6 +229,138 @@ describe('services container — lazy wiring (todo7)', () => {
     expect(boom).toHaveBeenCalledTimes(1)
     expect(hit).toHaveBeenCalledTimes(1)
     expect(h.warns.some((w) => w.message.includes('searxng down'))).toBe(true)
+    await shutdownServices()
+  })
+})
+
+// ---------------------------------------------------------------------------
+// todo30 — engine resolver integration (bin precedence + model/projector hop)
+// ---------------------------------------------------------------------------
+
+function fakeResolver(bins: Record<string, string | null>, onResolve?: (name: string) => void): EngineResolver {
+  const resolve = async (name: string): Promise<ResolvedEngine> => {
+    onResolve?.(name)
+    const bin = bins[name] ?? null
+    if (bin === null) return { name: name as never, source: 'none', bin: null, skipped: [] }
+    return { name: name as never, source: 'system', bin, skipped: [] }
+  }
+  return {
+    resolve: resolve as EngineResolver['resolve'],
+    availability: async () => [],
+    invalidate: () => undefined,
+  }
+}
+
+describe('services engine resolver integration (todo30)', () => {
+  it('resolver bin is used when no env override is present (replaces raw default)', async () => {
+    const h = createHarness({ engineResolver: fakeResolver({ llama: 'C:\\packed\\llama-server.exe' }) })
+    await h.services.ensureSidecar('llama')
+    expect(h.spawnCalls[0]?.bin).toBe('C:\\packed\\llama-server.exe')
+    await shutdownServices()
+  })
+
+  it('LLAMA_BIN env override wins and the resolver is never consulted', async () => {
+    let consulted = false
+    const prev = process.env['LLAMA_BIN']
+    process.env['LLAMA_BIN'] = 'C:\\env\\llama-server.exe'
+    try {
+      const h = createHarness({
+        engineResolver: fakeResolver({ llama: 'C:\\resolver\\llama-server.exe' }, () => {
+          consulted = true
+        }),
+      })
+      await h.services.ensureSidecar('llama')
+      expect(h.spawnCalls[0]?.bin).toBe('C:\\env\\llama-server.exe')
+      expect(consulted).toBe(false)
+    } finally {
+      if (prev === undefined) delete process.env['LLAMA_BIN']
+      else process.env['LLAMA_BIN'] = prev
+      await shutdownServices()
+    }
+  })
+
+  it("resolver 'none' keeps the factory default bin (bare command name)", async () => {
+    const h = createHarness({ engineResolver: fakeResolver({ llama: null }) })
+    await h.services.ensureSidecar('llama')
+    expect(h.spawnCalls[0]?.bin).toBe('llama-server')
+    await shutdownServices()
+  })
+
+  it('ensureSidecar(llama, {modelPath, mmprojPath}) injects --model/--mmproj (todo21 last hop)', async () => {
+    const modelDir = mkdtempSync(join(tmpdir(), 'las-model-'))
+    tmpRoots.push(modelDir)
+    const modelPath = join(modelDir, 'qwen.gguf')
+    const mmprojPath = join(modelDir, 'mmproj.gguf')
+    writeFileSync(modelPath, 'GGUF fake model')
+    writeFileSync(mmprojPath, 'GGUF fake projector')
+    const h = createHarness({ engineResolver: null })
+    await h.services.ensureSidecar('llama', { modelPath, mmprojPath })
+    const args = h.spawnCalls[0]?.args ?? []
+    expect(args).toEqual(expect.arrayContaining(['--model', modelPath, '--mmproj', mmprojPath]))
+    await shutdownServices()
+  })
+
+  it('no-modelPath baseline argv is byte-for-byte unchanged (regression pin)', async () => {
+    const h = createHarness({ engineResolver: null })
+    await h.services.ensureSidecar('llama')
+    expect(h.spawnCalls[0]?.args).toEqual(['--host', '127.0.0.1', '--port', '11435', '--ctx-size', '4096'])
+    await shutdownServices()
+  })
+
+  it('launchModel resolves registry entry and spawns llama with --model + paired --mmproj', async () => {
+    const modelDir = mkdtempSync(join(tmpdir(), 'las-launch-'))
+    tmpRoots.push(modelDir)
+    // gguf with valid 4-byte magic so the registry probe marks it non-corrupted
+    writeFileSync(join(modelDir, 'qwen3-4b.gguf'), 'GGUF' + 'x'.repeat(200))
+    writeFileSync(join(modelDir, 'mmproj-qwen3-4b.gguf'), 'GGUF' + 'y'.repeat(200))
+    const h = createHarness({ engineResolver: null, modelsDir: modelDir })
+    // force a synchronous scan so getModels() sees the fixtures
+    h.services.registry.reloadModels()
+    const status = await h.services.launchModel('qwen3-4b')
+    expect(status.name).toBe('llama')
+    const args = h.spawnCalls[0]?.args ?? []
+    expect(args).toContain('--model')
+    expect(args[args.indexOf('--model') + 1]).toBe(join(modelDir, 'qwen3-4b.gguf'))
+    expect(args).toContain('--mmproj')
+    await shutdownServices()
+  })
+
+  it('launchModel rejects unknown / non-gguf models with a specific reason', async () => {
+    const modelDir = mkdtempSync(join(tmpdir(), 'las-launch2-'))
+    tmpRoots.push(modelDir)
+    writeFileSync(join(modelDir, 'pic.safetensors'), 'x'.repeat(2048)) // ≥1KB skips the magic probe -> valid entry, wrong format
+    const h = createHarness({ engineResolver: null, modelsDir: modelDir })
+    h.services.registry.reloadModels()
+    await expect(h.services.launchModel('does-not-exist')).rejects.toThrow(/model not found/)
+    await expect(h.services.launchModel('pic')).rejects.toThrow(/not launchable/)
+    await shutdownServices()
+  })
+
+  it('dev-absent manifest warns (plan r2 warn+pass) when the default resolver is built', async () => {
+    const h = createHarness({
+      engineResolver: undefined,
+      engineManifestLoad: { status: 'absent', path: 'nowhere/manifest.json', warnings: ['engine manifest missing - sha256 verification SKIPPED'] },
+    })
+    expect(h.services.engineResolver).not.toBeNull()
+    expect(h.warns.some((w) => w.message.includes('SKIPPED'))).toBe(true)
+    await shutdownServices()
+  })
+
+  it('model switch on a running sidecar restarts the child with the new argv', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'las-switch-'))
+    tmpRoots.push(dir)
+    const a = join(dir, 'a.gguf')
+    const b = join(dir, 'b.gguf')
+    writeFileSync(a, 'GGUF a')
+    writeFileSync(b, 'GGUF b')
+    const h = createHarness({ engineResolver: null })
+    await h.services.ensureSidecar('llama', { modelPath: a })
+    const firstChild = h.children[0]
+    await h.services.ensureSidecar('llama', { modelPath: b })
+    expect(firstChild?.kill).toHaveBeenCalled()
+    await vi.waitFor(() => expect(h.spawnCalls.length).toBe(2))
+    const lastArgs = h.spawnCalls[1]?.args ?? []
+    expect(lastArgs).toContain(b)
     await shutdownServices()
   })
 })

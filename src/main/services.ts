@@ -22,7 +22,7 @@ import { getConfig } from './storage/config'
 import { writeSidecarsJson, type SidecarEntry } from '../core/handshake'
 import { SidecarManager, type SidecarManagerOptions } from '../core/SidecarManager'
 import type { ISearchAdapter, SidecarEventListener, SidecarStatus } from '../core/types'
-import { createLlamaSidecar, LLAMA_PORT } from '../sidecars/llama'
+import { buildLlamaArgs, createLlamaSidecar, LLAMA_PORT } from '../sidecars/llama'
 import { createOllamaSidecar, OLLAMA_PORT } from '../sidecars/ollama'
 import { createSdSidecar, SD_PORT } from '../sidecars/sd'
 import { ModelRegistry, type RegistryOptions } from '../models/registry'
@@ -31,9 +31,25 @@ import { Gallery } from '../gallery/gallery'
 import { SearchOrchestrator, type OrchestratorOptions } from '../search/orchestrator'
 import { SearxngAdapter } from '../search/searxng'
 import { createCloudAdapters, type CreateCloudAdaptersOptions } from '../search/cloud'
+import { loadEngineManifest, type ManifestLoad } from '../engines/manifest'
+import {
+  createResolver,
+  manifestDeps,
+  type EngineResolver,
+  type ResolvedEngine,
+} from '../engines/resolver'
 
 export const SIDECAR_NAMES = ['llama', 'ollama', 'sd'] as const
 export type SidecarName = (typeof SIDECAR_NAMES)[number]
+
+/**
+ * todo21 last hop: model + paired projector injected into the llama sidecar.
+ * Routed through buildLlamaArgs ({modelPath, mmprojPath} → --model/--mmproj).
+ */
+export type LlamaLaunchOptions = {
+  modelPath?: string
+  mmprojPath?: string
+}
 
 export type ServicesOptions = {
   /** dir holding sidecars.json; default app.getPath('userData'), fallback <cwd>/userData */
@@ -57,6 +73,10 @@ export type ServicesOptions = {
   orchestratorOptions?: OrchestratorOptions
   /** sink for isolated failures (handshake writes, search sources); default console.warn */
   warn?: (message: string, error: unknown) => void
+  /** DI seam: engine manifest load (todo30). Default reads extraResources/build/. */
+  engineManifestLoad?: ManifestLoad
+  /** DI seam: whole resolver override (tests); null = resolver consultation OFF. */
+  engineResolver?: EngineResolver | null
 }
 
 type ResolvedOptions = ServicesOptions &
@@ -100,6 +120,33 @@ export class Services {
   private imageQueueInstance: ImageQueue | null = null
   private galleryInstance: Gallery | null = null
   private searchInstance: SearchOrchestrator | null = null
+  /** Lazily built detection-first engine resolver (todo30). */
+  private engineResolverInstance: EngineResolver | null = null
+  /** Last-asked llama model+projector; consumed at (re)spawn (todo21 last hop). */
+  private llamaLaunch: LlamaLaunchOptions = {}
+  /** Resolver outcomes by consulted engine name (availability for UI). */
+  private readonly engineSources = new Map<SidecarName, ResolvedEngine>()
+
+  /**
+   * The engine resolver, built once from the distribution manifest. Exposed so
+   * the settings UI (lane-30b) can render the availability matrix and the GPU
+   * download flow can consume `manifestDeps`. `opts.engineResolver` overrides
+   * (tests); explicit `null` disables consultation (env-only legacy behavior).
+   */
+  get engineResolver(): EngineResolver | null {
+    if (this.opts.engineResolver !== undefined) return this.opts.engineResolver
+    if (this.engineResolverInstance === null) {
+      const load = this.opts.engineManifestLoad ?? loadEngineManifest()
+      if (load.status === 'absent') {
+        // plan r2: dev-missing manifest degrades to warn + pass, never bricks engines.
+        for (const warning of load.warnings) this.warn(warning, undefined)
+      } else if (load.status === 'invalid') {
+        this.warn(`engine manifest invalid at ${load.path}: ${load.errors.join('; ')}`, undefined)
+      }
+      this.engineResolverInstance = createResolver(manifestDeps(load, this.userDataDir))
+    }
+    return this.engineResolverInstance
+  }
 
   constructor(private readonly opts: ResolvedOptions) {
     this.userDataDir = opts.userDataDir
@@ -185,7 +232,28 @@ export class Services {
     return [...this.managers.values()].map((manager) => manager.getStatus())
   }
 
-  async ensureSidecar(name: SidecarName): Promise<SidecarStatus> {
+  /** Latest engine-resolution outcomes per consulted sidecar (UI: lane-30b). */
+  getEngineResolutions(): ResolvedEngine[] {
+    return [...this.engineSources.values()]
+  }
+
+  /**
+   * Ensure a sidecar runs. For 'llama', optional launch options carry the
+   * todo21 last hop (registry modelPath + paired projectorPath ->
+   * buildLlamaArgs --model/--mmproj). Re-asking with a different model while
+   * running swaps argv and restarts the child (same manager, port kept).
+   */
+  async ensureSidecar(name: SidecarName, launch?: LlamaLaunchOptions): Promise<SidecarStatus> {
+    if (launch !== undefined) {
+      if (name !== 'llama') throw new Error('launch options are only supported for the llama sidecar')
+      this.llamaLaunch = launch
+      const manager = this.managers.get(name)
+      if (manager !== undefined) {
+        const inFlight = this.starting.get(name)
+        if (inFlight) await inFlight
+        return this.applyLlamaArgs(manager)
+      }
+    }
     const inFlight = this.starting.get(name)
     if (inFlight) return inFlight
     const start = this.spawnSidecar(name)
@@ -193,9 +261,39 @@ export class Services {
     return start
   }
 
+  /** Load a registered model into the llama sidecar (internal API, channels come in lane-30b). */
+  async launchModel(modelId: string): Promise<SidecarStatus> {
+    const entry =
+      this.registry.getModels().find((m) => m.name === modelId) ??
+      this.registry.reloadModels().find((m) => m.name === modelId)
+    if (entry === undefined) throw new Error(`model not found: ${modelId}`)
+    if (entry.corrupted === true) throw new Error(`model corrupted: ${modelId} (${entry.error ?? 'probe failed'})`)
+    if (entry.format !== 'gguf') throw new Error(`model not launchable by llama engine: ${modelId} (${entry.format})`)
+    return this.ensureSidecar('llama', {
+      modelPath: entry.path,
+      ...(entry.projectorPath === undefined ? {} : { mmprojPath: entry.projectorPath }),
+    })
+  }
+
+  /** Rebuild llama argv on the live manager; restart the child when it changed. */
+  private applyLlamaArgs(manager: SidecarManager): SidecarStatus {
+    const args = buildLlamaArgs({ ...this.llamaLaunch, port: manager.config.port })
+    const changed = JSON.stringify(args) !== JSON.stringify(manager.config.args)
+    if (changed) {
+      manager.config.args = args
+      if (manager.isRunning()) {
+        manager.stop()
+        void manager.start().catch((error: unknown) => {
+          this.warn(`llama restart after model switch failed: ${error instanceof Error ? error.message : String(error)}`, error)
+        })
+      }
+    }
+    return manager.getStatus()
+  }
+
   private async spawnSidecar(name: SidecarName): Promise<SidecarStatus> {
     try {
-      const manager = this.managers.get(name) ?? this.createManager(name)
+      const manager = this.managers.get(name) ?? (await this.createManager(name))
       await manager.start()
       this.refreshHandshake()
       return manager.getStatus()
@@ -204,23 +302,51 @@ export class Services {
     }
   }
 
-  private createManager(name: SidecarName): SidecarManager {
+  /**
+   * Bin precedence (todo30): explicit <X>_BIN env wins (factory path preserved
+   * verbatim); otherwise the detection-first resolver cascade
+   * system PATH -> extraResources CPU -> active GPU pack; 'none' keeps the
+   * factory default (bare command name).
+   */
+  private envBinVar(name: SidecarName): 'LLAMA_BIN' | 'OLLAMA_BIN' | 'SD_BIN' {
+    return name === 'llama' ? 'LLAMA_BIN' : name === 'ollama' ? 'OLLAMA_BIN' : 'SD_BIN'
+  }
+
+  private async sidecarBin(name: SidecarName): Promise<string | undefined> {
+    const envVal = process.env[this.envBinVar(name)]
+    if (envVal !== undefined && envVal.trim() !== '') return undefined // factory keeps the env override
+    const resolver = this.engineResolver
+    if (resolver === null) return undefined
+    const resolved = await resolver.resolve(name)
+    this.engineSources.set(name, resolved)
+    return resolved.bin ?? undefined
+  }
+
+  private async createManager(name: SidecarName): Promise<SidecarManager> {
     const { sidecarOptions = {}, logDir } = this.opts
     const shared = { ...(logDir === undefined ? {} : { logDir }), managerOptions: sidecarOptions }
+    const bin = await this.sidecarBin(name)
     let manager: SidecarManager
     switch (name) {
       case 'llama':
-        manager = createLlamaSidecar({ port: this.opts.llamaPort, ...shared })
+        manager = createLlamaSidecar({
+          port: this.opts.llamaPort,
+          ...(bin === undefined ? {} : { bin }),
+          ...(this.llamaLaunch.modelPath === undefined ? {} : { modelPath: this.llamaLaunch.modelPath }),
+          ...(this.llamaLaunch.mmprojPath === undefined ? {} : { mmprojPath: this.llamaLaunch.mmprojPath }),
+          ...shared,
+        })
         break
       case 'ollama':
         manager = createOllamaSidecar({
           port: this.opts.ollamaPort,
+          ...(bin === undefined ? {} : { bin }),
           ...(this.opts.modelsDir === undefined ? {} : { modelsDir: this.opts.modelsDir }),
           ...shared,
         })
         break
       case 'sd':
-        manager = createSdSidecar({ port: this.opts.sdPort, ...shared })
+        manager = createSdSidecar({ port: this.opts.sdPort, ...(bin === undefined ? {} : { bin }), ...shared })
         break
       default: {
         const unreachable: never = name
