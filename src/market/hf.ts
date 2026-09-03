@@ -116,6 +116,8 @@ export type DownloadOptions = {
   logger?: Pick<Console, 'log' | 'warn' | 'error'>
   /** aria2 直链（当 backend=aria2 且已知直链时） */
   url?: string
+  /** 会话 id（downloadManager 传入）：注册子进程句柄供 killActiveDownload 树杀 (14b) */
+  sessionId?: string
 }
 
 export type DownloadResult = {
@@ -564,6 +566,58 @@ export function hfResolveUrl(repoId: string, filename: string, revision = 'main'
   return `https://huggingface.co/${repoId}/resolve/${revision}/${filename}`
 }
 
+// ---------------------------------------------------------------------------
+// Active child-process handle map (todo14b cancel)
+// ---------------------------------------------------------------------------
+
+/** Minimal child shape retained for tree-kill; real ChildProcess satisfies it. */
+export type HfChildHandle = {
+  pid?: number
+  kill: (signal?: NodeJS.Signals | number) => boolean
+}
+
+const activeChildren = new Map<string, HfChildHandle>()
+
+/** 当前注册的下载子进程会话 id（诊断/测试用）。 */
+export function activeDownloadIds(): string[] {
+  return [...activeChildren.keys()]
+}
+
+export function registerDownloadChild(sessionId: string, child: HfChildHandle): void {
+  activeChildren.set(sessionId, child)
+}
+
+export function unregisterDownloadChild(sessionId: string): void {
+  activeChildren.delete(sessionId)
+}
+
+/**
+ * 树杀一个下载会话的子进程（Windows: taskkill /T /F 连坐孙进程；POSIX: SIGKILL）。
+ * 返回 false = 会话不存在（已结束/未知 id）。注入 spawnLike 供测试验证 argv。
+ */
+export function killDownloadChild(
+  sessionId: string,
+  spawnLike: typeof spawn = spawn,
+): { killed: boolean; pid?: number } {
+  const child = activeChildren.get(sessionId)
+  if (!child) return { killed: false }
+  const { pid } = child
+  if (process.platform === 'win32' && pid !== undefined) {
+    // fire-and-forget tree kill; the child 'close' handler unregisters the session
+    try {
+      const killer = spawnLike('taskkill', ['/pid', String(pid), '/T', '/F'], { stdio: 'ignore' }) as unknown as {
+        on?: (ev: string, cb: (...a: unknown[]) => void) => void
+      }
+      if (killer && typeof killer.on === 'function') killer.on('error', () => child.kill())
+    } catch {
+      child.kill()
+    }
+  } else {
+    child.kill()
+  }
+  return { killed: true, ...(pid === undefined ? {} : { pid }) }
+}
+
 /**
  * 一键下载（断点续传 + 并发）
  * - backend=hf-cli：直接 spawn huggingface-cli
@@ -610,28 +664,42 @@ export async function downloadWithResume(
     const child = spawnFn(command, args, {
       stdio: 'inherit',
       shell: false,
-    } as Parameters<typeof spawn>[2]) as unknown as { on?: (ev: string, cb: (...a: unknown[]) => void) => void }
+    } as Parameters<typeof spawn>[2]) as unknown as { on?: (ev: string, cb: (...a: unknown[]) => void) => void; pid?: number; kill?: (s?: NodeJS.Signals) => boolean }
+
+    // 14b: retain the handle so download:cancel can tree-kill this child by sessionId
+    const sessionId = opts.sessionId
+    if (sessionId !== undefined && child && typeof child.kill === 'function') {
+      registerDownloadChild(sessionId, child as unknown as HfChildHandle)
+    }
 
     // 若为真实子进程，等待 close；若为 mock（无 on），直接 resolve
     if (child && typeof child.on === 'function') {
-      await new Promise<void>((resolve, reject) => {
-        let settled = false
-        const done = (code: number | null) => {
-          if (settled) return
-          settled = true
-          if (code === 0 || code === null) resolve()
-          else reject(new Error(`${command} exited with code ${code}`))
-        }
-        child.on!('close', (code) => done(code as number | null))
-        child.on!('error', (err) => {
-          if (settled) return
-          settled = true
-          reject(err as Error)
+      try {
+        await new Promise<void>((resolve, reject) => {
+          let settled = false
+          const done = (code: number | null) => {
+            if (settled) return
+            settled = true
+            if (code === 0 || code === null) resolve()
+            else reject(new Error(`${command} exited with code ${code}`))
+          }
+          child.on!('close', (code) => done(code as number | null))
+          child.on!('error', (err) => {
+            if (settled) return
+            settled = true
+            reject(err as Error)
+          })
         })
-      })
+      } finally {
+        if (sessionId !== undefined) unregisterDownloadChild(sessionId)
+      }
+    } else if (sessionId !== undefined) {
+      // mock 无生命周期事件 — 立即注销，避免句柄泄漏
+      unregisterDownloadChild(sessionId)
     }
   } catch (err) {
     // spawn 失败（如二进制不存在）— 抛出带命令的错误，便于 UI 提示安装指引
+    if (opts.sessionId !== undefined) unregisterDownloadChild(opts.sessionId)
     const msg = (err as Error).message ?? String(err)
     throw new Error(`${command} spawn failed: ${msg} — args: ${args.join(' ')}`)
   }

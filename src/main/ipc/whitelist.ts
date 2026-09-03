@@ -20,6 +20,10 @@ export const ALLOWED_CHANNELS = [
   'health:pulse',
   'models:list',
   'models:download',
+  'models:setDir',
+  'download:cancel',
+  'config:get',
+  'config:set',
   'chat:send',
   'chat:abort',
   'image:generate',
@@ -112,10 +116,12 @@ export type ChatDeltaEvent = { id: string; delta: string; reasoning?: string }
 export type ChatDoneEvent = { id: string; model?: string; aborted?: boolean }
 export type ChatErrorEvent = { id: string; message: string }
 
-export type DownloadState = 'downloading' | 'done' | 'error'
+export type DownloadState = 'downloading' | 'done' | 'error' | 'cancelled'
 /**
  * models:download progress. total === 0 while the final size is unknown
  * (hf-cli/aria2 expose no byte total up front); on 'done', total === received.
+ * 'cancelled' is the terminal state of download:cancel (todo14b) — the child
+ * process was tree-killed and no further events fire for that id.
  * todo14 renders progress bars off {id, received, total} per plan; state/error
  * are additive fields this channel already carries.
  */

@@ -14,11 +14,16 @@ describe('ipc whitelist', () => {
       expect(isAllowedChannel(ch)).toBe(true)
     }
     // W1-8 全集：原 12 项 + chat:abort + image:queue:status + gallery 五动词 +
-    // search:run + hf:search + conversations 六通道（todo17 预列）。
+    // search:run + hf:search + conversations 六通道（todo17 预列）
+    // + todo13 models:setDir + todo14b download:cancel + todo16 config:get/config:set。
     expect(ALLOWED_CHANNELS).toEqual([
       'health:pulse',
       'models:list',
       'models:download',
+      'models:setDir',
+      'download:cancel',
+      'config:get',
+      'config:set',
       'chat:send',
       'chat:abort',
       'image:generate',

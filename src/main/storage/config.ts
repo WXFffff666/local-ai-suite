@@ -3,6 +3,18 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 
 export type Theme = 'light' | 'dark' | 'system'
 
+/**
+ * Encrypted secret payloads persisted in config.json (todo16). Values are
+ * safeStorage envelopes (`enc:v1:` / `enc:fallback:v1:`) or '' (cleared) —
+ * plaintext never reaches disk (config:set handler enforces the prefix).
+ */
+export type SecretPayloads = {
+  hfToken?: string
+  tavilyApiKey?: string
+  exaApiKey?: string
+  braveApiKey?: string
+}
+
 export type AppConfig = {
   /** UI theme */
   theme: Theme
@@ -22,6 +34,8 @@ export type AppConfig = {
   searxngEnabled: boolean
   /** Last onboarding wizard completed */
   onboardingCompleted: boolean
+  /** Encrypted secrets (todo16) — see SecretPayloads contract above */
+  secrets?: SecretPayloads
 }
 
 export const DEFAULT_CONFIG: AppConfig = {

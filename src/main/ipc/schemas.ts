@@ -44,9 +44,50 @@ export const modelsDownloadSchema = z.object({
     .max(256),
   filename: z.string().min(1).max(512).optional(),
   localDir: z.string().min(1).max(1024).optional(),
-  quant: z.string().min(1).max(32).optional()
+  quant: z.string().min(1).max(32).optional(),
+  /** 14b disk pre-flight budget in bytes; absent ⇒ size unknown ⇒ check skipped. */
+  expectedBytes: z.number().int().positive().max(1_000_000_000_000_000).optional()
 })
 export type ModelsDownloadInput = z.infer<typeof modelsDownloadSchema>
+
+export const downloadCancelSchema = z.object({ id: idSchema })
+export type DownloadCancelInput = z.infer<typeof downloadCancelSchema>
+
+/** todo13: models dir switch. Absolute path only — checked again by the handler. */
+export const modelsSetDirSchema = z.object({
+  path: z.string().min(1).max(1024)
+})
+export type ModelsSetDirInput = z.infer<typeof modelsSetDirSchema>
+
+// --- config (theme / locale / encrypted secret payloads) -------------------------
+
+/** Secret fields persist ONLY safeStorage payloads (enc:v1:/enc:fallback:v1:) —
+ *  the handler rejects any other non-empty value (plaintext-never-on-disk). */
+export const secretPayloadSchema = z
+  .string()
+  .max(4096)
+  .refine((v) => v === '' || v.startsWith('enc:v1:') || v.startsWith('enc:fallback:v1:'), {
+    message: 'secrets must be enc:v1:/enc:fallback:v1: payloads (encrypt via secrets:encrypt)'
+  })
+
+export const configGetSchema = z.object({}).strict()
+
+export const configSetSchema = z
+  .object({
+    theme: z.enum(['light', 'dark', 'system']).optional(),
+    locale: z.string().min(2).max(10).optional(),
+    secrets: z
+      .object({
+        hfToken: secretPayloadSchema.optional(),
+        tavilyApiKey: secretPayloadSchema.optional(),
+        exaApiKey: secretPayloadSchema.optional(),
+        braveApiKey: secretPayloadSchema.optional()
+      })
+      .strict()
+      .optional()
+  })
+  .strict()
+export type ConfigSetInput = z.infer<typeof configSetSchema>
 
 // --- images --------------------------------------------------------------------
 

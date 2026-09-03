@@ -262,6 +262,11 @@
   color: #d86a6a;
 }
 
+.las-market-job-state-cancelled {
+  background: rgba(160, 160, 170, 0.15);
+  color: #9a9aa5;
+}
+
 /* 进度条：total 已知 → 按百分比；total===0 → 不定长 shimmer */
 .las-market-job-bar {
   position: relative;

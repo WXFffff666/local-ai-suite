@@ -1,7 +1,8 @@
 /**
  * DownloadJobList.tsx — 多任务下载面板：每个 job 一行进度条 + 终态徽标
  * total===0 → 不定长 shimmer（hf-cli 事件契约：完成前无字节总量）。
- * 取消按钮为 disabled 占位：后端尚无 download:cancel 通道（todo14 偏差记录）。
+ * 取消按钮（todo14b）：downloading 行可用 → invoke 'download:cancel'，
+ * main 树杀子进程并广播终态 'cancelled'。
  */
 import type { DownloadJob } from './types'
 
@@ -22,13 +23,16 @@ const STATE_LABEL: Record<DownloadJob['state'], string> = {
   downloading: '下载中',
   done: '完成',
   error: '失败',
+  cancelled: '已取消',
 }
 
 export type DownloadJobListProps = {
   jobs: DownloadJob[]
+  /** 取消进行中的任务（useDownloadJobs.cancel）；终态行不渲染按钮。 */
+  onCancel: (id: string) => void
 }
 
-export function DownloadJobList({ jobs }: DownloadJobListProps): React.JSX.Element {
+export function DownloadJobList({ jobs, onCancel }: DownloadJobListProps): React.JSX.Element {
   return (
     <aside className="las-market-downloads" aria-label="下载任务">
       <h2 className="las-market-downloads-title">下载任务（{jobs.length}）</h2>
@@ -72,14 +76,16 @@ export function DownloadJobList({ jobs }: DownloadJobListProps): React.JSX.Eleme
                         ? `${formatBytes(job.received)} / ${formatBytes(job.total)}`
                         : `已接收 ${formatBytes(job.received)}（总大小未知）`}
                   </span>
-                  <button
-                    type="button"
-                    className="las-market-job-cancel"
-                    disabled
-                    title="后端尚未提供 download:cancel 通道（todo14 偏差：待后续任务接入）"
-                  >
-                    取消
-                  </button>
+                  {job.state === 'downloading' ? (
+                    <button
+                      type="button"
+                      className="las-market-job-cancel"
+                      title="取消下载（download:cancel 树杀子进程）"
+                      onClick={() => onCancel(job.id)}
+                    >
+                      取消
+                    </button>
+                  ) : null}
                 </div>
                 {job.state === 'error' && job.error ? (
                   <p className="las-market-job-error">{job.error}</p>

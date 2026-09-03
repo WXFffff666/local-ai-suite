@@ -65,9 +65,10 @@ export type IpcReject = {
 /** 'hf:search' → handlers.ts `{ ok: true, cards }`。 */
 export type HfSearchReply = { ok: true; cards: MarketModelCard[] } | IpcReject
 
-/** 'models:download' → DownloadManager DownloadAck。 */
+/** 'models:download' → DownloadManager ack 族（14b：含磁盘预检拒绝）。 */
 export type DownloadAckReply =
   | { ok: true; id: string; repoId: string; state: 'downloading' }
+  | { ok: false; error: 'insufficient-disk'; free: number; needed: number }
   | IpcReject
 
 /** 渲染层下载任务状态机 = DownloadProgressEvent 的累积投影。 */
@@ -79,7 +80,8 @@ export type DownloadJob = {
   received: number
   /** 0 = 总量未知（hf-cli 事件契约：done 前 total 恒为 0 → 不定长进度条）。 */
   total: number
-  state: 'downloading' | 'done' | 'error'
+  /** 'cancelled' = download:cancel 终态（todo14b）。 */
+  state: 'downloading' | 'done' | 'error' | 'cancelled'
   error?: string
 }
 

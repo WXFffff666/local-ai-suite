@@ -4,7 +4,10 @@
  * dialog/safeStorage as plain deps). Includes the zod 400-shape contract and
  * the honest conversations:not-ready posture until todo17.
  */
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { mkdirSync, mkdtempSync, readFileSync, rmSync } from 'fs'
+import { join } from 'path'
+import { tmpdir } from 'os'
 
 import { buildIpcHandlers, toImageQueueStatusEvent, type HandlerContext, type ServicesSurface } from './handlers'
 import type { ChatRelay } from './chatRelay'
@@ -13,7 +16,10 @@ import type { QueueEvent } from '../../image/queue'
 
 function makeHarness() {
   const services = {
-    registry: { getModels: vi.fn(() => [{ id: 'm1', name: 'Qwen3' }]) },
+    registry: {
+      getModels: vi.fn(() => [{ id: 'm1', name: 'Qwen3' }]),
+      reloadModels: vi.fn(() => [{ id: 'm1', name: 'Qwen3' }])
+    },
     imageQueue: {
       enqueue: vi.fn(() => 'job-1'),
       getJob: vi.fn((id: string) => ({ id, status: 'queued', warning: 'w', effectiveModel: 'sd1.5-q4' })),
@@ -35,7 +41,10 @@ function makeHarness() {
     start: vi.fn(() => ({ ok: true, id: 'c1', streaming: true })),
     abort: vi.fn(() => ({ ok: true, id: 'c1', aborted: true }))
   }
-  const downloads = { start: vi.fn(() => ({ ok: true, id: 'd1', repoId: 'o/r', state: 'downloading' })) }
+  const downloads = {
+    start: vi.fn(() => ({ ok: true, id: 'd1', repoId: 'o/r', state: 'downloading' })),
+    cancel: vi.fn((id: string) => (id === 'd1' ? { ok: true, id, cancelled: true } : { ok: false, error: 'not-found' }))
+  }
   const hfSearch = vi.fn(async () => [{ id: 'hf1' }])
   const dialog = { showMessageBox: vi.fn(async () => ({ response: 1 })) }
   const safeStorage = {
@@ -55,7 +64,7 @@ function makeHarness() {
   const deps = {
     services: services as unknown as ServicesSurface,
     relay: relay as unknown as Pick<ChatRelay, 'start' | 'abort'>,
-    downloads: downloads as unknown as Pick<DownloadManager, 'start'>,
+    downloads: downloads as unknown as Pick<DownloadManager, 'start' | 'cancel'>,
     hfSearch,
     dialog,
     safeStorage
@@ -294,5 +303,156 @@ describe('toImageQueueStatusEvent', () => {
   it('omits absent optional fields entirely (stable shape)', () => {
     const ev: QueueEvent = { type: 'queued', jobId: 'j1', progress: 0, status: 'queued' }
     expect(toImageQueueStatusEvent(ev)).not.toHaveProperty('message')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// todo13 / todo14b / todo16 — models:setDir, download:cancel, config:*
+// ---------------------------------------------------------------------------
+
+describe('models:setDir (todo13)', () => {
+  let tmp = ''
+  let origCwd = ''
+
+  beforeEach(() => {
+    tmp = mkdtempSync(join(tmpdir(), 'las-setdir-'))
+    origCwd = process.cwd()
+    process.chdir(tmp)
+  })
+  afterEach(() => {
+    try {
+      process.chdir(origCwd)
+    } catch {}
+    rmSync(tmp, { recursive: true, force: true })
+  })
+
+  it('absolute existing dir → persists config.modelsDir + triggers reloadModels spy', async () => {
+    const { handlers, services } = makeHarness()
+    const dir = mkdtempSync(join(tmp, 'models-'))
+    const res = (await handlers['models:setDir']([{ path: dir }], { send: vi.fn() })) as {
+      ok: boolean
+      modelsDir: string
+      restartRequired: boolean
+    }
+    expect(res.ok).toBe(true)
+    expect(res.restartRequired).toBe(true)
+    expect(services.registry.reloadModels).toHaveBeenCalledTimes(1)
+    // config.json persisted under the tmp cwd (userData fallback)
+    const raw = JSON.parse(readFileSync(join(tmp, 'userData', 'config.json'), 'utf-8')) as { modelsDir: string }
+    expect(raw.modelsDir).toBe(dir)
+  })
+
+  it('relative path rejected with path-not-absolute (no reloadModels)', async () => {
+    const { handlers, services } = makeHarness()
+    const res = await handlers['models:setDir']([{ path: 'models/relative' }], { send: vi.fn() })
+    expect(res).toEqual({ ok: false, error: 'path-not-absolute' })
+    expect(services.registry.reloadModels).not.toHaveBeenCalled()
+  })
+
+  it('missing dir rejected with dir-not-found', async () => {
+    const { handlers } = makeHarness()
+    const ghost = join(tmp, 'nope-does-not-exist')
+    const res = await handlers['models:setDir']([{ path: ghost }], { send: vi.fn() })
+    expect(res).toEqual({ ok: false, error: 'dir-not-found' })
+  })
+
+  it('rejects non-string path with 400-shape', async () => {
+    const { handlers } = makeHarness()
+    await expect(handlers['models:setDir']([{ path: 42 }], { send: vi.fn() })).resolves.toMatchObject({
+      ok: false,
+      error: 'invalid-payload',
+    })
+  })
+})
+
+describe('download:cancel (todo14b)', () => {
+  it('forwards validated id to DownloadManager.cancel', async () => {
+    const { handlers, downloads } = makeHarness()
+    const res = await handlers['download:cancel']([{ id: 'd1' }], { send: vi.fn() })
+    expect(res).toEqual({ ok: true, id: 'd1', cancelled: true })
+    expect(downloads.cancel).toHaveBeenCalledWith('d1')
+  })
+
+  it('unknown id passes through not-found', async () => {
+    const { handlers, downloads } = makeHarness()
+    const res = await handlers['download:cancel']([{ id: 'ghost' }], { send: vi.fn() })
+    expect(res).toEqual({ ok: false, error: 'not-found' })
+    expect(downloads.cancel).toHaveBeenCalledWith('ghost')
+  })
+
+  it('missing id rejected with 400-shape', async () => {
+    const { handlers, downloads } = makeHarness()
+    await expect(handlers['download:cancel']([{}], { send: vi.fn() })).resolves.toMatchObject({
+      ok: false,
+      error: 'invalid-payload',
+    })
+    expect(downloads.cancel).not.toHaveBeenCalled()
+  })
+})
+
+describe('config:get / config:set (todo16)', () => {
+  let tmp = ''
+  let origCwd = ''
+
+  beforeEach(() => {
+    tmp = mkdtempSync(join(tmpdir(), 'las-config-'))
+    origCwd = process.cwd()
+    process.chdir(tmp)
+  })
+  afterEach(() => {
+    try {
+      process.chdir(origCwd)
+    } catch {}
+    rmSync(tmp, { recursive: true, force: true })
+  })
+
+  it('config:get returns defaults before any write', async () => {
+    const { handlers } = makeHarness()
+    const res = (await handlers['config:get']([{}], { send: vi.fn() })) as { ok: boolean; config: { theme: string } }
+    expect(res.ok).toBe(true)
+    expect(res.config.theme).toBe('system')
+  })
+
+  it('config:set persists theme + locale to disk', async () => {
+    const { handlers } = makeHarness()
+    const res = (await handlers['config:set']([{ theme: 'dark', locale: 'en' }], { send: vi.fn() })) as {
+      ok: boolean
+      config: { theme: string; locale: string }
+    }
+    expect(res.ok).toBe(true)
+    expect(res.config.theme).toBe('dark')
+    expect(res.config.locale).toBe('en')
+    mkdirSync(join(tmp, 'userData'), { recursive: true })
+    const raw = JSON.parse(readFileSync(join(tmp, 'userData', 'config.json'), 'utf-8')) as Record<string, unknown>
+    expect(raw.theme).toBe('dark')
+  })
+
+  it('secret payloads must be enc:v1:/enc:fallback:v1: — plaintext rejected, payload accepted and merged', async () => {
+    const { handlers } = makeHarness()
+    const bad = await handlers['config:set']([{ secrets: { hfToken: 'hf_plain_secret' } }], { send: vi.fn() })
+    expect(bad).toMatchObject({ ok: false, error: 'invalid-payload' })
+
+    const good = (await handlers['config:set'](
+      [{ secrets: { hfToken: 'enc:v1:AAA=' } }],
+      { send: vi.fn() },
+    )) as { ok: boolean; config: { secrets?: Record<string, string> } }
+    expect(good.ok).toBe(true)
+    expect(good.config.secrets?.hfToken).toBe('enc:v1:AAA=')
+
+    // field-wise merge: second write must not drop the first field
+    const second = (await handlers['config:set'](
+      [{ secrets: { tavilyApiKey: 'enc:fallback:v1:Qg==' } }],
+      { send: vi.fn() },
+    )) as { ok: boolean; config: { secrets?: Record<string, string> } }
+    expect(second.config.secrets?.hfToken).toBe('enc:v1:AAA=')
+    expect(second.config.secrets?.tavilyApiKey).toBe('enc:fallback:v1:Qg==')
+  })
+
+  it('unknown key rejected (strict schema)', async () => {
+    const { handlers } = makeHarness()
+    await expect(handlers['config:set']([{ evil: true }], { send: vi.fn() })).resolves.toMatchObject({
+      ok: false,
+      error: 'invalid-payload',
+    })
   })
 })

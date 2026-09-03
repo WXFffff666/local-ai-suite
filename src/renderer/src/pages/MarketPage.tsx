@@ -8,8 +8,9 @@
  *
  * 诚实状态：
  * - gated 仓库需要 HF token（todo16 设置页加密存储），未配置时下载会以后端报错呈现；
- * - 磁盘余量预检与取消（download:cancel）后端通道尚不存在 → 界面 disabled + 说明，
- *   偏差已记录交 orchestrator（不得改 whitelist.ts/handlers.ts，IPC lane 冻结）。
+ * - 14b 补全：download:cancel 通道 + fs.statfs×1.1 磁盘预检已在主进程落地，
+ *   任务行取消按钮可用；渲染层无字节总量信息（sizeLabel 是展示串）→
+ *   expectedBytes 不下发，预检由后端在已知大小时生效。
  */
 import { useCallback, useEffect, useState } from 'react'
 import '../components/market/market.css'
@@ -47,7 +48,16 @@ export function buildSearchPayload(p: MarketSearchParams): Record<string, unknow
 export function MarketPage(): React.JSX.Element {
   const [view, setView] = useState<SearchView>(INITIAL_VIEW)
   const [downloadError, setDownloadError] = useState<string | null>(null)
-  const { jobs, isActive, start } = useDownloadJobs()
+  const { jobs, isActive, start, cancel } = useDownloadJobs()
+
+  const onCancel = useCallback(
+    async (id: string) => {
+      setDownloadError(null)
+      const message = await cancel(id)
+      if (message) setDownloadError(message)
+    },
+    [cancel],
+  )
 
   const runSearch = useCallback(async (p: MarketSearchParams) => {
     const api = typeof window === 'undefined' ? undefined : window.api
@@ -103,8 +113,7 @@ export function MarketPage(): React.JSX.Element {
 
       <p className="las-market-note">
         受限（gated）仓库需要先在设置中配置 HuggingFace token，否则下载将以错误呈现。
-        磁盘余量预检与任务取消依赖后端通道（download:cancel / 预检），尚未接入 —
-        下载前请自行确认目标磁盘空间充足。
+        下载支持取消（download:cancel，树杀子进程）；主进程在已知文件大小时做磁盘余量预检。
       </p>
 
       {view.phase === 'error' && view.message ? (
@@ -137,7 +146,7 @@ export function MarketPage(): React.JSX.Element {
             </div>
           ) : null}
         </div>
-        <DownloadJobList jobs={jobs} />
+        <DownloadJobList jobs={jobs} onCancel={(id) => void onCancel(id)} />
       </div>
     </section>
   )

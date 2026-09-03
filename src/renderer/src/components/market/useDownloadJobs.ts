@@ -1,17 +1,16 @@
 /**
- * useDownloadJobs.ts — todo14 下载任务状态钩子
+ * useDownloadJobs.ts — todo14 下载任务状态钩子（14b 补全取消 + 预检呈现）
  *
- * 契约（均为既有通道，见 whitelist.ts，本任务不新增 IPC）：
+ * 契约（均为白名单通道，见 whitelist.ts）：
  * - invoke 'models:download' {repoId, filename?} → DownloadAckReply
- * - on 'download:progress' DownloadProgressEvent {id,repoId,received,total,state,error?}
+ *   14b: 磁盘预检不足时应答 {ok:false,error:'insufficient-disk',free,needed}。
+ * - invoke 'download:cancel' {id} → {ok:true,id,cancelled} | {ok:false,error:'not-found'}
+ * - on 'download:progress' DownloadProgressEvent {id,repoId,received,total,state,state:'cancelled'终态}
  *   total===0 表示字节总量未知 → UI 渲染不定长 shimmer 条；done 时 total===received。
- *
- * 偏差记录：后端无 download:cancel / 磁盘余量预检通道（DownloadManager 无
- * cancel API，白名单被并行 lane 冻结）→ 任务行提供 disabled 取消按钮，
- * 说明文字呈现原因，待 orchestrator 折叠后续任务。
  */
 import { useCallback, useEffect, useState } from 'react'
 import type { DownloadProgressEvent } from '../../../../main/ipc/whitelist'
+import { formatBytes } from './DownloadJobList'
 import {
   formatIssues,
   type DownloadAckReply,
@@ -55,6 +54,8 @@ export type UseDownloadJobs = {
   isActive: (repoId: string) => boolean
   /** 发起下载；返回 null=已受理，字符串=立即可见的错误消息。 */
   start: (card: MarketModelCard) => Promise<string | null>
+  /** 14b：取消会话（树杀子进程）；返回 null=已取消，字符串=错误消息。 */
+  cancel: (id: string) => Promise<string | null>
 }
 
 export function useDownloadJobs(): UseDownloadJobs {
@@ -82,11 +83,28 @@ export function useDownloadJobs(): UseDownloadJobs {
         ...(card.filename === undefined ? {} : { filename: card.filename }),
       })) as DownloadAckReply
       if (reply.ok) return null
+      if (reply.error === 'insufficient-disk') {
+        return `磁盘空间不足 — 需要 ${formatBytes(reply.needed)}（含 1.1× 余量），仅剩 ${formatBytes(reply.free)}，下载已拒绝`
+      }
       return `models:download 被拒绝 — ${formatIssues(reply)}`
     } catch (err) {
       return `models:download 调用失败 — ${err instanceof Error ? err.message : String(err)}`
     }
   }, [])
 
-  return { jobs, isActive, start }
+  const cancel = useCallback(async (id: string): Promise<string | null> => {
+    const api = typeof window === 'undefined' ? undefined : window.api
+    if (!api) return '未检测到 window.api — 无法取消'
+    try {
+      const reply = (await api.invoke('download:cancel', { id })) as
+        | { ok: true; id: string; cancelled: true }
+        | { ok: false; error: string }
+      if (reply.ok) return null // 终态 'cancelled' 事件随即将更新任务行
+      return reply.error === 'not-found' ? '任务已结束或不存在 — 无需取消' : `download:cancel 被拒绝 — ${reply.error}`
+    } catch (err) {
+      return `download:cancel 调用失败 — ${err instanceof Error ? err.message : String(err)}`
+    }
+  }, [])
+
+  return { jobs, isActive, start, cancel }
 }

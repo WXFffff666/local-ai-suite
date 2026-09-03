@@ -46,6 +46,9 @@ function makeFakeApi(searchReply: unknown): FakeApi {
       if (channel === 'models:download') {
         return { ok: true, id: 'dl-test-1', repoId: CARD.repoId, state: 'downloading' as const }
       }
+      if (channel === 'download:cancel') {
+        return { ok: true, id: 'dl-test-1', cancelled: true as const }
+      }
       throw new Error(`unexpected channel: ${channel}`)
     }),
     on: vi.fn((_channel: string, cb: (e: DownloadProgressEvent) => void) => {
@@ -279,7 +282,7 @@ describe('MarketPage 下载与进度', () => {
     expect(container.querySelector('.las-market-job')).toBeNull()
   })
 
-  it('取消按钮存在但 disabled（后端 download:cancel 通道缺失 — todo14 偏差记录）', async () => {
+  it('取消按钮可用（14b download:cancel 落地）：点击 → invoke 取消 → cancelled 终态事件渲染「已取消」且按钮消失', async () => {
     const api = makeFakeApi({ ok: true, cards: [CARD] })
     await mount(api)
     await act(async () => {
@@ -298,7 +301,51 @@ describe('MarketPage 下载与进度', () => {
     const cancel = jobRow().querySelector<HTMLButtonElement>(
       'button.las-market-job-cancel',
     )!
-    expect(cancel.disabled).toBe(true)
+    expect(cancel.disabled).toBe(false)
     expect(cancel.title).toContain('download:cancel')
+
+    await act(async () => {
+      cancel.click()
+      await flush()
+    })
+    expect(api.invoke).toHaveBeenCalledWith('download:cancel', { id: 'dl-test-1' })
+
+    await act(async () => {
+      api.emit({
+        id: 'dl-test-1',
+        repoId: CARD.repoId,
+        received: 4096,
+        total: 0,
+        state: 'cancelled',
+      })
+    })
+    const row = jobRow()
+    expect(row.getAttribute('data-state')).toBe('cancelled')
+    expect(row.textContent).toContain('已取消')
+    expect(row.querySelector('button.las-market-job-cancel')).toBeNull()
+  })
+
+  it('磁盘预检拒绝（insufficient-disk）→ 错误条呈现 free/needed 且不建任务行', async () => {
+    const api = makeFakeApi({ ok: true, cards: [CARD] })
+    api.invoke.mockImplementation(async (channel: string) => {
+      if (channel === 'hf:search') return { ok: true, cards: [CARD] }
+      return {
+        ok: false,
+        error: 'insufficient-disk',
+        free: 1024 ** 3,
+        needed: 5 * 1024 ** 3,
+      }
+    })
+    await mount(api)
+    await act(async () => {
+      downloadButton().click()
+      await flush()
+    })
+    const alerts = container.querySelectorAll<HTMLElement>('[role="alert"]')
+    expect(alerts).toHaveLength(1)
+    expect(alerts[0].textContent).toContain('磁盘空间不足')
+    expect(alerts[0].textContent).toContain('5.0 GB')
+    expect(alerts[0].textContent).toContain('1.0 GB')
+    expect(container.querySelector('.las-market-job')).toBeNull()
   })
 })
