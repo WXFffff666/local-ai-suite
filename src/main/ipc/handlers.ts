@@ -119,7 +119,7 @@ export type HandlerDeps = {
    * before todo17); todo29 injects it in main/index.ts alongside the tools
    * registry (todo27/28).
    */
-  agent?: () => AgentSessions | null
+  agent?: () => Pick<AgentSessions, 'start' | 'cancel' | 'status'> | null
   /** destructive-action backends (same no-op wiring index.ts had pre-W1). */
   onDeleteWorkspace?: (id: string) => Promise<void>
   onOverwriteCoverage?: (opts: unknown) => Promise<void>
