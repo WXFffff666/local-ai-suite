@@ -1,0 +1,63 @@
+/**
+ * terminal.css — todo28 xterm panel chrome. Colors ride the app CSS custom
+ * properties (--las-*) so the panel follows light/dark like the rest of the
+ * renderer; xterm itself is themed from those vars in TerminalPanel.tsx.
+ */
+.term-panel {
+  border: 1px solid var(--las-border, #222);
+  border-radius: 8px;
+  background: var(--las-bg, #0d1117);
+  overflow: hidden;
+  font-size: 12px;
+}
+
+.term-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--las-border, #222);
+  background: var(--las-card, #141414);
+}
+
+.term-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border: 1px solid var(--las-border, #222);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--las-muted, #999);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.term-tab-active {
+  color: var(--las-fg, #e6edf3);
+  border-color: var(--las-fg, #e6edf3);
+}
+
+.term-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.term-dot-run {
+  background: #d29922;
+}
+
+.term-dot-done {
+  background: #3fb950;
+}
+
+.term-view {
+  height: 220px;
+  padding: 6px 8px;
+}
+
+.term-view[hidden] {
+  display: none;
+}
