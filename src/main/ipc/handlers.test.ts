@@ -761,3 +761,226 @@ describe('permission channels (todo25)', () => {
     ).resolves.toEqual({ ok: false, error: 'unknown-request' })
   })
 })
+
+// ---------------------------------------------------------------------------
+// todo30b — engines:status / engines:gpuDownload / models:launch
+// Engines module functions arrive through the deps.engines seam (same
+// injection convention as hfSearch/dialog/safeStorage); availability and the
+// 21→30 launch hop ride the extended ServicesSurface (real Services already
+// exposes engineResolver/getEngineResolutions/launchModel — no index.ts edit).
+// ---------------------------------------------------------------------------
+
+import type { ManifestLoad } from '../../engines/manifest'
+import type { DownloadPackOptions, DownloadPackResult, NvidiaInfo } from '../../engines/gpuPack'
+import type { EngineResolver, ResolvedEngine } from '../../engines/resolver'
+
+const MANIFEST_OK: ManifestLoad = {
+  status: 'ok',
+  path: 'X:/manifest.json',
+  manifest: {
+    version: 1,
+    generated_at: '2026-09-01T00:00:00Z',
+    baseUrlTemplate: 'https://example/{engine}/{variant}/{file}',
+    engines: {
+      llama: {
+        cpu: { file: 'llama-server.exe', sha256: 'a'.repeat(64), minVersion: 'b1', platform: 'win32' },
+        gpu: {
+          cuda: { file: 'llama-server-cuda.exe', sha256: 'b'.repeat(64) },
+          vulkan: { file: 'llama-server-vulkan.exe', sha256: 'c'.repeat(64) },
+        },
+      },
+      sd: {
+        cpu: { file: 'sd-cli.exe', sha256: 'd'.repeat(64), minVersion: '0.1', platform: 'win32' },
+        gpu: { cuda: { file: 'sd-cli-cuda.exe', sha256: 'e'.repeat(64) } },
+      },
+    },
+  },
+}
+
+const RESOLUTIONS: ResolvedEngine[] = [
+  { name: 'llama', source: 'bundled-cpu', bin: 'X:/engines/llama-server.exe', version: 'b4000', skipped: [] },
+  { name: 'ollama', source: 'none', bin: null, skipped: [{ source: 'system', reason: 'not on PATH' }] },
+]
+
+const NVIDIA_OK: NvidiaInfo = { available: true, name: 'RTX 4060', driverVersion: '552.22', memoryMB: 8188 }
+
+function makeEnginesHarness(overrides: {
+  manifestLoad?: ManifestLoad
+  nvidia?: NvidiaInfo
+  downloadPack?: (opts: DownloadPackOptions) => Promise<DownloadPackResult>
+  resolver?: EngineResolver | null
+} = {}) {
+  const harness = makeHarness()
+  const invalidated = vi.fn()
+  const resolver: EngineResolver | null =
+    overrides.resolver === undefined
+      ? { resolve: vi.fn(), availability: vi.fn(async () => RESOLUTIONS), invalidate: invalidated }
+      : overrides.resolver
+  const services = Object.assign(harness.services, {
+    engineResolver: resolver,
+    getEngineResolutions: vi.fn(() => RESOLUTIONS),
+    launchModel: vi.fn(async (id: string) => {
+      if (id === 'missing') throw new Error(`model not found: ${id}`)
+      return { name: 'llama', running: true, port: 11435, healthUrl: 'http://127.0.0.1:11435/health', failures: 0, restarts: 0, state: 'running' as const }
+    }),
+  })
+  const downloadPack = overrides.downloadPack ?? (async (opts: DownloadPackOptions): Promise<DownloadPackResult> => {
+    opts.onProgress?.({ percent: 42, downloaded: 420, total: 1000, stage: 'downloading' })
+    opts.onProgress?.({ percent: 100, downloaded: 1000, total: 1000, stage: 'verifying' })
+    opts.onProgress?.({ percent: 100, downloaded: 0, total: null, stage: 'activating' })
+    return { ok: true, dir: 'X:/engines/llama-cuda', file: 'X:/engines/llama-cuda/s.exe', shaVerified: true }
+  })
+  const engines = {
+    detectNvidia: vi.fn(async (): Promise<NvidiaInfo> => overrides.nvidia ?? NVIDIA_OK),
+    loadEngineManifest: vi.fn((): ManifestLoad => overrides.manifestLoad ?? MANIFEST_OK),
+    downloadPack: vi.fn(downloadPack),
+  }
+  const handlers = buildIpcHandlers({ ...harness.deps, services: services as unknown as ServicesSurface, engines })
+  const drain = () => new Promise((r) => setImmediate(r))
+  return { ...harness, services, resolver, engines, handlers, invalidated, downloadPack: engines.downloadPack, drain }
+}
+
+describe('engines:status (todo30b)', () => {
+  it('returns availability matrix + nvidia summary + manifest summary', async () => {
+    const { handlers, ctx } = makeEnginesHarness()
+    const res = (await handlers['engines:status']([{}], ctx)) as Record<string, unknown>
+    expect(res.ok).toBe(true)
+    expect(res.resolutions).toEqual(RESOLUTIONS)
+    expect(res.nvidia).toEqual(NVIDIA_OK)
+    expect(res.manifest).toEqual({ present: true, generatedAt: '2026-09-01T00:00:00Z', variants: { llama: ['cuda', 'vulkan'], sd: ['cuda'] } })
+  })
+
+  it('dev-absent manifest → present:false + empty variants; detect failure → nvidia:null', async () => {
+    const { handlers, ctx } = makeEnginesHarness({
+      manifestLoad: { status: 'absent', path: 'X:/none.json', warnings: ['w'] },
+      nvidia: { available: false, reason: 'no-nvidia-smi' },
+    })
+    const res = (await handlers['engines:status']([{}], ctx)) as Record<string, unknown>
+    expect(res.manifest).toEqual({ present: false, generatedAt: null, variants: {} })
+    expect(res.nvidia).toEqual({ available: false, reason: 'no-nvidia-smi' })
+  })
+
+  it('resolver disabled (null) → falls back to services.getEngineResolutions cache', async () => {
+    const { handlers, ctx, services } = makeEnginesHarness({ resolver: null })
+    const res = (await handlers['engines:status']([{}], ctx)) as Record<string, unknown>
+    expect(res.resolutions).toEqual(RESOLUTIONS)
+    expect(services.getEngineResolutions).toHaveBeenCalled()
+  })
+
+  it('rejects unknown payload keys with the 400-shape', async () => {
+    const { handlers, ctx } = makeEnginesHarness()
+    await expect(handlers['engines:status']([{ evil: 1 }], ctx)).resolves.toMatchObject(invalidShape)
+  })
+})
+
+describe('engines:gpuDownload (todo30b)', () => {
+  const req = { engine: 'llama', variant: 'cuda' }
+
+  it('ack {ok:true}; progress stages stream as engines:progress and end in done; resolver invalidated', async () => {
+    const { handlers, ctx, downloadPack, invalidated, drain } = makeEnginesHarness()
+    await expect(handlers['engines:gpuDownload']([req], ctx)).resolves.toEqual({ ok: true })
+    await drain()
+    expect(downloadPack).toHaveBeenCalledWith(
+      expect.objectContaining({ engine: 'llama', variant: 'cuda', userDataDir: undefined, manifest: MANIFEST_OK.manifest }),
+    )
+    const events = (ctx.send as ReturnType<typeof vi.fn>).mock.calls
+      .filter((c) => c[0] === 'engines:progress')
+      .map((c) => c[1] as Record<string, unknown>)
+    expect(events.map((e) => e.state)).toEqual(['downloading', 'verifying', 'activating', 'done'])
+    expect(events[0]).toMatchObject({ engine: 'llama', variant: 'cuda', received: 420, total: 1000 })
+    expect(invalidated).toHaveBeenCalledTimes(1)
+  })
+
+  it('sha256-mismatch → terminal quarantined state with CPU-fallback note; no invalidation', async () => {
+    const { handlers, ctx, invalidated, drain } = makeEnginesHarness({
+      downloadPack: async (opts) => {
+        opts.onProgress?.({ percent: 100, downloaded: 1000, total: 1000, stage: 'verifying' })
+        return { ok: false, reason: 'sha256-mismatch', quarantine: 'X:/engines/.quarantine' }
+      },
+    })
+    await expect(handlers['engines:gpuDownload']([req], ctx)).resolves.toEqual({ ok: true })
+    await drain()
+    const events = (ctx.send as ReturnType<typeof vi.fn>).mock.calls
+      .filter((c) => c[0] === 'engines:progress')
+      .map((c) => c[1] as Record<string, unknown>)
+    expect(events[events.length - 1]).toMatchObject({ state: 'quarantined', note: expect.stringContaining('回退') })
+    expect(invalidated).not.toHaveBeenCalled()
+  })
+
+  it('download-error → terminal error state carrying the reason', async () => {
+    const { handlers, ctx, drain } = makeEnginesHarness({
+      downloadPack: async () => ({ ok: false, reason: 'download-error:timeout' }),
+    })
+    await handlers['engines:gpuDownload']([req], ctx)
+    await drain()
+    const events = (ctx.send as ReturnType<typeof vi.fn>).mock.calls.filter((c) => c[0] === 'engines:progress')
+    expect(events[events.length - 1]?.[1]).toMatchObject({ state: 'error', note: 'download-error:timeout' })
+  })
+
+  it('manifest missing/invalid → {ok:false,error:"manifest-missing"}, download never starts', async () => {
+    for (const load of [
+      { status: 'absent', path: 'p', warnings: [] } as ManifestLoad,
+      { status: 'invalid', path: 'p', errors: ['x'] } as ManifestLoad,
+    ]) {
+      const { handlers, ctx, downloadPack } = makeEnginesHarness({ manifestLoad: load })
+      await expect(handlers['engines:gpuDownload']([req], ctx)).resolves.toEqual({ ok: false, error: 'manifest-missing' })
+      expect(downloadPack).not.toHaveBeenCalled()
+    }
+  })
+
+  it('variant not in the manifest → {ok:false,error:"unknown-variant"}', async () => {
+    const { handlers, ctx, downloadPack } = makeEnginesHarness()
+    await expect(handlers['engines:gpuDownload']([{ engine: 'llama', variant: 'rocm' }], ctx)).resolves.toEqual({
+      ok: false,
+      error: 'unknown-variant',
+    })
+    expect(downloadPack).not.toHaveBeenCalled()
+  })
+
+  it('second request while one is in flight → {ok:false,error:"already-downloading"}', async () => {
+    let release: (r: DownloadPackResult) => void = () => undefined
+    const { handlers, ctx } = makeEnginesHarness({
+      downloadPack: () => new Promise<DownloadPackResult>((resolve) => (release = resolve)),
+    })
+    await expect(handlers['engines:gpuDownload']([req], ctx)).resolves.toEqual({ ok: true })
+    await expect(handlers['engines:gpuDownload']([req], ctx)).resolves.toEqual({ ok: false, error: 'already-downloading' })
+    release({ ok: true, dir: 'd', file: 'f', shaVerified: true })
+    await new Promise((r) => setImmediate(r))
+    // lane free again after completion
+    await expect(handlers['engines:gpuDownload']([req], ctx)).resolves.toEqual({ ok: true })
+  })
+
+  it('engine off the manifest enum + variant over 64 chars → 400-shape', async () => {
+    const { handlers, ctx, downloadPack } = makeEnginesHarness()
+    await expect(handlers['engines:gpuDownload']([{ engine: 'ollama', variant: 'cuda' }], ctx)).resolves.toMatchObject(invalidShape)
+    await expect(handlers['engines:gpuDownload']([{ engine: 'llama', variant: 'x'.repeat(65) }], ctx)).resolves.toMatchObject(invalidShape)
+    await expect(handlers['engines:gpuDownload']([{}], ctx)).resolves.toMatchObject(invalidShape)
+    expect(downloadPack).not.toHaveBeenCalled()
+  })
+})
+
+describe('models:launch (todo30b)', () => {
+  it('delegates to services.launchModel and reports the sidecar status', async () => {
+    const { handlers, services } = makeEnginesHarness()
+    const res = (await handlers['models:launch']([{ modelId: 'qwen3-4b' }], { send: vi.fn() })) as Record<string, unknown>
+    expect(services.launchModel).toHaveBeenCalledWith('qwen3-4b')
+    expect(res).toEqual({
+      ok: true,
+      status: { name: 'llama', running: true, port: 11435, healthUrl: 'http://127.0.0.1:11435/health', failures: 0, restarts: 0, state: 'running' },
+    })
+  })
+
+  it('service failures surface as {ok:false,error} — never throw across the wire', async () => {
+    const { handlers } = makeEnginesHarness()
+    await expect(handlers['models:launch']([{ modelId: 'missing' }], { send: vi.fn() })).resolves.toEqual({
+      ok: false,
+      error: 'model not found: missing',
+    })
+  })
+
+  it('empty modelId → 400-shape, launchModel untouched', async () => {
+    const { handlers, services } = makeEnginesHarness()
+    await expect(handlers['models:launch']([{ modelId: '' }], { send: vi.fn() })).resolves.toMatchObject(invalidShape)
+    expect(services.launchModel).not.toHaveBeenCalled()
+  })
+})
