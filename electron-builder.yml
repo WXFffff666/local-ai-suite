@@ -8,12 +8,20 @@ directories:
 
 # ---- pack size optimization ----
 asar: true
+# Minimal unpack set: only native binaries that the loader must see on the
+# real filesystem. Engine EXEs are NOT part of this list — they ship via
+# extraResources below (never inside app.asar), so no unpack rules needed.
 asarUnpack:
   - "**/*.node"
   - "**/*.dll"
   - "**/*.so"
 
 compression: maximum
+# npmRebuild stays TRUE for CI (runners have VS Build Tools and need the
+# electron-targeted native rebuild). Local Windows laptops without VS use the
+# `pack:local` escape hatch (--config.npmRebuild=false): node_modules already
+# carries electron-matched prebuilds from the postinstall `install-app-deps`.
+# Cross-check todo33 (CI v2): verify job runs rebuild:native before build.
 npmRebuild: true
 buildDependenciesFromSource: false
 # Per-platform native rebuild: better-sqlite3 / sqlite-vec / sharp are listed
@@ -76,15 +84,46 @@ files:
 extraMetadata:
   main: out/main/index.js
 
+# ---- engine binaries (todo34 owns CI staging; block stays commented locally) ----
+# electron-builder fails the build when `from` is missing, so this is a
+# placeholder until the CI build job stages the pinned CPU binaries.
+# Expected on-disk staging layout (repo root, consumed as-is):
+#   build/engines/llama-server.exe    llama.cpp CPU build (manifest.cpu.file)
+#   build/engines/sd-cli.exe          stable-diffusion.cpp CPU build
+#   build/engines/manifest.json       todo30 SHA256+minVersion manifest (src/engines/manifest.ts;
+#                                     file name = manifest.json — resolver reads
+#                                     <resourcesPath>/engines/manifest.json, see manifest.ts defaultManifestCandidates)
+#   build/engines/whisper-server.exe  OPTIONAL — added by todo36 (speech), manifest key "whisper"
+# Copied verbatim into <app>/resources/engines/ — i.e. OUTSIDE app.asar, which is
+# what src/engines/resolver.ts requires (process.resourcesPath/engines/<file>, sha256-verified).
+# GPU packs are deliberately NOT here: extraResources is not differentially
+# updated (R4 #7781), so GPU variants download to userData/engines at runtime.
+# extraResources:
+#   - from: build/engines
+#     to: engines
+#     filter: ["**/*"]
+
 publish:
   provider: github
   releaseType: draft
   publishAutoUpdate: false
 
+# ---- packaging hooks (todo31) ----
+# afterPack: flip Electron fuses on the win-unpacked EXE ONLY (prod path).
+# The dev/e2e app (out/ + node_modules electron binary launched by Playwright
+# _electron.launch) never passes through here — that is the dual-build split:
+# PROD fused dist/ vs TEST unfused dev launch (plan R3b).
+afterPack: ./scripts/fuses.mjs
+# afterAllArtifactBuild: artifact hygiene inventory (todo31; engine-staging
+# presence check feeds todo34's manifest generation).
+afterAllArtifactBuild: ./scripts/pack-after-all.mjs
+
 # Windows — primary target, budget <150 MB (without models)
 win:
   target:
     - target: nsis
+      arch: [x64]
+    - target: portable   # single-exe green edition (todo31)
       arch: [x64]
   icon: build/icon.ico
 
@@ -94,6 +133,13 @@ nsis:
   perMachine: false
   # reduce installer overhead
   differentialPackage: false
+  artifactName: ${productName}-Setup-${version}-${arch}.${ext}
+
+portable:
+  artifactName: ${productName}-Portable-${version}-${arch}.${ext}
+  # The portable exe self-extracts the win-unpacked dir (whose Electron binary
+  # afterPack already flipped) to a temp folder at run time, so the same fuse
+  # matrix applies to the portable artifact — no extra handling needed here.
 
 # macOS — CSC_LINK / APPLE_ID via env secrets (placeholder, no hard-coded key)
 mac:
