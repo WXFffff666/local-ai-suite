@@ -1,0 +1,17 @@
+# osv-scanner 配置 — todo34 供应链门禁（security.yml 的 osv job 引用本文件）。
+#
+# 策略（Appendix C CI 卫生）：osv-scanner 与 `pnpm audit --audit-level=high`
+# 双门禁，continue-on-error:false —— 命中即红，不存在"静默放行"默认值。
+# 只有【低危 / 开发链路不可达 / 上游已声明不修】三类允许在此登记，且必须
+# 带 Reason + Expires；到期即恢复红灯。生产运行时依赖（dependencies 段）
+# 一律禁止登记豁免。
+#
+# 模板（取消注释并填实数据；ID 用 GHSA/CVE 均可）：
+# [[IgnoredVulnerabilities]]
+# Path = "pnpm-lock.yaml"          # 锁文件路径或包所在路径
+# Package = "npm:some-dev-pkg"     # 精确包名（推荐，防止 Path 级过宽）
+# Vulnerability = "GHSA-xxxx-xxxx-xxxx"
+# Reason = "devDependency，仅 vitest worker 内消费，无网络/文件系统暴露面"
+# Expires = "2026-12-31T00:00:00Z" # 到期后必须重新评估
+
+# 当前无任何已接受豁免（2026-09-03 建文件基线，保持零条目）。

@@ -1,0 +1,247 @@
+name: Security
+
+# todo34 供应链加固 —— 与 release.yml（lane33 所有，本文件绝不触碰）互补的
+# 独立门禁面。OPERATOR NOTES（本 workflow 是唯一实现处，todo35 文档 lane 引用）：
+#
+#   * 四道门禁：osv（锁文件漏洞，硬红）/ sbom（许可违规硬红 + 漂移注释）/
+#     stage+sign（钉版本三件套引擎 + keyless cosign 出处）/ attest（SLSA
+#     build provenance，安装包）。
+#   * attest job 触发限制：release.yml 归 lane33，无法在其 build 内嵌
+#     attest-build-provenance —— 本 workflow 以 tag push / workflow_dispatch
+#     （手动，post-tag 可接受过渡态）下载该 tag 的 Release 资产后对文件出
+#     provenance。todo32 draft/prerelease spike 判定后此 job 或迁回 release.yml
+#     （SPIKE 关联注记）。
+#   * 运行时完整性归属不变：resolver spawn 前 sha256 校验 manifest.json
+#     （lane30 实现）；cosign 签的是【CI 抓取环节】的公开可验证出处，验证方
+#     是人/审计工具（`cosign verify-blob`），不是应用运行时。
+#   * dist 集成点（FINAL lane）：打包前先 `pnpm gen:manifest`（落
+#     build/engines/ + manifest.json），再取消 electron-builder.yml 中
+#     extraResources 注释块 —— 届时 check-pack-size 基线须计入引擎档
+#     （llama ~23MB + sd ~60MB + whisper ~9MB 解压后）。
+#   * CI 卫生（Appendix C）：第三方 action 全部钉 40 位 SHA（行尾注释标版本）；
+#     GITHUB_TOKEN 默认 contents: read，仅 attest/sign 按需提权 attestation /
+#     id-token。
+#
+# pnpm audit --audit-level=high 双门禁的另一半在 ci.yml（lane33 域，未动）。
+
+on:
+  push:
+    branches: [main, master]
+    tags: ['v*']
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'attest 目标 release tag（如 v0.1.0；留空 = 用触发的 tag）'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  # ---------------------------------------------------------------- osv 门禁
+  osv:
+    name: osv-scanner (lockfile)
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Scan pnpm-lock.yaml against OSV
+        # continue-on-error 刻意不设 —— 命中漏洞必须红；降级只走 osv-scanner.toml
+        # 的带到期豁免（零条目基线见该文件）。
+        uses: google/osv-scanner-action/osv-scanner-action@6e4298ebc4db23e847df9b2e2de2939d6f066c67 # v2.5.1
+        with:
+          scan-args: |-
+            --lockfile=pnpm-lock.yaml
+            --config=osv-scanner.toml
+
+  # ------------------------------------------------- SBOM 许可门禁 + 漂移注释
+  sbom:
+    name: SBOM license gate + drift
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@ff378ebe6b225b0680b81c1ad4498ae0d1d3a5e3 # v6.0.10
+        with:
+          version: 9.x
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '20.x'
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      # 硬门禁：新增依赖带非白名单许可 ⇒ check-licenses exit 1 ⇒ job 红。
+      # （OFL-1.1 静态字体资产裁定见 scripts/check-licenses.mjs 白名单注释。）
+      - name: License allowlist gate (hard)
+        run: node scripts/check-licenses.mjs
+      # 再生成是幂等的：组件指纹不变 ⇒ generatedAt 保留 ⇒ 工作区零 diff。
+      - name: Regenerate sbom.json
+        run: pnpm check:sbom
+      - name: Drift = annotation (informational, never red)
+        shell: bash
+        run: |
+          if ! git diff --exit-code -- sbom.json > "$RUNNER_TEMP/sbom.diff" 2>&1; then
+            echo "::warning title=SBOM drift::sbom.json is stale vs lockfile - commit the regenerated file (run: pnpm check:sbom)"
+            {
+              echo '### sbom.json drift (uncommitted regeneration)'
+              echo '```diff'
+              sed -n '1,200p' "$RUNNER_TEMP/sbom.diff"
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'sbom.json matches the committed lockfile view - no drift'
+          fi
+
+  # -------------------------------------------- 引擎三件套暂存 + 清单（钉 digest）
+  stage-engines:
+    name: Stage pinned engine binaries + manifest (win-x64)
+    # windows-2022：bsdtar(tar.exe) 原生解压 zip，且产物本就是 win 目标
+    runs-on: windows-2022
+    if: github.event_name != 'pull_request' # 下载类 job 不给 fork PR 跑（预算/攻击面）
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Download pinned trio + emit build/engines/manifest.json
+        # PINS（llama.cpp b10786 / sd.cpp master-841-6b3edaa / whisper.cpp b4938，
+        # zip sha256 钉死于脚本内）由 gen-engine-manifest.mjs 强校验：上游换包/
+        # 中间人 ⇒ 立即红。digest 升版流程见该脚本头注释。
+        run: node scripts/gen-engine-manifest.mjs
+      - name: Publish binary digests to job summary
+        shell: pwsh
+        run: |
+          $m = Get-Content build/engines/manifest.json -Raw | ConvertFrom-Json
+          '### Staged engine manifest (sha256-pinned)' | Out-File $env:GITHUB_STEP_SUMMARY -Append
+          foreach ($e in $m.engines.PSObject.Properties) {
+            "- {0}: {1}  cpu.sha256={2}  floor={3}" -f $e.Name, $e.Value.cpu.file, $e.Value.cpu.sha256, $e.Value.cpu.minVersion | Out-File $env:GITHUB_STEP_SUMMARY -Append
+          }
+      - name: Upload engines-manifest artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: engines-manifest-${{ github.sha }}
+          path: build/engines/manifest.json
+          retention-days: ${{ github.ref_type == 'tag' && 90 || 14 }}
+          if-no-files-found: error
+
+  # ------------------------------------------ keyless cosign 签名引擎清单（OIDC）
+  sign-engines:
+    name: cosign sign-blob (keyless) engine manifest
+    needs: stage-engines
+    runs-on: ubuntu-22.04
+    if: github.event_name != 'pull_request'
+    permissions:
+      contents: read
+      id-token: write # sigstore OIDC 证书签发（keyless，无付费密钥 —— plan Must-NOT 合规）
+    steps:
+      - name: Download manifest artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: engines-manifest-${{ github.sha }}
+          path: engines
+      - name: Install cosign v3.1.3 (checksum-pinned)
+        shell: bash
+        run: |
+          set -euo pipefail
+          COSIGN_VERSION=v3.1.3
+          gh release download "$COSIGN_VERSION" -R sigstore/cosign \
+            -p 'cosign-linux-amd64' -p 'cosign_checksums.txt' -D /tmp/cosign
+          cd /tmp/cosign
+          grep ' cosign-linux-amd64$' cosign_checksums.txt | sha256sum --check
+          install -m 0755 cosign-linux-amd64 /usr/local/bin/cosign
+          cosign version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Sign manifest (sign-blob, keyless) + self-verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          cosign sign-blob --yes \
+            --output-signature engines/manifest.json.sig \
+            --output-certificate engines/manifest.json.crt \
+            engines/manifest.json
+          # 同 run 内闭环验证：证书身份必须锚回本仓库工作流 —— 签名被劫持/
+          # 重放到他仓 ⇒ verify 红。
+          cosign verify-blob \
+            --signature engines/manifest.json.sig \
+            --certificate engines/manifest.json.crt \
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+            --certificate-identity-regexp "^https://github.com/${GITHUB_REPOSITORY}/\.github/workflows/security\.yml@refs/" \
+            engines/manifest.json
+      - name: Upload signed manifest bundle
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: engines-manifest-signed-${{ github.sha }}
+          path: |
+            engines/manifest.json
+            engines/manifest.json.sig
+            engines/manifest.json.crt
+          retention-days: ${{ github.ref_type == 'tag' && 90 || 14 }}
+          if-no-files-found: error
+
+  # ---------------------------------------- SLSA build provenance（安装包工件）
+  attest:
+    name: Attest installer provenance (workflow_dispatch + tag)
+    # tag push（自动）或手动 post-tag 触发；PR/branch push 不出 provenance。
+    if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - name: Resolve target release tag
+        id: tag
+        shell: bash
+        run: |
+          if [ -n "${{ github.event.inputs.release_tag }}" ]; then
+            echo "value=${{ github.event.inputs.release_tag }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Download release assets
+        id: dl
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist-assets
+          if gh release download "${{ steps.tag.outputs.value }}" \
+              -R "$GITHUB_REPOSITORY" -D dist-assets; then
+            echo has_assets=true >> "$GITHUB_OUTPUT"
+            ls -la dist-assets
+          else
+            # tag 先到、release.yml 还在构建 —— 无资产时跳过（不红）；重新
+            # workflow_dispatch(release_tag=...) 即可补出 provenance。
+            echo "::notice::release '${{ steps.tag.outputs.value }}' has no assets yet (release.yml still building?) - skip attest; re-run via workflow_dispatch to backfill"
+            echo has_assets=false >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # artifact-path 目录模式：对目录内每个文件出独立 SLSA provenance
+      # statement（attestation 挂到 repo 的 attestations API；跨仓消费方用
+      # actions/attest-build-verification 校验）。运行期 gate 用 step output ——
+      # hashFiles() 在作业排队期求值，看不见本作业新下载的文件。
+      - name: Attest build provenance (per asset)
+        if: steps.dl.outputs.has_assets == 'true'
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          artifact-path: dist-assets
+
+  # --- ci-assert 守门：release.yml 字符串契约不被本 workflow 破坏（lane33 断言原样跑）
+  contracts:
+    name: Workflow string contracts
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: actionlint (both workflow files)
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash <(curl -s https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
+          ./actionlint .github/workflows/security.yml .github/workflows/release.yml
+      - name: check:ci (release.yml contract, untouched by todo34)
+        run: node scripts/ci-assert.mjs

@@ -2,10 +2,11 @@
 /**
  * check-licenses.mjs — MIT 合规门禁
  * - 扫描 node_modules 下所有 package.json 的 license
- * - 白名单：MIT | Apache-2.0 | BSD* | ISC | 0BSD | CC0-1.0 | Unlicense
+ * - 白名单：MIT | Apache-2.0 | BSD* | ISC | 0BSD | CC0-1.0 | Unlicense | OFL-1.1(静态字体资产,todo34)
  * - AGPL / GPL 仅在 sidecars/ 目录下豁免，主进程出现则 exit 1
  * - 显式白名单：better-sqlite3 / sqlite-vec / sharp（含原生二进制，许可已确认）
  * - 支持 --sbom 输出 JSON：--sbom / --sbom=path / --sbom path
+ * - --sbom 确定性再生成：组件集合未变时保留旧 generatedAt（todo34 CI sbom diff 门禁依赖）
  */
 
 import fs from 'node:fs';
@@ -43,6 +44,13 @@ const ALLOWED_LICENSE_PATTERNS = [
   /^CC0-1\.0$/i,
   /^Unlicense$/i,
   /^Python-2\.0$/i, // 极少数工具链
+  // OFL-1.1 (SIL Open Font License) — todo34 供应链裁定：@fontsource-variable/inter
+  // 是打包进渲染层的【静态字体资产】，非链接进主进程的代码。OFL 的 copyleft 仅作用于
+  // 字体文件本身（修改/再分发字体须保留 OFL 且不得单独售卖字体），对以数据形式打包
+  // 字体的应用层许可无任何传染性 —— 与 MIT 应用在发布层面兼容。保留字体包内
+  // OFL.txt 即满足义务（@fontsource 包自带 LICENSE）。换字体（如 Google Sans/系统栈）
+  // 收益为零且破坏视觉规范，故裁定：加白名单 + 本注释，而非替换。
+  /^OFL-1\.1$/i,
 ];
 
 // 判定为 copyleft 的许可（需隔离到 sidecars/）
@@ -279,7 +287,7 @@ function printHelp() {
 Usage: node scripts/check-licenses.mjs [--sbom[=path]]
 
   扫描 node_modules 中所有依赖的 license：
-    - 白名单：MIT | Apache-2.0 | BSD* | ISC | 0BSD | CC0-1.0 | Unlicense
+    - 白名单：MIT | Apache-2.0 | BSD* | ISC | 0BSD | CC0-1.0 | Unlicense | OFL-1.1
     - 显式白名单：better-sqlite3, sqlite-vec, sharp
     - AGPL/GPL 仅在 sidecars/ 目录下豁免，主进程出现则 exit 1
     - --sbom[=path] 输出 SPDX 简化 SBOM JSON（默认 sbom.json）
@@ -367,13 +375,13 @@ function main() {
     const sbom = {
       bomFormat: 'CycloneDX-lite',
       specVersion: '1.4',
-      generatedAt: new Date().toISOString(),
+      generatedAt: preserveGeneratedAt(outPath, rows, violations),
       project: { name: 'local-ai-suite', license: 'MIT', version: getProjectVersion() },
       summary: {
         totalComponents: rows.length,
         violations: violations.length,
-        allowlist: [...PACKAGE_ALLOWLIST],
-        allowedLicenses: ['MIT', 'Apache-2.0', 'BSD*', 'ISC', '0BSD', 'CC0-1.0', 'Unlicense'],
+        allowlist: [...PACKAGE_ALLOWLIST].map((e) => (e instanceof RegExp ? e.source : e)),
+        allowedLicenses: ['MIT', 'Apache-2.0', 'BSD*', 'ISC', '0BSD', 'CC0-1.0', 'Unlicense', 'OFL-1.1'],
       },
       components: rows.map((r) => ({
         name: r.name,
@@ -397,6 +405,39 @@ function main() {
   }
 
   process.exit(violations.length ? 1 : 0);
+}
+
+/**
+ * todo34 CI 卫生：sbom.json 的 git-diff 漂移门禁要求内容不变 ⇒ 文件不变。
+ * generatedAt 只在【组件清单 / 违规数 / 工程版本】任一变化时推进；纯重跑
+ * （同一 lockfile）字节级幂等，`git diff --exit-code sbom.json` 才有意义。
+ */
+function preserveGeneratedAt(outPath, rows, violations) {
+  const now = new Date().toISOString();
+  let prev;
+  try {
+    prev = JSON.parse(fs.readFileSync(outPath, 'utf-8'));
+  } catch {
+    return now; // 首次生成或不可读：新鲜时间戳
+  }
+  if (!prev || !Array.isArray(prev.components)) return now;
+  const fingerprint = (comps, vio, total) =>
+    JSON.stringify({
+      total,
+      violations: vio,
+      comps: [...comps]
+        .map((c) => `${c.name}@${c.version}:${c.license}:${c.allowed ? 1 : 0}`)
+        .sort(),
+    });
+  const same =
+    fingerprint(prev.components, prev.violations?.length ?? 0, prev.components.length) ===
+    fingerprint(
+      rows.map((r) => ({ name: r.name, version: r.version, license: r.license, allowed: r.allowed })),
+      violations.length,
+      rows.length,
+    ) &&
+    prev.project?.version === getProjectVersion();
+  return same && typeof prev.generatedAt === 'string' ? prev.generatedAt : now;
 }
 
 function getProjectVersion() {

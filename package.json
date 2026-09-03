@@ -24,6 +24,8 @@
     "dist:win": "electron-builder --win --x64",
     "check:size": "node scripts/check-pack-size.mjs",
     "check:licenses": "node scripts/check-licenses.mjs",
+    "check:sbom": "node scripts/check-licenses.mjs --sbom",
+    "gen:manifest": "node scripts/gen-engine-manifest.mjs",
     "check:ci": "node scripts/ci-assert.mjs",
     "bench": "node benchmarks/bench.mjs",
     "bench:live": "node benchmarks/bench.mjs --live"
