@@ -18,7 +18,13 @@ import type {
   // todo32: auto-update wire contracts
   UpdateStateEvent,
   UpdateCheckReply,
-  UpdateDownloadInstallReply
+  UpdateDownloadInstallReply,
+  // todo36: speech (whisper push-to-talk) wire contracts
+  SpeechStatusReply,
+  SpeechPickModelReply,
+  SpeechSaveWavReply,
+  SpeechTranscribeReply,
+  SpeechEngineSource
 } from '../main/ipc/whitelist'
 
 declare global {
@@ -51,5 +57,11 @@ export type {
   // todo32: auto-update wire contracts
   UpdateStateEvent,
   UpdateCheckReply,
-  UpdateDownloadInstallReply
+  UpdateDownloadInstallReply,
+  // todo36: speech (whisper push-to-talk) wire contracts
+  SpeechStatusReply,
+  SpeechPickModelReply,
+  SpeechSaveWavReply,
+  SpeechTranscribeReply,
+  SpeechEngineSource
 }

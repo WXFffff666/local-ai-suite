@@ -68,7 +68,13 @@ describe('ipc whitelist', () => {
       'secrets:decrypt',
       // todo32: staged auto-update gesture channels
       'update:check',
-      'update:downloadAndInstall'
+      'update:downloadAndInstall',
+      // todo36: speech (whisper push-to-talk) — getStatus is spawn-free
+      'speech:getStatus',
+      'speech:setPrefs',
+      'speech:pickModel',
+      'speech:saveWav',
+      'speech:transcribe'
     ])
   })
 

@@ -30,6 +30,7 @@ import type { Services } from '../services'
 import { createDestructiveConfirmHandler, type DialogLike } from '../utils/dialogConfirm'
 import { createDeleteWorkspaceHandler } from '../handlers/deleteWorkspace'
 import { createImageGenerateHandler, createSaveTempImageHandler } from '../handlers/imageOps'
+import { createSpeechHandlers, type SpeechServiceSurface } from '../../speech/ipc'
 import { createOverwriteCoverageHandler } from '../handlers/overwriteCoverage'
 import { createPublishReleaseHandler } from '../handlers/publishRelease'
 import { createClearCacheHandler } from '../handlers/clearCache'
@@ -166,6 +167,12 @@ export type HandlerDeps = {
     * these replies are acks only.
     */
    updater?: () => Updater | null
+  /**
+   * todo36: whisper sidecar surface behind speech:*. Default is the lazy
+   * src/speech singleton (spawns nothing until first transcribe); tests
+   * inject fakes through this seam (engines/updater convention).
+   */
+   speech?: () => SpeechServiceSurface
   /** destructive-action backends (same no-op wiring index.ts had pre-W1). */
   onDeleteWorkspace?: (id: string) => Promise<void>
   onOverwriteCoverage?: (opts: unknown) => Promise<void>
@@ -195,6 +202,27 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
   // todo30b: engines:status / engines:gpuDownload / models:launch implementation
   // lives in ../handlers/enginesIpc.ts (registration-only map, imageOps precedent).
   const engineHandlers = createEnginesHandlers(services, engines)
+  // todo36: speech:* implementation lives in ../../speech/ipc.ts (registration-
+  // only here, imageOps precedent). Prefs persist through the same config.json
+  // as the rest of AppConfig (speechEnabled / whisperModelPath).
+  const speechHandlers = createSpeechHandlers({
+    userDataDir: services.userDataDir,
+    modelsDir: services.registry.modelsDir,
+    prefs: {
+      get: () => {
+        const c = getConfig()
+        return { speechEnabled: c.speechEnabled, whisperModelPath: c.whisperModelPath }
+      },
+      set: (partial) => {
+        const next = setConfig(partial)
+        return { speechEnabled: next.speechEnabled, whisperModelPath: next.whisperModelPath }
+      },
+    },
+    // runtime: main/index.ts passes the REAL electron dialog (it has
+    // showOpenDialog); the structural DialogLike type just doesn't name it.
+    dialog: deps.dialog as unknown as Parameters<typeof createSpeechHandlers>[0]['dialog'],
+    ...(deps.speech === undefined ? {} : { service: deps.speech }),
+  })
 
   const passthrough =
     (fn: (args: unknown[]) => Promise<unknown>): IpcHandler =>
@@ -496,7 +524,18 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
       if (!updater) return NOT_READY
       const reply: UpdateDownloadInstallReply = updater.downloadAndInstall()
       return reply
-    }
+    },
+
+    // --- speech / whisper (todo36) ----------------------------------------------
+    // Registration-only: prefs/file/dialog/transcribe logic lives in
+    // ../../speech/ipc.ts (createSpeechHandlers, wired above with the config
+    // prefs seam). getStatus never spawns; the whisper sidecar starts on the
+    // first speech:transcribe (lazy, serialized through the service queue).
+    'speech:getStatus': passthrough(speechHandlers['speech:getStatus']),
+    'speech:setPrefs': passthrough(speechHandlers['speech:setPrefs']),
+    'speech:pickModel': passthrough(speechHandlers['speech:pickModel']),
+    'speech:saveWav': passthrough(speechHandlers['speech:saveWav']),
+    'speech:transcribe': passthrough(speechHandlers['speech:transcribe'])
   }
 
   return handlers

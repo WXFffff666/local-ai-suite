@@ -11,10 +11,18 @@ const mocks = vi.hoisted(() => {
     static getAllWindows(): FakeBrowserWindow[] {
       return FakeBrowserWindow.instances
     }
+    /** W1-10→todo36: capture the session permission handlers for the gate matrix. */
+    permissionRequestHandler: ((wc: unknown, permission: string, cb: (allow: boolean) => void, details?: unknown) => void) | null =
+      null
+    permissionCheckHandler: ((wc: unknown, permission: string, details?: unknown) => boolean) | null = null
     webContents = {
       session: {
-        setPermissionRequestHandler: (_: unknown): void => undefined,
-        setPermissionCheckHandler: (_: unknown): void => undefined
+        setPermissionRequestHandler: (h: (wc: unknown, permission: string, cb: (allow: boolean) => void, details?: unknown) => void): void => {
+          this.permissionRequestHandler = h
+        },
+        setPermissionCheckHandler: (h: (wc: unknown, permission: string, details?: unknown) => boolean): void => {
+          this.permissionCheckHandler = h
+        }
       },
       setWindowOpenHandler: (_: unknown): void => undefined
     }
@@ -343,8 +351,58 @@ describe('lifecycle — src/main/index.ts 生命周期接线', () => {
   })
 })
 
-describe('logger — registerGlobalErrorLogging 行为（真实函数 + 真 pino 内存 sink）', () => {
-  function memorySinkLogger(lines: string[]): ReturnType<typeof pino> {
+// W1-10→todo36: the deny-all session handler became a selective gate. These
+// cases drive the handlers actually registered on the (fake) main window.
+describe('session permission gate (todo36 media selective-allow matrix)', () => {
+  function windowWithHandlers(): {
+    request: (permission: string, details?: unknown) => boolean
+    check: (permission: string, details?: unknown) => boolean
+  } {
+    const win = mocks.FakeBrowserWindow.instances[0]
+    if (win === undefined || win.permissionRequestHandler === null || win.permissionCheckHandler === null) {
+      throw new Error('permission handlers were not registered on the main window session')
+    }
+    const request = (permission: string, details?: unknown): boolean => {
+      let allowed = false
+      win.permissionRequestHandler?.({} as unknown, permission, (v) => {
+        allowed = v
+      }, details)
+      return allowed
+    }
+    const check = (permission: string, details?: unknown): boolean =>
+      win.permissionCheckHandler?.({} as unknown, permission, details) ?? true
+    return { request, check }
+  }
+
+  it('media + audioCapture from the app origin (file:// under test) -> ALLOW', async () => {
+    await importIndex()
+    const { request } = windowWithHandlers()
+    expect(request('media', { requestingOrigin: 'file://', mediaTypes: ['audioCapture'] })).toBe(true)
+  })
+
+  it('geolocation STILL DENIED (historical W1-10 baseline pinned from the handler side)', async () => {
+    await importIndex()
+    const { request, check } = windowWithHandlers()
+    expect(request('geolocation', { requestingOrigin: 'file://' })).toBe(false)
+    expect(check('geolocation', 'file://')).toBe(false)
+  })
+
+  it('media from a foreign origin DENIED; display-capture flavors DENIED', async () => {
+    await importIndex()
+    const { request } = windowWithHandlers()
+    expect(request('media', { requestingOrigin: 'https://evil.example', mediaTypes: ['audioCapture'] })).toBe(false)
+    expect(request('media', { requestingOrigin: 'file://', mediaTypes: ['displayMedia'] })).toBe(false)
+  })
+
+  it('handlers are registered on the session (not left deny-all constants)', async () => {
+    await importIndex()
+    const win = mocks.FakeBrowserWindow.instances[0]
+    expect(win?.permissionRequestHandler).toBeTypeOf('function')
+    expect(win?.permissionCheckHandler).toBeTypeOf('function')
+  })
+})
+
+describe('logger — registerGlobalErrorLogging 行为（真实函数 + 真 pino 内存 sink）', () => {  function memorySinkLogger(lines: string[]): ReturnType<typeof pino> {
     const sink = new Writable({
       write(chunk: Buffer, _encoding, callback): void {
         lines.push(chunk.toString('utf-8'))

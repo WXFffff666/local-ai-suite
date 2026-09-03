@@ -12,6 +12,7 @@ import { getServices, initServices, SIDECAR_NAMES, type SidecarName } from './se
 import { createUpdater, scheduleInitialUpdateCheck, type Updater } from './updater'
 import { UPDATE_CHECK_DISABLED } from './testSupport'
 import { startApiServer, ENGINE_MIN_OLLAMA_VERSION, type ApiServerStatus } from './apiServer'
+import { canGrantMediaPermission, originFromDetails } from './mediaPermissions'
 import { createConversationService } from './storage/conversations'
 import { createAgentMain } from './agentMain'
 import { TrayController } from './tray'
@@ -120,12 +121,34 @@ function createWindow(): void {
     }
   })
 
-  // Deny all permission requests (camera, mic, geolocation, etc.)
-  // Must be set on the window's session after BrowserWindow creation.
+  // W1-10 baseline was deny-all. todo36 widens it ONLY for microphone
+  // capture (getUserMedia audio) from the app's own origin — the decision
+  // table is the unit-tested pure function in ./mediaPermissions. Everything
+  // else (geolocation, clipboard, display-capture, foreign origins) keeps the
+  // deny, and the media toggle-off in Settings additionally hides the UI entry
+  // point (defense in depth: the permission gate is origin-scoped, not a
+  // feature switch).
   const targetSession = mainWindow.webContents.session
-  targetSession.setPermissionRequestHandler(() => false)
-  // Also deny permission checks (e.g. navigator.permissions.query)
-  targetSession.setPermissionCheckHandler(() => false)
+  targetSession.setPermissionRequestHandler((_wc, permission, callback, details) => {
+    const d = details as { requestingOrigin?: string; mediaTypes?: readonly string[] } | undefined
+    callback(
+      canGrantMediaPermission({
+        permission,
+        requestingOrigin: d?.requestingOrigin,
+        mediaTypes: d?.mediaTypes,
+        rendererUrl: process.env['ELECTRON_RENDERER_URL'],
+      })
+    )
+  })
+  // Permission CHECKS (navigator.permissions.query etc.) carry no mediaTypes:
+  // same origin gate, same deny-by-default.
+  targetSession.setPermissionCheckHandler((_wc, permission, details) =>
+    canGrantMediaPermission({
+      permission,
+      requestingOrigin: originFromDetails(details),
+      rendererUrl: process.env['ELECTRON_RENDERER_URL'],
+    })
+  )
 
   // Window open handler: deny popups / new windows (prevent window.open abuse)
   mainWindow.webContents.setWindowOpenHandler(() => ({ action: 'deny' }))

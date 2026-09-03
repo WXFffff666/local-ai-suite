@@ -345,6 +345,52 @@ export type ModelsLaunchInput = z.infer<typeof modelsLaunchSchema>
 export const updateCheckSchema = z.object({}).strict()
 export const updateDownloadInstallSchema = z.object({}).strict()
 
+// --- speech / whisper (todo36) ------------------------------------------------
+// saveWav mirrors image:saveTempImage: the dataURL regex is the format gate,
+// the char cap (~45M ≈ 32 MiB decoded) is the memory pre-guard, and the
+// decoded-byte ceiling is enforced in src/speech/ipc.ts with the dedicated
+// dataurl-too-large code.
+
+export const speechGetStatusSchema = z.object({}).strict()
+
+export const speechSetPrefsSchema = z
+  .object({
+    enabled: z.boolean().optional(),
+    /** '' clears the model; non-empty is confined + existence-checked in the handler. */
+    modelPath: z.string().max(1024).optional(),
+  })
+  .strict()
+  .refine((v) => v.enabled !== undefined || v.modelPath !== undefined, {
+    message: 'empty-prefs',
+  })
+export type SpeechSetPrefsInput = z.infer<typeof speechSetPrefsSchema>
+
+export const speechPickModelSchema = z.object({}).strict()
+
+export const speechSaveWavSchema = z.object({
+  dataURL: z
+    .string()
+    .min(1)
+    .max(45_000_000)
+    .regex(/^data:audio\/wav;base64,[A-Za-z0-9+/=]+$/, 'dataURL must be a base64 WAV audio data URL'),
+})
+export type SpeechSaveWavInput = z.infer<typeof speechSaveWavSchema>
+
+export const speechTranscribeSchema = z
+  .object({
+    /** absolute path exported by speech:saveWav — re-confined to userData/tmp in the handler. */
+    wavPath: z.string().min(1).max(1024),
+    /** whisper language token ('auto', 'zh', 'en'…); absent = 'auto' server-side. */
+    language: z
+      .string()
+      .min(1)
+      .max(32)
+      .regex(/^[A-Za-z][A-Za-z0-9-]*$/)
+      .optional(),
+  })
+  .strict()
+export type SpeechTranscribeInput = z.infer<typeof speechTranscribeSchema>
+
 // --- validation funnel --------------------------------------------------------------
 
 export type IpcIssue = { path: string; message: string }

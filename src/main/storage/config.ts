@@ -45,6 +45,10 @@ export type AppConfig = {
   searxngEnabled: boolean
   /** Last onboarding wizard completed */
   onboardingCompleted: boolean
+  /** todo36: push-to-talk mic button visible/enabled in the composer */
+  speechEnabled: boolean
+  /** todo36: absolute whisper ggml/gguf model path ('' = not configured) */
+  whisperModelPath: string
   /** Encrypted secrets (todo16) — see SecretPayloads contract above */
   secrets?: SecretPayloads
 }
@@ -60,6 +64,8 @@ export const DEFAULT_CONFIG: AppConfig = {
   autoUpdateEnabled: true,
   searxngEnabled: false,
   onboardingCompleted: false,
+  speechEnabled: true,
+  whisperModelPath: '',
 }
 
 /** Resolve userData/config.json path — Electron userData in prod, ./userData/config.json fallback for tests. */

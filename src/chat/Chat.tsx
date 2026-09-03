@@ -29,6 +29,9 @@ import AgentModeToggle from '../renderer/src/components/agentui/AgentModeToggle'
 import AgentTimeline from '../renderer/src/components/agentui/AgentTimeline'
 import { useAgentStore, DRAFT_KEY } from '../renderer/src/components/agentui/agentStore'
 import { isBusy } from '../renderer/src/components/agentui/timeline'
+// todo29-style ADDITIVE (todo36): push-to-talk. MicButton self-hides without
+// window.api / without speech:getStatus ok — default DOM unchanged otherwise.
+import { MicButton } from './MicButton'
 
 export type ChatProps = {
   /** 对话预设（点击填充输入框）；传空数组隐藏预设行 */
@@ -53,6 +56,8 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
   const [images, setImages] = useState<string[]>([])
   const [vision, setVision] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  // todo36: 转写文本插入到光标处需要 textarea 句柄
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
   const cur = sessions.find((s) => s.id === currentId) ?? null
   const canStream = getChatIpcApi() !== null
   const streamingHere = Boolean(cur?.messages.some((m) => m.pending))
@@ -110,6 +115,23 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
     const fill = fillChatPreset(preset)
     if (fill) setInput(fill.prompt)
   }
+
+  /** todo36: whisper 转写结果插入光标处（textarea 不可用时退化为追加）。 */
+  const insertAtCaret = useCallback((text: string): void => {
+    const ta = textareaRef.current
+    if (!ta) {
+      setInput((prev) => (prev ? `${prev} ${text}` : text))
+      return
+    }
+    const start = ta.selectionStart ?? ta.value.length
+    const end = ta.selectionEnd ?? ta.value.length
+    setInput(`${ta.value.slice(0, start)}${text}${ta.value.slice(end)}`)
+    const caret = start + text.length
+    requestAnimationFrame(() => {
+      ta.focus()
+      ta.selectionStart = ta.selectionEnd = caret
+    })
+  }, [])
 
   return (
     <div style={{ display: 'flex', height: '100%', minHeight: 0, fontFamily: 'system-ui,sans-serif' }}>
@@ -231,7 +253,10 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
             >
               <Paperclip size={16} aria-hidden />
             </button>
+            {/* todo36: push-to-talk（按住说话→松开转写→插入光标处） */}
+            <MicButton onTranscript={insertAtCaret} />
             <textarea
+              ref={textareaRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onPaste={(e) => {

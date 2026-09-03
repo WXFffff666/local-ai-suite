@@ -1,0 +1,67 @@
+/* micbutton.css — todo36 push-to-talk affordances (composer mic). */
+.las-mic-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.las-mic {
+  padding: 0 10px;
+  cursor: pointer;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background: #0f0f0f;
+  color: #ccc;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.las-mic:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.las-mic-recording {
+  color: #ff5555;
+  border-color: #a33;
+  animation: las-mic-pulse 1s ease-in-out infinite;
+}
+
+.las-mic-transcribing {
+  color: #7aa2f7;
+  border-color: #445;
+}
+
+@keyframes las-mic-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 60, 60, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(255, 60, 60, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .las-mic-recording {
+    animation: none;
+  }
+}
+
+.las-mic-timer {
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  color: #ff8080;
+}
+
+.las-mic-transcribing {
+  font-size: 12px;
+}
+
+.las-mic-error {
+  font-size: 12px;
+  color: #f0b4b4;
+  max-width: 260px;
+}

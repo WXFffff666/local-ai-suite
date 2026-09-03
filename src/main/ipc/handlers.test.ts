@@ -5,7 +5,7 @@
  * the honest conversations:not-ready posture until todo17.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { mkdirSync, mkdtempSync, readFileSync, rmSync } from 'fs'
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'fs'
 import { join } from 'path'
 import { tmpdir } from 'os'
 
@@ -1042,5 +1042,104 @@ describe('update:check / update:downloadAndInstall (todo32)', () => {
       ok: false,
       error: 'invalid-state'
     })
+  })
+})
+
+// --- speech channels (todo36) ---------------------------------------------------
+
+describe('speech:* wiring (todo36 push-to-talk)', () => {
+  let tmp = ''
+  let origCwd = ''
+
+  beforeEach(() => {
+    tmp = mkdtempSync(join(tmpdir(), 'las-speech-wire-'))
+    mkdirSync(join(tmp, 'userData'), { recursive: true })
+    origCwd = process.cwd()
+    process.chdir(tmp)
+  })
+  afterEach(() => {
+    try {
+      process.chdir(origCwd)
+    } catch {}
+    rmSync(tmp, { recursive: true, force: true })
+  })
+
+  function makeSpeechHarness(transcribe = vi.fn(async () => '喂')) {
+    const base = makeHarness()
+    const userDataDir = join(tmp, 'userData')
+    const modelsDir = join(tmp, 'models')
+    mkdirSync(modelsDir, { recursive: true })
+    const services = {
+      ...base.services,
+      userDataDir,
+      registry: { ...base.services.registry, modelsDir },
+    }
+    const service = {
+      status: vi.fn(() => ({
+        engine: { bin: null, source: 'none' as const },
+        running: false,
+        port: 11437,
+        state: 'stopped' as const,
+      })),
+      transcribe,
+      stop: vi.fn(),
+    }
+    const handlers = buildIpcHandlers({
+      ...(base.deps as object),
+      services: services as unknown as ServicesSurface,
+      speech: () => service as never,
+    })
+    return { ...base, handlers, userDataDir, modelsDir, service }
+  }
+
+  it('getStatus answers the config defaults without touching the sidecar', async () => {
+    const { handlers, ctx, service } = makeSpeechHarness()
+    const res = (await handlers['speech:getStatus']([{}], ctx)) as {
+      ok: boolean
+      enabled: boolean
+      modelReady: boolean
+      engine: { bin: string | null }
+    }
+    expect(res.ok).toBe(true)
+    expect(res.enabled).toBe(true)
+    expect(res.modelReady).toBe(false)
+    expect(service.stop).not.toHaveBeenCalled()
+  })
+
+  it('prefs persist through config.json: setPrefs(enabled) then getStatus reflects it', async () => {
+    const { handlers, ctx } = makeSpeechHarness()
+    const res = (await handlers['speech:setPrefs']([{ enabled: false }], ctx)) as { ok: boolean; enabled: boolean }
+    expect(res).toMatchObject({ ok: true, enabled: false })
+    const raw = JSON.parse(readFileSync(join(tmp, 'userData', 'config.json'), 'utf-8')) as Record<string, unknown>
+    expect(raw.speechEnabled).toBe(false)
+  })
+
+  it('saveWav -> transcribe round trip through the wiring (fake service)', async () => {
+    const transcribe = vi.fn(async () => '你好')
+    const { handlers, ctx, userDataDir } = makeSpeechHarness(transcribe)
+    // configure a model first (inside modelsDir)
+    const model = join(userDataDir, 'models', 'ggml-base.bin')
+    mkdirSync(join(model, '..'), { recursive: true })
+    writeFileSync(model, 'm')
+    const setRes = (await handlers['speech:setPrefs']([{ modelPath: model }], ctx)) as { ok: boolean; modelReady: boolean }
+    expect(setRes).toMatchObject({ ok: true, modelReady: true })
+
+    const saved = (await handlers['speech:saveWav']([{ dataURL: `data:audio/wav;base64,${Buffer.from('RIFFfake').toString('base64')}` }], ctx)) as {
+      ok: boolean
+      path: string
+    }
+    expect(saved.ok).toBe(true)
+    const reply = (await handlers['speech:transcribe']([{ wavPath: saved.path }], ctx)) as { ok: boolean; text: string }
+    expect(reply).toEqual({ ok: true, text: '你好' })
+    expect(transcribe).toHaveBeenCalledTimes(1)
+  })
+
+  it('zod gates: garbage payloads are the 400-shape on every speech channel', async () => {
+    const { handlers, ctx } = makeSpeechHarness()
+    await expect(handlers['speech:saveWav']([{ dataURL: 'data:text/html;base64,QQ==' }], ctx)).resolves.toMatchObject(invalidShape)
+    await expect(handlers['speech:transcribe']([{}], ctx)).resolves.toMatchObject(invalidShape)
+    await expect(handlers['speech:transcribe']([{ wavPath: join(tmp, 'a.wav'), language: '!!' }], ctx)).resolves.toMatchObject(invalidShape)
+    await expect(handlers['speech:setPrefs']([{}], ctx)).resolves.toMatchObject(invalidShape)
+    await expect(handlers['speech:getStatus']([{ junk: 1 }], ctx)).resolves.toMatchObject(invalidShape)
   })
 })

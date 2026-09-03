@@ -13,6 +13,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import '../components/settingspage/settingspage.css'
 import { EngineStatus } from '../components/settingspage/EngineStatus'
+import { SpeechSection } from '../components/settingspage/SpeechSection'
 import { SecretRow } from '../components/settingspage/SecretRow'
 import type {
   ConfigGetReply,
@@ -213,6 +214,9 @@ export function SettingsPage(): React.JSX.Element {
 
       {/* todo30b — 引擎可用性矩阵 / NVIDIA 检测 / GPU 包下载（engines:* 通道） */}
       <EngineStatus />
+
+      {/* todo36 — 语音输入开关 / Whisper 模型选择 / 引擎来源行（speech:* 通道） */}
+      <SpeechSection />
     </section>
   )
 }

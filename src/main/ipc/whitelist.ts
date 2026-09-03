@@ -78,7 +78,16 @@ export const ALLOWED_CHANNELS = [
   // The renderer NEVER receives a raw updater handle — install only via this
   // explicit user gesture (no forced update, plan Must-NOT).
   'update:check',
-  'update:downloadAndInstall'
+  'update:downloadAndInstall',
+  // todo36: push-to-talk speech input (whisper.cpp server sidecar). getStatus
+  // is spawn-free; only transcribe() may start the sidecar. No event channel —
+  // the recorder state machine is renderer-local, transcription is one
+  // request/response.
+  'speech:getStatus',
+  'speech:setPrefs',
+  'speech:pickModel',
+  'speech:saveWav',
+  'speech:transcribe'
 ] as const
 
 export type AllowedChannel = (typeof ALLOWED_CHANNELS)[number]
@@ -454,3 +463,61 @@ export type UpdateDownloadInstallReply =
 
 /** 'models:launch' reply — services.launchModel outcome, errors never cross as throws. */
 export type ModelsLaunchReply = { ok: true; status: SidecarStatus } | { ok: false; error: string }
+
+// ---------------------------------------------------------------------------
+// Speech (todo36) wire contracts. Whisper model/engine states are closed
+// unions — the settings UI branches on them, an unknown code must be a
+// compile error, never a runtime surprise.
+// ---------------------------------------------------------------------------
+
+/** Engine binary resolution state (mirrors src/speech/whisper.ts tiers). */
+export type SpeechEngineSource = 'env' | 'bundled' | 'none'
+export type SpeechEngineWire = { bin: string | null; source: SpeechEngineSource }
+
+/** speech:getStatus / speech:setPrefs reply. */
+export type SpeechStatusReply =
+  | {
+      ok: true
+      enabled: boolean
+      modelPath: string
+      /** model file present+confined AND engine resolved — mic usable. */
+      modelReady: boolean
+      engine: SpeechEngineWire
+      /** whisper-server sidecar currently running (spawn happens on first transcribe). */
+      running: boolean
+    }
+  | {
+      ok: false
+      error:
+        | 'not-absolute'
+        | 'bad-extension'
+        | 'file-not-found'
+        | 'path-outside-allowed'
+    }
+
+/** speech:pickModel reply — null path = user cancelled the dialog. */
+export type SpeechPickModelReply =
+  | { ok: true; path: string | null }
+  | {
+      ok: false
+      error: 'dialog-unavailable' | 'not-absolute' | 'bad-extension' | 'file-not-found' | 'path-outside-allowed'
+    }
+
+/** speech:saveWav reply (userData/tmp WAV drop, saveTempImage pattern). */
+export type SpeechSaveWavReply = { ok: true; path: string } | { ok: false; error: 'invalid-payload' | 'dataurl-too-large' }
+
+/** speech:transcribe reply. */
+export type SpeechTranscribeReply =
+  | { ok: true; text: string }
+  | {
+      ok: false
+      error:
+        | 'invalid-payload'
+        | 'model-not-configured'
+        | 'engine-missing'
+        | 'audio-path-outside-allowed'
+        | 'audio-not-found'
+        | 'transcribe-failed'
+      /** server/manager error text for UI diagnostics (never trusted). */
+      detail?: string
+    }
