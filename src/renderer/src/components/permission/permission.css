@@ -1,0 +1,194 @@
+/**
+ * todo25 — permission approval dialog styles. Colors trace the app theme
+ * tokens (--las-* from App.css); diff rows use fixed semantic green/red so
+ * add/del reads identically in light and dark.
+ */
+
+.perm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+}
+
+.perm-panel {
+  width: min(720px, calc(100vw - 48px));
+  max-height: calc(100vh - 96px);
+  display: flex;
+  flex-direction: column;
+  background: var(--las-bg);
+  color: var(--las-fg);
+  border: 1px solid var(--las-border);
+  border-radius: 10px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.perm-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--las-border);
+  background: var(--las-card);
+}
+
+.perm-kind-icon {
+  display: inline-flex;
+  color: var(--las-muted);
+}
+
+.perm-summary {
+  font-size: 14px;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.perm-countdown {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  color: var(--las-muted);
+  border: 1px solid var(--las-border);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.perm-preview {
+  overflow: auto;
+  padding: 12px 16px;
+  font-size: 13px;
+}
+
+.perm-file {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 12px;
+  color: var(--las-muted);
+  margin-bottom: 6px;
+}
+
+.perm-diff,
+.perm-raw,
+.perm-code {
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+.perm-diff .diff-line {
+  white-space: pre-wrap;
+  word-break: break-all;
+  padding: 1px 8px 1px 24px;
+  min-height: 18px;
+  border-radius: 3px;
+  position: relative;
+}
+
+.perm-diff .diff-line::before {
+  position: absolute;
+  left: 8px;
+}
+
+.perm-diff .diff-add {
+  background: rgba(46, 160, 67, 0.16);
+  color: #2ea043;
+}
+
+.perm-diff .diff-add::before {
+  content: '+';
+}
+
+.perm-diff .diff-del {
+  background: rgba(248, 81, 73, 0.14);
+  color: #f85149;
+}
+
+.perm-diff .diff-del::before {
+  content: '-';
+}
+
+.perm-diff .diff-ctx {
+  color: var(--las-muted);
+}
+
+.perm-diff .diff-ctx::before {
+  content: ' ';
+}
+
+.perm-raw-note {
+  font-size: 12px;
+  color: var(--las-muted);
+  margin-bottom: 6px;
+}
+
+.perm-raw pre,
+.perm-code pre {
+  margin: 0 0 8px;
+  padding: 8px 10px;
+  background: var(--las-card);
+  border: 1px solid var(--las-border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 30vh;
+  overflow: auto;
+  font-size: 12px;
+}
+
+.perm-raw-old {
+  border-left: 3px solid #f85149 !important;
+}
+
+.perm-raw-new {
+  border-left: 3px solid #2ea043 !important;
+}
+
+.diff-rule {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--las-muted);
+  font-family: ui-monospace, Consolas, monospace;
+  word-break: break-all;
+}
+
+.perm-actions {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--las-border);
+  background: var(--las-card);
+  flex-wrap: wrap;
+}
+
+.perm-btn {
+  font: inherit;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--las-border);
+  background: var(--las-bg);
+  color: var(--las-fg);
+  cursor: pointer;
+}
+
+.perm-btn:hover {
+  border-color: var(--las-muted);
+}
+
+.perm-btn:focus-visible {
+  outline: 2px solid var(--las-muted);
+  outline-offset: 1px;
+}
+
+.perm-btn-deny {
+  margin-left: auto;
+  border-color: rgba(248, 81, 73, 0.5);
+  color: #f85149;
+}
+
+.perm-btn-deny:hover {
+  background: rgba(248, 81, 73, 0.12);
+  border-color: #f85149;
+}
