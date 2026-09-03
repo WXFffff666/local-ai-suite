@@ -68,7 +68,10 @@ function makeFakeApi(opts: FakeApiOpts = {}) {
     }
     throw new Error(`unexpected channel: ${channel}`)
   })
-  return { api: { invoke }, invoke, persisted }
+  // todo30b: EngineStatus 子区订阅事件通道 — no-op 桩（engines:* 的 invoke
+  // 在 EngineStatus 内部 catch，渲染降级条，不影响本页断言）。
+  const api = { invoke, on: vi.fn(() => () => undefined) }
+  return { api, invoke, persisted }
 }
 
 let container: HTMLDivElement
