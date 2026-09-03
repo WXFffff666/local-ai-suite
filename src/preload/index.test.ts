@@ -76,10 +76,24 @@ describe('preload invoke gate', () => {
     expect(() => api.invoke('chat:delta', { id: 'x', delta: 'y' })).toThrow(/not allowed/)
   })
 
-  it('allowedChannels includes the W1-8 additions', () => {
-    for (const ch of ['gallery:list', 'search:run', 'hf:search', 'image:queue:status', 'chat:abort', 'conversations:list']) {
+  it('allowedChannels includes the W1-8 additions + todo30b engine channels (auto passthrough)', () => {
+    for (const ch of [
+      'gallery:list',
+      'search:run',
+      'hf:search',
+      'image:queue:status',
+      'chat:abort',
+      'conversations:list',
+      // todo30b: whitelist is the single source — new channels pass through with no preload edits
+      'engines:status',
+      'engines:gpuDownload',
+      'models:launch',
+    ]) {
       expect(api.allowedChannels).toContain(ch)
     }
+    // invoke passthrough reaches ipcRenderer for the new channels
+    void api.invoke('engines:status', {})
+    expect(mocks.ipcRenderer.invoke).toHaveBeenCalledWith('engines:status', {})
   })
 })
 
@@ -102,6 +116,13 @@ describe('preload event subscription gate', () => {
     off()
     fire('chat:delta', { id: 's1', delta: 'again' })
     expect(seen).toHaveLength(1)
+  })
+
+  it("todo30b: 'engines:progress' is subscribable (event whitelist passthrough)", () => {
+    const seen: unknown[] = []
+    api.on('engines:progress', ((p: unknown) => seen.push(p)) as (payload: never) => void)
+    fire('engines:progress', { engine: 'llama', variant: 'cuda', received: 1, total: 2, state: 'downloading' })
+    expect(seen).toEqual([{ engine: 'llama', variant: 'cuda', received: 1, total: 2, state: 'downloading' }])
   })
 
   it('once() fires exactly one delivery', () => {
