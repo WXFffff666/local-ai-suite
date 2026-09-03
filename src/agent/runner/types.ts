@@ -132,6 +132,24 @@ export type AgentSessionStatus = {
 /** Hard ceiling on completion requests per session (LLM10 无界消耗, Appendix C). */
 export const MAX_AGENT_ITERATIONS = 25
 
+/** The slice of a fetch Response the loop consumes (global Response satisfies it). */
+export type AgentResponse = {
+  readonly ok: boolean
+  readonly status: number
+  text(): Promise<string>
+  readonly body: ReadableStream<Uint8Array> | null
+}
+
+/**
+ * Structural fetch seam — deliberately narrower than typeof globalThis.fetch so
+ * scripted tests (and sessions.ts passing the global through) share one type.
+ * The loop only ever issues the one POST shape below.
+ */
+export type AgentFetch = (
+  url: string,
+  init: { readonly method: 'POST'; readonly headers: Record<string, string>; readonly body: string; readonly signal: AbortSignal }
+) => Promise<AgentResponse>
+
 export type AgentLoopInput = {
   readonly sessionId: string
   /** Local engine origin, e.g. http://127.0.0.1:11434 — validated by the caller; the runner appends /v1/chat/completions. */
@@ -143,7 +161,7 @@ export type AgentLoopInput = {
   readonly signal: AbortSignal
   readonly onEvent: (event: AgentEvent) => void
   readonly maxIterations?: number
-  readonly fetchImpl?: typeof globalThis.fetch
+  readonly fetchImpl?: AgentFetch
 }
 
 export type AgentRunResult = {
