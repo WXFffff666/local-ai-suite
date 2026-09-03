@@ -491,6 +491,45 @@ export const mcpCallToolSchema = z
   .strict()
 export type McpCallToolInput = z.infer<typeof mcpCallToolSchema>
 
+// --- screenshot ask-overlay (todo38) -----------------------------------------
+// frame:get is a strict-empty pull (the controller owns the one live capture);
+// select carries the CSS-px rect (display-relative, so non-negative by contract)
+// plus the canvas-cropped PNG. The char cap mirrors image:saveTempImage (~12MB
+// decoded pre-guard); the chat:send 4MiB data-URL gate stays the FINAL trust
+// boundary when main relays the crop into the VLM turn (ask:seed → store.send).
+
+const overlayCssRectSchema = z
+  .object({
+    x: z.number().min(0).max(16_384),
+    y: z.number().min(0).max(16_384),
+    width: z.number().min(1).max(16_384),
+    height: z.number().min(1).max(16_384),
+  })
+  .strict()
+
+export const overlayFrameGetSchema = z.object({}).strict()
+
+export const overlaySelectSchema = z
+  .object({
+    rect: overlayCssRectSchema,
+    dataURL: z
+      .string()
+      .min(1)
+      .max(16_000_000)
+      .regex(/^data:image\/png;base64,[A-Za-z0-9+/=]+$/, 'dataURL must be a base64 PNG data URL'),
+    prompt: z.string().min(1).max(2000),
+  })
+  .strict()
+export type OverlaySelectInput = z.infer<typeof overlaySelectSchema>
+
+export const overlayCancelSchema = z.object({}).strict()
+
+/** r2 e2e hook (todo38): only the pinned screenshot hotkey is synthesizable. */
+export const testTriggerHotkeySchema = z
+  .object({ name: z.enum(['screenshot']) })
+  .strict()
+export type TestTriggerHotkeyInput = z.infer<typeof testTriggerHotkeySchema>
+
 // --- validation funnel --------------------------------------------------------------
 
 export type IpcIssue = { path: string; message: string }

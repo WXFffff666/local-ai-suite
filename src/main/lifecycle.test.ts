@@ -63,6 +63,14 @@ const mocks = vi.hoisted(() => {
       getPath: vi.fn((): string => 'mock-userData')
     },
     ipcMain: { handle: vi.fn() },
+    // todo38: bootstrapOverlay registers the screenshot hotkey through
+    // globalShortcut — the accessor mock below keeps that path side-effect
+    // free (register "succeeds", nothing is ever invoked in these tests).
+    globalShortcut: {
+      isRegistered: vi.fn((): boolean => false),
+      unregister: vi.fn(),
+      register: vi.fn((): boolean => true)
+    },
     dialog: { showMessageBox: vi.fn(), showOpenDialog: vi.fn() },
     safeStorage: {
       isEncryptionAvailable: vi.fn((): boolean => false),
@@ -118,6 +126,8 @@ vi.mock('electron', () => ({
   app: mocks.app,
   BrowserWindow: mocks.FakeBrowserWindow,
   ipcMain: mocks.ipcMain,
+  // todo38: bootstrapOverlay()'s hotkey binding (side-effect-free stub).
+  globalShortcut: mocks.globalShortcut,
   dialog: mocks.dialog,
   safeStorage: mocks.safeStorage
 }))

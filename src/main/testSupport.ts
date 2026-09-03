@@ -41,3 +41,17 @@ export const E2E_API_PORT: number | undefined = readPortEnv('LAS_E2E_API_PORT')
  */
 export const UPDATE_CHECK_DISABLED: boolean =
   process.env['LAS_DISABLE_UPDATE_CHECK'] === '1' || process.env['LAS_DISABLE_UPDATE_CHECK'] === 'true'
+
+/**
+ * E2E_FAKE_CAPTURE — mock-capturer seam for the todo38 screenshot ask-overlay
+ * e2e (plan acceptance: "e2e(mock capturer)"). When set, the overlay
+ * controller swaps desktopCapturer.getSources for a fixed 1x1 PNG frame, so
+ * the region-select → crop → ask:seed flow is drivable without a real screen
+ * capture (and without leaking display pixels into CI artifacts). The
+ * __test.triggerHotkey IPC (src/main/index.ts) replaces the globalShortcut
+ * press itself — globalShortcut cannot be synthesized from Playwright (r2).
+ * Production launches never set it; behavior is byte-identical when absent
+ * (same contract as LAS_E2E_API_PORT above).
+ */
+export const E2E_FAKE_CAPTURE: boolean =
+  process.env['LAS_E2E_FAKE_CAPTURE'] === '1' || process.env['LAS_E2E_FAKE_CAPTURE'] === 'true'

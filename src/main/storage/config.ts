@@ -60,6 +60,12 @@ export type AppConfig = {
   rerankModel: string
   /** todo39: served embedding model name ('' = auto-detect / hash-degraded) */
   embeddingModel: string
+  /**
+   * todo38: global screenshot ask-overlay hotkey (fixed CommandOrControl+Shift+A).
+   * Enabled-flag only — the combo is deliberately NOT configurable this round
+   * (plan: keep simple); false = globalShortcut never registers.
+   */
+  screenshotHotkeyEnabled: boolean
   /** Encrypted secrets (todo16) — see SecretPayloads contract above */
   secrets?: SecretPayloads
   /**
@@ -88,6 +94,7 @@ export const DEFAULT_CONFIG: AppConfig = {
   rerankEnabled: false,
   rerankModel: 'bge-reranker-v2-m3',
   embeddingModel: '',
+  screenshotHotkeyEnabled: true,
 }
 
 /** Resolve userData/config.json path — Electron userData in prod, ./userData/config.json fallback for tests. */

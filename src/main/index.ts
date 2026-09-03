@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, ipcMain, safeStorage } from 'electron'
+﻿import { app, BrowserWindow, dialog, globalShortcut, ipcMain, safeStorage } from 'electron'
 import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
 import { assertAllowedEventChannel, isAllowedChannel, type AllowedChannel, type AllowedEventChannel } from './ipc/whitelist'
@@ -10,12 +10,21 @@ import { getMainLogger, registerGlobalErrorLogging } from './logger'
 import { registerShutdownHook, shutdownServices, type ShutdownResult } from './shutdown'
 import { getServices, initServices, SIDECAR_NAMES, type SidecarName } from './services'
 import { createUpdater, scheduleInitialUpdateCheck, type Updater } from './updater'
-import { UPDATE_CHECK_DISABLED } from './testSupport'
+import { E2E_FAKE_CAPTURE, UPDATE_CHECK_DISABLED } from './testSupport'
 import { startApiServer, ENGINE_MIN_OLLAMA_VERSION, type ApiServerStatus } from './apiServer'
 import { canGrantMediaPermission, originFromDetails } from './mediaPermissions'
 import { createConversationService } from './storage/conversations'
 import { createAgentMain } from './agentMain'
 import { TrayController } from './tray'
+// todo38: screenshot ask-overlay (global hotkey → region select → VLM chat).
+import { getConfig } from './storage/config'
+import {
+  OverlayController,
+  registerScreenshotHotkey,
+  unregisterScreenshotHotkey,
+  SCREENSHOT_HOTKEY_ACCELERATOR,
+} from './overlay/controller'
+import { createElectronOverlayDeps } from './overlay/electronDeps'
 import type { SidecarManager } from '../core/SidecarManager'
 import type { SidecarStatus } from '../core/types'
 
@@ -50,6 +59,13 @@ if (!ownsInstanceLock) {
 }
 
 let mainWindow: BrowserWindow | null = null
+
+// --- todo38: screenshot ask-overlay controller --------------------------------
+// Constructed in bootstrapOverlay() (after whenReady — globalShortcut/screen
+// require a ready app). The single-instance-lock gate above means a SECOND
+// process quits before ever reaching here, so the hotkey is only ever bound
+// by the lock owner. Handlers answer the honest not-ready shapes until then.
+let overlayController: OverlayController | null = null
 
 // --- W1-10: embedded API server state + tray ---------------------------------
 // The arbitration result lives in a mutable ref so BOTH the tray (status line,
@@ -226,7 +242,10 @@ function registerIpcHandlers(): void {
     // todo40: the MCP pool lives inside the agent wiring (shared PermissionPort).
     mcp: () => agentMain()?.mcp ?? null,
     // todo32: thin ack handlers delegate here (state streams via update:state)
-    updater: getUpdater
+    updater: getUpdater,
+    // todo38: overlay:* + '__test.triggerHotkey' (r2 gate: packaged → 'disabled').
+    overlay: () => overlayController,
+    testHooks: () => !app.isPackaged
   })
 
   for (const [channel, fn] of Object.entries(handlers) as [AllowedChannel, (typeof handlers)[AllowedChannel]][]) {
@@ -240,7 +259,9 @@ function registerIpcHandlers(): void {
           assertAllowedEventChannel(eventChannel)
           const sender = event.sender
           if (!sender.isDestroyed()) sender.send(eventChannel, payload)
-        }
+        },
+        // todo38: overlay:* liveness guard (see HandlerContext.senderId)
+        senderId: event.sender.id
       }
       return fn(args, ctx)
     })
@@ -318,6 +339,44 @@ function bootstrapTray(): void {
   })
 }
 
+// todo38: overlay bootstrap. The controller is ALWAYS constructed (overlay:*
+// handlers + the e2e __test.triggerHotkey hook must work even when the user
+// hotkey is disabled — the hook calls the controller action directly, never
+// globalShortcut). The hotkey binding itself is config-gated
+// (screenshotHotkeyEnabled, default true) and best-effort: a combo already
+// taken by another app downgrades to a warn, never a crash.
+function bootstrapOverlay(): void {
+  const base = createElectronOverlayDeps({
+    fakeCapture: E2E_FAKE_CAPTURE,
+    getMainWindow: () => mainWindow,
+    preloadPath: join(__dirname, '../preload/index.js'),
+    rendererUrl: is.dev ? process.env['ELECTRON_RENDERER_URL'] : undefined,
+    rendererFile: join(__dirname, '../renderer/index.html'),
+  })
+  const controller = new OverlayController({
+    ...base,
+    logWarn: (message, error) => getMainLogger().warn({ err: error }, message),
+  })
+  overlayController = controller
+  registerShutdownHook(() => {
+    unregisterScreenshotHotkey(globalShortcut, SCREENSHOT_HOTKEY_ACCELERATOR)
+    controller.dispose()
+    if (overlayController === controller) overlayController = null
+  })
+  if (!getConfig().screenshotHotkeyEnabled) {
+    getMainLogger().info({}, 'screenshot hotkey disabled by config')
+    return
+  }
+  const bound = registerScreenshotHotkey(globalShortcut, SCREENSHOT_HOTKEY_ACCELERATOR, () => {
+    void controller.trigger().catch((error: unknown) => {
+      getMainLogger().error({ err: error }, 'screenshot overlay trigger failed')
+    })
+  })
+  if (!bound) {
+    getMainLogger().warn({ accelerator: SCREENSHOT_HOTKEY_ACCELERATOR }, 'screenshot hotkey already taken by another app')
+  }
+}
+
 app.whenReady().then(() => {
   // Service container (todo7): lazy — spawns nothing; watch + handshake start
   // here. Created BEFORE the handlers so the singleton carries the logger sink
@@ -331,6 +390,7 @@ app.whenReady().then(() => {
   })
   registerIpcHandlers()
   createWindow()
+  bootstrapOverlay()
   bootstrapApiServer()
   bootstrapTray()
 

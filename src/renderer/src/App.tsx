@@ -24,6 +24,10 @@ import '@fontsource-variable/inter/index.css'
 import './App.css'
 import { THEME_STORAGE_KEY, useTheme as useSuiteTheme } from '../../theme/theme'
 import type { AppNotificationEvent } from '../../main/ipc/whitelist'
+// todo38 (ADDITIVE): 'ask:seed' — the screenshot overlay's confirmed crop lands
+// as a VLM turn in the main window chat (store send path untouched).
+import { useChatStore } from '../../chat/store'
+import type { AskSeedEvent } from '../../main/ipc/whitelist'
 import { useHashRoute, type RouteId } from './hashRouter'
 import ChatPage from './pages/ChatPage'
 import ImagePage from './pages/ImagePage'
@@ -93,6 +97,18 @@ function Shell(): React.JSX.Element {
     if (!api) return
     return api.on('app:notification', showNotification)
   }, [])
+
+  // todo38 (ADDITIVE): 截图问屏落点。遮罩窗确认后主进程聚焦本窗并发 'ask:seed'；
+  // 切到 chat 路由后直接走 store.send 的 todo21 图文通路（无 window.api 时静默跳过，
+  // 与 app:notification 同一守卫姿态）。send 在无会话时自建 session（store 契约）。
+  useEffect(() => {
+    const api = typeof window !== 'undefined' ? window.api : undefined
+    if (!api) return
+    return api.on('ask:seed', (e: AskSeedEvent) => {
+      navigate('chat')
+      void useChatStore.getState().send(e.prompt, undefined, [e.image])
+    })
+  }, [navigate])
 
   const Page = PAGES[route]
 

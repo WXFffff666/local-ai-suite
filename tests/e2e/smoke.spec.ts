@@ -182,7 +182,10 @@ test.describe('smoke v2 — real Electron app launch', () => {
       cwd: APP_ROOT,
       // src/main/testSupport.ts relocation seam (WinNAT blocks literal 11434
       // binds for non-admin processes on this host).
-      env: { ...process.env, LAS_E2E_API_PORT: String(stub.port) },
+      // todo38: LAS_E2E_FAKE_CAPTURE swaps desktopCapturer for a fixed 1x1 PNG
+      // so the overlay case drives the real region-select flow without
+      // grabbing the host desktop (plan acceptance: e2e(mock capturer)).
+      env: { ...process.env, LAS_E2E_API_PORT: String(stub.port), LAS_E2E_FAKE_CAPTURE: '1' },
     })
 
     page = await app.firstWindow()
@@ -288,6 +291,101 @@ test.describe('smoke v2 — real Electron app launch', () => {
     expect(sent.model).toBe('local')
     expect(sent.stream).toBe(true)
     expect(sent.messages.at(-1)?.content).toBe(CHAT_PROBE)
+  })
+
+  test('f — todo38 screenshot ask-overlay: triggerHotkey hook → region select → VLM seed (mock capturer)', async () => {
+    // r2 test hook: globalShortcut presses cannot be synthesized from
+    // Playwright, so the e2e calls the hotkey ACTION through the pinned
+    // __test.triggerHotkey IPC (unpackaged-only — this launch is unpackaged).
+    const before = stub.chatRequests.length
+
+    // 1) trigger → a second renderer surface (#/overlay) appears…
+    const ack = (await page.evaluate(() => {
+      const api = (window as unknown as { api: { invoke: (c: string, p: unknown) => Promise<unknown> } }).api
+      return api.invoke('__test.triggerHotkey', { name: 'screenshot' })
+    })) as { ok: boolean; error?: string }
+    expect(ack).toEqual({ ok: true })
+
+    let overlay: Page | undefined
+    await expect
+      .poll(
+        async () => {
+          overlay = app.context().pages().find((p) => p.url().includes('#/overlay'))
+          return overlay !== undefined
+        },
+        { timeout: 15_000 },
+      )
+      .toBe(true)
+    const ov = overlay as Page
+
+    // …and the pulled (fake 1x1 PNG) frame is rendered as the backdrop.
+    await expect(ov.locator('[data-testid="las-overlay-frame"]')).toBeVisible({ timeout: 10_000 })
+    const src = await ov.locator('[data-testid="las-overlay-frame"]').getAttribute('src')
+    expect(src).toMatch(/^data:image\/png;base64,/)
+
+    // 2) rubber-band drag → the three prompt chips reveal
+    await ov.mouse.move(60, 60)
+    await ov.mouse.down()
+    await ov.mouse.move(260, 180)
+    await ov.mouse.up()
+    await expect(ov.locator('[data-testid="las-overlay-chips"] button')).toHaveCount(3)
+
+    // 3) confirm with 提取文字 → overlay window closes, main window seeds the ask turn
+    await ov.getByRole('button', { name: '提取文字' }).click()
+    await expect.poll(() => ov.isClosed(), { timeout: 10_000 }).toBe(true)
+
+    await expect
+      .poll(() => stub.chatRequests.length, { timeout: 20_000 })
+      .toBeGreaterThan(before)
+    const seeded = stub.chatRequests.at(-1) as {
+      model: string
+      messages: Array<{ role: string; content: unknown }>
+    }
+    expect(seeded.model).toBe('local')
+    const last = seeded.messages.at(-1)
+    expect(last?.role).toBe('user')
+    // todo21 wire shape: text part (chip prompt) + image_url part (canvas crop)
+    const parts = last?.content as Array<{ type: string; text?: string; image_url?: { url: string } }>
+    expect(Array.isArray(parts)).toBe(true)
+    expect(parts.some((p) => p.type === 'text' && p.text === '提取文字')).toBe(true)
+    expect(parts.some((p) => p.type === 'image_url' && p.image_url?.url.startsWith('data:image/'))).toBe(true)
+    // the answer streams into the chat UI (same stub relay as case e — .last():
+    // case e already rendered one 'Hello world!' bubble in this session)
+    await expect(page.getByText(STUB_REPLY_FULL).last()).toBeVisible({ timeout: 20_000 })
+
+    // 4) Esc on a re-triggered overlay cancels WITHOUT a new chat request
+    await page.evaluate(() => {
+      const api = (window as unknown as { api: { invoke: (c: string, p: unknown) => Promise<unknown> } }).api
+      return api.invoke('__test.triggerHotkey', { name: 'screenshot' })
+    })
+    let overlay2: Page | undefined
+    await expect
+      .poll(
+        async () => {
+          overlay2 = app.context().pages().find((p) => p.url().includes('#/overlay') && !p.isClosed())
+          return overlay2 !== undefined
+        },
+        { timeout: 15_000 },
+      )
+      .toBe(true)
+    const ov2 = overlay2 as Page
+    // load fires BEFORE React mounts its effects — wait for the mounted
+    // backdrop, otherwise the Escape below races the keydown listener.
+    await expect(ov2.locator('[data-testid="las-overlay-frame"]')).toBeVisible({ timeout: 10_000 })
+    const atCancel = stub.chatRequests.length
+    // Esc's keydown handler cancels the overlay, which DESTROYS the window while
+    // Playwright is mid-press (its keyup then lands on a dead target and the
+    // press() promise rejects). The rejection IS the proof the handler fired —
+    // the observable assertions below (closed + no seed) are unchanged.
+    await ov2.keyboard.press('Escape').catch(() => undefined)
+    await expect.poll(() => ov2.isClosed(), { timeout: 10_000 }).toBe(true)
+    // give any stray seed a chance to (wrongly) reach the stub before asserting
+    await new Promise((r) => setTimeout(r, 750))
+    expect(stub.chatRequests.length, 'Esc must not seed a chat turn').toBe(atCancel)
+
+    // 5) single-instance guard: the live-stream main window is back in focus-
+    //    able state and the overlay is gone from the page list.
+    expect(app.context().pages().filter((p) => p.url().includes('#/overlay') && !p.isClosed())).toHaveLength(0)
   })
 
   test('e2 — zero external-network requests (loopback/file only)', async () => {

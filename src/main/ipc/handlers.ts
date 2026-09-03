@@ -35,6 +35,9 @@ import { createOcrHandlers } from '../../ocr/ipc'
 import { getOcrService, type OcrService } from '../../ocr/service'
 import { createMcpHandlers, type McpPoolSurface } from '../../mcp/ipc'
 import { createRagHandlers, type RagManagerSurface } from '../../rag/ipc'
+// todo38: overlay/ipc is value-safe (schemas + controller types only, no
+// electron graph — same registration-only pattern as ocr/rag).
+import { createOverlayHandlers, type OverlaySurface } from '../overlay/ipc'
 import { createOverwriteCoverageHandler } from '../handlers/overwriteCoverage'
 import { createPublishReleaseHandler } from '../handlers/publishRelease'
 import { createClearCacheHandler } from '../handlers/clearCache'
@@ -91,7 +94,16 @@ import type {
 // electron-mock pitfall in learnings.md applies to electron-updater too).
 import type { Updater } from '../updater'
 
-export type HandlerContext = { send: IpcSendFn }
+export type HandlerContext = {
+  send: IpcSendFn
+  /**
+   * todo38 (ADDITIVE): ipcMain event.sender.id of the calling frame. overlay:*
+   * uses it as the liveness guard (a dying overlay frame's late invoke must
+   * never tear down a freshly-restarted overlay); optional so every existing
+   * handler stays byte-identical.
+   */
+  senderId?: number
+}
 export type IpcHandler = (args: unknown[], ctx: HandlerContext) => Promise<unknown>
 type HandlerMap = Record<AllowedChannel, IpcHandler>
 
@@ -196,6 +208,14 @@ export type HandlerDeps = {
    * (same `agent`/`permission` seam convention).
    */
   mcp?: () => McpPoolSurface | null
+  /**
+   * todo38: screenshot ask-overlay controller behind overlay:* + the r2 e2e
+   * hook. index.ts constructs it after whenReady (hotkey bootstrap); before
+   * that the honest not-ready shapes answer. `testHooks` is the !app.isPackaged
+   * gate for '__test.triggerHotkey' — packaged builds answer 'disabled'.
+   */
+  overlay?: () => OverlaySurface | null
+  testHooks?: () => boolean
   /** destructive-action backends (same no-op wiring index.ts had pre-W1). */
   onDeleteWorkspace?: (id: string) => Promise<void>
   onOverwriteCoverage?: (opts: unknown) => Promise<void>
@@ -264,6 +284,13 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
   // the PermissionPort); no pool yet ⇒ honest not-ready on every channel.
   const mcpHandlers = createMcpHandlers({
     pool: () => deps.mcp?.() ?? null,
+  })
+  // todo38: overlay:* + '__test.triggerHotkey' implementation lives in
+  // ../overlay/ipc.ts (registration-only here, ocr/rag precedent). The
+  // controller arrives lazily from index.ts (constructed after whenReady).
+  const overlayHandlers = createOverlayHandlers({
+    overlay: () => deps.overlay?.() ?? null,
+    testHooksEnabled: () => deps.testHooks?.() ?? false,
   })
 
   const passthrough =
@@ -609,7 +636,16 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
     'mcp:removeServer': mcpHandlers['mcp:removeServer'],
     'mcp:setEnabled': mcpHandlers['mcp:setEnabled'],
     'mcp:listTools': mcpHandlers['mcp:listTools'],
-    'mcp:callTool': mcpHandlers['mcp:callTool']
+    'mcp:callTool': mcpHandlers['mcp:callTool'],
+
+    // --- screenshot ask-overlay (todo38) --------------------------------------
+    // Registration-only: frame pull / crop submit / Esc cancel + the r2 e2e
+    // hotkey hook (handler-side !isPackaged gate) live in ../overlay/ipc.ts;
+    // the lifecycle state machine is ../overlay/controller.ts.
+    'overlay:frame:get': overlayHandlers['overlay:frame:get'],
+    'overlay:select': overlayHandlers['overlay:select'],
+    'overlay:cancel': overlayHandlers['overlay:cancel'],
+    '__test.triggerHotkey': overlayHandlers['__test.triggerHotkey']
   }
 
   return handlers

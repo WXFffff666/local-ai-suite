@@ -111,7 +111,18 @@ export const ALLOWED_CHANNELS = [
   'mcp:removeServer',
   'mcp:setEnabled',
   'mcp:listTools',
-  'mcp:callTool'
+  'mcp:callTool',
+  // todo38: screenshot ask-overlay (global hotkey → region select → VLM chat).
+  // frame:get is a PULL (deterministic — no did-finish-load/subscribe race);
+  // select carries the canvas-cropped PNG dataURL; cancel is Esc / tiny-rect.
+  // '__test.triggerHotkey' is the r2 test hook: the handler itself answers
+  // {ok:false,error:'disabled'} whenever app.isPackaged (src/main/index.ts
+  // gate) — globalShortcut presses cannot be synthesized from Playwright, so
+  // e2e calls the hotkey action directly through this channel.
+  'overlay:frame:get',
+  'overlay:select',
+  'overlay:cancel',
+  '__test.triggerHotkey'
 ] as const
 
 export type AllowedChannel = (typeof ALLOWED_CHANNELS)[number]
@@ -158,7 +169,10 @@ export const ALLOWED_EVENT_CHANNELS = [
   // todo37: OCR engine pack install progress (terminal states done/quarantined/error)
   'ocr:progress',
   // todo40: MCP server lifecycle transitions (every state change of any server)
-  'mcp:status'
+  'mcp:status',
+  // todo38: the region-crop result seeds a VLM turn in the MAIN window chat
+  // (App shell subscribes, navigates to #/chat and feeds the store send path).
+  'ask:seed'
 ] as const
 
 export type AllowedEventChannel = (typeof ALLOWED_EVENT_CHANNELS)[number]
@@ -268,6 +282,7 @@ export type EventPayloads = {
   'update:state': UpdateStateEvent
   'ocr:progress': OcrProgressEvent
   'mcp:status': McpStatusEvent
+  'ask:seed': AskSeedEvent
 }
 
 // ---------------------------------------------------------------------------
@@ -720,3 +735,52 @@ export type McpListToolsReply = { ok: true; tools: McpToolEntry[] } | { ok: fals
 export type McpCallToolReply =
   | { ok: true; result: unknown }
   | { ok: false; error: McpRequestError; detail?: string }
+
+// ---------------------------------------------------------------------------
+// Screenshot ask-overlay (todo38) wire contracts. The overlay renderer pulls
+// the pre-captured frame (one desktopCapturer grab in main, NEVER persisted to
+// disk — privacy guard), rubber-bands a CSS-px rect, crops it on its own
+// <canvas> and hands the PNG back; main then seeds an ask turn in the primary
+// window chat via the 'ask:seed' event (todo21 image_url path downstream).
+// ---------------------------------------------------------------------------
+
+/** Display geometry handed to the overlay (CSS bounds are DIP; crop is physical). */
+export type OverlayDisplayInfo = {
+  /** CSS (DIP) width of the captured display = overlay window width */
+  width: number
+  /** CSS (DIP) height of the captured display */
+  height: number
+  /** devicePixelRatio of the captured display (1 / 1.25 / 1.5 …) */
+  scale: number
+  /** physical pixel width of the frame image (bounds.width * scale, rounded) */
+  physicalWidth: number
+  /** physical pixel height of the frame image */
+  physicalHeight: number
+}
+
+/** Selected region in CSS px, origin = display top-left (overlay-local). */
+export type OverlayCssRect = { x: number; y: number; width: number; height: number }
+
+/** 'overlay:frame:get' reply — {ok:false,error:'no-frame'} when no capture is live. */
+export type OverlayFrameReply =
+  | { ok: true; dataURL: string; display: OverlayDisplayInfo }
+  | { ok: false; error: 'no-frame' }
+
+/** 'overlay:select' / 'overlay:cancel' / '__test.triggerHotkey' acks. */
+export type OverlaySelectReply =
+  | { ok: true }
+  /** invalid-payload mirrors the validatePayload 400-shape (issues ride with it). */
+  | { ok: false; error: 'invalid-payload'; issues?: unknown }
+  | { ok: false; error: 'no-overlay' | 'busy' }
+export type OverlayCancelReply = { ok: true } | { ok: false; error: 'no-overlay' }
+export type TestTriggerHotkeyReply =
+  | { ok: true }
+  | { ok: false; error: 'disabled' | 'busy' | 'capture-failed' }
+
+/** 'ask:seed' payload (main -> primary window renderer; todo38). */
+export type AskSeedEvent = {
+  /** cropped region PNG data-URL (validated ≤4MiB decoded by the chat:send gate) */
+  image: string
+  /** chosen prompt chip: 解释这张图 / 提取文字 / 翻译 */
+  prompt: string
+}

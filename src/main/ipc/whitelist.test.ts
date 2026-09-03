@@ -91,7 +91,13 @@ describe('ipc whitelist', () => {
       'mcp:removeServer',
       'mcp:setEnabled',
       'mcp:listTools',
-      'mcp:callTool'
+      'mcp:callTool',
+      // todo38: screenshot ask-overlay (frame pull / crop submit / cancel) +
+      // r2 e2e test hook (handler-level !isPackaged gate)
+      'overlay:frame:get',
+      'overlay:select',
+      'overlay:cancel',
+      '__test.triggerHotkey'
     ])
   })
 
@@ -116,7 +122,12 @@ describe('ipc whitelist', () => {
   })
 
   it('preload invoke 面仅暴露白名单 — 无通配/全量暴露', () => {
+    // todo38 r2: the ONLY naming exception is the pinned e2e test-hook channel
+    // (handler-side !app.isPackaged gate); every other channel keeps the
+    // lowerCamel colon grammar assertion.
+    const TEST_HOOK_CHANNELS: readonly string[] = ['__test.triggerHotkey']
     for (const ch of ALLOWED_CHANNELS) {
+      if (TEST_HOOK_CHANNELS.includes(ch)) continue
       expect(ch).toMatch(/^[a-z]+(?::[a-zA-Z-]+)+$/)
     }
     for (const ch of ALLOWED_CHANNELS) {
@@ -145,7 +156,9 @@ describe('ipc event whitelist (main -> renderer)', () => {
       // todo37: OCR engine pack install progress (terminal done/quarantined/error)
       'ocr:progress',
       // todo40: MCP server lifecycle transitions ({name,state})
-      'mcp:status'
+      'mcp:status',
+      // todo38: region-crop seeds a VLM ask turn in the primary window chat
+      'ask:seed'
     ])
     for (const ch of ALLOWED_EVENT_CHANNELS) {
       expect(isAllowedEventChannel(ch)).toBe(true)
