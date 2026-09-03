@@ -1,13 +1,16 @@
 /**
- * Chat.tsx — 对话工作区（todo11 接线 IPC 流式）
+ * Chat.tsx — 对话工作区（todo11 IPC 流式 + todo15 渲染打磨）
  * 数据流全部走 store（window.api chat:send / chat:abort + delta/done/error 事件），
  * 渲染层不直连侧车端口。无 window.api 时降级为诚实只读态。
- * markdown / 代码块打磨归 todo15，这里保持最小干净布局。
+ * todo15：消息 markdown/代码块/自动滚动/预设 chips 由 components/chatui/** 承担，
+ * store 数据形状零改动（types.ts 冻结契约）。
  */
 import { useState } from 'react'
 import { useChatStore, getChatIpcApi, IPC_UNAVAILABLE_MESSAGE } from './store'
-import { Thinking } from './Thinking'
 import { CHAT_PRESETS, fillChatPreset, type ChatPreset } from '../presets/presets'
+import { MessageList } from '../renderer/src/components/chatui/MessageList'
+import { PresetPicker } from '../renderer/src/components/chatui/PresetPicker'
+import '../renderer/src/components/chatui/chatui.css'
 
 export type ChatProps = {
   /** 对话预设（点击填充输入框）；传空数组隐藏预设行 */
@@ -99,37 +102,21 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
           </div>
         )}
 
-        <div style={{ flex: 1, overflowY: 'auto', padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {cur?.messages.map((m) => (
-            <div key={m.id} style={{ alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '78%', background: m.role === 'user' ? '#1a3a5a' : '#1e1e1e', padding: '10px 12px', borderRadius: 10, whiteSpace: 'pre-wrap', wordBreak: 'break-word', border: m.error ? '1px solid #a33' : '1px solid #2a2a2a' }}>
-              <div style={{ fontSize: 11, color: '#888', marginBottom: 4 }}>{m.role}{m.pending ? ' · streaming…' : ''}{m.error ? ` · ${m.error}` : ''}</div>
-              {m.role === 'assistant' && m.reasoning ? (
-                <div style={{ marginBottom: 6 }}>
-                  <Thinking content={m.reasoning} isStreaming={Boolean(m.pending)} hideWhenEmpty />
-                </div>
-              ) : null}
-              <div>{m.content || (m.pending ? '…' : '')}{m.pending && m.content ? ' ▍' : ''}</div>
+        <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', position: 'relative' }}>
+          {cur && cur.messages.length > 0 ? (
+            <MessageList key={cur.id} messages={cur.messages} />
+          ) : (
+            <div style={{ padding: 16, color: '#666' }}>
+              {!cur && 'Create a new chat to start. 流式经主进程 chat:delta 事件转发。'}
+              {cur && cur.messages.length === 0 && 'No messages — say hello.'}
             </div>
-          ))}
-          {!cur && <div style={{ color: '#666' }}>Create a new chat to start. 流式经主进程 chat:delta 事件转发。</div>}
-          {cur && cur.messages.length === 0 && <div style={{ color: '#666' }}>No messages — say hello.</div>}
-          {error && error !== 'aborted' && canStream && <div style={{ color: '#f88', fontSize: 12 }}>Error: {error}</div>}
+          )}
+          {error && error !== 'aborted' && canStream && (
+            <div style={{ color: '#f88', fontSize: 12, padding: '0 16px 8px' }}>Error: {error}</div>
+          )}
         </div>
 
-        {presets.length > 0 && (
-          <div style={{ padding: '8px 12px 0', display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-            {presets.map((p) => (
-              <button
-                key={p.id}
-                onClick={() => applyPreset(p)}
-                title={p.description}
-                style={{ fontSize: 11, padding: '3px 10px', borderRadius: 999, border: '1px solid #334', background: '#161616', color: '#9ab', cursor: 'pointer' }}
-              >
-                {p.title}
-              </button>
-            ))}
-          </div>
-        )}
+        {presets.length > 0 && <PresetPicker presets={presets} onPick={applyPreset} />}
 
         <div style={{ padding: 12, borderTop: '1px solid #222', display: 'flex', gap: 8 }}>
           <textarea
