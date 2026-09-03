@@ -32,6 +32,31 @@ export function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
+export type WaitUntilOptions = {
+  readonly timeoutMs?: number
+  readonly intervalMs?: number
+  /** What the predicate was waiting for; embedded in the timeout error message. */
+  readonly message?: string
+}
+
+/**
+ * Bounded polling for OS-truth predicates (process up / process reaped).
+ * Replaces fixed sleep-then-assert, which flakes under full-suite load:
+ * taskkill/CIM visibility latency is unbounded in practice. Throws with a
+ * useful message on timeout; callers keep their expect() as final proof.
+ */
+export async function waitUntil(predicate: () => boolean, opts: WaitUntilOptions = {}): Promise<void> {
+  const { timeoutMs = 10_000, intervalMs = 100, message = 'condition' } = opts
+  const deadline = Date.now() + timeoutMs
+  for (;;) {
+    if (predicate()) return
+    if (Date.now() >= deadline) {
+      throw new Error(`waitUntil timed out after ${timeoutMs}ms waiting for: ${message}`)
+    }
+    await sleep(intervalMs)
+  }
+}
+
 /**
  * A cmd that (1) buys ~1s with a ping delay so the caller can enroll it in the
  * jail, then (2) runs one 600s ping in the foreground and one via `start /b`
