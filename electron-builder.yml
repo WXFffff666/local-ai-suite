@@ -106,7 +106,19 @@ extraMetadata:
 publish:
   provider: github
   releaseType: draft
-  publishAutoUpdate: false
+  # todo32: client-side auto-update feed ON (electron-updater reads
+  # latest.yml from the draft Release). tag push still creates a draft
+  # Release only — publish semantics unchanged, humans promote it.
+  publishAutoUpdate: true
+  # Gradual rollout: only 10% of installs see the update initially.
+  # stagingPercentage is written into latest.yml and enforced CLIENT-side
+  # (machine-id hash) — provider-agnostic (Appendix A row 32).
+  # SPIKE-PENDING-FINAL (src/main/updater.ts header): draft visibility from
+  # the client is UNVERIFIED (plan R3b). Assert at tag v0.1.0; if drafts are
+  # invisible, switch releaseType to prerelease + ship with
+  # LAS_UPDATE_CHANNEL=beta fallback; if stagingPercentage is absent from the
+  # yml, this block gets edited (no app-code change).
+  stagingPercentage: 10
 
 # ---- packaging hooks (todo31) ----
 # afterPack: flip Electron fuses on the win-unpacked EXE ONLY (prod path).

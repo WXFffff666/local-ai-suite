@@ -71,7 +71,14 @@ export const ALLOWED_CHANNELS = [
   'release:publish',
   'cache:clear',
   'secrets:encrypt',
-  'secrets:decrypt'
+  'secrets:decrypt',
+  // todo32: staged auto-update (electron-updater). check = kick a
+  // 'checking'→… run (outcome streams on 'update:state'); downloadAndInstall
+  // is phase-routed main-side: available→download, downloaded→quitAndInstall.
+  // The renderer NEVER receives a raw updater handle — install only via this
+  // explicit user gesture (no forced update, plan Must-NOT).
+  'update:check',
+  'update:downloadAndInstall'
 ] as const
 
 export type AllowedChannel = (typeof ALLOWED_CHANNELS)[number]
@@ -112,7 +119,9 @@ export const ALLOWED_EVENT_CHANNELS = [
   // todo25: main -> renderer permission approval prompt
   'permission:request',
   // todo30b: GPU pack download progress (main -> renderer)
-  'engines:progress'
+  'engines:progress',
+  // todo32: electron-updater state machine fanout (see UpdateStateEvent below)
+  'update:state'
 ] as const
 
 export type AllowedEventChannel = (typeof ALLOWED_EVENT_CHANNELS)[number]
@@ -219,6 +228,7 @@ export type EventPayloads = {
   'agent:term': AgentTermEvent
   'permission:request': PermissionRequestEvent
   'engines:progress': EnginesProgressEvent
+  'update:state': UpdateStateEvent
 }
 
 // ---------------------------------------------------------------------------
@@ -411,6 +421,36 @@ export type EnginesProgressEvent = {
 export type EnginesGpuDownloadReply =
   | { ok: true }
   | { ok: false; error: 'manifest-missing' | 'already-downloading' | 'unknown-variant' }
+
+// ---------------------------------------------------------------------------
+// Auto-update wire contracts (todo32). The electron-updater module lives ONLY
+// in src/main/updater.ts; the renderer sees this closed union. The state
+// machine is exactly the phases below — an unknown phase is a compile error on
+// both sides, never a runtime surprise.
+//
+// 'error'.signatureUnavailable: the graceful "仅提示新版本" mode of the plan.
+// On Windows the downloaded NSIS installer is code-signature-verified against
+// the installed app's publisherName (electron-updater
+// windowsExecutableCodeSignatureVerifier.ts + NsisUpdater verifySignature —
+// real thrown strings, v6.8.9 source, cited in updater.ts). Unsigned dev /
+// self-built packages trip that check, so we flag it and the banner swaps the
+// install affordances for a manual release-page link.
+// ---------------------------------------------------------------------------
+
+export type UpdateStateEvent =
+  | { phase: 'checking' }
+  | { phase: 'available'; version: string }
+  | { phase: 'not-available' }
+  | { phase: 'downloading'; version: string }
+  | { phase: 'progress'; percent: number; received: number; total: number }
+  | { phase: 'downloaded'; version: string }
+  | { phase: 'error'; message: string; signatureUnavailable?: boolean }
+
+/** 'update:check' / 'update:downloadAndInstall' acks — outcome streams via events. */
+export type UpdateCheckReply = { ok: true } | { ok: false; error: 'updater-error' | 'invalid-state' }
+export type UpdateDownloadInstallReply =
+  | { ok: true; action: 'downloading' | 'installing' }
+  | { ok: false; error: 'updater-error' | 'invalid-state' }
 
 /** 'models:launch' reply — services.launchModel outcome, errors never cross as throws. */
 export type ModelsLaunchReply = { ok: true; status: SidecarStatus } | { ok: false; error: string }

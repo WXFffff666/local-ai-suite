@@ -29,3 +29,15 @@ function readPortEnv(name: string): number | undefined {
 
 /** Overridden 11434 port for the local OpenAI-compat promise, or undefined. */
 export const E2E_API_PORT: number | undefined = readPortEnv('LAS_E2E_API_PORT')
+
+/**
+ * UPDATE_CHECK_DISABLED — kill switch for the deferred post-launch auto-update
+ * check (todo32). Set LAS_DISABLE_UPDATE_CHECK=1 in any launch that must make
+ * ZERO outbound requests (the Playwright smoke asserts exactly that; CI can
+ * also flip it for offline runners). When set, the 'update:check' invoke
+ * channel still works manually — only the automatic 5s-deferred check is
+ * suppressed. Production launches never set it; behavior is byte-identical
+ * when absent (same contract as LAS_E2E_API_PORT above).
+ */
+export const UPDATE_CHECK_DISABLED: boolean =
+  process.env['LAS_DISABLE_UPDATE_CHECK'] === '1' || process.env['LAS_DISABLE_UPDATE_CHECK'] === 'true'

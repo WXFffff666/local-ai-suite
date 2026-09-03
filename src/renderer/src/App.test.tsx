@@ -148,6 +148,10 @@ describe('app:notification toast 订阅', () => {
     const listeners: Array<(n: AppNotificationEvent) => void> = []
     setFakeApi({
       on: vi.fn((_channel: string, cb: (n: AppNotificationEvent) => void) => {
+        // todo32 mounted a second app-level subscriber (UpdateBanner on
+        // 'update:state'); this fake bus keeps only the notification one so
+        // listeners[0] stays the channel under test.
+        if (_channel !== 'app:notification') return () => undefined
         listeners.push(cb)
         return () => {
           listeners.splice(listeners.indexOf(cb), 1)

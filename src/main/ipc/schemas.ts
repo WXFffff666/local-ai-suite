@@ -337,6 +337,14 @@ export type EnginesGpuDownloadInput = z.infer<typeof enginesGpuDownloadSchema>
 export const modelsLaunchSchema = z.object({ modelId: z.string().min(1).max(256) }).strict()
 export type ModelsLaunchInput = z.infer<typeof modelsLaunchSchema>
 
+// --- auto-update (todo32) -----------------------------------------------------
+// Both channels are gesture-only: the renderer sends no data, main drives the
+// electron-updater state machine and streams 'update:state'. Strict empty
+// object so a stray payload is a 400 rather than silently ignored.
+
+export const updateCheckSchema = z.object({}).strict()
+export const updateDownloadInstallSchema = z.object({}).strict()
+
 // --- validation funnel --------------------------------------------------------------
 
 export type IpcIssue = { path: string; message: string }

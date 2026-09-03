@@ -65,7 +65,10 @@ describe('ipc whitelist', () => {
       'release:publish',
       'cache:clear',
       'secrets:encrypt',
-      'secrets:decrypt'
+      'secrets:decrypt',
+      // todo32: staged auto-update gesture channels
+      'update:check',
+      'update:downloadAndInstall'
     ])
   })
 
@@ -113,7 +116,9 @@ describe('ipc event whitelist (main -> renderer)', () => {
       // todo25: main -> renderer permission request event
       'permission:request',
       // todo30b: GPU pack download progress (terminal states incl 'quarantined')
-      'engines:progress'
+      'engines:progress',
+      // todo32: electron-updater state machine fanout
+      'update:state'
     ])
     for (const ch of ALLOWED_EVENT_CHANNELS) {
       expect(isAllowedEventChannel(ch)).toBe(true)

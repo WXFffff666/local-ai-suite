@@ -984,3 +984,63 @@ describe('models:launch (todo30b)', () => {
     expect(services.launchModel).not.toHaveBeenCalled()
   })
 })
+
+// --- update channels (todo32) -------------------------------------------------
+
+describe('update:check / update:downloadAndInstall (todo32)', () => {
+  function makeUpdaterHarness() {
+    const base = makeHarness()
+    const check = vi.fn(() => ({ ok: true as const }))
+    const downloadAndInstall = vi.fn(() => ({ ok: true as const, action: 'downloading' as const }))
+    const handlers = buildIpcHandlers({
+      ...base.deps,
+      updater: () => ({ check, downloadAndInstall })
+    })
+    return { ...base, handlers, check, downloadAndInstall }
+  }
+
+  it('without the updater seam both channels answer the honest not-ready shape', async () => {
+    const { handlers, ctx } = makeHarness()
+    await expect(handlers['update:check']([], ctx)).resolves.toEqual({ ok: false, error: 'not-ready' })
+    await expect(handlers['update:downloadAndInstall']([], ctx)).resolves.toEqual({
+      ok: false,
+      error: 'not-ready'
+    })
+  })
+
+  it('thin delegation: empty args ack through to the updater surface', async () => {
+    const { handlers, ctx, check, downloadAndInstall } = makeUpdaterHarness()
+    await expect(handlers['update:check']([], ctx)).resolves.toEqual({ ok: true })
+    expect(check).toHaveBeenCalledTimes(1)
+    await expect(handlers['update:downloadAndInstall']([{}], ctx)).resolves.toEqual({
+      ok: true,
+      action: 'downloading'
+    })
+    expect(downloadAndInstall).toHaveBeenCalledTimes(1)
+  })
+
+  it('strict-empty zod: any stray payload is the 400-shape, updater untouched', async () => {
+    const { handlers, ctx, check, downloadAndInstall } = makeUpdaterHarness()
+    await expect(handlers['update:check']([{ force: true }], ctx)).resolves.toMatchObject(invalidShape)
+    await expect(handlers['update:downloadAndInstall']([{ path: 'C:\\evil.exe' }], ctx)).resolves.toMatchObject(
+      invalidShape
+    )
+    expect(check).not.toHaveBeenCalled()
+    expect(downloadAndInstall).not.toHaveBeenCalled()
+  })
+
+  it('updater invalid-state replies cross the wire unchanged', async () => {
+    const base = makeHarness()
+    const handlers = buildIpcHandlers({
+      ...base.deps,
+      updater: () => ({
+        check: () => ({ ok: true }),
+        downloadAndInstall: () => ({ ok: false, error: 'invalid-state' })
+      })
+    })
+    await expect(handlers['update:downloadAndInstall']([], base.ctx)).resolves.toEqual({
+      ok: false,
+      error: 'invalid-state'
+    })
+  })
+})

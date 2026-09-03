@@ -64,6 +64,8 @@ import {
   modelsSetDirSchema,
   permissionRespondSchema,
   searchRunSchema,
+  updateCheckSchema,
+  updateDownloadInstallSchema,
   validatePayload
 } from './schemas'
 import type {
@@ -75,8 +77,14 @@ import type {
   IpcSendFn,
   LoraMetaReply,
   LoraScanReply,
-  PermissionRespondReply
+  PermissionRespondReply,
+  UpdateCheckReply,
+  UpdateDownloadInstallReply
 } from './whitelist'
+// type-only: updater.ts imports electron-updater at runtime; the value graph
+// must NEVER leak into this module (handlers.test.ts runs without it — the
+// electron-mock pitfall in learnings.md applies to electron-updater too).
+import type { Updater } from '../updater'
 
 export type HandlerContext = { send: IpcSendFn }
 export type IpcHandler = (args: unknown[], ctx: HandlerContext) => Promise<unknown>
@@ -149,7 +157,15 @@ export type HandlerDeps = {
    * hfSearch/dialog/safeStorage — no vi.mock needed). The availability
    * matrix and the launch hop ride the services container directly.
    */
-  engines?: EnginesDeps
+   engines?: EnginesDeps
+   /**
+    * todo32: auto-updater surface behind update:check / update:downloadAndInstall.
+    * Same lazy-seam convention as `agent`/`permission` (index.ts constructs the
+    * updater once and hands a getter; tests inject fakes here). Absent ⇒ the
+    * honest not-ready shape. Updater outcome itself streams on 'update:state';
+    * these replies are acks only.
+    */
+   updater?: () => Updater | null
   /** destructive-action backends (same no-op wiring index.ts had pre-W1). */
   onDeleteWorkspace?: (id: string) => Promise<void>
   onOverwriteCoverage?: (opts: unknown) => Promise<void>
@@ -458,7 +474,29 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
       createClearCacheHandler(deps.dialog, deps.onClearCache ?? (async () => undefined))
     ),
     'secrets:encrypt': passthrough(secrets['secrets:encrypt']),
-    'secrets:decrypt': passthrough(secrets['secrets:decrypt'])
+    'secrets:decrypt': passthrough(secrets['secrets:decrypt']),
+
+    // --- auto-update (todo32) ---------------------------------------------------
+    // Registration-only: state machine + signature-graceful classification live
+    // in ../updater.ts. These handlers ack the gesture; every outcome streams on
+    // the 'update:state' event (broadcast by index.ts, not ctx.send — the banner
+    // is app-level chrome and any frame may see it).
+    'update:check': async (args) => {
+      const parsed = validatePayload(updateCheckSchema, first(args, {}))
+      if (!parsed.ok) return parsed
+      const updater = deps.updater?.()
+      if (!updater) return NOT_READY
+      const reply: UpdateCheckReply = updater.check()
+      return reply
+    },
+    'update:downloadAndInstall': async (args) => {
+      const parsed = validatePayload(updateDownloadInstallSchema, first(args, {}))
+      if (!parsed.ok) return parsed
+      const updater = deps.updater?.()
+      if (!updater) return NOT_READY
+      const reply: UpdateDownloadInstallReply = updater.downloadAndInstall()
+      return reply
+    }
   }
 
   return handlers

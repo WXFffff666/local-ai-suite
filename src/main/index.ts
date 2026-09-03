@@ -9,6 +9,8 @@ import { searchHF } from '../market/hf'
 import { getMainLogger, registerGlobalErrorLogging } from './logger'
 import { registerShutdownHook, shutdownServices, type ShutdownResult } from './shutdown'
 import { getServices, initServices, SIDECAR_NAMES, type SidecarName } from './services'
+import { createUpdater, scheduleInitialUpdateCheck, type Updater } from './updater'
+import { UPDATE_CHECK_DISABLED } from './testSupport'
 import { startApiServer, ENGINE_MIN_OLLAMA_VERSION, type ApiServerStatus } from './apiServer'
 import { createConversationService } from './storage/conversations'
 import { createAgentMain } from './agentMain'
@@ -54,6 +56,22 @@ let mainWindow: BrowserWindow | null = null
 // rule) can read it lazily, long after bootstrap ordering details settle.
 const apiStatusRef: { current: ApiServerStatus | null } = { current: null }
 let trayController: TrayController | null = null
+
+// --- todo32: auto-updater singleton ------------------------------------------
+// Constructed lazily on first handler registration (construction only sets
+// electron-updater flags + listeners — zero I/O). The first NETWORK touch is
+// the 5s-deferred check scheduled after whenReady, gated by isPackaged and
+// the LAS_DISABLE_UPDATE_CHECK kill switch (testSupport.ts): e2e / dev
+// launches never dial out, so the zero-external-requests invariant holds.
+let updaterInstance: Updater | null = null
+
+function getUpdater(): Updater {
+  updaterInstance ??= createUpdater({
+    emit: (state) => broadcastEvent('update:state', state),
+    log: getMainLogger()
+  })
+  return updaterInstance
+}
 
 /** One-line human description of the 11434 ownership state (tray + logs). */
 export function describeApiStatus(s: ApiServerStatus | null): string {
@@ -181,7 +199,9 @@ function registerIpcHandlers(): void {
     safeStorage,
     conversations: () => conversations,
     agent: () => agentMain()?.agent ?? null,
-    permission: () => agentMain()?.permission ?? null
+    permission: () => agentMain()?.permission ?? null,
+    // todo32: thin ack handlers delegate here (state streams via update:state)
+    updater: getUpdater
   })
 
   for (const [channel, fn] of Object.entries(handlers) as [AllowedChannel, (typeof handlers)[AllowedChannel]][]) {
@@ -288,6 +308,16 @@ app.whenReady().then(() => {
   createWindow()
   bootstrapApiServer()
   bootstrapTray()
+
+  // todo32: deferred post-launch update check (plan: 启动后延迟检查). Packaged
+  // builds only — unpackaged dev/e2e has no app-update.yml and must stay
+  // network-silent; the explicit kill switch additionally covers offline CI.
+  const updateCheckDisabled = !app.isPackaged || UPDATE_CHECK_DISABLED
+  const scheduled = scheduleInitialUpdateCheck({
+    check: () => getUpdater().check(),
+    ...(updateCheckDisabled ? { disabled: true } : {})
+  })
+  getMainLogger().info({ updateCheckScheduled: scheduled, disabled: updateCheckDisabled }, 'updater bootstrap')
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()

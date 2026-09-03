@@ -32,6 +32,9 @@ import SearchPage from './pages/SearchPage'
 import MarketPage from './pages/MarketPage'
 import ModelsPage from './pages/ModelsPage'
 import SettingsPage from './pages/SettingsPage'
+// todo32: app-level auto-update banner (top-right over the shell; market.css
+// download-bar classes reused for its progress line).
+import UpdateBanner from './components/updater/UpdateBanner'
 
 const NAV_ITEMS: ReadonlyArray<{ id: RouteId; label: string; icon: LucideIcon }> = [
   { id: 'chat', label: 'Chat', icon: MessageSquare },
@@ -128,6 +131,9 @@ function Shell(): React.JSX.Element {
         theme={ntResolved === 'light' ? 'light' : 'dark'}
         closeButton
       />
+      {/* todo32: passive auto-update banner (renders nothing until an
+          'update:state' event arrives; never dials out from the renderer). */}
+      <UpdateBanner />
     </div>
   )
 }

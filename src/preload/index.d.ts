@@ -14,7 +14,11 @@ import type {
   EnginesStatusReply,
   EventPayloads,
   ImageQueueStatusEvent,
-  ModelsLaunchReply
+  ModelsLaunchReply,
+  // todo32: auto-update wire contracts
+  UpdateStateEvent,
+  UpdateCheckReply,
+  UpdateDownloadInstallReply
 } from '../main/ipc/whitelist'
 
 declare global {
@@ -43,5 +47,9 @@ export type {
   EnginesStatusReply,
   EnginesProgressEvent,
   EnginesGpuDownloadReply,
-  ModelsLaunchReply
+  ModelsLaunchReply,
+  // todo32: auto-update wire contracts
+  UpdateStateEvent,
+  UpdateCheckReply,
+  UpdateDownloadInstallReply
 }
