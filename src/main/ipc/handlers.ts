@@ -31,6 +31,8 @@ import { createDestructiveConfirmHandler, type DialogLike } from '../utils/dialo
 import { createDeleteWorkspaceHandler } from '../handlers/deleteWorkspace'
 import { createImageGenerateHandler, createSaveTempImageHandler } from '../handlers/imageOps'
 import { createSpeechHandlers, type SpeechServiceSurface } from '../../speech/ipc'
+import { createOcrHandlers } from '../../ocr/ipc'
+import { getOcrService, type OcrService } from '../../ocr/service'
 import { createOverwriteCoverageHandler } from '../handlers/overwriteCoverage'
 import { createPublishReleaseHandler } from '../handlers/publishRelease'
 import { createClearCacheHandler } from '../handlers/clearCache'
@@ -100,7 +102,7 @@ export type ServicesSurface = {
   /** todo19: modelsDir (public readonly on ModelRegistry) confines the loraMeta path. */
   registry: Pick<Services['registry'], 'getModels' | 'reloadModels' | 'modelsDir'>
   imageQueue: Pick<Services['imageQueue'], 'enqueue' | 'getJob' | 'listJobs' | 'subscribe' | 'pending'>
-  gallery: Pick<Services['gallery'], 'list' | 'save' | 'copy' | 'insert' | 'reuse'>
+  gallery: Pick<Services['gallery'], 'list' | 'save' | 'copy' | 'insert' | 'reuse' | 'get'>
   search: Pick<Services['search'], 'search'>
   ensureSidecar: Services['ensureSidecar']
   /** todo20: image:saveTempImage writes under <userDataDir>/tmp (real Services exposes this). */
@@ -172,7 +174,13 @@ export type HandlerDeps = {
    * src/speech singleton (spawns nothing until first transcribe); tests
    * inject fakes through this seam (engines/updater convention).
    */
-   speech?: () => SpeechServiceSurface
+    speech?: () => SpeechServiceSurface
+   /**
+    * todo37: PaddleOCR-json pipeline surface behind ocr:*. Default is the
+    * lazy src/ocr singleton (spawns AND downloads nothing until an explicit
+    * install/recognize); tests inject fakes through this seam.
+    */
+    ocr?: () => OcrService
   /** destructive-action backends (same no-op wiring index.ts had pre-W1). */
   onDeleteWorkspace?: (id: string) => Promise<void>
   onOverwriteCoverage?: (opts: unknown) => Promise<void>
@@ -222,6 +230,13 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
     // showOpenDialog); the structural DialogLike type just doesn't name it.
     dialog: deps.dialog as unknown as Parameters<typeof createSpeechHandlers>[0]['dialog'],
     ...(deps.speech === undefined ? {} : { service: deps.speech }),
+  })
+  // todo37: ocr:* implementation lives in ../../ocr/ipc.ts (registration-only
+  // here, speech precedent). The gallery verb re-resolves galleryId → canonical
+  // originalPath main-side; the engine pack is never bundled (pins.ts header).
+  const ocrHandlers = createOcrHandlers({
+    service: () => deps.ocr?.() ?? getOcrService({ userDataDir: services.userDataDir }),
+    gallery: () => services.gallery,
   })
 
   const passthrough =
@@ -535,7 +550,16 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
     'speech:setPrefs': passthrough(speechHandlers['speech:setPrefs']),
     'speech:pickModel': passthrough(speechHandlers['speech:pickModel']),
     'speech:saveWav': passthrough(speechHandlers['speech:saveWav']),
-    'speech:transcribe': passthrough(speechHandlers['speech:transcribe'])
+    'speech:transcribe': passthrough(speechHandlers['speech:transcribe']),
+
+    // --- ocr / paddleocr-json (todo37) ------------------------------------------
+    // Registration-only: validation + engine/pack logic lives in
+    // ../../ocr/ipc.ts. status never spawns nor downloads; install is an
+    // explicit gesture (ack here, outcome on 'ocr:progress'); recognize maps
+    // a chat dataURL or a main-resolved gallery path into the engine protocol.
+    'ocr:status': ocrHandlers['ocr:status'],
+    'ocr:install': ocrHandlers['ocr:install'],
+    'ocr:recognize': ocrHandlers['ocr:recognize']
   }
 
   return handlers

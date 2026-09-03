@@ -32,6 +32,10 @@ import { isBusy } from '../renderer/src/components/agentui/timeline'
 // todo29-style ADDITIVE (todo36): push-to-talk. MicButton self-hides without
 // window.api / without speech:getStatus ok — default DOM unchanged otherwise.
 import { MicButton } from './MicButton'
+// todo37-style ADDITIVE: per-image "提取文字" (PaddleOCR-json sidecar). The
+// bridge self-hides (no buttons render) until ocr:status says installed.
+import type { MessageOcrApi } from '../renderer/src/components/chatui/MessageBubble'
+import type { OcrRecognizeReply, OcrStatusReply } from '../main/ipc/whitelist'
 
 export type ChatProps = {
   /** 对话预设（点击填充输入框）；传空数组隐藏预设行 */
@@ -55,6 +59,8 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
   /** todo21: 待发送贴图（base64 dataURL，≤2 张） */
   const [images, setImages] = useState<string[]>([])
   const [vision, setVision] = useState(false)
+  /** todo37: ocr:status 探测（mount 一次，spawn-free）；installed = 引擎可识别 */
+  const [ocrInstalled, setOcrInstalled] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   // todo36: 转写文本插入到光标处需要 textarea 句柄
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -79,6 +85,41 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
       cancelled = true
     }
   }, [])
+
+  // todo37: OCR 可用性探测（ocr:status 不 spawn 引擎，也不触发下载）。
+  useEffect(() => {
+    const api = typeof window === 'undefined' ? undefined : window.api
+    // App.test 的假 api 只有 on —— invoke 缺席时保持诚实不可用。
+    if (!api || typeof api.invoke !== 'function') return
+    let cancelled = false
+    void api
+      .invoke('ocr:status', {})
+      .then((reply) => {
+        const r = reply as OcrStatusReply
+        if (!cancelled && r?.ok === true) setOcrInstalled(r.supported && r.engine.source !== 'none')
+      })
+      .catch(() => {
+        /* honest unavailable */
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const ocrApi: MessageOcrApi | undefined = canStream
+    ? {
+        available: ocrInstalled,
+        recognize: async (dataUrl: string): Promise<string> => {
+          const reply = (await window.api.invoke('ocr:recognize', { dataURL: dataUrl })) as OcrRecognizeReply
+          if (!reply || reply.ok !== true) {
+            const detail = reply && reply.ok === false ? reply.detail : undefined
+            const code = reply && reply.ok === false ? reply.error : 'no-reply'
+            throw new Error(detail ?? code)
+          }
+          return reply.text
+        },
+      }
+    : undefined
 
   const addImageFiles = useCallback(
     async (files: File[]): Promise<void> => {
@@ -195,7 +236,12 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
           ) : (
             <>
               {cur && cur.messages.length > 0 ? (
-                <MessageList key={cur.id} messages={cur.messages} />
+                <MessageList
+                  key={cur.id}
+                  messages={cur.messages}
+                  {...(ocrApi ? { ocr: ocrApi } : {})}
+                  onOcrInsert={insertAtCaret}
+                />
               ) : (
                 <div style={{ padding: 16, color: '#666' }}>
                   {!cur && 'Create a new chat to start. 流式经主进程 chat:delta 事件转发。'}

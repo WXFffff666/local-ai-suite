@@ -391,6 +391,35 @@ export const speechTranscribeSchema = z
   .strict()
 export type SpeechTranscribeInput = z.infer<typeof speechTranscribeSchema>
 
+// --- ocr / paddleocr-json (todo37) -------------------------------------------
+// status/install are gesture-only (strict empty object). recognize carries
+// EXACTLY ONE image source: the chat data-URL wire shape (todo21 gate —
+// same extensions, same 45M char ≈ 32 MiB decoded pre-guard, byte ceiling
+// enforced in src/ocr/ipc.ts) or a galleryId that the MAIN side re-resolves
+// through the Gallery registry (a renderer-supplied path is never trusted).
+
+export const ocrStatusSchema = z.object({}).strict()
+export const ocrInstallSchema = z.object({}).strict()
+
+export const ocrRecognizeSchema = z
+  .object({
+    dataURL: z
+      .string()
+      .min(1)
+      .max(45_000_000)
+      .regex(
+        /^data:image\/(png|jpeg|jpg|webp|gif);base64,[A-Za-z0-9+/=]+$/,
+        'dataURL must be a base64 image data URL (png/jpeg/webp/gif)',
+      )
+      .optional(),
+    galleryId: z.string().min(1).max(128).optional(),
+  })
+  .strict()
+  .refine((v) => (v.dataURL === undefined) !== (v.galleryId === undefined), {
+    message: 'exactly-one-image-source',
+  })
+export type OcrRecognizeInput = z.infer<typeof ocrRecognizeSchema>
+
 // --- validation funnel --------------------------------------------------------------
 
 export type IpcIssue = { path: string; message: string }

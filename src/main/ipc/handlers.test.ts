@@ -32,7 +32,9 @@ function makeHarness() {
       save: vi.fn(() => ({ id: 'saved' })),
       copy: vi.fn(() => ({ path: 'p', b64: 'YQ==', mime: 'image/png' })),
       insert: vi.fn(() => ({ text: 't', imagePath: 'p', b64: 'YQ==', prompt: 'p' })),
-      reuse: vi.fn(() => ({ prompt: 'p' }))
+      reuse: vi.fn(() => ({ prompt: 'p' })),
+      // todo37: ocr:recognize {galleryId} re-resolves main-side via get()
+      get: vi.fn((id: string) => ({ id, originalPath: `gallery/${id}/original.png` }))
     },
     search: { search: vi.fn(async () => ({ raw: [], deduped: [], ranked: [], cards: [], markdown: '' })) },
     ensureSidecar: vi.fn()
@@ -1141,5 +1143,101 @@ describe('speech:* wiring (todo36 push-to-talk)', () => {
     await expect(handlers['speech:transcribe']([{ wavPath: join(tmp, 'a.wav'), language: '!!' }], ctx)).resolves.toMatchObject(invalidShape)
     await expect(handlers['speech:setPrefs']([{}], ctx)).resolves.toMatchObject(invalidShape)
     await expect(handlers['speech:getStatus']([{ junk: 1 }], ctx)).resolves.toMatchObject(invalidShape)
+  })
+})
+
+// --- ocr channels (todo37 local OCR) ---------------------------------------------
+
+describe('ocr:* wiring (todo37 PaddleOCR-json sidecar)', () => {
+  let tmp = ''
+  let origCwd = ''
+
+  beforeEach(() => {
+    tmp = mkdtempSync(join(tmpdir(), 'las-ocr-wire-'))
+    mkdirSync(join(tmp, 'userData'), { recursive: true })
+    origCwd = process.cwd()
+    process.chdir(tmp)
+  })
+  afterEach(() => {
+    try {
+      process.chdir(origCwd)
+    } catch {}
+    rmSync(tmp, { recursive: true, force: true })
+  })
+
+  function makeOcrHarness(overrides: { installed?: boolean; recognize?: (req: unknown) => Promise<string> } = {}) {
+    const base = makeHarness()
+    const userDataDir = join(tmp, 'userData')
+    const recognize = vi.fn(overrides.recognize ?? (async () => '提取文字'))
+    const install = vi.fn(async () => ({ ok: true }) as { ok: boolean; reason?: string })
+    const service = {
+      status: vi.fn(() => ({
+        engine: {
+          bin: overrides.installed === false ? null : 'D:\\e\\ocr-cpu\\PaddleOCR-json.exe',
+          source: overrides.installed === false ? ('none' as const) : ('pack' as const),
+          version: overrides.installed === false ? null : 'v1.4.1',
+        },
+        running: false,
+        supported: true,
+      })),
+      recognize,
+      install,
+      stop: vi.fn(),
+    }
+    const handlers = buildIpcHandlers({
+      ...(base.deps as object),
+      services: { ...base.services, userDataDir } as unknown as ServicesSurface,
+      ocr: () => service as never,
+    })
+    return { ...base, handlers, userDataDir, service, recognize, install }
+  }
+
+  it('ocr:status answers without touching the engine or the network', async () => {
+    const { handlers, ctx, service, recognize } = makeOcrHarness()
+    const res = (await handlers['ocr:status']([{}], ctx)) as {
+      ok: boolean
+      supported: boolean
+      engine: { source: string; version: string | null }
+      running: boolean
+    }
+    expect(res).toMatchObject({ ok: true, supported: true, running: false })
+    expect(res.engine).toMatchObject({ source: 'pack', version: 'v1.4.1' })
+    expect(recognize).not.toHaveBeenCalled()
+    expect(service.status).toHaveBeenCalledTimes(1)
+  })
+
+  it('ocr:recognize {dataURL} delegates to the injected service', async () => {
+    const { handlers, ctx, recognize } = makeOcrHarness()
+    const dataURL = `data:image/png;base64,${Buffer.from('png-bytes').toString('base64')}`
+    const res = (await handlers['ocr:recognize']([{ dataURL }], ctx)) as { ok: boolean; text: string }
+    expect(res).toEqual({ ok: true, text: '提取文字' })
+    expect(recognize).toHaveBeenCalledWith({ imageBase64: Buffer.from('png-bytes').toString('base64') })
+  })
+
+  it('ocr:install acks and streams ocr:progress (done) on the sending frame', async () => {
+    const { handlers, ctx } = makeOcrHarness({ installed: false })
+    const ack = (await handlers['ocr:install']([{}], ctx)) as { ok: boolean }
+    expect(ack).toEqual({ ok: true })
+    await vi.waitFor(() => {
+      const evs = (ctx.send as ReturnType<typeof vi.fn>).mock.calls.filter((c) => c[0] === 'ocr:progress')
+      expect(evs.some((c) => (c[1] as { state: string }).state === 'done')).toBe(true)
+    })
+  })
+
+  it('ocr:install on an installed pack is already-installed (never clobber)', async () => {
+    const { handlers, ctx, install } = makeOcrHarness()
+    await expect(handlers['ocr:install']([{}], ctx)).resolves.toEqual({ ok: false, error: 'already-installed' })
+    expect(install).not.toHaveBeenCalled()
+  })
+
+  it('zod gates: garbage payloads are the 400-shape on every ocr channel', async () => {
+    const { handlers, ctx } = makeOcrHarness()
+    await expect(handlers['ocr:status']([{ junk: 1 }], ctx)).resolves.toMatchObject(invalidShape)
+    await expect(handlers['ocr:install']([{ junk: 1 }], ctx)).resolves.toMatchObject(invalidShape)
+    await expect(handlers['ocr:recognize']([{}], ctx)).resolves.toMatchObject(invalidShape)
+    await expect(handlers['ocr:recognize']([{ imagePath: 'C:/x.png' }], ctx)).resolves.toMatchObject(invalidShape)
+    await expect(
+      handlers['ocr:recognize']([{ dataURL: 'data:image/png;base64,QQ==', galleryId: 'g1' }], ctx),
+    ).resolves.toMatchObject(invalidShape)
   })
 })

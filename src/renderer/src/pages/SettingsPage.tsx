@@ -14,6 +14,7 @@ import { useCallback, useEffect, useState } from 'react'
 import '../components/settingspage/settingspage.css'
 import { EngineStatus } from '../components/settingspage/EngineStatus'
 import { SpeechSection } from '../components/settingspage/SpeechSection'
+import { OcrSection } from '../components/settingspage/OcrSection'
 import { SecretRow } from '../components/settingspage/SecretRow'
 import type {
   ConfigGetReply,
@@ -217,6 +218,9 @@ export function SettingsPage(): React.JSX.Element {
 
       {/* todo36 — 语音输入开关 / Whisper 模型选择 / 引擎来源行（speech:* 通道） */}
       <SpeechSection />
+
+      {/* todo37 — 本地 OCR 引擎按需下载（ocr:* 通道，进度走 ocr:progress 事件） */}
+      <OcrSection />
     </section>
   )
 }

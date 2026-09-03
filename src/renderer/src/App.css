@@ -135,6 +135,69 @@ body {
   color: var(--las-muted);
 }
 
+/* todo37: 画廊条目网格 + 每卡 OCR 动作 */
+.las-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.las-gallery-item {
+  max-width: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.las-gallery-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--las-fg);
+}
+
+.las-gallery-item-date {
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.las-gallery-item-id {
+  font-size: 11px;
+  color: var(--las-muted);
+}
+
+.las-gallery-item-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.las-gallery-ocr-error {
+  color: #f88;
+  font-size: 12px;
+  margin: 0;
+}
+
+.las-gallery-ocr-result {
+  border-top: 1px solid var(--las-border);
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.las-gallery-ocr-text {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 12px;
+  color: var(--las-fg);
+  max-height: 200px;
+  overflow: auto;
+  width: 100%;
+}
+
 .las-resize-handle {
   width: 4px;
   background: transparent;

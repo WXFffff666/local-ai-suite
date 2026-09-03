@@ -318,6 +318,79 @@
   border-radius: 8px;
 }
 
+/* todo37: per-image OCR 提取文字 (hover 浮现的最小动作钮) + 结果区 */
+.las-msg-image-wrap {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+}
+
+.las-msg-ocr-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 4px;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.62);
+  color: #ddd;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  line-height: 0;
+}
+
+.las-msg-image-wrap:hover .las-msg-ocr-btn,
+.las-msg-image-wrap:focus-within .las-msg-ocr-btn {
+  opacity: 1;
+}
+
+.las-msg-ocr-btn:disabled {
+  cursor: not-allowed;
+  color: #777;
+}
+
+.las-msg-ocr-result {
+  margin: 6px 0;
+  padding: 8px 10px;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  background: #0d0d0d;
+}
+
+.las-msg-ocr-text {
+  margin: 0 0 6px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 13px;
+  color: #e6e6e6;
+}
+
+.las-msg-ocr-busy {
+  color: #8ab;
+  font-size: 12px;
+}
+
+.las-msg-ocr-error {
+  color: #f88;
+  font-size: 12px;
+}
+
+.las-msg-ocr-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.las-msg-ocr-actions button {
+  padding: 2px 10px;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  background: #1a1a1a;
+  color: #ddd;
+  font-size: 12px;
+  cursor: pointer;
+}
+
 .las-img-lightbox {
   position: fixed;
   inset: 0;

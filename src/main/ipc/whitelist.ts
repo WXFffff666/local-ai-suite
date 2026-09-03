@@ -87,7 +87,15 @@ export const ALLOWED_CHANNELS = [
   'speech:setPrefs',
   'speech:pickModel',
   'speech:saveWav',
-  'speech:transcribe'
+  'speech:transcribe',
+  // todo37: local OCR (PaddleOCR-json pipe-mode sidecar, on-demand engine
+  // pack into userData/engines). status is spawn-free AND download-free;
+  // install is an explicit user gesture (ack only, outcome streams on
+  // 'ocr:progress'); recognize takes a chat dataURL or a galleryId — never a
+  // renderer-supplied filesystem path.
+  'ocr:status',
+  'ocr:install',
+  'ocr:recognize'
 ] as const
 
 export type AllowedChannel = (typeof ALLOWED_CHANNELS)[number]
@@ -130,7 +138,9 @@ export const ALLOWED_EVENT_CHANNELS = [
   // todo30b: GPU pack download progress (main -> renderer)
   'engines:progress',
   // todo32: electron-updater state machine fanout (see UpdateStateEvent below)
-  'update:state'
+  'update:state',
+  // todo37: OCR engine pack install progress (terminal states done/quarantined/error)
+  'ocr:progress'
 ] as const
 
 export type AllowedEventChannel = (typeof ALLOWED_EVENT_CHANNELS)[number]
@@ -238,6 +248,7 @@ export type EventPayloads = {
   'permission:request': PermissionRequestEvent
   'engines:progress': EnginesProgressEvent
   'update:state': UpdateStateEvent
+  'ocr:progress': OcrProgressEvent
 }
 
 // ---------------------------------------------------------------------------
@@ -519,5 +530,52 @@ export type SpeechTranscribeReply =
         | 'audio-not-found'
         | 'transcribe-failed'
       /** server/manager error text for UI diagnostics (never trusted). */
+      detail?: string
+    }
+
+// ---------------------------------------------------------------------------
+// OCR (todo37) wire contracts. PaddleOCR-json pipe-mode sidecar; the engine
+// pack is a pinned on-demand download into userData/engines (src/ocr/pins.ts
+// — deliberately NOT in the engines manifest union, see pins.ts header).
+// ---------------------------------------------------------------------------
+
+/** Engine binary resolution state (mirrors src/ocr/service.ts tiers). */
+export type OcrEngineSource = 'env' | 'pack' | 'none'
+export type OcrEngineWire = { bin: string | null; source: OcrEngineSource; version: string | null }
+
+/** ocr:status reply. supported=false ⇒ pinned win32-x64 asset can't run here. */
+export type OcrStatusReply =
+  | { ok: true; supported: boolean; engine: OcrEngineWire; running: boolean }
+  | { ok: false; error: string }
+
+/** 'ocr:progress' payload (install flow; terminal: done/quarantined/error). */
+export type OcrProgressState = 'downloading' | 'verifying' | 'activating' | 'done' | 'quarantined' | 'error'
+export type OcrProgressEvent = {
+  state: OcrProgressState
+  received: number
+  /** 0 while the final size is unknown (no Content-Length). */
+  total: number
+  note?: string
+}
+
+/** ocr:install reply — start-ack only; outcome streams via 'ocr:progress'. */
+export type OcrInstallReply =
+  | { ok: true }
+  | { ok: false; error: 'engine-unsupported-platform' | 'already-installed' | 'already-downloading' }
+
+/** ocr:recognize reply. */
+export type OcrRecognizeReply =
+  | { ok: true; text: string }
+  | {
+      ok: false
+      error:
+        | 'invalid-payload'
+        | 'image-too-large'
+        | 'engine-unsupported-platform'
+        | 'engine-missing'
+        | 'engine-tampered'
+        | 'gallery-item-not-found'
+        | 'recognize-failed'
+      /** engine error text for UI diagnostics (never trusted). */
       detail?: string
     }

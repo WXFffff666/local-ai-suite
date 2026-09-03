@@ -13,7 +13,7 @@
 import { useCallback, useEffect, useRef, useState, type UIEvent } from 'react'
 import { Virtuoso, type VirtuosoHandle } from 'react-virtuoso'
 import type { ChatMessage } from '../../../../chat/types'
-import { MessageBubble } from './MessageBubble'
+import { MessageBubble, type MessageOcrApi } from './MessageBubble'
 
 /** 超过该条数启用虚拟化（500 条验收场景必然命中） */
 export const VIRTUALIZE_THRESHOLD = 50
@@ -26,9 +26,12 @@ export function isNearBottom(scrollTop: number, scrollHeight: number, clientHeig
 
 export type MessageListProps = {
   messages: ChatMessage[]
+  /** todo37 (ADDITIVE): per-image OCR bridge + composer-append callback. */
+  ocr?: MessageOcrApi
+  onOcrInsert?: (text: string) => void
 }
 
-export function MessageList({ messages }: MessageListProps): React.JSX.Element {
+export function MessageList({ messages, ocr, onOcrInsert }: MessageListProps): React.JSX.Element {
   const [atBottom, setAtBottom] = useState(true)
   const atBottomRef = useRef(true)
   const plainRef = useRef<HTMLDivElement>(null)
@@ -79,7 +82,7 @@ export function MessageList({ messages }: MessageListProps): React.JSX.Element {
           ref={virtuosoRef}
           data={messages}
           computeItemKey={(_i, m) => m.id}
-          itemContent={(_i, m) => <MessageBubble message={m} />}
+          itemContent={(_i, m) => <MessageBubble message={m} {...(ocr ? { ocr } : {})} {...(onOcrInsert ? { onOcrInsert } : {})} />}
           followOutput={(isAtBottom) => (isAtBottom ? 'smooth' : false)}
           atBottomStateChange={markBottom}
           atBottomThreshold={AT_BOTTOM_EPS}
@@ -92,7 +95,7 @@ export function MessageList({ messages }: MessageListProps): React.JSX.Element {
       ) : (
         <div ref={plainRef} data-testid="message-scroller" className="las-msglist-plain" onScroll={onPlainScroll}>
           {messages.map((m) => (
-            <MessageBubble key={m.id} message={m} />
+            <MessageBubble key={m.id} message={m} {...(ocr ? { ocr } : {})} {...(onOcrInsert ? { onOcrInsert } : {})} />
           ))}
         </div>
       )}

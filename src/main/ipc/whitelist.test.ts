@@ -74,7 +74,12 @@ describe('ipc whitelist', () => {
       'speech:setPrefs',
       'speech:pickModel',
       'speech:saveWav',
-      'speech:transcribe'
+      'speech:transcribe',
+      // todo37: local OCR (PaddleOCR-json pipe-mode sidecar) — status is
+      // spawn-free AND download-free; install is an explicit gesture
+      'ocr:status',
+      'ocr:install',
+      'ocr:recognize'
     ])
   })
 
@@ -124,7 +129,9 @@ describe('ipc event whitelist (main -> renderer)', () => {
       // todo30b: GPU pack download progress (terminal states incl 'quarantined')
       'engines:progress',
       // todo32: electron-updater state machine fanout
-      'update:state'
+      'update:state',
+      // todo37: OCR engine pack install progress (terminal done/quarantined/error)
+      'ocr:progress'
     ])
     for (const ch of ALLOWED_EVENT_CHANNELS) {
       expect(isAllowedEventChannel(ch)).toBe(true)

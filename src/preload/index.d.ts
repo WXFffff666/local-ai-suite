@@ -24,7 +24,14 @@ import type {
   SpeechPickModelReply,
   SpeechSaveWavReply,
   SpeechTranscribeReply,
-  SpeechEngineSource
+  SpeechEngineSource,
+  // todo37: local OCR (PaddleOCR-json pipe-mode sidecar) wire contracts
+  OcrStatusReply,
+  OcrInstallReply,
+  OcrRecognizeReply,
+  OcrProgressEvent,
+  OcrProgressState,
+  OcrEngineSource
 } from '../main/ipc/whitelist'
 
 declare global {
@@ -63,5 +70,12 @@ export type {
   SpeechPickModelReply,
   SpeechSaveWavReply,
   SpeechTranscribeReply,
-  SpeechEngineSource
+  SpeechEngineSource,
+  // todo37: local OCR (PaddleOCR-json pipe-mode sidecar) wire contracts
+  OcrStatusReply,
+  OcrInstallReply,
+  OcrRecognizeReply,
+  OcrProgressEvent,
+  OcrProgressState,
+  OcrEngineSource
 }
