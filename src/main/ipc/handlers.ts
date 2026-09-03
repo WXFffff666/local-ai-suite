@@ -22,6 +22,9 @@ import type { CopyPayload, GalleryItem, InsertPayload, ReuseParams, SaveOptions 
 import type { OrchestratorResult } from '../../search/orchestrator'
 import type { ImageJob, QueueEvent } from '../../image/queue'
 import type { HfModelCard, SearchOptions } from '../../market/hf'
+import { detectNvidia, downloadPack } from '../../engines/gpuPack'
+import { loadEngineManifest } from '../../engines/manifest'
+import { createEnginesHandlers, type EnginesDeps } from '../handlers/enginesIpc'
 import { getConfig, setConfig, type AppConfig } from '../storage/config'
 import type { Services } from '../services'
 import { createDestructiveConfirmHandler, type DialogLike } from '../utils/dialogConfirm'
@@ -93,6 +96,14 @@ export type ServicesSurface = {
   ensureSidecar: Services['ensureSidecar']
   /** todo20: image:saveTempImage writes under <userDataDir>/tmp (real Services exposes this). */
   userDataDir: Services['userDataDir']
+  /**
+   * todo30b (lane 30 finalizer): the real Services already exposes all three;
+   * this is a structural Pick extension only — no services.ts/index.ts edit
+   * was needed (index passes the whole container instance to buildIpcHandlers).
+   */
+  engineResolver: Services['engineResolver']
+  getEngineResolutions: Services['getEngineResolutions']
+  launchModel: Services['launchModel']
 }
 
 export type HfSearchFn = (opts: SearchOptions) => Promise<HfModelCard[]>
@@ -131,6 +142,14 @@ export type HandlerDeps = {
    * tool host. Only `respond` crosses the IPC boundary here.
    */
   permission?: () => Pick<PermissionBridge, 'respond'> | null
+  /**
+   * todo30b: engines module surface behind engines:* (detectNvidia /
+   * loadEngineManifest / downloadPack). Defaults are the real engines
+   * functions; tests inject fakes through this seam (same convention as
+   * hfSearch/dialog/safeStorage — no vi.mock needed). The availability
+   * matrix and the launch hop ride the services container directly.
+   */
+  engines?: EnginesDeps
   /** destructive-action backends (same no-op wiring index.ts had pre-W1). */
   onDeleteWorkspace?: (id: string) => Promise<void>
   onOverwriteCoverage?: (opts: unknown) => Promise<void>
@@ -156,6 +175,10 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
   const { services } = deps
   const secrets = createSecretsHandlers(deps.safeStorage)
   const provider = (): ConversationsProvider | null => deps.conversations?.() ?? null
+  const engines: EnginesDeps = deps.engines ?? { detectNvidia, loadEngineManifest, downloadPack }
+  // todo30b: engines:status / engines:gpuDownload / models:launch implementation
+  // lives in ../handlers/enginesIpc.ts (registration-only map, imageOps precedent).
+  const engineHandlers = createEnginesHandlers(services, engines)
 
   const passthrough =
     (fn: (args: unknown[]) => Promise<unknown>): IpcHandler =>
@@ -212,6 +235,10 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
       const reply: LoraMetaReply = readLoraMetaFile(parsed.data.path, services.registry.modelsDir)
       return reply
     },
+
+    // todo30b: registry-driven llama relaunch (the 21→30 wired hop). The
+    // launch/error policy is services.launchModel; wiring in enginesIpc.ts.
+    'models:launch': engineHandlers['models:launch'],
 
     // --- config (todo16: theme / locale / encrypted secret payloads) ------------
     'config:get': async (args) => {
@@ -365,6 +392,14 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
       const cards = await deps.hfSearch(parsed.data)
       return { ok: true, cards }
     },
+
+    // --- engines (todo30b) ------------------------------------------------------
+    // Registration-only: the availability matrix, GPU pack single-flight download
+    // and the model-launch hop are implemented in ../handlers/enginesIpc.ts
+    // (createEnginesHandlers). The cascade / verification / activation policies
+    // live in src/engines/** (unit-tested there); this map just wires channels.
+    'engines:status': engineHandlers['engines:status'],
+    'engines:gpuDownload': engineHandlers['engines:gpuDownload'],
 
     // --- conversations (channels pre-listed; real service = todo17) --------------
     'conversations:list': async () => {
