@@ -21,6 +21,9 @@ export const ALLOWED_CHANNELS = [
   'models:list',
   'models:download',
   'models:setDir',
+  // todo19: LoRA picker — list diffusion LoRA files + safetensors header meta
+  'models:loraScan',
+  'models:loraMeta',
   'download:cancel',
   'config:get',
   'config:set',
@@ -174,3 +177,37 @@ export type EventPayloads = {
   'agent:event': AgentEventEvent
   'agent:term': AgentTermEvent
 }
+
+// ---------------------------------------------------------------------------
+// LoRA invoke reply contracts (todo19). Declared here — the one src/main file
+// inside tsconfig.web's include set — so renderer and main share one source of
+// truth for the wire shapes.
+// ---------------------------------------------------------------------------
+
+/** One scanned LoRA weight file (models:loraScan reply item). */
+export type LoraFile = {
+  /** file stem — the name used in `<lora:name:scale>` prompt tags */
+  name: string
+  /** path relative to modelsDir (POSIX separators) */
+  file: string
+  /** absolute path (models:loraMeta argument; re-confined server-side) */
+  path: string
+  /** human-readable size, e.g. '142.3 MB' */
+  sizeLabel: string
+  /** 'safetensors' | 'gguf' — header meta parsing only applies to safetensors */
+  format: 'safetensors' | 'gguf'
+}
+
+/** Filtered safetensors __metadata__ keys (ss_* / *lora*), string|number values. */
+export type LoraMeta = Record<string, string | number>
+
+export type LoraScanReply = { ok: true; files: LoraFile[] } | { ok: false; error: string }
+
+export type LoraMetaError =
+  | 'path-outside-models-dir'
+  | 'file-not-found'
+  | 'header-too-large'
+  | 'bad-header'
+  | 'meta-unsupported'
+
+export type LoraMetaReply = { ok: true; meta: LoraMeta } | { ok: false; error: LoraMetaError }

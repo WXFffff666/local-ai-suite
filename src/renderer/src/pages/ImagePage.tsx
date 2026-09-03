@@ -13,6 +13,8 @@ import { GenerationFields, type GenerationFieldsValue } from '../components/imag
 import { ImageModeToggle, type ImageMode } from '../components/imagepage/ImageModeToggle'
 import { MaskCanvas, type MaskCanvasHandle } from '../components/imagepage/MaskCanvas'
 import { StrengthSlider } from '../components/imagepage/StrengthSlider'
+import { LoraPicker } from '../components/lora/LoraPicker'
+import { toGenerateLoras, type LoraSelection } from '../components/lora/loraShared'
 import {
   buildGallerySnapshot,
   buildGeneratePayload,
@@ -51,6 +53,8 @@ export function ImagePage(): React.JSX.Element {
   })
   const [initImage, setInitImage] = useState<{ path: string; preview: string } | null>(null)
   const [strength, setStrength] = useState(0.75)
+  /** todo19 — LoraPicker 受控值；提交时经 toGenerateLoras 注入 loras 载荷 */
+  const [loras, setLoras] = useState<LoraSelection[]>([])
   const [error, setError] = useState<string | null>(null)
   const [message, setMessage] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
@@ -157,12 +161,14 @@ export function ImagePage(): React.JSX.Element {
       maskPath = saved.path
     }
     // 载荷与画廊快照均由纯函数组装（apiTypes.ts），提交瞬间定格
-    const payload = buildGeneratePayload(fields, mode, {
-      initImagePath: initImage?.path,
-      maskPath,
-      strength,
-    })
-    requestSnapshotRef.current = buildGallerySnapshot(fields, mode, strength)
+    const loraPayload = toGenerateLoras(loras)
+    const payload = buildGeneratePayload(
+      fields,
+      mode,
+      { initImagePath: initImage?.path, maskPath, strength },
+      loraPayload,
+    )
+    requestSnapshotRef.current = buildGallerySnapshot(fields, mode, strength, loraPayload)
     setBusy(true)
     setResultB64(null)
     setProgress(0)
@@ -228,6 +234,7 @@ export function ImagePage(): React.JSX.Element {
           <ImageModeToggle value={mode} onChange={setMode} disabled={busy} />
           <GenerationFields value={fields} onChange={patchFields} disabled={busy} />
           {mode !== 'txt2img' ? <StrengthSlider value={strength} onChange={setStrength} disabled={busy} /> : null}
+          <LoraPicker value={loras} onChange={setLoras} disabled={busy} />
           <div className="las-img-actions">
             <button type="submit" disabled={busy}>
               {busy ? '生成中…' : '生成'}

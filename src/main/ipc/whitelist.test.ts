@@ -15,12 +15,15 @@ describe('ipc whitelist', () => {
     }
     // W1-8 全集：原 12 项 + chat:abort + image:queue:status + gallery 五动词 +
     // search:run + hf:search + conversations 六通道（todo17 预列）
-    // + todo13 models:setDir + todo14b download:cancel + todo16 config:get/config:set。
+    // + todo13 models:setDir + todo14b download:cancel + todo16 config:get/config:set
+    // + todo19 models:loraScan/models:loraMeta + todo20 image:saveTempImage。
     expect(ALLOWED_CHANNELS).toEqual([
       'health:pulse',
       'models:list',
       'models:download',
       'models:setDir',
+      'models:loraScan',
+      'models:loraMeta',
       'download:cancel',
       'config:get',
       'config:set',

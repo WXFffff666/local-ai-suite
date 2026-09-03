@@ -13,6 +13,7 @@ import { useCallback, useEffect, useState } from 'react'
 import '../components/modelspage/modelspage.css'
 import { ModelsTable } from '../components/modelspage/ModelsTable'
 import { DirControl } from '../components/modelspage/DirControl'
+import { LoraSection } from '../components/modelspage/LoraSection'
 import type { ConfigGetReply, ModelsListReply, ModelRow, SetDirReply } from '../components/modelspage/types'
 
 export function ModelsPage(): React.JSX.Element {
@@ -87,6 +88,8 @@ export function ModelsPage(): React.JSX.Element {
         </p>
       ) : null}
       {phase === 'ready' ? <ModelsTable models={models} /> : null}
+      {/* todo19 — 扩散 LoRA 子区（models:loraScan 复用 registry 投影，只读浏览 + 元数据） */}
+      <LoraSection />
     </section>
   )
 }

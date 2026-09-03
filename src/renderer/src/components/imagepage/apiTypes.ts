@@ -6,11 +6,12 @@ import type { GenerationFieldsValue } from './GenerationFields'
 /** sd.cpp sampler 展示名（A1111 parameters 串与画廊 meta 共用） */
 export const DEFAULT_SAMPLER = 'euler_a'
 
-/** image:generate 载荷（todo20: img2img/inpaint 三模式统一通道） */
+/** image:generate 载荷（todo20: img2img/inpaint 三模式统一通道；todo19: loras） */
 export function buildGeneratePayload(
   f: GenerationFieldsValue,
   mode: ImageMode,
   img2img: { initImagePath?: string; maskPath?: string; strength: number },
+  loras: { name: string; scale: number }[] = [],
 ): Record<string, unknown> {
   const payload: Record<string, unknown> = {
     prompt: f.prompt.trim(),
@@ -22,6 +23,7 @@ export function buildGeneratePayload(
   }
   if (f.negative.trim()) payload.negative_prompt = f.negative.trim()
   if (f.model.trim()) payload.model = f.model.trim()
+  if (loras.length > 0) payload.loras = loras
   if (mode !== 'txt2img') {
     payload.mode = mode
     payload.initImagePath = img2img.initImagePath
@@ -36,7 +38,14 @@ export function buildGallerySnapshot(
   f: GenerationFieldsValue,
   mode: ImageMode,
   strength: number,
+  loras: { name: string; scale: number }[] = [],
 ): Record<string, unknown> {
+  const extra: Record<string, unknown> = {}
+  if (mode !== 'txt2img') {
+    extra.mode = mode
+    extra.strength = strength
+  }
+  if (loras.length > 0) extra.loras = loras
   return {
     prompt: f.prompt.trim(),
     ...(f.negative.trim() ? { negative_prompt: f.negative.trim() } : {}),
@@ -46,7 +55,7 @@ export function buildGallerySnapshot(
     cfg_scale: f.cfg,
     seed: f.seed,
     ...(f.model.trim() ? { model: f.model.trim() } : {}),
-    ...(mode === 'txt2img' ? {} : { extra: { mode, strength } }),
+    ...(Object.keys(extra).length > 0 ? { extra } : {}),
   }
 }
 

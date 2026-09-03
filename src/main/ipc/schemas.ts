@@ -59,6 +59,20 @@ export const modelsSetDirSchema = z.object({
 })
 export type ModelsSetDirInput = z.infer<typeof modelsSetDirSchema>
 
+/** todo19: LoRA scan takes no arguments; the empty-object shape is still gated. */
+export const modelsLoraScanSchema = z.object({}).strict()
+
+/**
+ * todo19: LoRA header meta. The path is renderer-supplied (from a prior
+ * models:loraScan reply) — zod only bounds its shape; the handler re-confines
+ * it inside modelsDir (assertInsideModelsDir) before any read. Absolute-path
+ * traversal ('../../x.safetensors') is a rejection, not a parse concern.
+ */
+export const modelsLoraMetaSchema = z.object({
+  path: z.string().min(1).max(1024)
+})
+export type ModelsLoraMetaInput = z.infer<typeof modelsLoraMetaSchema>
+
 // --- config (theme / locale / encrypted secret payloads) -------------------------
 
 /** Secret fields persist ONLY safeStorage payloads (enc:v1:/enc:fallback:v1:) —

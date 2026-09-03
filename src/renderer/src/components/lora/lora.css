@@ -1,0 +1,209 @@
+/** lora.css — todo19 LoRA 选择器（令牌沿用 App.css --las-* 单一事实源） */
+
+.las-lora {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid var(--las-border, #d0d0d0);
+  border-radius: 10px;
+  background: var(--las-card, transparent);
+  padding: 10px 12px;
+  font-size: 13px;
+}
+
+.las-lora-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-weight: 600;
+}
+
+.las-lora-count,
+.las-lora-note {
+  color: var(--las-muted, #888);
+  font-weight: 400;
+  font-size: 12px;
+  margin: 0;
+}
+
+.las-lora-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.las-lora-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.las-lora-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.las-lora-name {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
+
+.las-lora-size,
+.las-lora-format {
+  color: var(--las-muted, #888);
+  font-size: 11px;
+}
+
+.las-lora-format {
+  border: 1px solid var(--las-border, #d0d0d0);
+  border-radius: 20px;
+  padding: 0 6px;
+}
+
+.las-lora-scale {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 24px;
+}
+
+.las-lora-scale input[type='range'] {
+  flex: 0 0 120px;
+}
+
+.las-lora-scale-value {
+  font-variant-numeric: tabular-nums;
+  min-width: 38px;
+}
+
+.las-lora-meta {
+  color: var(--las-muted, #888);
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.las-lora-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.las-lora-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--las-border, #d0d0d0);
+  border-radius: 20px;
+  padding: 2px 4px 2px 10px;
+  background: var(--las-bg, rgba(0, 0, 0, 0.03));
+}
+
+.las-lora-chip button {
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0 4px;
+}
+
+.las-lora-preview {
+  flex-basis: 100%;
+  color: var(--las-accent, #3b82f6);
+  font-size: 12px;
+  word-break: break-all;
+}
+
+/* --- modelspage/LoraSection（只读浏览区，同用 --las-* 令牌） --- */
+
+.las-lora-section {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.las-lora-section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.las-lora-section-head h2 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.las-lora-section-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.las-lora-row-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: inherit;
+  font: inherit;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.las-lora-row-btn:hover {
+  border-color: var(--las-border, #d0d0d0);
+  background: var(--las-card, rgba(0, 0, 0, 0.02));
+}
+
+.las-lora-file {
+  color: var(--las-muted, #888);
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.las-lora-detail {
+  padding: 4px 8px 8px 24px;
+}
+
+.las-lora-meta-dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 12px;
+  font-size: 12px;
+}
+
+.las-lora-meta-dl dt {
+  color: var(--las-muted, #888);
+  font-weight: 500;
+}
+
+.las-lora-meta-dl dd {
+  margin: 0;
+  word-break: break-all;
+}

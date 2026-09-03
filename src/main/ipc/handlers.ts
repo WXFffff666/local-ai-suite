@@ -30,6 +30,7 @@ import { createImageGenerateHandler, createSaveTempImageHandler } from '../handl
 import { createOverwriteCoverageHandler } from '../handlers/overwriteCoverage'
 import { createPublishReleaseHandler } from '../handlers/publishRelease'
 import { createClearCacheHandler } from '../handlers/clearCache'
+import { readLoraMetaFile, toLoraFiles } from './loraFs'
 import type { ChatRelay } from './chatRelay'
 import type { DownloadManager } from './downloadManager'
 import { createSecretsHandlers, type SafeStorageLike } from './secrets'
@@ -49,11 +50,13 @@ import {
   hfSearchSchema,
   imageQueueStatusSchema,
   modelsDownloadSchema,
+  modelsLoraMetaSchema,
+  modelsLoraScanSchema,
   modelsSetDirSchema,
   searchRunSchema,
   validatePayload
 } from './schemas'
-import type { AllowedChannel, ImageQueueStatusEvent, IpcSendFn } from './whitelist'
+import type { AllowedChannel, ImageQueueStatusEvent, IpcSendFn, LoraMetaReply, LoraScanReply } from './whitelist'
 
 export type HandlerContext = { send: IpcSendFn }
 export type IpcHandler = (args: unknown[], ctx: HandlerContext) => Promise<unknown>
@@ -65,7 +68,8 @@ type HandlerMap = Record<AllowedChannel, IpcHandler>
  * plain stub objects while the real Services instance satisfies it as-is.
  */
 export type ServicesSurface = {
-  registry: Pick<Services['registry'], 'getModels' | 'reloadModels'>
+  /** todo19: modelsDir (public readonly on ModelRegistry) confines the loraMeta path. */
+  registry: Pick<Services['registry'], 'getModels' | 'reloadModels' | 'modelsDir'>
   imageQueue: Pick<Services['imageQueue'], 'enqueue' | 'getJob' | 'listJobs' | 'subscribe' | 'pending'>
   gallery: Pick<Services['gallery'], 'list' | 'save' | 'copy' | 'insert' | 'reuse'>
   search: Pick<Services['search'], 'search'>
@@ -158,6 +162,23 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
       const next = setConfig({ modelsDir: dir })
       const models: ModelEntry[] = services.registry.reloadModels()
       return { ok: true, modelsDir: next.modelsDir, models, restartRequired: true }
+    },
+
+    // todo19: LoRA picker channels. Scan is a pure projection of the registry
+    // (chokidar watch keeps it fresh — no second fs walk). Meta reads touch the
+    // fs directly but the renderer-supplied path is confined to modelsDir
+    // inside readLoraMetaFile before any open (assertInsideModelsDir).
+    'models:loraScan': async (args) => {
+      const parsed = validatePayload(modelsLoraScanSchema, first(args, {}))
+      if (!parsed.ok) return parsed
+      const reply: LoraScanReply = { ok: true, files: toLoraFiles(services.registry.getModels()) }
+      return reply
+    },
+    'models:loraMeta': async (args) => {
+      const parsed = validatePayload(modelsLoraMetaSchema, first(args))
+      if (!parsed.ok) return parsed
+      const reply: LoraMetaReply = readLoraMetaFile(parsed.data.path, services.registry.modelsDir)
+      return reply
     },
 
     // --- config (todo16: theme / locale / encrypted secret payloads) ------------
