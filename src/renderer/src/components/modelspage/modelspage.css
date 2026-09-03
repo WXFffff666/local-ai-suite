@@ -1,0 +1,155 @@
+/**
+ * modelspage.css — todo13 模型管理页样式
+ * 令牌沿用 App.css 的 --las-* 自定义属性（theme.tsx 单一事实源）。
+ */
+
+.las-models-dir {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--las-border);
+  border-radius: 8px;
+  background: var(--las-card);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+
+.las-models-dir-label {
+  color: var(--las-muted);
+}
+
+.las-models-dir-current {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--las-bg);
+  border: 1px solid var(--las-border);
+  font-size: 12px;
+  word-break: break-all;
+}
+
+.las-models-dir-input {
+  flex: 1 1 240px;
+  min-width: 200px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--las-border);
+  background: var(--las-bg);
+  color: var(--las-fg);
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.las-models-dir-apply,
+.las-models-refresh {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--las-border);
+  background: var(--las-bg);
+  color: var(--las-fg);
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+}
+
+.las-models-dir-apply:disabled,
+.las-models-refresh:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.las-models-dir-note {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--las-muted);
+  font-size: 12px;
+}
+
+.las-models-dir-error {
+  flex-basis: 100%;
+  margin: 0;
+  color: #e66;
+  font-size: 12px;
+}
+
+.las-models-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.las-models-count {
+  color: var(--las-muted);
+  font-size: 12px;
+}
+
+.las-models-empty {
+  color: var(--las-muted);
+  font-size: 13px;
+}
+
+.las-models-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: var(--las-card);
+  border: 1px solid var(--las-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.las-models-table th,
+.las-models-table td {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--las-border);
+}
+
+.las-models-table thead th {
+  color: var(--las-muted);
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.las-models-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.las-models-name {
+  font-weight: 500;
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.las-models-size {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.las-models-ok {
+  color: var(--las-muted);
+  font-size: 12px;
+}
+
+.las-models-badge {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+}
+
+.las-models-badge-corrupt {
+  background: rgba(230, 80, 80, 0.15);
+  color: #e66;
+  border: 1px solid rgba(230, 80, 80, 0.4);
+}
+
+.las-models-badge-unknown {
+  background: rgba(220, 170, 60, 0.12);
+  color: #db3;
+  border: 1px solid rgba(220, 170, 60, 0.35);
+}

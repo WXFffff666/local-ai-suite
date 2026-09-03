@@ -11,6 +11,7 @@ import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'ne
 import { Toaster, toast } from 'sonner'
 import { Group as PanelGroup, Panel, Separator as PanelResizeHandle } from 'react-resizable-panels'
 import {
+  Boxes,
   Image as ImageIcon,
   LayoutGrid,
   MessageSquare,
@@ -29,6 +30,7 @@ import ImagePage from './pages/ImagePage'
 import GalleryPage from './pages/GalleryPage'
 import SearchPage from './pages/SearchPage'
 import MarketPage from './pages/MarketPage'
+import ModelsPage from './pages/ModelsPage'
 import SettingsPage from './pages/SettingsPage'
 
 const NAV_ITEMS: ReadonlyArray<{ id: RouteId; label: string; icon: LucideIcon }> = [
@@ -37,6 +39,7 @@ const NAV_ITEMS: ReadonlyArray<{ id: RouteId; label: string; icon: LucideIcon }>
   { id: 'gallery', label: 'Gallery', icon: LayoutGrid },
   { id: 'search', label: 'Search', icon: SearchIcon },
   { id: 'market', label: 'Market', icon: Store },
+  { id: 'models', label: 'Models', icon: Boxes },
   { id: 'settings', label: 'Settings', icon: SettingsIcon },
 ]
 
@@ -46,6 +49,7 @@ const PAGES: Record<RouteId, () => React.JSX.Element> = {
   gallery: GalleryPage,
   search: SearchPage,
   market: MarketPage,
+  models: ModelsPage,
   settings: SettingsPage,
 }
 

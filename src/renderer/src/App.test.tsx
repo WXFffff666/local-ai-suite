@@ -46,7 +46,7 @@ function getFakeApi(): { on: ReturnType<typeof vi.fn> } | undefined {
   return (window as unknown as { api?: { on: ReturnType<typeof vi.fn> } }).api
 }
 
-const NAV_LABELS = ['Chat', 'Image', 'Gallery', 'Search', 'Market', 'Settings'] as const
+const NAV_LABELS = ['Chat', 'Image', 'Gallery', 'Search', 'Market', 'Models', 'Settings'] as const
 
 let container: HTMLDivElement
 let root: Root
@@ -93,7 +93,7 @@ afterEach(() => {
 })
 
 describe('应用壳导航', () => {
-  it('渲染 6 个导航项标签', () => {
+  it('渲染 7 个导航项标签（todo13 新增 Models）', () => {
     mount()
     const labels = Array.from(container.querySelectorAll('button.las-nav-item')).map(
       (b) => b.textContent?.trim(),

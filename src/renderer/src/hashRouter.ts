@@ -1,11 +1,11 @@
 /**
  * hashRouter.ts — todo9 轻量 hash 路由（无第三方 router 依赖）
- * URL 形态：#/chat、#/image、#/gallery、#/search、#/market、#/settings
+ * URL 形态：#/chat、#/image、#/gallery、#/search、#/market、#/models、#/settings
  * 非法/空 hash 一律回落到默认路由（chat）。
  */
 import { useCallback, useEffect, useState } from 'react'
 
-export const ROUTE_IDS = ['chat', 'image', 'gallery', 'search', 'market', 'settings'] as const
+export const ROUTE_IDS = ['chat', 'image', 'gallery', 'search', 'market', 'models', 'settings'] as const
 export type RouteId = (typeof ROUTE_IDS)[number]
 
 export const DEFAULT_ROUTE: RouteId = 'chat'
