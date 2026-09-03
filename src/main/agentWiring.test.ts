@@ -69,7 +69,10 @@ function stubFetch(...bodies: ReadableStream<Uint8Array>[]): { urls: string[] } 
   return { urls }
 }
 
-async function waitFor(cond: () => boolean, ms = 3000): Promise<void> {
+// Ceiling only: resolves as soon as cond() is true. 3s was too tight for a
+// settled() that waits on a REAL powershell spawn (cold start 1-2 s, longer
+// under full-suite load) and caused intermittent 'waitFor timeout' flakes.
+async function waitFor(cond: () => boolean, ms = 15_000): Promise<void> {
   const start = Date.now()
   while (!cond()) {
     if (Date.now() - start > ms) throw new Error('waitFor timeout')
@@ -137,7 +140,7 @@ afterEach(() => {
 
 // --- 1+2: tool rounds through gate() + the dialog ----------------------------
 
-describe('ask → respond → grant persistence + event order', () => {
+describe('ask → respond → grant persistence + event order', { timeout: 20_000 }, () => {
   it('run_shell always-grant persists Bash(<prog>:*) allow and executes the call', async () => {
     const harness = collect()
     stubFetch(
