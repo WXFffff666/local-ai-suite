@@ -13,6 +13,14 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync, rmSync } from 'fs'
 import { basename, dirname, isAbsolute, join, relative, resolve } from 'path'
 
+import {
+  buildParametersText,
+  embedParameters,
+  parseParametersText,
+  readParametersText,
+  type GalleryParameters,
+} from './parameters'
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -37,6 +45,8 @@ export type GalleryMeta = {
   createdAt: number
   /** 可选额外透传 */
   extra?: Record<string, unknown>
+  /** todo22 — A1111 parameters 同源结构（chunk 与 meta 双写，chunk 为事实源） */
+  params?: GalleryParameters
 }
 
 /** 列表项 = 元数据 + 落盘路径 */
@@ -198,6 +208,23 @@ function ensureDir(dir: string): void {
 // 单调递增序号：同毫秒保存时保证 list 排序确定性（CI 曾因同 ms tie 排序不稳定而抖动）
 let __gallerySeq = 0
 
+/** save 入参 → A1111 parameters 键集（extra 里 machine 字段 loras/strength 一并带走） */
+function toGalleryParameters(opts: SaveOptions): GalleryParameters {
+  const params: GalleryParameters = { prompt: opts.prompt.trim() }
+  if (opts.negative_prompt) params.negative_prompt = opts.negative_prompt
+  if (opts.steps !== undefined) params.steps = Number(opts.steps)
+  if (opts.cfg_scale !== undefined) params.cfg_scale = Number(opts.cfg_scale)
+  if (opts.seed !== undefined) params.seed = Number(opts.seed)
+  if (opts.sampler) params.sampler = String(opts.sampler)
+  if (opts.model) params.model = String(opts.model)
+  if (opts.width !== undefined && opts.height !== undefined) params.size = `${Number(opts.width)}x${Number(opts.height)}`
+  const loras = opts.extra?.['loras']
+  if (typeof loras === 'string' && loras) params.loras = loras
+  const strength = opts.extra?.['strength']
+  if (typeof strength === 'number') params.strength = strength
+  return params
+}
+
 /** 保存一张图到 gallery/<id>/ — 写入 原图 + 缩略 + meta.json */
 export function save(opts: SaveOptions): GalleryItem {
   const b64 = normalizeB64(opts.b64)
@@ -222,7 +249,10 @@ export function save(opts: SaveOptions): GalleryItem {
   const metaPath = getMetaPath(safeId, opts.baseDir)
 
   const buf = Buffer.from(b64, 'base64')
-  writeFileSync(originalPath, buf)
+  const params = toGalleryParameters(opts)
+  // todo22: A1111 约定 — parameters tEXt 写回 original.png（非 PNG 载荷静默跳过；
+  // sharp 读不到 tEXt，必须走 png-chunks-*，R8 结论）。thumb 不动。
+  writeFileSync(originalPath, embedParameters(buf, buildParametersText(params)))
   // 缩略：MVP 直接复用原图 bytes；后续可在 main 进程用 sharp 缩放
   writeFileSync(thumbPath, buf)
 
@@ -231,6 +261,7 @@ export function save(opts: SaveOptions): GalleryItem {
     prompt,
     createdAt: Date.now(),
     seq: ++__gallerySeq,
+    params,
   }
   if (opts.negative_prompt !== undefined) meta.negative_prompt = opts.negative_prompt
   if (opts.width !== undefined) meta.width = Number(opts.width)
@@ -374,7 +405,12 @@ export function insert(
   return payload
 }
 
-/** 一键复用参数 — 返回可直接喂给 /generate 的参数 */
+/**
+ * 一键复用参数 — 返回可直接喂给 /generate 的参数。
+ * 优先级（todo22）：original.png 的 parameters tEXt chunk > meta.json。
+ * 图片字节是 A1111 生态的事实源（可被别的工具改动后仍可信）；chunk 缺失/损坏
+ * 或对象入参路径未通过包含校验时，回退 meta.json，绝不读围栏外路径。
+ */
 export function reuse(idOrItem: string | GalleryItem, baseDir?: string): ReuseParams {
   const item = typeof idOrItem === 'string' ? getItem(idOrItem, baseDir) : idOrItem
   const out: ReuseParams = { prompt: item.prompt }
@@ -387,7 +423,38 @@ export function reuse(idOrItem: string | GalleryItem, baseDir?: string): ReusePa
   if (item.model !== undefined) out.model = item.model
   if (item.sampler !== undefined) out.sampler = item.sampler
   if (item.extra !== undefined) out.extra = item.extra
+  try {
+    const origPath = typeof idOrItem === 'string'
+      ? getOriginalPath(idOrItem, baseDir)
+      : item.originalPath
+        ? canonicalOriginalPath(item.originalPath)
+        : null
+    if (origPath !== null && existsSync(origPath)) {
+      const text = readParametersText(readFileSync(origPath))
+      if (text !== null) applyChunkParams(out, parseParametersText(text))
+    }
+  } catch {
+    // 坏 png / 越界路径：meta 回退，reuse 契约不抛
+  }
   return out
+}
+
+/** chunk 解析值覆盖 meta 值；Size 拆回 width/height；空 prompt 不覆盖。 */
+function applyChunkParams(out: ReuseParams, p: GalleryParameters): void {
+  if (p.prompt) out.prompt = p.prompt
+  if (p.negative_prompt !== undefined) out.negative_prompt = p.negative_prompt
+  if (p.steps !== undefined) out.steps = p.steps
+  if (p.cfg_scale !== undefined) out.cfg_scale = p.cfg_scale
+  if (p.seed !== undefined) out.seed = p.seed
+  if (p.sampler !== undefined) out.sampler = p.sampler
+  if (p.model !== undefined) out.model = p.model
+  if (p.size !== undefined) {
+    const m = p.size.match(/^(\d+)\s*x\s*(\d+)$/)
+    if (m) {
+      out.width = Number(m[1])
+      out.height = Number(m[2])
+    }
+  }
 }
 
 /** 删除单项 — 辅助 */
@@ -424,6 +491,15 @@ export function toDataUrl(b64: string, mime = 'image/png'): string {
   const clean = normalizeB64(b64)
   return `data:${mime};base64,${clean}`
 }
+
+// todo22 — parameters tEXt 工具透出（UI/测试共用同一实现，无第二份解析器）
+export {
+  buildParametersText,
+  parseParametersText,
+  readParametersText,
+  embedParameters,
+  type GalleryParameters,
+} from './parameters'
 
 // Re-export for class wrapper
 

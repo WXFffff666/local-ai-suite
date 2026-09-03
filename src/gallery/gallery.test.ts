@@ -24,6 +24,7 @@ import {
   copyGalleryItem,
   insertGalleryItem,
   reuseGalleryParams,
+  readParametersText,
   GALLERY_DIR_NAME,
 } from './gallery'
 
@@ -70,9 +71,11 @@ describe('gallery — 落盘缩略图/原图/元数据 + 右键复制/插入/复
     expect(meta['prompt']).toBe('a cat')
     expect(meta['seed']).toBe(42)
     expect(meta['model']).toBe('sdxl')
-    // b64 round-trip
+    // todo22: original 内嵌 parameters tEXt（字节变化），thumb 保持原字节
     const buf = readFileSync(item.originalPath)
-    expect(buf.toString('base64')).toBe(TINY_PNG_B64)
+    expect(buf.subarray(0, 8).toString('hex')).toBe('89504e470d0a1a0a')
+    expect(readParametersText(buf)).toContain('a cat')
+    expect(buf.length).toBeGreaterThan(Buffer.from(TINY_PNG_B64, 'base64').length)
     const thumbBuf = readFileSync(item.thumbPath)
     expect(thumbBuf.toString('base64')).toBe(TINY_PNG_B64)
   })
@@ -80,7 +83,8 @@ describe('gallery — 落盘缩略图/原图/元数据 + 右键复制/插入/复
   it('save 兼容 data: 前缀', () => {
     const item = save({ b64: TINY_PNG_DATAURL, prompt: 'dog', baseDir: galleryDir })
     expect(existsSync(item.originalPath)).toBe(true)
-    expect(readFileSync(item.originalPath).toString('base64')).toBe(TINY_PNG_B64)
+    expect(readFileSync(item.originalPath).subarray(0, 4).toString('hex')).toBe('89504e47')
+    expect(readParametersText(readFileSync(item.originalPath))).toContain('dog')
   })
 
   it('save 校验 prompt/b64 必填', () => {
@@ -108,17 +112,17 @@ describe('gallery — 落盘缩略图/原图/元数据 + 右键复制/插入/复
     expect(fetched.prompt).toBe('copy me')
 
     const payload = copy(item.id, galleryDir)
-    expect(payload.b64).toBe(TINY_PNG_B64)
+    expect(payload.b64).toBe(readFileSync(item.originalPath).toString('base64'))
     expect(payload.mime).toBe('image/png')
     expect(payload.path).toContain('original.png')
 
     // copy 亦支持直接传对象
     const p2 = copy(item, galleryDir)
-    expect(p2.b64).toBe(TINY_PNG_B64)
+    expect(p2.b64).toBe(payload.b64)
 
     // alias
     const p3 = copyGalleryItem(item.id, galleryDir)
-    expect(p3.b64).toBe(TINY_PNG_B64)
+    expect(p3.b64).toBe(payload.b64)
   })
 
   it('copy 不存在抛错', () => {
@@ -130,7 +134,7 @@ describe('gallery — 落盘缩略图/原图/元数据 + 右键复制/插入/复
     const payload = insert(item.id, galleryDir)
     expect(payload.prompt).toBe('insert me')
     expect(payload.imagePath).toContain('original.png')
-    expect(payload.b64).toBe(TINY_PNG_B64)
+    expect(payload.b64.startsWith('iVBOR')).toBe(true)
     expect(payload.text).toContain('insert me')
     expect(payload.text).toContain('![')
 
@@ -147,7 +151,7 @@ describe('gallery — 落盘缩略图/原图/元数据 + 右键复制/插入/复
 
     // alias
     const p4 = insertGalleryItem(item.id, galleryDir)
-    expect(p4.b64).toBe(TINY_PNG_B64)
+    expect(p4.b64.startsWith('iVBOR')).toBe(true)
   })
 
   it('insert 支持 (item, callback) 重载', () => {
@@ -208,7 +212,7 @@ describe('gallery — 落盘缩略图/原图/元数据 + 右键复制/插入/复
     const item = g.save({ b64: TINY_PNG_B64, prompt: 'class test', seed: 99 })
     expect(g.list().length).toBe(1)
     expect(g.get(item.id).prompt).toBe('class test')
-    expect(g.copy(item.id).b64).toBe(TINY_PNG_B64)
+    expect(g.copy(item.id).b64.startsWith('iVBOR')).toBe(true)
     expect(g.insert(item.id).prompt).toBe('class test')
     expect(g.reuse(item.id).seed).toBe(99)
     expect(g.remove(item.id)).toBe(true)
@@ -299,7 +303,7 @@ describe('gallery — 落盘缩略图/原图/元数据 + 右键复制/插入/复
     expect(() => copy(evil, galleryDir)).toThrow(GalleryError)
     expect(() => insert(evil, galleryDir)).toThrow(GalleryError)
     // 对象合法路径仍走通（回归保护）
-    expect(copy(item, galleryDir).b64).toBe(TINY_PNG_B64)
+    expect(copy(item, galleryDir).b64.startsWith('iVBOR')).toBe(true)
   })
 
   it('task4: list 遇盘上异常目录名（..x 开头）跳过而非崩溃', () => {
@@ -317,10 +321,106 @@ describe('gallery — 落盘缩略图/原图/元数据 + 右键复制/插入/复
     const item = save({ b64: TINY_PNG_B64, prompt: 'round trip', id: 'legit-id_1.2-3', baseDir: galleryDir })
     expect(item.id).toBe('legit-id_1.2-3')
     expect(getItem(item.id, galleryDir).prompt).toBe('round trip')
-    expect(copy(item.id, galleryDir).b64).toBe(TINY_PNG_B64)
+    expect(copy(item.id, galleryDir).b64).toBe(readFileSync(item.originalPath).toString('base64'))
     expect(insert(item.id, galleryDir).prompt).toBe('round trip')
     expect(reuse(item.id, galleryDir).prompt).toBe('round trip')
     expect(remove(item.id, galleryDir)).toBe(true)
     expect(list({ baseDir: galleryDir }).length).toBe(0)
+  })
+
+  // ---------------------------------------------------------------------------
+  // todo22 — A1111 风格 parameters tEXt 元数据（写回 original.png + reuse 优先）
+  // ---------------------------------------------------------------------------
+
+  it('todo22: save 把 parameters tEXt 写入 original.png（thumb 不动）', () => {
+    const item = save({
+      b64: TINY_PNG_B64,
+      prompt: 'a lovely cat',
+      negative_prompt: 'ugly',
+      width: 512,
+      height: 768,
+      steps: 24,
+      cfg_scale: 6.5,
+      seed: 7,
+      model: 'sdxl',
+      sampler: 'euler_a',
+      extra: { loras: '<lora:marblesh:0.7>' },
+      baseDir: galleryDir,
+    })
+    const text = readParametersText(readFileSync(item.originalPath))
+    expect(text).not.toBeNull()
+    expect(text).toContain('a lovely cat')
+    expect(text).toContain('Negative prompt: ugly')
+    expect(text).toContain('Steps: 24')
+    expect(text).toContain('Sampler: euler_a')
+    expect(text).toContain('CFG scale: 6.5')
+    expect(text).toContain('Seed: 7')
+    expect(text).toContain('Model: sdxl')
+    expect(text).toContain('Size: 512x768')
+    expect(text).toContain('loras: <lora:marblesh:0.7>')
+    // thumb 保持未内嵌的原始字节（Must NOT 不改 thumb 结构）
+    expect(readFileSync(item.thumbPath).toString('base64')).toBe(TINY_PNG_B64)
+  })
+
+  it('todo22: meta.json 获得 params{} 且与 chunk 内容同源', () => {
+    const item = save({ b64: TINY_PNG_B64, prompt: 'p', steps: 10, seed: 3, baseDir: galleryDir })
+    const meta = JSON.parse(readFileSync(item.metaPath, 'utf-8')) as { params?: Record<string, unknown> }
+    expect(meta.params).toBeDefined()
+    expect(meta.params['prompt']).toBe('p')
+    expect(meta.params['steps']).toBe(10)
+    expect(meta.params['seed']).toBe(3)
+  })
+
+  it('todo22: CJK prompt 往返（latin-1 承载 UTF-8 字节，A1111 同法）', () => {
+    const item = save({ b64: TINY_PNG_B64, prompt: '一只可爱的猫，水墨风', baseDir: galleryDir })
+    const text = readParametersText(readFileSync(item.originalPath))
+    expect(text).toContain('一只可爱的猫，水墨风')
+    expect(reuse(item.id, galleryDir).prompt).toBe('一只可爱的猫，水墨风')
+  })
+
+  it('todo22: reuse 优先读 PNG chunk（chunk 覆盖 meta 篡改值）', () => {
+    const item = save({ b64: TINY_PNG_B64, prompt: 'truth from png', steps: 20, baseDir: galleryDir })
+    // 篡改 meta.json — PNG 是事实源
+    const { writeFileSync } = require('fs') as typeof import('fs')
+    const meta = JSON.parse(readFileSync(item.metaPath, 'utf-8')) as Record<string, unknown>
+    meta['prompt'] = 'tampered meta'
+    meta['steps'] = 99
+    writeFileSync(item.metaPath, JSON.stringify(meta), 'utf-8')
+    const params = reuse(item.id, galleryDir)
+    expect(params.prompt).toBe('truth from png')
+    expect(params.steps).toBe(20)
+  })
+
+  it('todo22: reuse 保留 meta-only 字段（chunk 不承载 extra）', () => {
+    const item = save({ b64: TINY_PNG_B64, prompt: 'keep extra', extra: { clip_skip: 2 }, baseDir: galleryDir })
+    expect(reuse(item.id, galleryDir).extra).toEqual({ clip_skip: 2 })
+  })
+
+  it('todo22: 非 PNG 载荷 save 不崩，reuse 回退 meta.json', () => {
+    const notPng = Buffer.from('not-a-real-png').toString('base64')
+    const item = save({ b64: notPng, prompt: 'legacy bytes', steps: 12, baseDir: galleryDir })
+    expect(existsSync(item.originalPath)).toBe(true)
+    expect(reuse(item.id, galleryDir).prompt).toBe('legacy bytes')
+    expect(reuse(item.id, galleryDir).steps).toBe(12)
+  })
+
+  it('todo22: 损坏 PNG（magic 后乱码）reuse 不崩并回退 meta', () => {
+    const corrupt = Buffer.concat([
+      Buffer.from([0x89, 0x50, 0x4e, 0x47]),
+      Buffer.from('garbage-after-magic'),
+    ]).toString('base64')
+    const item = save({ b64: corrupt, prompt: 'corrupt case', baseDir: galleryDir })
+    expect(() => reuse(item.id, galleryDir)).not.toThrow()
+    expect(reuse(item.id, galleryDir).prompt).toBe('corrupt case')
+  })
+
+  it('todo22: 无 parameters chunk 的旧图（真 PNG）走 meta 回退', () => {
+    const item = save({ b64: TINY_PNG_B64, prompt: 'no chunk', steps: 8, baseDir: galleryDir })
+    // 用无内嵌的原始字节覆盖 original.png，模拟 todo22 之前的存量文件
+    const { writeFileSync } = require('fs') as typeof import('fs')
+    writeFileSync(item.originalPath, Buffer.from(TINY_PNG_B64, 'base64'))
+    expect(readParametersText(readFileSync(item.originalPath))).toBeNull()
+    expect(reuse(item.id, galleryDir).prompt).toBe('no chunk')
+    expect(reuse(item.id, galleryDir).steps).toBe(8)
   })
 })
