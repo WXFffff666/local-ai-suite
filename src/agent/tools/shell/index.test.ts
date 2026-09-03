@@ -23,6 +23,7 @@ import { fakePermission, type FakePermission } from '../fs/testutils'
 import { ToolRegistry } from '../registry'
 import { PermissionDeniedError, FsPathError } from '../fs/gating'
 import { pidAlive } from './testutils'
+import { waitUntil } from '../../jail/testutils'
 import type { ShellChunk, ShellResult } from './types'
 import type { ToolExecutionContext } from '../../runner/types'
 
@@ -159,7 +160,7 @@ describe('exec matrix (real spawns)', () => {
   it('propagates a non-zero exit code as data, not as a rejection', async () => {
     const result = (await execute({ command: isWin ? 'exit 3' : 'exit 3' })) as ShellResult
     expect(result.code).toBe(3)
-  })
+  }, HANG_MS)
 
   it(
     'keeps pipe characters intact in the command string (no tokenizer rewrite)',
@@ -176,14 +177,18 @@ describe('exec matrix (real spawns)', () => {
     // win32: powershell reports CommandNotFound (exit 1); posix: sh reports 127.
     expect(result.code).not.toBe(0)
     expect(result.stderrTail.length + result.stdoutTail.length).toBeGreaterThan(0)
-  })
+  }, HANG_MS)
 })
 
 describe('timeout + orphan reaping (jail-first, tree-kill fallback)', () => {
   it(
     'kills a real long-running command tree: no orphan survives the timeout',
     async () => {
-      makeRegistry({ defaultTimeoutMs: 6_000 })
+      // 15s, not 6s: the 6s budget raced the powershell+node cold start on a
+      // loaded box (GPID never got emitted before the timeout kill). The
+      // command still hangs 120s, so the kill is still done by the timeout
+      // path under test — never by racing the command to completion.
+      makeRegistry({ defaultTimeoutMs: 15_000 })
       const result = (await execute({ command: cmd.grandchild })) as ShellResult
       expect(result.timedOut).toBe(true)
       expect(result.code).toBeNull()
@@ -193,13 +198,14 @@ describe('timeout + orphan reaping (jail-first, tree-kill fallback)', () => {
       // The kill chain (jail TerminateJobObject / taskkill /T / tree-kill) has
       // already been awaited inside the tool by the time it resolves; the
       // bounded poll only tolerates OS teardown-visibility latency.
-      const deadline = Date.now() + 5_000
-      while (pidAlive(grandchildPid) && Date.now() < deadline) {
-        await new Promise((r) => setTimeout(r, 100))
-      }
+      await waitUntil(() => !pidAlive(grandchildPid), {
+        timeoutMs: 10_000,
+        intervalMs: 100,
+        message: `grandchild ${grandchildPid} orphaned past the timeout kill`,
+      })
       expect(pidAlive(grandchildPid)).toBe(false)
     },
-    HANG_MS,
+    45_000,
   )
 })
 
@@ -239,7 +245,7 @@ describe('permission funnel', () => {
     expect(result.code).toBe(0)
     expect(permission.asks).toHaveLength(1)
     expect(execCtx.reportPhase).toHaveBeenCalledWith('running')
-  })
+  }, HANG_MS)
 
   it('ask + user deny: PermissionDeniedError(user), no spawn, no running phase', async () => {
     makeRegistry()
