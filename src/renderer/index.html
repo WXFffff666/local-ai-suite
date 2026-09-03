@@ -4,8 +4,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;" />
     <title>Local AI Suite</title>
-    <!-- T30: 主题无闪烁 — 同步设置 data-theme，早于 React 挂载，避免 FOUC -->
-    <script>(function(){try{var k='las:theme';var lk='las:locale';var m=localStorage.getItem(k)||'system';var s=m;if(m==='system'){try{s=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}catch(e){s='light'}}document.documentElement.setAttribute('data-theme',s);document.documentElement.style.colorScheme=s;document.documentElement.classList.remove('light','dark');document.documentElement.classList.add(s);var loc=localStorage.getItem(lk)||'zh-CN';if(loc)document.documentElement.lang=loc;}catch(e){}})();</script>
+    <!-- T30: 主题无闪烁 — 同步设置 data-theme，早于 React 挂载，避免 FOUC。
+         12b: 由内联 <script> 迁至 public/theme-bootstrap.js（Vite 逐字复制，
+         classic 脚本解析阻塞执行保持时序）；script-src 'self' 下不再触发 CSP 违规。 -->
+    <script src="/theme-bootstrap.js"></script>
     <style>
       html[data-theme='light']{color-scheme:light}
       html[data-theme='dark']{color-scheme:dark}
