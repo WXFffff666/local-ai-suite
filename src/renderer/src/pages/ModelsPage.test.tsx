@@ -59,7 +59,7 @@ type FakeApi = {
   models: ModelRow[]
 }
 
-function makeFakeApi(overrides: Partial<{ list: unknown; setDir: unknown }> = {}): FakeApi {
+function makeFakeApi(overrides: Partial<{ list: unknown; setDir: unknown; launch: unknown }> = {}): FakeApi {
   const state: FakeApi = {
     models: FIXTURE_MODELS,
     invoke: vi.fn(async (channel: string) => {
@@ -72,6 +72,15 @@ function makeFakeApi(overrides: Partial<{ list: unknown; setDir: unknown }> = {}
             modelsDir: 'E:/ai/models',
             models: [FIXTURE_MODELS[0]],
             restartRequired: true,
+          }
+        )
+      }
+      if (channel === 'models:launch') {
+        // todo30b: default ack = sidecar running; overrides.launch can force a rejection.
+        return (
+          overrides.launch ?? {
+            ok: true,
+            status: { name: 'llama', running: true, port: 11435, healthUrl: 'http://127.0.0.1:11435/health', failures: 0, restarts: 0, state: 'running' },
           }
         )
       }
@@ -210,5 +219,56 @@ describe('ModelsPage 目录切换（models:setDir）', () => {
     })
     const after = api.invoke.mock.calls.filter((c) => c[0] === 'models:list').length
     expect(after).toBe(before + 1)
+  })
+})
+
+// todo30b — 行内「启动」按钮（models:launch → services.launchModel 的 UI 半程）
+describe('ModelsPage 启动按钮（todo30b models:launch）', () => {
+  it('仅正常 GGUF llm 行渲染按钮；损坏/未识别行不渲染', async () => {
+    await mount(makeFakeApi())
+    const rows = container.querySelectorAll('tbody tr')
+    expect(rows[0].querySelector('button.las-models-launch')).not.toBeNull()
+    expect(rows[1].querySelector('button.las-models-launch')).toBeNull() // corrupted
+    expect(rows[2].querySelector('button.las-models-launch')).toBeNull() // unknown format
+  })
+
+  it('点击「启动」→ invoke models:launch{modelId}；成功应答呈现运行徽标', async () => {
+    const api = makeFakeApi()
+    await mount(api)
+    await act(async () => {
+      container.querySelector<HTMLButtonElement>('button.las-models-launch')!.click()
+      await flush()
+    })
+    expect(api.invoke).toHaveBeenCalledWith('models:launch', { modelId: 'qwen3-4b-instruct-Q4_K_M' })
+    expect(container.querySelector('.las-models-launch-ok')?.textContent).toContain('运行中')
+  })
+
+  it('{ok:false,error} 应答 → 行内启动失败徽标（不崩、可再点）', async () => {
+    const api = makeFakeApi({ launch: { ok: false, error: 'model corrupted: x' } })
+    await mount(api)
+    await act(async () => {
+      container.querySelector<HTMLButtonElement>('button.las-models-launch')!.click()
+      await flush()
+    })
+    const badge = container.querySelector('.las-models-launch-err')
+    expect(badge?.textContent).toContain('启动失败')
+    expect(badge?.getAttribute('title')).toContain('model corrupted')
+    const btn = container.querySelector<HTMLButtonElement>('button.las-models-launch')!
+    expect(btn.disabled).toBe(false)
+  })
+
+  it('diffusion/ 前缀的 GGUF（生图权重）不给启动按钮', async () => {
+    const diffusion: ModelRow = {
+      name: 'sd1.5-Q4_0',
+      file: 'diffusion/sd1.5-Q4_0.gguf',
+      path: 'models/diffusion/sd1.5-Q4_0.gguf',
+      size: 2_000_000_000,
+      quant: 'Q4_0',
+      arch: 'sd',
+      format: 'gguf',
+      mtimeMs: 1_700_000_000_000,
+    }
+    await mount(makeFakeApi({ list: { models: [diffusion] } }))
+    expect(container.querySelector('button.las-models-launch')).toBeNull()
   })
 })
