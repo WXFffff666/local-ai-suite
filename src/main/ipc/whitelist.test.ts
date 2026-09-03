@@ -16,7 +16,8 @@ describe('ipc whitelist', () => {
     // W1-8 全集：原 12 项 + chat:abort + image:queue:status + gallery 五动词 +
     // search:run + hf:search + conversations 六通道（todo17 预列）
     // + todo13 models:setDir + todo14b download:cancel + todo16 config:get/config:set
-    // + todo19 models:loraScan/models:loraMeta + todo20 image:saveTempImage。
+    // + todo19 models:loraScan/models:loraMeta + todo20 image:saveTempImage
+    // + todo23 agent:start/agent:status/agent:cancel。
     expect(ALLOWED_CHANNELS).toEqual([
       'health:pulse',
       'models:list',
@@ -29,6 +30,10 @@ describe('ipc whitelist', () => {
       'config:set',
       'chat:send',
       'chat:abort',
+      // todo23: agent tool-calling loop invoke channels
+      'agent:start',
+      'agent:status',
+      'agent:cancel',
       'image:generate',
       'image:queue:status',
       // todo20: renderer drop/mask-brush PNG dataURLs land under userData/tmp
@@ -64,10 +69,11 @@ describe('ipc whitelist', () => {
       '',
       'ipcRenderer',
       'models:Delete',
-      // agent:* invoke 通道由 todo23/24 自行注册，绝不在此预留
-      'agent:start',
-      'agent:status',
-      'agent:cancel'
+      // todo23 注册了 start/status/cancel 三条 — 其余 agent:* 仍不在白名单
+      'agent:',
+      'agent:approve',
+      'agent:deny',
+      'agent:send'
     ]
     for (const ch of illegal) {
       expect(isAllowedChannel(ch)).toBe(false)
