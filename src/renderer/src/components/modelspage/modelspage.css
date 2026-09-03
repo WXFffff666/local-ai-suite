@@ -153,3 +153,24 @@
   color: #db3;
   border: 1px solid rgba(220, 170, 60, 0.35);
 }
+
+/* todo30b — inline launch button + state badge (append-only, existing rules untouched) */
+.las-models-launch {
+  font-size: 0.78rem;
+  padding: 2px 8px;
+  border: 1px solid var(--las-border, #d0d7de);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  margin-right: 6px;
+}
+.las-models-launch:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.las-models-launch-ok {
+  color: var(--las-success, #2ea043);
+}
+.las-models-launch-err {
+  color: var(--las-danger, #da3633);
+}
