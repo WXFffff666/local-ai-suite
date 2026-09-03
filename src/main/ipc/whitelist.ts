@@ -18,6 +18,7 @@
  */
 
 import type { AgentEvent, AgentSessionStatus } from '../../agent/runner/types'
+import type { SidecarStatus } from '../../core/types'
 
 export const ALLOWED_CHANNELS = [
   'health:pulse',
@@ -27,6 +28,9 @@ export const ALLOWED_CHANNELS = [
   // todo19: LoRA picker — list diffusion LoRA files + safetensors header meta
   'models:loraScan',
   'models:loraMeta',
+  // todo30b: registry-driven llama relaunch (services.launchModel — the 21→30
+  // wired hop; modelId comes from models:list, mmproj pairing is registry-side)
+  'models:launch',
   'download:cancel',
   'config:get',
   'config:set',
@@ -51,6 +55,10 @@ export const ALLOWED_CHANNELS = [
   'gallery:reuse',
   'search:run',
   'hf:search',
+  // todo30b: detection-first engine matrix + GPU pack download (progress
+  // streams on the 'engines:progress' event; quarantine is a terminal state)
+  'engines:status',
+  'engines:gpuDownload',
   'conversations:list',
   'conversations:create',
   'conversations:rename',
@@ -102,7 +110,9 @@ export const ALLOWED_EVENT_CHANNELS = [
   'agent:event',
   'agent:term',
   // todo25: main -> renderer permission approval prompt
-  'permission:request'
+  'permission:request',
+  // todo30b: GPU pack download progress (main -> renderer)
+  'engines:progress'
 ] as const
 
 export type AllowedEventChannel = (typeof ALLOWED_EVENT_CHANNELS)[number]
@@ -208,6 +218,7 @@ export type EventPayloads = {
   'agent:event': AgentEventEvent
   'agent:term': AgentTermEvent
   'permission:request': PermissionRequestEvent
+  'engines:progress': EnginesProgressEvent
 }
 
 // ---------------------------------------------------------------------------
@@ -315,3 +326,91 @@ export type LoraMetaError =
   | 'meta-unsupported'
 
 export type LoraMetaReply = { ok: true; meta: LoraMeta } | { ok: false; error: LoraMetaError }
+
+// ---------------------------------------------------------------------------
+// Engine status / GPU pack wire contracts (todo30b). Self-contained mirrors
+// of src/engines/** (outside tsconfig.web's include set — same pattern as the
+// permission wire above). handlers.ts carries the compile-time assignability
+// proofs against the real resolver/gpuPack/manifest types.
+// ---------------------------------------------------------------------------
+
+/** Mirror of resolver EngineBinary (the availability matrix rows). */
+export const ENGINE_WIRE_NAMES = ['llama', 'ollama', 'sd'] as const
+export type EngineWireName = (typeof ENGINE_WIRE_NAMES)[number]
+
+/** Mirror of manifest ManifestEngineKey (GPU packs exist only for these). */
+export const GPU_PACK_ENGINE_WIRE_KEYS = ['llama', 'sd', 'whisper'] as const
+export type GpuPackEngineWireKey = (typeof GPU_PACK_ENGINE_WIRE_KEYS)[number]
+
+/** Mirror of resolver EngineSource plus the 'none' miss state. */
+export type EngineWireSource = 'system' | 'bundled-cpu' | 'gpu-pack' | 'none'
+
+/** Mirror of resolver SkipNote (cascade rejection, UI diagnostics). */
+export type EngineSkipNoteWire = { source: Exclude<EngineWireSource, 'none'>; reason: string }
+
+/** Mirror of resolver ResolvedEngine (hit and miss arms share the shape). */
+export type EngineStatusEntry = {
+  name: EngineWireName
+  source: EngineWireSource
+  bin: string | null
+  version?: string
+  skipped: EngineSkipNoteWire[]
+}
+
+/** Mirror of gpuPack NvidiaInfo (detectNvidia() summary). */
+export type NvidiaSummaryWire = {
+  available: boolean
+  name?: string
+  driverVersion?: string
+  memoryMB?: number
+  reason?: string
+}
+
+/**
+ * Engine manifest digest for the UI: present=false covers both dev-absent and
+ * invalid manifests (the download flow rejects both identically — resolver
+ * policy lives in engines/**, not here). variants lists the downloadable GPU
+ * pack variants per manifest engine key.
+ */
+export type EnginesManifestSummary = {
+  present: boolean
+  generatedAt: string | null
+  variants: Partial<Record<GpuPackEngineWireKey, string[]>>
+}
+
+/** 'engines:status' reply ({}, availability matrix + nvidia + manifest). */
+export type EnginesStatusReply =
+  | {
+      ok: true
+      /** host OS platform (process.platform) — matrix platform column. */
+      platform: string
+      resolutions: EngineStatusEntry[]
+      nvidia: NvidiaSummaryWire | null
+      manifest: EnginesManifestSummary | null
+    }
+  | { ok: false; error: string }
+
+/**
+ * 'engines:progress' payload. Non-terminal states mirror gpuPack PackProgress
+ * stages; terminal states: 'done' (activated), 'quarantined' (sha256 mismatch
+ * — pack moved aside, resolver keeps the CPU binary), 'error' (download or
+ * unexpected failure). 'note' carries the fallback/reason text.
+ */
+export type EngineProgressState = 'downloading' | 'verifying' | 'activating' | 'done' | 'quarantined' | 'error'
+export type EnginesProgressEvent = {
+  engine: GpuPackEngineWireKey
+  variant: string
+  received: number
+  /** 0 while the final size is unknown (no Content-Length). */
+  total: number
+  state: EngineProgressState
+  note?: string
+}
+
+/** 'engines:gpuDownload' reply — start-ack only; outcome streams via events. */
+export type EnginesGpuDownloadReply =
+  | { ok: true }
+  | { ok: false; error: 'manifest-missing' | 'already-downloading' | 'unknown-variant' }
+
+/** 'models:launch' reply — services.launchModel outcome, errors never cross as throws. */
+export type ModelsLaunchReply = { ok: true; status: SidecarStatus } | { ok: false; error: string }
