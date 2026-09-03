@@ -73,7 +73,7 @@ function makeHarness() {
   const withHandlers = (extra: { conversations?: () => typeof conversations }) =>
     buildIpcHandlers({ ...deps, ...extra })
   const ctx: HandlerContext = { send: vi.fn() }
-  return { handlers, ctx, services, relay, downloads, hfSearch, dialog, safeStorage, conversations, withHandlers }
+  return { handlers, ctx, services, relay, downloads, hfSearch, dialog, safeStorage, conversations, deps, withHandlers }
 }
 
 const invalidShape = { ok: false, error: 'invalid-payload', issues: expect.any(Array) }
@@ -631,5 +631,77 @@ describe('config:get / config:set (todo16)', () => {
       ok: false,
       error: 'invalid-payload',
     })
+  })
+})
+
+// ---------------------------------------------------------------------------
+// todo23 — agent:start / agent:status / agent:cancel (sessions seam)
+// ---------------------------------------------------------------------------
+
+describe('agent channels (todo23)', () => {
+  const validStart = { sessionId: 'a1', baseUrl: 'http://127.0.0.1:11434', model: 'qwen3', goal: 'fix the bug' }
+
+  function makeAgentHarness() {
+    const harness = makeHarness()
+    const agent = {
+      start: vi.fn(() => ({ ok: true, sessionId: 'a1', started: true })),
+      cancel: vi.fn(() => ({ ok: true, sessionId: 'a1', cancelled: true })),
+      status: vi.fn(() => ({ ok: true, status: null }))
+    }
+    const handlers = buildIpcHandlers({ ...harness.deps, agent: () => agent })
+    return { ...harness, agent, handlers }
+  }
+
+  it('without the container every channel answers the honest not-ready shape', async () => {
+    const { handlers } = makeHarness()
+    const send = { send: vi.fn() }
+    await expect(handlers['agent:start']([validStart], send)).resolves.toEqual({ ok: false, error: 'not-ready' })
+    await expect(handlers['agent:status']([{ sessionId: 'a1' }], send)).resolves.toEqual({ ok: false, error: 'not-ready' })
+    await expect(handlers['agent:cancel']([{ sessionId: 'a1' }], send)).resolves.toEqual({ ok: false, error: 'not-ready' })
+  })
+
+  it('agent:start still validates before the container check', async () => {
+    const { handlers } = makeHarness()
+    await expect(handlers['agent:start']([{ sessionId: 'a1' }], { send: vi.fn() })).resolves.toMatchObject(invalidShape)
+  })
+
+  it('agent:start rejects remote/https baseUrls, empty goals, oversized caps and extra keys (400-shape)', async () => {
+    const { handlers, agent } = makeAgentHarness()
+    const send = { send: vi.fn() }
+    const bad = [
+      { ...validStart, baseUrl: 'https://127.0.0.1:11434' },
+      { ...validStart, baseUrl: 'http://evil.example' },
+      { ...validStart, goal: '' },
+      { ...validStart, maxIterations: 999 },
+      { ...validStart, sneaky: 1 },
+      {},
+    ]
+    for (const payload of bad) {
+      const res = await handlers['agent:start']([payload], send)
+      expect(res, JSON.stringify(payload)).toMatchObject({ ok: false, error: 'invalid-payload' })
+    }
+    expect(agent.start).not.toHaveBeenCalled()
+  })
+
+  it('agent:start forwards the validated request and binds agent:event to the STARTING frame', async () => {
+    const { handlers, agent } = makeAgentHarness()
+    const ctx = { send: vi.fn() }
+    const res = await handlers['agent:start']([validStart], ctx)
+    expect(res).toEqual({ ok: true, sessionId: 'a1', started: true })
+    expect(agent.start).toHaveBeenCalledTimes(1)
+    expect(agent.start.mock.calls[0]?.[0]).toMatchObject(validStart)
+    const emit = agent.start.mock.calls[0]?.[1] as (e: unknown) => void
+    emit({ type: 'finished', sessionId: 'a1', status: 'completed', iterations: 1, text: 'ok' })
+    expect(ctx.send).toHaveBeenCalledWith('agent:event', { type: 'finished', sessionId: 'a1', status: 'completed', iterations: 1, text: 'ok' })
+  })
+
+  it('agent:status / agent:cancel pass the sessionId through', async () => {
+    const { handlers, agent } = makeAgentHarness()
+    const send = { send: vi.fn() }
+    await expect(handlers['agent:status']([{ sessionId: 'a1' }], send)).resolves.toEqual({ ok: true, status: null })
+    expect(agent.status).toHaveBeenCalledWith('a1')
+    await expect(handlers['agent:cancel']([{ sessionId: 'a1' }], send)).resolves.toEqual({ ok: true, sessionId: 'a1', cancelled: true })
+    expect(agent.cancel).toHaveBeenCalledWith('a1')
+    await expect(handlers['agent:status']([{}], send)).resolves.toMatchObject(invalidShape)
   })
 })
