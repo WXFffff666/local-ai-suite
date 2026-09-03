@@ -24,6 +24,8 @@
 import { test, expect, _electron as electron, type ElectronApplication, type Page } from '@playwright/test'
 import * as http from 'http'
 import type { IncomingMessage, ServerResponse } from 'http'
+import { mkdtempSync, rmSync } from 'fs'
+import { tmpdir } from 'os'
 import { join } from 'path'
 
 const APP_ROOT = join(__dirname, '..', '..')
@@ -129,6 +131,25 @@ function navButton(label: string) {
   return (page: Page) => page.locator(`.las-nav-item:has(.las-nav-label:text-is("${label}"))`)
 }
 
+/**
+ * Best-effort recursive delete of the per-run userData dir. Electron may hold
+ * file locks briefly after close(), so retry on EBUSY/EPERM up to 3 times
+ * with 500 ms backoff; a still-failing cleanup is swallowed (each run gets a
+ * fresh mkdtemp dir, so leftover temp dirs never affect test outcomes).
+ */
+async function removeUserDataDir(dir: string): Promise<void> {
+  for (let attempt = 0; attempt <= 3; attempt++) {
+    try {
+      rmSync(dir, { recursive: true })
+      return
+    } catch (err) {
+      const code = (err as NodeJS.ErrnoException).code
+      if ((code !== 'EBUSY' && code !== 'EPERM') || attempt === 3) return
+      await new Promise((res) => setTimeout(res, 500))
+    }
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Suite
 // ---------------------------------------------------------------------------
@@ -139,6 +160,8 @@ test.describe('smoke v2 — real Electron app launch', () => {
   let app: ElectronApplication
   let page: Page
   let stub: StubState
+  /** Fresh per-run Electron profile dir (see beforeAll) — isolates chat.db. */
+  let userDataDir: string
 
   const consoleErrors: string[] = []
   const pageErrors: string[] = []
@@ -148,8 +171,14 @@ test.describe('smoke v2 — real Electron app launch', () => {
     // (e) precondition: the stub MUST outlive the arbitration probe.
     stub = await startStubServer()
 
+    // Run isolation: point Chromium's user-data dir at a fresh temp profile so
+    // the persisted %APPDATA%\local-ai-suite\chat.db (conversations from the
+    // previous run) cannot leak into assertions — without this, a SECOND
+    // consecutive `pnpm test:e2e` fails strict-mode on 'Hello world!'.
+    userDataDir = mkdtempSync(join(tmpdir(), 'las-e2e-profile-'))
+
     app = await electron.launch({
-      args: [APP_ROOT],
+      args: [APP_ROOT, `--user-data-dir=${userDataDir}`],
       cwd: APP_ROOT,
       // src/main/testSupport.ts relocation seam (WinNAT blocks literal 11434
       // binds for non-admin processes on this host).
@@ -178,6 +207,7 @@ test.describe('smoke v2 — real Electron app launch', () => {
   test.afterAll(async () => {
     await app?.close().catch(() => undefined)
     await stub?.close().catch(() => undefined)
+    if (userDataDir) await removeUserDataDir(userDataDir)
   })
 
   test('a — window title and app shell are visible', async () => {
