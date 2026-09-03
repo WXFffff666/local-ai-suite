@@ -149,6 +149,48 @@ describe('buildLlamaArgs', () => {
     expect(() => buildLlamaArgs({ host: '0.0.0.0' })).toThrow(/127\.0\.0\.1/)
     expect(() => buildLlamaArgs({ host: '192.168.1.1' })).toThrow(/127\.0\.0\.1/)
   })
+
+  // todo21: VLM — --mmproj 接线（llama.cpp tools/server README: -mm/--mmproj FILE）
+  it('mmprojPath 追加 --mmproj（紧随 --model 之后）', () => {
+    const args = buildLlamaArgs({
+      modelPath: '/models/qwen-vl.gguf',
+      mmprojPath: '/models/mmproj-qwen-vl.gguf',
+      fileExists: () => true,
+    })
+    expect(args).toEqual([
+      '--host', '127.0.0.1', '--port', '11435', '--ctx-size', '4096',
+      '--model', '/models/qwen-vl.gguf',
+      '--mmproj', '/models/mmproj-qwen-vl.gguf',
+    ])
+  })
+
+  it('mmprojPath 无 modelPath 抛错', () => {
+    expect(() => buildLlamaArgs({ mmprojPath: '/models/m.gguf', fileExists: () => true })).toThrow(/requires modelPath/)
+  })
+
+  it('mmprojPath 非绝对路径抛错', () => {
+    expect(() =>
+      buildLlamaArgs({ modelPath: '/models/m.gguf', mmprojPath: 'rel/mmproj.gguf', fileExists: () => true }),
+    ).toThrow(/must be absolute/)
+  })
+
+  it('mmprojPath 文件不存在抛错', () => {
+    expect(() =>
+      buildLlamaArgs({ modelPath: '/models/m.gguf', mmprojPath: '/nope/mmproj.gguf', fileExists: () => false }),
+    ).toThrow(/does not exist/)
+  })
+
+  it('缺省 fileExists 走真实 fs：不存在的绝对路径抛错', () => {
+    expect(() =>
+      buildLlamaArgs({ modelPath: '/models/m.gguf', mmprojPath: '/definitely/not/a/real/mmproj.gguf' }),
+    ).toThrow(/does not exist/)
+  })
+
+  it('无 mmprojPath 时 argv 与旧快照逐字节一致（回归 pin）', () => {
+    expect(buildLlamaArgs({ modelPath: 'models/qwen.gguf' })).toEqual([
+      '--host', '127.0.0.1', '--port', '11435', '--ctx-size', '4096', '--model', 'models/qwen.gguf',
+    ])
+  })
 })
 
 describe('createLlamaSidecarConfig / createLlamaSidecar (复用 SidecarManager)', () => {

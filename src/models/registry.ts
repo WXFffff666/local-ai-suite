@@ -38,6 +38,12 @@ export type ModelEntry = {
   corrupted?: boolean
   /** 失败原因（仅 corrupted 时） */
   error?: string
+  /**
+   * todo21: VLM 视觉投影文件（llama.cpp mtmd）。按命名约定在同一目录发现
+   * mmproj-*.gguf 伴生文件时配对（绝对路径）。缺省 = 该模型无视觉投影，
+   * 聊天贴图 UI 应禁用（plan QA-fail 场景）。
+   */
+  projectorPath?: string
 }
 
 export type RegistryOptions = {
@@ -162,6 +168,63 @@ export function isModelFile(fileName: string): boolean {
 }
 
 // ---------------------------------------------------------------------------
+// todo21: VLM 视觉投影（mmproj）识别与配对
+// ---------------------------------------------------------------------------
+
+/**
+ * llama.cpp 社区约定：视觉投影文件命名含独立的 `mmproj` token
+ * （`mmproj-*.gguf` 前缀或 `*-mmproj[-QUANT].gguf` 后缀形态）。
+ * 这类文件绝不作为独立模型进入注册表，只作为同目录主模型的 projector。
+ */
+const MMPROJ_RE = /(^|[-_.])mmproj([-_.]|$)/i
+
+export function isMmprojFile(fileName: string): boolean {
+  return MMPROJ_RE.test(path.basename(fileName))
+}
+
+/** 小写去扩展名的 stem，用于前缀亲缘打分 */
+function stemOf(absPath: string): string {
+  return path.basename(absPath).replace(/\.[^.]+$/, '').toLowerCase()
+}
+
+function commonPrefixLen(a: string, b: string): number {
+  const n = Math.min(a.length, b.length)
+  let i = 0
+  while (i < n && a[i] === b[i]) i += 1
+  return i
+}
+
+/** 候选名去掉 mmproj token 后的亲缘键（mmproj-qwen-vl → qwen-vl；qwen-vl-mmproj-bf16 → qwen-vl-bf16） */
+function projectorKey(candidate: string): string {
+  return stemOf(candidate)
+    .replace(/[-_.]?mmproj[-_.]?/i, '-')
+    .replace(/^[-_.]+|[-_.]+$/g, '')
+}
+
+/**
+ * 从同目录的投影候选里选一个：
+ * 亲缘键与模型名 stem 公共前缀最长者优先（≥4 字符才算亲缘）。
+ * 无亲缘候选时：目录内只有这一个主模型 ⇒ 约定即配对（取字典序首个）；
+ * requireAffinity=true（多模型目录）⇒ 宁缺勿滥返回 undefined。
+ * 全程确定性，与扫描顺序无关。
+ */
+export function pickProjector(
+  modelPath: string,
+  candidates: readonly string[],
+  requireAffinity = false,
+): string | undefined {
+  if (candidates.length === 0) return undefined
+  const stem = stemOf(modelPath)
+  const related = candidates
+    .map((c) => ({ c, aff: commonPrefixLen(stem, projectorKey(c)) }))
+    .filter((s) => s.aff >= 4)
+    .sort((a, b) => b.aff - a.aff || stemOf(a.c).localeCompare(stemOf(b.c)))
+  if (related.length > 0) return related[0].c
+  if (requireAffinity) return undefined
+  return [...candidates].sort((a, b) => stemOf(a).localeCompare(stemOf(b)))[0]
+}
+
+// ---------------------------------------------------------------------------
 // 路径 helpers
 // ---------------------------------------------------------------------------
 
@@ -228,6 +291,8 @@ export class ModelRegistry {
     const fsDeps = this.fs()
     const ignore = this.opts.ignoreFileNames ?? new Set([this.opts.modelsJsonName!, 'models.json.tmp'])
     const out: ModelEntry[] = []
+    /** todo21: dir → mmproj-*.gguf 绝对路径候选（配对用，不入注册表） */
+    const projectors = new Map<string, string[]>()
 
     const walk = (dir: string): void => {
       let entries: fs.Dirent[] | string[]
@@ -277,6 +342,16 @@ export class ModelRegistry {
           continue
         }
 
+        // todo21: mmproj 投影文件绝不作为独立模型；收作同目录主模型的配对候选
+        if (isMmprojFile(nameStr)) {
+          if (detectFormat(nameStr) === 'gguf') {
+            const bucket = projectors.get(dir) ?? []
+            bucket.push(full)
+            projectors.set(dir, bucket)
+          }
+          continue
+        }
+
         // 仅模型文件进入注册表
         if (!isModelFile(nameStr)) continue
 
@@ -296,6 +371,23 @@ export class ModelRegistry {
     }
 
     walk(this.modelsDir)
+
+    // todo21: 同目录配对 — gguf 主模型获得 projectorPath（无候选则字段缺省）。
+    // 目录内有多个 gguf 主模型时要求命名亲缘（≥4 前缀），避免一份投影乱配。
+    const ggufCountByDir = new Map<string, number>()
+    for (const entry of out) {
+      if (entry.format !== 'gguf') continue
+      const key = path.dirname(entry.path)
+      ggufCountByDir.set(key, (ggufCountByDir.get(key) ?? 0) + 1)
+    }
+    for (const entry of out) {
+      if (entry.format !== 'gguf') continue
+      const dirKey = path.dirname(entry.path)
+      const candidates = projectors.get(dirKey)
+      if (!candidates || candidates.length === 0) continue
+      const picked = pickProjector(entry.path, candidates, (ggufCountByDir.get(dirKey) ?? 1) > 1)
+      if (picked) entry.projectorPath = picked
+    }
 
     // 按 file 排序稳定输出
     out.sort((a, b) => a.file.localeCompare(b.file))

@@ -8,6 +8,7 @@ import {
   type ChatIpcApi,
 } from './store'
 import type { ChatDeltaEvent, ChatDoneEvent, ChatErrorEvent } from '../main/ipc/whitelist'
+import { toWireContent } from './ipc'
 
 describe('parseSseLine — delta.content / reasoning_content 透传', () => {
   it('parses OpenAI choices delta.content', () => {
@@ -336,5 +337,100 @@ describe('chat store — IPC relay: send / abort / retry / events', () => {
     fake.emit.done({ id })
     await p
     expect(use.getState().sessions[0]!.messages[1]!.pending).toBe(false)
+  })
+})
+
+// ---------------------------------------------------------------------------
+// todo21: VLM 贴图（images 为 ADDITIVE 字段；无图消息保持旧线格式）
+// ---------------------------------------------------------------------------
+
+describe('chat store — todo21 image attachments', () => {
+  const uri1 = 'data:image/png;base64,iVBORw0KGgo='
+  const uri2 = 'data:image/jpeg;base64,/9j/4AAQSkZ='
+
+  function lastSendMessages(fake: ReturnType<typeof makeFakeApi>) {
+    const calls = fake.invoke.mock.calls.filter((c) => c[0] === 'chat:send')
+    return (calls[calls.length - 1]![1] as { messages: unknown }).messages
+  }
+
+  it('toWireContent: 无图消息逐字节等价旧 {role,content:string} 线格式（基线 pin）', () => {
+    const m = { id: 'u1', role: 'user' as const, content: 'hi', createdAt: 1 }
+    expect(toWireContent(m)).toBe('hi')
+  })
+
+  it('send(text, _, images) → invoke payload content = [text, image_url...]，消息保留 images', async () => {
+    const fake = makeFakeApi()
+    const use = createChatStore({ resolveApi: () => fake.api })
+    use.getState().createSession('t')
+    const p = use.getState().send('看图', undefined, [uri1, uri2])
+    expect(lastSendMessages(fake)).toEqual([
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: '看图' },
+          { type: 'image_url', image_url: { url: uri1 } },
+          { type: 'image_url', image_url: { url: uri2 } },
+        ],
+      },
+    ])
+    const id = (fake.invoke.mock.calls[0] as unknown as [string, { id: string }])[1].id
+    fake.emit.done({ id })
+    await p
+    expect(use.getState().sessions[0]!.messages[0]!.images).toEqual([uri1, uri2])
+  })
+
+  it('image-only send（无文字）合法；空文本且无图仍被忽略', async () => {
+    const fake = makeFakeApi()
+    const use = createChatStore({ resolveApi: () => fake.api })
+    use.getState().createSession('t')
+    const p = use.getState().send('', undefined, [uri1])
+    expect(lastSendMessages(fake)).toEqual([
+      { role: 'user', content: [{ type: 'image_url', image_url: { url: uri1 } }] },
+    ])
+    const id = (fake.invoke.mock.calls[0] as unknown as [string, { id: string }])[1].id
+    fake.emit.done({ id })
+    await p
+    await use.getState().send('   ')
+    expect(fake.invoke).toHaveBeenCalledTimes(1)
+  })
+
+  it('>2 张截断至 2（plan cap）', async () => {
+    const fake = makeFakeApi()
+    const use = createChatStore({ resolveApi: () => fake.api })
+    use.getState().createSession('t')
+    await (async () => {
+      const p = use.getState().send('three', undefined, [uri1, uri2, uri1])
+      const id = (fake.invoke.mock.calls[0] as unknown as [string, { id: string }])[1].id
+      fake.emit.done({ id })
+      await p
+    })()
+    const content = (lastSendMessages(fake) as Array<{ content: unknown }>)[0]!.content as Array<{ type: string }>
+    expect(content.filter((c) => c.type === 'image_url')).toHaveLength(2)
+  })
+
+  it('多轮历史：先前用户消息的贴图以 parts 形式随行，assistant 保持 string', async () => {
+    const fake = makeFakeApi()
+    const use = createChatStore({ resolveApi: () => fake.api })
+    use.getState().createSession('t')
+    const p1 = use.getState().send('第一轮带图', undefined, [uri1])
+    const id1 = (fake.invoke.mock.calls[0] as unknown as [string, { id: string }])[1].id
+    fake.emit.delta({ id: id1, delta: '收到' })
+    fake.emit.done({ id: id1 })
+    await p1
+
+    const p2 = use.getState().send('第二轮纯文本')
+    const msgs = (lastSendMessages(fake) as Array<{ role: string; content: unknown }>)
+    expect(msgs[0]).toEqual({
+      role: 'user',
+      content: [
+        { type: 'text', text: '第一轮带图' },
+        { type: 'image_url', image_url: { url: uri1 } },
+      ],
+    })
+    expect(msgs[1]).toEqual({ role: 'assistant', content: '收到' })
+    expect(msgs[2]).toEqual({ role: 'user', content: '第二轮纯文本' })
+    const id2 = (fake.invoke.mock.calls[1] as unknown as [string, { id: string }])[1].id
+    fake.emit.done({ id: id2 })
+    await p2
   })
 })

@@ -3,7 +3,16 @@ import { mkdtempSync, rmSync, writeFileSync, readFileSync, existsSync, mkdirSync
 import { join } from 'path'
 import { tmpdir } from 'os'
 
-import { ModelRegistry, detectQuant, detectArch, detectFormat, isModelFile, getModelsJsonPath } from './registry'
+import {
+  ModelRegistry,
+  detectQuant,
+  detectArch,
+  detectFormat,
+  isModelFile,
+  isMmprojFile,
+  pickProjector,
+  getModelsJsonPath,
+} from './registry'
 
 // 工具：写入一个最小合法 GGUF（magic GGUF + 补足 2KB 避免 <1KB 探针误判）
 function writeGguf(filePath: string, size = 2048, quantSuffix = ''): void {
@@ -242,5 +251,75 @@ describe('registry — scan / models.json / 隔离', () => {
     const models = reg.scan()
     expect(models).toHaveLength(1)
     expect(models[0].file).toBe('ok.gguf')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// todo21: VLM mmproj 识别与同目录配对
+// ---------------------------------------------------------------------------
+
+describe('registry — mmproj (todo21)', () => {
+  it('isMmprojFile: 前缀/后缀 token 命中，普通名与伪 token 不误伤', () => {
+    expect(isMmprojFile('mmproj-Qwen2.5-VL-7B.gguf')).toBe(true)
+    expect(isMmprojFile('qwen2.5-vl-7b-instruct-mmproj-BF16.gguf')).toBe(true)
+    expect(isMmprojFile('mmproj.gguf')).toBe(true)
+    expect(isMmprojFile('mmprojx.gguf')).toBe(false)
+    expect(isMmprojFile('qwen2-7b-Q4_K_M.gguf')).toBe(false)
+    expect(isMmprojFile('mmproj-note.txt')).toBe(true) // token 判定与扩展名无关，由 scan 再按 gguf 过滤
+  })
+
+  it('pickProjector: 无候选 undefined；亲缘最长优先；无亲缘取字典序', () => {
+    expect(pickProjector('/m/qwen2.5-vl-7b.gguf', [])).toBeUndefined()
+    expect(
+      pickProjector('/m/qwen2.5-vl-7b.gguf', ['/m/mmproj-qwen2.5-vl-7b-F16.gguf']),
+    ).toBe('/m/mmproj-qwen2.5-vl-7b-F16.gguf')
+    expect(
+      pickProjector('/m/qwen2.5-vl-7b.gguf', [
+        '/m/mmproj-llama-3.2-vision.gguf',
+        '/m/mmproj-qwen2.5-vl.gguf',
+      ]),
+    ).toBe('/m/mmproj-qwen2.5-vl.gguf')
+    expect(
+      pickProjector('/m/mystery.gguf', ['/m/mmproj-b.gguf', '/m/mmproj-a.gguf']),
+    ).toBe('/m/mmproj-a.gguf')
+    // 多模型目录（requireAffinity）：无亲缘候选宁缺勿滥
+    expect(
+      pickProjector('/m/mystery.gguf', ['/m/mmproj-a.gguf'], true),
+    ).toBeUndefined()
+  })
+
+  it('scan: mmproj 文件不作为独立模型，同目录 gguf 获得 projectorPath', () => {
+    writeGguf(join(tmpDir, 'llm', 'qwen2.5-vl-7b-instruct-Q4_K_M.gguf'), 4096)
+    writeGguf(join(tmpDir, 'llm', 'mmproj-qwen2.5-vl-7b-instruct.gguf'), 2048)
+    writeGguf(join(tmpDir, 'llm', 'other-plain-Q4_0.gguf'), 2048) // 无投影 → 字段缺省
+    const reg = new ModelRegistry(tmpDir)
+    const models = reg.scan()
+    expect(models.map((m) => m.file)).toEqual([
+      'llm/other-plain-Q4_0.gguf',
+      'llm/qwen2.5-vl-7b-instruct-Q4_K_M.gguf',
+    ])
+    const vl = models.find((m) => m.name === 'qwen2.5-vl-7b-instruct-Q4_K_M')
+    expect(vl?.projectorPath).toBe(join(tmpDir, 'llm', 'mmproj-qwen2.5-vl-7b-instruct.gguf'))
+    const plain = models.find((m) => m.name === 'other-plain-Q4_0')
+    expect(plain?.projectorPath).toBeUndefined()
+  })
+
+  it('scan: 配对只在同目录发生；models.json 持久化 projectorPath', () => {
+    writeGguf(join(tmpDir, 'llm', 'qwen-vl.gguf'), 2048)
+    writeGguf(join(tmpDir, 'elsewhere', 'mmproj-qwen-vl.gguf'), 2048)
+    const reg = new ModelRegistry(tmpDir)
+    const models = reg.scan()
+    expect(models).toHaveLength(1)
+    expect(models[0].projectorPath).toBeUndefined()
+  })
+
+  it('scan: safetensors 不配对投影（仅 gguf 主模型）', () => {
+    writeSafetensors(join(tmpDir, 'vl.safetensors'), 2048)
+    writeGguf(join(tmpDir, 'mmproj-vl.gguf'), 2048)
+    const reg = new ModelRegistry(tmpDir)
+    const models = reg.scan()
+    expect(models).toHaveLength(1)
+    expect(models[0].format).toBe('safetensors')
+    expect(models[0].projectorPath).toBeUndefined()
   })
 })

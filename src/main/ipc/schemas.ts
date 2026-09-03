@@ -9,6 +9,8 @@
 
 import { z } from 'zod'
 
+import type { ChatMessageContent } from './whitelist'
+
 // --- shared primitives -------------------------------------------------------
 
 const idSchema = z.string().min(1).max(128)
@@ -16,19 +18,80 @@ const roleSchema = z.enum(['user', 'assistant', 'system'])
 
 // --- chat --------------------------------------------------------------------
 
+/**
+ * todo21 VLM: image_url parts accept ONLY inline base64 data-URLs of the four
+ * raster mimes llama.cpp mtmd handles well. SVG is rejected (vector/XSS surface
+ * — never a chat image), remote http(s) URLs are rejected (renderer must never
+ * be tricked into fetching attacker-controlled URLs through the model loop).
+ * Decoded payload cap: 4 MiB.
+ */
+export const MAX_IMAGE_DATA_BYTES = 4 * 1024 * 1024
+const IMAGE_DATA_URI_RE = /^data:image\/(png|jpe?g|webp|gif);base64,([A-Za-z0-9+/]*={0,2})$/
+
+export type ParsedImageDataUri = { mime: string; bytes: number }
+
+/** Parses a legal chat image data-URL; undefined on any violation. */
+export function parseImageDataUri(url: string): ParsedImageDataUri | undefined {
+  const m = IMAGE_DATA_URI_RE.exec(url)
+  if (!m?.[2]) return undefined
+  const b64 = m[2]
+  const pad = b64.endsWith('==') ? 2 : b64.endsWith('=') ? 1 : 0
+  const bytes = Math.floor(b64.length / 4) * 3 - pad
+  if (bytes > MAX_IMAGE_DATA_BYTES) return undefined
+  return { mime: `image/${m[1] === 'jpeg' ? 'jpeg' : m[1]}`, bytes }
+}
+
+const chatImageUrlPartSchema = z.object({
+  type: z.literal('image_url'),
+  image_url: z
+    .object({
+      // 4 MiB decoded ≈ 5.6M base64 chars; char pre-guard bounds the regex cost.
+      url: z
+        .string()
+        .min(1)
+        .max(6_000_000)
+        .refine((u) => parseImageDataUri(u) !== undefined, {
+          message: 'image_url must be a base64 data:image/(png|jpeg|webp|gif) URI ≤4MiB decoded',
+        }),
+    })
+    .strict(),
+}).strict()
+
+const chatTextPartSchema = z
+  .object({ type: z.literal('text'), text: z.string().max(1_000_000) })
+  .strict()
+
+const chatContentArraySchema = z
+  .array(z.union([chatTextPartSchema, chatImageUrlPartSchema]))
+  .min(1)
+  .max(8)
+  .superRefine((parts, ctx) => {
+    const images = parts.filter((p) => p.type === 'image_url').length
+    if (images > 2) {
+      ctx.addIssue({ code: 'custom', message: 'too-many-images', max: 2 })
+    }
+  })
+
+const chatMessageContentSchema = z.union([z.string().max(1_000_000), chatContentArraySchema])
+
+export const chatMessageSchema = z.object({ role: roleSchema, content: chatMessageContentSchema })
+
 export const chatSendSchema = z.object({
   id: idSchema,
   model: z.string().min(1).max(256),
-  messages: z
-    .array(z.object({ role: roleSchema, content: z.string().max(1_000_000) }))
-    .min(1)
-    .max(512),
+  messages: z.array(chatMessageSchema).min(1).max(512),
   temperature: z.number().min(0).max(2).optional(),
   top_p: z.number().min(0).max(1).optional(),
   max_tokens: z.number().int().positive().max(1_000_000).optional(),
   stop: z.union([z.string().max(512), z.array(z.string().max(512)).max(16)]).optional()
 })
 export type ChatSendInput = z.infer<typeof chatSendSchema>
+
+// Compile-time wire-alignment proof: the zod-inferred content shape must stay
+// assignable to the whitelist's shared ChatMessageContent contract.
+export const CHAT_CONTENT_WIRE_ALIGNED: ChatSendInput['messages'][number]['content'] extends ChatMessageContent
+  ? true
+  : never = true
 
 export const chatAbortSchema = z.object({ id: idSchema })
 export type ChatAbortInput = z.infer<typeof chatAbortSchema>

@@ -114,6 +114,56 @@ describe('ChatRelay stream pump', () => {
     expect(c.errors).toHaveLength(0)
   })
 
+  // todo21: multimodal content must reach BOTH legal upstreams verbatim.
+  const multimodalPayload = (): ChatSendInput =>
+    payload({
+      messages: [
+        {
+          role: 'user',
+          content: [
+            { type: 'text', text: '描述这张图' },
+            { type: 'image_url', image_url: { url: 'data:image/png;base64,iVBORw0KGgo=' } },
+          ],
+        },
+      ],
+    })
+
+  const expectedContent = [
+    { type: 'text', text: '描述这张图' },
+    { type: 'image_url', image_url: { url: 'data:image/png;base64,iVBORw0KGgo=' } },
+  ]
+
+  it('internal llama: content array is JSON-marshalled verbatim into the /v1 body', async () => {
+    const bodies: string[] = []
+    const { relay } = relayFor({
+      upstream: async (_url, init) => {
+        bodies.push(String(init?.body ?? ''))
+        return sseResponse([openAiChunk('hi', true), 'data: [DONE]\n\n'])
+      },
+    })
+    const c = collector()
+    relay.start(multimodalPayload(), c.send)
+    await vi.waitFor(() => expect(c.dones).toHaveLength(1))
+    const body = JSON.parse(bodies[0] ?? '{}') as { messages: unknown }
+    expect(body.messages).toEqual([{ role: 'user', content: expectedContent }])
+  })
+
+  it('external-takeover: identical verbatim content-array passthrough', async () => {
+    const bodies: string[] = []
+    const { relay } = relayFor({
+      ownership: 'external-takeover',
+      upstream: async (_url, init) => {
+        bodies.push(String(init?.body ?? ''))
+        return sseResponse(['data: [DONE]\n\n'])
+      },
+    })
+    const c = collector()
+    relay.start(multimodalPayload(), c.send)
+    await vi.waitFor(() => expect(c.dones).toHaveLength(1))
+    const body = JSON.parse(bodies[0] ?? '{}') as { messages: unknown }
+    expect(body.messages).toEqual([{ role: 'user', content: expectedContent }])
+  })
+
   it('content-only deltas carry NO reasoning key (byte-identical pre-11b wire shape)', async () => {
     const { relay } = relayFor({})
     const c = collector()

@@ -16,7 +16,7 @@ import type { AllowedChannel, ChatDeltaEvent, ChatDoneEvent, ChatErrorEvent } fr
 import type { ChatMessage, ChatSession, ChatSendOptions, Role } from './types'
 import { genId, newAssistantPlaceholder, newSession } from './types'
 import type { ChatIpcApi, ChatSendAck, ChatSendPayload } from './ipc'
-import { DEFAULT_CHAT_MODEL, getChatIpcApi, IPC_UNAVAILABLE_MESSAGE } from './ipc'
+import { DEFAULT_CHAT_MODEL, getChatIpcApi, IPC_UNAVAILABLE_MESSAGE, toWireContent } from './ipc'
 
 export type { Role, ChatMessage, ChatSession, ChatSendOptions } from './types'
 export { genId, newSession, newAssistantPlaceholder } from './types'
@@ -66,7 +66,8 @@ export type ChatStoreState = {
   clearCurrentMessages: () => void
   abort: () => void
   retry: (opts?: ChatSendOptions) => Promise<void>
-  send: (content: string, opts?: ChatSendOptions) => Promise<void>
+  /** todo21: images = base64 data-URLs attached to the user turn (≤2, additive param). */
+  send: (content: string, opts?: ChatSendOptions, images?: readonly string[]) => Promise<void>
 }
 
 function updateSession(
@@ -144,7 +145,7 @@ export function createChatStore(
     const launch = async (
       sessionId: string,
       assistantId: string,
-      history: Array<{ role: Role; content: string }>,
+      history: ChatSendPayload['messages'],
       opts: ChatSendOptions,
     ): Promise<void> => {
       const api = resolveApi()
@@ -248,11 +249,11 @@ export function createChatStore(
     }
 
     /** History of the session excluding the given pending placeholder. */
-    const historyWithout = (sessionId: string, excludeAssistantId: string) => {
+    const historyWithout = (sessionId: string, excludeAssistantId: string): ChatSendPayload['messages'] => {
       const sess = get().sessions.find((s) => s.id === sessionId)
       return (sess?.messages ?? [])
         .filter((m) => m.id !== excludeAssistantId && !m.pending)
-        .map((m) => ({ role: m.role, content: m.content }))
+        .map((m) => ({ role: m.role, content: toWireContent(m) }))
     }
 
     return {
@@ -356,9 +357,10 @@ export function createChatStore(
         await launch(curId, placeholder.id, historyWithout(curId, placeholder.id), opts ?? {})
       },
 
-      send: async (content, opts) => {
+      send: async (content, opts, images) => {
         const text = content.trim()
-        if (!text) return
+        const attached = (images ?? []).slice(0, 2)
+        if (!text && attached.length === 0) return
 
         let curId = get().currentId
         if (!curId) {
@@ -366,13 +368,19 @@ export function createChatStore(
         }
         const sessionId = curId
 
-        const userMsg: ChatMessage = { id: genId('u'), role: 'user', content: text, createdAt: Date.now() }
+        const userMsg: ChatMessage = {
+          id: genId('u'),
+          role: 'user',
+          content: text,
+          createdAt: Date.now(),
+          ...(attached.length > 0 ? { images: attached } : {}),
+        }
         const placeholder = newAssistantPlaceholder()
 
         set((st) => ({
           sessions: updateSession(st.sessions, sessionId, (s) => ({
             ...s,
-            title: s.messages.length === 0 ? text.slice(0, 32) : s.title,
+            title: s.messages.length === 0 ? (text || '图片对话').slice(0, 32) : s.title,
             messages: [...s.messages, userMsg, placeholder],
             updatedAt: Date.now(),
           })),

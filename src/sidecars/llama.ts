@@ -11,6 +11,7 @@
  * - Reuse: SidecarManager (spawn/health/logs), ISidecar/IModelProvider contracts.
  */
 
+import * as fs from 'fs'
 import * as path from 'path'
 
 import { SidecarManager, type SidecarManagerOptions } from '../core/SidecarManager'
@@ -36,6 +37,13 @@ export const DEFAULT_LLAMA_BIN = 'llama-server' as const
 export type BuildLlamaArgsOptions = {
   /** Absolute or relative path to GGUF file. Required for real spawn. */
   modelPath?: string
+  /**
+   * todo21: multimodal projector (llama.cpp mtmd). Absolute path to an
+   * existing .gguf file, paired by the registry via the mmproj-*.gguf
+   * convention. Emitted as `--mmproj <path>` (== LLAMA_ARG_MMPROJ,
+   * llama.cpp tools/server/README.md). Requires modelPath.
+   */
+  mmprojPath?: string
   /** Context window. Default 4096. */
   ctxSize?: number
   /** Override port (default 11435). Must match healthUrl port. */
@@ -44,6 +52,8 @@ export type BuildLlamaArgsOptions = {
   host?: string
   /** Extra passthrough args appended as-is. */
   extraArgs?: string[]
+  /** fs existence seam for mmprojPath validation (tests inject a fake). */
+  fileExists?: (p: string) => boolean
 }
 
 export function buildLlamaArgs(opts: BuildLlamaArgsOptions = {}): string[] {
@@ -59,6 +69,20 @@ export function buildLlamaArgs(opts: BuildLlamaArgsOptions = {}): string[] {
 
   if (opts.modelPath) {
     args.push('--model', opts.modelPath)
+  }
+
+  if (opts.mmprojPath !== undefined) {
+    if (!opts.modelPath) {
+      throw new Error('mmprojPath requires modelPath (llama-server --mmproj is only valid with --model)')
+    }
+    if (!path.isAbsolute(opts.mmprojPath)) {
+      throw new Error(`mmprojPath must be absolute, got ${opts.mmprojPath}`)
+    }
+    const exists: (p: string) => boolean = opts.fileExists ?? ((p) => fs.existsSync(p))
+    if (!exists(opts.mmprojPath)) {
+      throw new Error(`mmprojPath does not exist: ${opts.mmprojPath}`)
+    }
+    args.push('--mmproj', opts.mmprojPath)
   }
 
   if (opts.extraArgs?.length) {

@@ -1,12 +1,23 @@
 /**
- * Chat.tsx — 对话工作区（todo11 IPC 流式 + todo15 渲染打磨）
+ * Chat.tsx — 对话工作区（todo11 IPC 流式 + todo15 渲染打磨 + todo21 VLM 贴图）
  * 数据流全部走 store（window.api chat:send / chat:abort + delta/done/error 事件），
  * 渲染层不直连侧车端口。无 window.api 时降级为诚实只读态。
  * todo15：消息 markdown/代码块/自动滚动/预设 chips 由 components/chatui/** 承担，
  * store 数据形状零改动（types.ts 冻结契约）。
+ * todo21：composer 支持 文件选择/粘贴 贴图（≤2 张，base64 dataURL 进
+ * messages content image_url）；注册表无带 projectorPath 的 gguf 模型时
+ * 贴图入口禁用并提示（plan QA-fail 场景）。
  */
-import { useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { Paperclip, X } from 'lucide-react'
 import { useChatStore, getChatIpcApi, IPC_UNAVAILABLE_MESSAGE } from './store'
+import {
+  MAX_IMAGES_PER_MESSAGE,
+  VISION_DISABLED_TOOLTIP,
+  probeVisionCapability,
+  readFileAsDataUrl,
+  selectAttachableImages,
+} from './vision'
 import { CHAT_PRESETS, fillChatPreset, type ChatPreset } from '../presets/presets'
 import { MessageList } from '../renderer/src/components/chatui/MessageList'
 import { PresetPicker } from '../renderer/src/components/chatui/PresetPicker'
@@ -31,15 +42,45 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
   const clearCurrentMessages = useChatStore((s) => s.clearCurrentMessages)
 
   const [input, setInput] = useState('')
+  /** todo21: 待发送贴图（base64 dataURL，≤2 张） */
+  const [images, setImages] = useState<string[]>([])
+  const [vision, setVision] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const cur = sessions.find((s) => s.id === currentId) ?? null
   const canStream = getChatIpcApi() !== null
   const streamingHere = Boolean(cur?.messages.some((m) => m.pending))
 
+  useEffect(() => {
+    let cancelled = false
+    void probeVisionCapability().then((v) => {
+      if (!cancelled) setVision(v)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const addImageFiles = useCallback(
+    async (files: File[]): Promise<void> => {
+      if (!vision) return
+      const picked = selectAttachableImages(files, images.length)
+      const urls: string[] = []
+      for (const i of picked) {
+        const f = files[i]
+        if (f) urls.push(await readFileAsDataUrl(f))
+      }
+      if (urls.length > 0) setImages((prev) => [...prev, ...urls].slice(0, MAX_IMAGES_PER_MESSAGE))
+    },
+    [vision, images.length],
+  )
+
   const handleSend = async (): Promise<void> => {
     const t = input.trim()
-    if (!t || streamingHere) return
+    if ((!t && images.length === 0) || streamingHere) return
+    const attached = images
     setInput('')
-    await send(t)
+    setImages([])
+    await send(t, undefined, attached)
   }
 
   const applyPreset = (preset: ChatPreset): void => {
@@ -118,21 +159,78 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
 
         {presets.length > 0 && <PresetPicker presets={presets} onPick={applyPreset} />}
 
-        <div style={{ padding: 12, borderTop: '1px solid #222', display: 'flex', gap: 8 }}>
-          <textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void handleSend() }
-            }}
-            placeholder={canStream ? 'Type a message… (Enter to send, Shift+Enter newline)' : '桌面端运行时可发送消息'}
-            rows={2}
-            style={{ flex: 1, resize: 'none', padding: 10, borderRadius: 8, border: '1px solid #333', background: '#0f0f0f', color: '#eee' }}
-            disabled={!canStream}
-          />
-          <button onClick={() => void handleSend()} disabled={!canStream || streamingHere || !input.trim()} style={{ padding: '0 18px', cursor: streamingHere ? 'not-allowed' : 'pointer' }}>
-            {streamingHere ? '…' : 'Send'}
-          </button>
+        <div style={{ padding: 12, borderTop: '1px solid #222' }}>
+          {images.length > 0 && (
+            <div className="las-attach-strip" data-testid="attach-strip">
+              {images.map((url, i) => (
+                <span key={`${i}:${url.slice(-12)}`} className="las-attach-thumb">
+                  <img src={url} alt={`附图 ${i + 1}`} />
+                  <button
+                    type="button"
+                    aria-label={`remove-image-${i + 1}`}
+                    onClick={() => setImages((prev) => prev.filter((_, j) => j !== i))}
+                  >
+                    <X size={12} aria-hidden />
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
+          <div style={{ display: 'flex', gap: 8, alignItems: 'flex-end' }}>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              data-testid="image-file-input"
+              style={{ display: 'none' }}
+              onChange={(e) => {
+                const files = Array.from(e.target.files ?? [])
+                e.target.value = ''
+                void addImageFiles(files)
+              }}
+            />
+            <button
+              type="button"
+              aria-label="attach-image"
+              data-testid="attach-image-button"
+              title={vision ? '添加图片（≤2 张）' : VISION_DISABLED_TOOLTIP}
+              disabled={!canStream || !vision || images.length >= MAX_IMAGES_PER_MESSAGE}
+              onClick={() => fileInputRef.current?.click()}
+              style={{ padding: '0 10px', cursor: canStream && vision ? 'pointer' : 'not-allowed' }}
+            >
+              <Paperclip size={16} aria-hidden />
+            </button>
+            <textarea
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onPaste={(e) => {
+                const items = Array.from(e.clipboardData?.items ?? [])
+                const files = items
+                  .filter((it) => it.kind === 'file' && it.type.startsWith('image/'))
+                  .map((it) => it.getAsFile())
+                  .filter((f): f is File => f !== null)
+                if (files.length > 0) {
+                  e.preventDefault()
+                  void addImageFiles(files)
+                }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void handleSend() }
+              }}
+              placeholder={canStream ? 'Type a message… (Enter to send, Shift+Enter newline; 支持粘贴图片)' : '桌面端运行时可发送消息'}
+              rows={2}
+              style={{ flex: 1, resize: 'none', padding: 10, borderRadius: 8, border: '1px solid #333', background: '#0f0f0f', color: '#eee' }}
+              disabled={!canStream}
+            />
+            <button
+              onClick={() => void handleSend()}
+              disabled={!canStream || streamingHere || (!input.trim() && images.length === 0)}
+              style={{ padding: '0 18px', cursor: streamingHere ? 'not-allowed' : 'pointer' }}
+            >
+              {streamingHere ? '…' : 'Send'}
+            </button>
+          </div>
         </div>
       </main>
     </div>

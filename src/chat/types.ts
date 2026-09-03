@@ -14,6 +14,12 @@ export type ChatMessage = {
   createdAt: number
   pending?: boolean
   error?: string
+  /**
+   * todo21 (ADDITIVE — frozen-shape rule relaxed by the plan's VLM lane):
+   * base64 data-URLs attached to this message. Only the four raster mimes
+   * the zod gate accepts ever land here; renderers must refuse anything else.
+   */
+  images?: string[]
 }
 
 export type ChatSession = {

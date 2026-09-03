@@ -124,6 +124,89 @@ describe('chat channels', () => {
     expect(res).toMatchObject(invalidShape)
   })
 
+  // --- todo21: multimodal content matrix -------------------------------------
+
+  const pngUri = (payloadChars = 64) =>
+    `data:image/png;base64,${'A'.repeat(payloadChars - 2)}==`
+
+  it('todo21 accepts legacy plain-string content (baseline pin)', async () => {
+    const { handlers, relay } = makeHarness()
+    const res = await handlers['chat:send']([validSend], { send: vi.fn() })
+    expect(res).toEqual({ ok: true, id: 'c1', streaming: true })
+    expect(relay.start).toHaveBeenCalledWith(
+      expect.objectContaining({ messages: [{ role: 'user', content: 'hi' }] }),
+      expect.any(Function)
+    )
+  })
+
+  it('todo21 accepts text + image_url dataURI parts verbatim', async () => {
+    const { handlers, relay } = makeHarness()
+    const parts = [
+      { type: 'text', text: '看这张图' },
+      { type: 'image_url', image_url: { url: pngUri() } },
+    ]
+    const res = await handlers['chat:send']([{ ...validSend, messages: [{ role: 'user', content: parts }] }], { send: vi.fn() })
+    expect(res).toEqual({ ok: true, id: 'c1', streaming: true })
+    expect(relay.start).toHaveBeenCalledWith(
+      expect.objectContaining({ messages: [{ role: 'user', content: parts }] }),
+      expect.any(Function)
+    )
+  })
+
+  it('todo21 accepts ≤2 images per message, rejects a third', async () => {
+    const { handlers } = makeHarness()
+    const two = [
+      { type: 'image_url', image_url: { url: pngUri() } },
+      { type: 'image_url', image_url: { url: pngUri() } },
+    ]
+    await expect(handlers['chat:send']([{ ...validSend, messages: [{ role: 'user', content: two }] }], { send: vi.fn() })).resolves.toEqual({ ok: true, id: 'c1', streaming: true })
+    const three = [...two, { type: 'image_url', image_url: { url: pngUri() } }]
+    const res = await handlers['chat:send']([{ ...validSend, messages: [{ role: 'user', content: three }] }], { send: vi.fn() })
+    expect(res).toMatchObject({ ok: false, error: 'invalid-payload' })
+    expect(JSON.stringify(res)).toContain('too-many-images')
+  })
+
+  it('todo21 rejects svg data-URI, remote URLs and raw base64', async () => {
+    const { handlers } = makeHarness()
+    const bad = [
+      'data:image/svg+xml;base64,AAAA',
+      'https://evil.example/x.png',
+      'http://127.0.0.1:1/x.png',
+      'AAAA',
+      'data:image/png;base64,!!!not-base64!!!',
+    ]
+    for (const url of bad) {
+      const res = await handlers['chat:send']([{ ...validSend, messages: [{ role: 'user', content: [{ type: 'image_url', image_url: { url } }] }] }], { send: vi.fn() })
+      expect(res, url).toMatchObject({ ok: false, error: 'invalid-payload' })
+    }
+  })
+
+  it('todo21 rejects images whose decoded payload exceeds the 4MiB cap', async () => {
+    const { handlers } = makeHarness()
+    // 4 MiB decoded = 4,194,304 bytes ⇔ 5,592,456 base64 chars; a block over the cap.
+    const huge = `data:image/png;base64,${'A'.repeat(5_592_408)}`
+    const res = await handlers['chat:send']([{ ...validSend, messages: [{ role: 'user', content: [{ type: 'image_url', image_url: { url: huge } }] }] }], { send: vi.fn() })
+    expect(res).toMatchObject({ ok: false, error: 'invalid-payload' })
+    // just below the cap parses (char-guard headroom kept honest):
+    const ok = `data:image/png;base64,${'A'.repeat(4_000_000 - 4)}`
+    await expect(handlers['chat:send']([{ ...validSend, messages: [{ role: 'user', content: [{ type: 'image_url', image_url: { url: ok } }] }] }], { send: vi.fn() })).resolves.toEqual({ ok: true, id: 'c1', streaming: true })
+  })
+
+  it('todo21 rejects malformed parts (unknown type / missing fields / extra keys)', async () => {
+    const { handlers } = makeHarness()
+    const malformed: unknown[] = [
+      [{ type: 'audio', data: 'x' }],
+      [{ type: 'text' }],
+      [{ type: 'image_url' }],
+      [{ type: 'text', text: 'ok', sneaky: 1 }],
+      [],
+    ]
+    for (const content of malformed) {
+      const res = await handlers['chat:send']([{ ...validSend, messages: [{ role: 'user', content }] }], { send: vi.fn() })
+      expect(res, JSON.stringify(content)).toMatchObject({ ok: false, error: 'invalid-payload' })
+    }
+  })
+
   it('chat:abort cancels the session', async () => {
     const { handlers, relay } = makeHarness()
     await expect(handlers['chat:abort']([{ id: 'c1' }], { send: vi.fn() })).resolves.toEqual({

@@ -106,6 +106,23 @@ export function assertAllowedEventChannel(channel: string): asserts channel is A
 }
 
 // ---------------------------------------------------------------------------
+// chat message content wire contract (todo21 VLM — shared renderer↔main truth)
+// ---------------------------------------------------------------------------
+
+/** Plain text segment of a multimodal message. */
+export type ChatTextPart = { type: 'text'; text: string }
+/**
+ * Image segment. ONLY base64 data-URLs are legal on the wire
+ * (data:image/(png|jpeg|jpg|webp|gif);base64,...) — remote URLs are rejected
+ * by the zod gate in schemas.ts and never rendered. Validated server-side;
+ * the types here state the intent.
+ */
+export type ChatImageUrlPart = { type: 'image_url'; image_url: { url: string } }
+export type ChatContentPart = ChatTextPart | ChatImageUrlPart
+/** OpenAI-compatible content: plain string or ordered text/image parts. */
+export type ChatMessageContent = string | ChatContentPart[]
+
+// ---------------------------------------------------------------------------
 // Event payload contracts (exact shapes — consumed by todo9/11/12/14/17/23/28)
 // ---------------------------------------------------------------------------
 

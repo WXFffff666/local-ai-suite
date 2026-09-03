@@ -253,3 +253,109 @@
   border-color: #4a78a8;
   color: #cfe3f7;
 }
+
+/* ---------- todo21: VLM 贴图（composer 缩略 / 气泡内联 / lightbox） ---------- */
+.las-attach-strip {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 8px;
+}
+
+.las-attach-thumb {
+  position: relative;
+  display: inline-block;
+}
+
+.las-attach-thumb img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #333;
+  display: block;
+}
+
+.las-attach-thumb button {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid #444;
+  background: #222;
+  color: #ddd;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.las-msg-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 6px 0;
+}
+
+.las-msg-image {
+  padding: 0;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background: transparent;
+  cursor: zoom-in;
+  line-height: 0;
+  max-width: 240px;
+}
+
+.las-msg-image img {
+  max-width: 240px;
+  max-height: 240px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.las-img-lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 24px;
+  border: none;
+  background: rgba(0, 0, 0, 0.85);
+  color: #eee;
+  overflow: auto;
+}
+
+/* showModal 未用（jsdom 兼容），open 属性下 ::backdrop 不存在，背板即自身 */
+.las-img-lightbox img {
+  display: block;
+  margin: auto;
+  max-width: calc(100vw - 48px);
+  max-height: calc(100dvh - 48px);
+  object-fit: contain;
+}
+
+.las-img-lightbox-close {
+  position: fixed;
+  top: 12px;
+  right: 16px;
+  z-index: 1;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid #555;
+  background: #1c1c1c;
+  color: #eee;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

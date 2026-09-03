@@ -4,17 +4,34 @@
  * 以及非 Electron 环境（vitest node、纯浏览器）下的可用性守卫。
  * 载荷/事件类型本体来自 src/main/ipc/whitelist.ts（EventPayloads 契约）。
  */
-import type { ChatDeltaEvent, ChatDoneEvent, ChatErrorEvent } from '../main/ipc/whitelist'
-import type { Role } from './types'
+import type { ChatContentPart, ChatDeltaEvent, ChatDoneEvent, ChatErrorEvent, ChatMessageContent } from '../main/ipc/whitelist'
+import type { ChatMessage, Role } from './types'
 
 export type ChatSendPayload = {
   id: string
   model: string
-  messages: Array<{ role: Role; content: string }>
+  /** todo21: plain string or OpenAI-compatible text/image_url parts (data-URL only). */
+  messages: Array<{ role: Role; content: ChatMessageContent }>
   temperature?: number
   top_p?: number
   max_tokens?: number
   stop?: string | string[]
+}
+
+/**
+ * todo21: project a stored message onto the wire content shape.
+ * Messages without images keep the byte-identical plain-string form;
+ * images become trailing image_url parts, text (when present) a leading
+ * text part. Attacker-supplied remote URLs cannot occur: ChatMessage.images
+ * is only ever fed by the composer's local data-URL intake.
+ */
+export function toWireContent(m: ChatMessage): ChatMessageContent {
+  const images = m.images ?? []
+  if (images.length === 0) return m.content
+  const parts: ChatContentPart[] = []
+  if (m.content.length > 0) parts.push({ type: 'text', text: m.content })
+  for (const url of images) parts.push({ type: 'image_url', image_url: { url } })
+  return parts
 }
 
 export type ChatSendAck =
