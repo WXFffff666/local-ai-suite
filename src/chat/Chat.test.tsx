@@ -73,12 +73,13 @@ async function attachViaFileInput(files: File[], expectTotal = 1): Promise<void>
   Object.defineProperty(input, 'files', { value: files, configurable: true })
   await act(async () => {
     input.dispatchEvent(new Event('change', { bubbles: true }))
-    // FileReader.onload 的落点在负载高时不止一个 tick：轮询到缩略图出现（上限 ~1s）
+    // FileReader.onload 的落点在负载高时不止一个 tick：轮询到缩略图数量到齐（上限 ~1s）
     for (let i = 0; i < 50; i += 1) {
-      if (container.querySelector('[data-testid="attach-strip"]')) break
+      if (container.querySelectorAll('[data-testid="attach-strip"] img').length >= expectTotal) break
       await new Promise((r) => setTimeout(r, 20))
     }
   })
+  expect(container.querySelectorAll('[data-testid="attach-strip"] img')).toHaveLength(expectTotal)
 }
 
 describe('Chat composer — todo21 vision attach', () => {
