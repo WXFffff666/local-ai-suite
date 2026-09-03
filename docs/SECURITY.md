@@ -1,5 +1,13 @@
 # SECURITY
 
+## 生产包 Electron fuses（todo31，todo35 将扩为完整矩阵）
+
+打包产物（`release/win-unpacked`、NSIS、portable）经 `scripts/fuses.mjs`（afterPack）加固；`node scripts/fuses.mjs --verify` 读回校验。开发/e2e 路径（Playwright `_electron.launch` 直启 `out/` + node_modules 的 Electron）**不经过 fuses**，属双构建设计的预期差异。
+
+- **保持 ON 的例外：`EnableNodeCliInspectArguments`**。e2e 的 `_electron.launch` 依赖 `--inspect=0` 建立调试通道（R9 源码级结论），关闭即静默砖掉测试门禁。补偿控制：`OnlyLoadAppFromAsar` + `EnableEmbeddedAsarIntegrityValidation`（应用代码只能从带完整性校验的 `app.asar` 加载，argv 传入的目录路径在生产包上一律拒绝），inspect 仅在用户显式传 `--inspect` 时监听。
+- **`EnableCookieEncryption` 保持 OFF**：Windows 专属效果（DPAPI 密钥存于 `<userData>/Local State`，跨启动稳定）。关闭它在本威胁模型里无代价：应用不落 Chromium cookie（密钥走 `safeStorage`/DPAPI，见下）；且该 fuse 是不可逆迁移（开启后回退会使既有 cookie 库失效）。若未来渲染层引入 cookie 会话，再连同密钥持久化策略一起评估。
+- `RunAsNode` / `NODE_OPTIONS` 注入均已关闭：安装包 EXE 不能当作通用 Node 跑任意 JS。
+
 ## 密钥存储
 
 - 所有密钥（`hfToken`、`search.tavilyApiKey` / `exaApiKey` / `braveApiKey`）**永不以明文落盘**。
