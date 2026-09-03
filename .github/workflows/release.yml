@@ -11,18 +11,27 @@ on:
 permissions:
   contents: write
 
+# CI v2 (todo33): verify-gated matrix builds, caches, smoke+uninstall checks.
+# Gate order: verify (tests+typecheck+e2e on windows) -> build matrix
+# (win/linux, electron-builder cache via actions/cache restore/save split with
+# if: always() — freelens lesson: the ELECTRON_CACHE env redirect is IGNORED by
+# electron-builder, so we cache the real %LOCALAPPDATA%\electron-builder\Cache
+# path directly) -> smoke-install (silent NSIS install + process-alive +
+# silent uninstall + install-dir removal, the todo12 "perfect uninstall"
+# guarantee promoted to CI level). tag->publish always / push->never semantics
+# and the draft-Release flow are UNCHANGED (todo35 owns any prerelease pivot).
+
 jobs:
-  release:
-    name: Build ${{ matrix.platform }} (${{ matrix.os }})
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: windows-2022
-            platform: win
-          - os: ubuntu-22.04
-            platform: linux
-    runs-on: ${{ matrix.os }}
+  verify:
+    name: Verify (gate)
+    # windows-2022 pinned: windows-2025's VS18 is unrecognized by node-gyp and
+    # better-sqlite3 v13 ships no prebuild, so the native rebuild in
+    # postinstall (`electron-builder install-app-deps`) must compile from
+    # source — hosted windows-2022 images DO carry VS Build Tools 2022 for it.
+    # No ELECTRON_SKIP_BINARY_DOWNLOAD here (unlike ci.yml's stubbed vitest
+    # jobs): the e2e leg launches the REAL Electron binary via
+    # _electron.launch, so the postinstall download must happen.
+    runs-on: windows-2022
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -49,10 +58,67 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Unit tests (vitest, CI config)
+        run: pnpm exec vitest run -c vitest.config.ci.ts --no-file-parallelism --dangerouslyIgnoreUnhandledErrors
+
+      - name: E2E (Playwright _electron, headed)
+        env:
+          # packaged/dev e2e must never poke the GitHub update feed (todo32
+          # kill-switch, src/main/testSupport.ts)
+          LAS_DISABLE_UPDATE_CHECK: '1'
+        run: pnpm test:e2e
+        # no `playwright install`: _electron.launch drives Electron's bundled
+        # chromium, no standalone browser download is needed; headed Electron
+        # runs fine on GitHub windows runners (xvfb is only for the linux legs).
+
+  build:
+    name: Build ${{ matrix.platform }} (${{ matrix.os }})
+    needs: verify
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-2022
+            platform: win
+            # electron-builder's REAL win cache location (see header note)
+            eb_cache_path: ~/AppData/Local/electron-builder/Cache
+          - os: ubuntu-22.04
+            platform: linux
+            eb_cache_path: ~/.cache/electron-builder
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm 9.x
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.x
+
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: pnpm
+
+      - name: Restore electron-builder cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ matrix.eb_cache_path }}
+          key: electron-builder-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            electron-builder-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Build app
         run: pnpm build
 
-      - name: Build and publish (Windows/macOS)
+      - name: Build and publish (Windows)
         if: matrix.platform != 'linux'
         shell: bash
         env:
@@ -66,9 +132,9 @@ jobs:
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
           if [[ "$GIT_REF" == refs/tags/v* ]]; then
-            pnpm exec electron-builder --publish always
+            pnpm exec electron-builder --win --x64 --publish always
           else
-            pnpm exec electron-builder --publish never
+            pnpm exec electron-builder --win --x64 --publish never
           fi
 
       - name: Build and publish (Linux with xvfb)
@@ -84,25 +150,103 @@ jobs:
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
           if [[ "$GIT_REF" == refs/tags/v* ]]; then
-            xvfb-run -a pnpm exec electron-builder --publish always
+            xvfb-run -a pnpm exec electron-builder --linux --publish always
           else
-            xvfb-run -a pnpm exec electron-builder --publish never
+            xvfb-run -a pnpm exec electron-builder --linux --publish never
           fi
+
+      - name: Save electron-builder cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ matrix.eb_cache_path }}
+          key: electron-builder-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
+          # unique name per platform+sha: parallel matrix legs can never
+          # collide under upload-artifact v4 (collision = hard error)
           name: LocalAISuite-${{ matrix.platform }}-${{ github.sha }}
           path: |
             release/*
             !release/.cache
           if-no-files-found: warn
-          retention-days: 14
+          # tag builds are release candidates -> kept longer than branch noise
+          retention-days: ${{ github.ref_type == 'tag' && 90 || 14 }}
 
-  # macOS ??????/??????? arm64 ???????????????? win/linux ???
+  smoke-install:
+    name: Smoke install + uninstall (Windows NSIS)
+    needs: build
+    runs-on: windows-2022
+    steps:
+      - name: Download Windows installer artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: LocalAISuite-win-${{ github.sha }}
+          path: smoke-artifacts
+
+      - name: Silent install, process-alive poll, silent uninstall, dir-removal poll
+        shell: pwsh
+        env:
+          # the packaged app IS update-gated by app.isPackaged (todo32), so
+          # the kill-switch must be set explicitly for this smoke launch —
+          # the installed app must not reach for the GitHub update feed here
+          LAS_DISABLE_UPDATE_CHECK: '1'
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $installer = Get-ChildItem -Path smoke-artifacts -Recurse -Filter '*Setup*.exe' | Select-Object -First 1
+          if (-not $installer) { throw 'NSIS *Setup*.exe not found in downloaded artifact' }
+          # electron-builder.yml nsis perMachine:false => default install dir is
+          # %LOCALAPPDATA%\Programs\<productName>; exe name follows productName.
+          $installDir = Join-Path $env:LOCALAPPDATA 'Programs\Local AI Suite'
+          Write-Host "== silent install: $($installer.FullName)"
+          Start-Process -FilePath $installer.FullName -ArgumentList '/S' -Wait
+          $exe = Join-Path $installDir 'Local AI Suite.exe'
+          if (-not (Test-Path $exe)) { throw "silent install produced no $exe" }
+          # --- MANDATORY gate 1: app process alive 8s after launch ---
+          Start-Process -FilePath $exe
+          $alive = $false
+          for ($i = 0; $i -lt 8; $i++) {
+            Start-Sleep -Seconds 1
+            if (Get-Process -Name 'Local AI Suite' -ErrorAction SilentlyContinue) { $alive = $true; break }
+          }
+          if (-not $alive) { throw 'app process not alive within 8s of launch' }
+          Write-Host 'PASS process alive'
+          # --- best-effort HTTP probe (warn, NEVER fail): the API server binds
+          # only after initServices, and 11434 needs the bundled llama engine
+          # binary which CI artifacts do not stage yet (todo34 owns staging) —
+          # connection-refused/absent here is expected, not a regression.
+          $httpOk = $false
+          for ($i = 0; $i -lt 30; $i++) {
+            try {
+              $r = Invoke-WebRequest -Uri 'http://127.0.0.1:11434/v1/models' -UseBasicParsing -TimeoutSec 2
+              Write-Host "models endpoint OK ($($r.StatusCode))"; $httpOk = $true; break
+            } catch { Start-Sleep -Seconds 2 }
+          }
+          if (-not $httpOk) { Write-Warning 'models endpoint never answered (expected in CI: no engine binaries staged yet)' }
+          # --- MANDATORY gate 2: silent uninstall removes the install dir ---
+          Get-Process -Name 'Local AI Suite' -ErrorAction SilentlyContinue | Stop-Process -Force
+          Start-Sleep -Seconds 2
+          $uninstaller = Join-Path $installDir 'Uninstall.exe'
+          if (-not (Test-Path $uninstaller)) { throw 'Uninstall.exe missing from install dir' }
+          Write-Host "== silent uninstall: $uninstaller"
+          Start-Process -FilePath $uninstaller -ArgumentList '/S' -Wait
+          $gone = $false
+          for ($i = 0; $i -lt 20; $i++) {
+            if (-not (Test-Path $installDir)) { $gone = $true; break }
+            Start-Sleep -Seconds 1
+          }
+          if (-not $gone) { throw "uninstall left $installDir in place (perfect-uninstall CI guarantee broken)" }
+          Write-Host 'PASS install-dir removed'
+          Write-Host 'smoke-install PASS: silent install + 8s alive + silent uninstall + dir removal'
+
+  # macOS 独立构建：arm64 需原生 runner/通用二进制链接，x64 runner 交叉打包会因
+  # 原生模块架构不符而失败——保持 continue-on-error，不进主门禁链（仅 needs verify 省时）。
   release-mac:
     runs-on: macos-latest
+    needs: verify
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
@@ -113,9 +257,32 @@ jobs:
         with:
           node-version: '20.x'
           cache: pnpm
+      - name: Restore electron-builder cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/Library/Caches/electron-builder
+          key: electron-builder-macOS-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            electron-builder-macOS-
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - name: Build mac app (draft, no publish)
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
         run: pnpm exec electron-builder --mac --publish never
+      - name: Save electron-builder cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: ~/Library/Caches/electron-builder
+          key: electron-builder-macOS-${{ hashFiles('pnpm-lock.yaml') }}
+      - name: Upload mac artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: LocalAISuite-mac-${{ github.sha }}
+          path: |
+            release/*
+            !release/.cache
+          if-no-files-found: warn
+          retention-days: ${{ github.ref_type == 'tag' && 90 || 14 }}
