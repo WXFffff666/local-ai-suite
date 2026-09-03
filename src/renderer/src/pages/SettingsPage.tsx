@@ -12,6 +12,7 @@
  */
 import { useCallback, useEffect, useState } from 'react'
 import '../components/settingspage/settingspage.css'
+import { EngineStatus } from '../components/settingspage/EngineStatus'
 import { SecretRow } from '../components/settingspage/SecretRow'
 import type {
   ConfigGetReply,
@@ -209,6 +210,9 @@ export function SettingsPage(): React.JSX.Element {
         </div>
         <p className="las-settings-note">端口固定 11434 保证（冲突时提示，不换口）；模型目录在 Models 页切换。</p>
       </section>
+
+      {/* todo30b — 引擎可用性矩阵 / NVIDIA 检测 / GPU 包下载（engines:* 通道） */}
+      <EngineStatus />
     </section>
   )
 }
