@@ -17,7 +17,8 @@ describe('ipc whitelist', () => {
     // search:run + hf:search + conversations 六通道（todo17 预列）
     // + todo13 models:setDir + todo14b download:cancel + todo16 config:get/config:set
     // + todo19 models:loraScan/models:loraMeta + todo20 image:saveTempImage
-    // + todo23 agent:start/agent:status/agent:cancel。
+    // + todo23 agent:start/agent:status/agent:cancel
+    // + todo30b models:launch + engines:status/engines:gpuDownload。
     expect(ALLOWED_CHANNELS).toEqual([
       'health:pulse',
       'models:list',
@@ -25,6 +26,8 @@ describe('ipc whitelist', () => {
       'models:setDir',
       'models:loraScan',
       'models:loraMeta',
+      // todo30b: registry-driven llama relaunch (the 21→30 wired hop, services.launchModel)
+      'models:launch',
       'download:cancel',
       'config:get',
       'config:set',
@@ -47,6 +50,9 @@ describe('ipc whitelist', () => {
       'gallery:reuse',
       'search:run',
       'hf:search',
+      // todo30b: engine availability matrix + GPU pack download (events ride 'engines:progress')
+      'engines:status',
+      'engines:gpuDownload',
       'conversations:list',
       'conversations:create',
       'conversations:rename',
@@ -105,7 +111,9 @@ describe('ipc event whitelist (main -> renderer)', () => {
       'agent:event',
       'agent:term',
       // todo25: main -> renderer permission request event
-      'permission:request'
+      'permission:request',
+      // todo30b: GPU pack download progress (terminal states incl 'quarantined')
+      'engines:progress'
     ])
     for (const ch of ALLOWED_EVENT_CHANNELS) {
       expect(isAllowedEventChannel(ch)).toBe(true)
