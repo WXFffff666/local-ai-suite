@@ -36,6 +36,7 @@ import type { DownloadManager } from './downloadManager'
 import { createSecretsHandlers, type SafeStorageLike } from './secrets'
 import type { AgentSessions } from '../../agent/runner/sessions'
 import type { AgentEvent } from '../../agent/runner/types'
+import type { PermissionBridge } from './permissionBridge'
 import {
   agentCancelSchema,
   agentStartSchema,
@@ -58,6 +59,7 @@ import {
   modelsLoraMetaSchema,
   modelsLoraScanSchema,
   modelsSetDirSchema,
+  permissionRespondSchema,
   searchRunSchema,
   validatePayload
 } from './schemas'
@@ -69,7 +71,8 @@ import type {
   ImageQueueStatusEvent,
   IpcSendFn,
   LoraMetaReply,
-  LoraScanReply
+  LoraScanReply,
+  PermissionRespondReply
 } from './whitelist'
 
 export type HandlerContext = { send: IpcSendFn }
@@ -120,6 +123,14 @@ export type HandlerDeps = {
    * registry (todo27/28).
    */
   agent?: () => Pick<AgentSessions, 'start' | 'cancel' | 'status'> | null
+  /**
+   * todo25: permission approval bridge behind 'permission:respond'. Same
+   * honest not-ready pattern as `agent` — todo29 constructs the bridge in
+   * main/index.ts (send bound to the focused window, onGrant wired to
+   * PermissionEngine.addRule) and hands the executor half to todo27/28's
+   * tool host. Only `respond` crosses the IPC boundary here.
+   */
+  permission?: () => Pick<PermissionBridge, 'respond'> | null
   /** destructive-action backends (same no-op wiring index.ts had pre-W1). */
   onDeleteWorkspace?: (id: string) => Promise<void>
   onOverwriteCoverage?: (opts: unknown) => Promise<void>
@@ -271,6 +282,21 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
       const sessions = deps.agent?.()
       if (!sessions) return NOT_READY
       const reply: AgentCancelReply = sessions.cancel(parsed.data.sessionId)
+      return reply
+    },
+
+    // --- permission approval (todo25) ------------------------------------------
+    // Registration-only: the pending-request state machine (120s auto-deny,
+    // abort->deny, once/session/always/deny) lives in permissionBridge.ts,
+    // unit-tested there. This seam validates the wire shape and forwards the
+    // decision; a stale/forged requestId is refused, never guessed at.
+    'permission:respond': async (args) => {
+      const parsed = validatePayload(permissionRespondSchema, first(args))
+      if (!parsed.ok) return parsed
+      const bridge = deps.permission?.()
+      if (!bridge) return NOT_READY
+      const settled = bridge.respond(parsed.data.requestId, parsed.data.choice)
+      const reply: PermissionRespondReply = settled ? { ok: true } : { ok: false, error: 'unknown-request' }
       return reply
     },
 

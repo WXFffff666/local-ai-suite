@@ -34,6 +34,8 @@ describe('ipc whitelist', () => {
       'agent:start',
       'agent:status',
       'agent:cancel',
+      // todo25: permission approval dialog respond channel
+      'permission:respond',
       'image:generate',
       'image:queue:status',
       // todo20: renderer drop/mask-brush PNG dataURLs land under userData/tmp
@@ -101,7 +103,9 @@ describe('ipc event whitelist (main -> renderer)', () => {
       'image:queue:status',
       'app:notification',
       'agent:event',
-      'agent:term'
+      'agent:term',
+      // todo25: main -> renderer permission request event
+      'permission:request'
     ])
     for (const ch of ALLOWED_EVENT_CHANNELS) {
       expect(isAllowedEventChannel(ch)).toBe(true)

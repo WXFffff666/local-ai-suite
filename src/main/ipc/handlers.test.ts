@@ -705,3 +705,59 @@ describe('agent channels (todo23)', () => {
     await expect(handlers['agent:status']([{}], send)).resolves.toMatchObject(invalidShape)
   })
 })
+
+
+// ---------------------------------------------------------------------------
+// todo25 - permission:respond (approval bridge seam)
+// ---------------------------------------------------------------------------
+
+describe('permission channels (todo25)', () => {
+  function makePermissionHarness() {
+    const harness = makeHarness()
+    const permission = { respond: vi.fn(() => true) }
+    const handlers = buildIpcHandlers({ ...harness.deps, permission: () => permission })
+    return { ...harness, permission, handlers }
+  }
+
+  it('without the bridge the channel answers the honest not-ready shape', async () => {
+    const { handlers } = makeHarness()
+    await expect(
+      handlers['permission:respond']([{ requestId: 'r1', choice: 'once' }], { send: vi.fn() })
+    ).resolves.toEqual({ ok: false, error: 'not-ready' })
+  })
+
+  it('validation runs before the container check (400 without bridge)', async () => {
+    const { handlers } = makeHarness()
+    await expect(handlers['permission:respond']([{ requestId: 'r1' }], { send: vi.fn() })).resolves.toMatchObject(
+      invalidShape,
+    )
+  })
+
+  it('off-enum choices and extra keys are rejected (400-shape)', async () => {
+    const { handlers, permission } = makePermissionHarness()
+    const send = { send: vi.fn() }
+    for (const payload of [
+      { requestId: 'r1', choice: 'yolo' },
+      { requestId: '', choice: 'once' },
+      { requestId: 'r1', choice: 'once', extra: 1 },
+      {},
+    ]) {
+      const res = await handlers['permission:respond']([payload], send)
+      expect(res, JSON.stringify(payload)).toMatchObject({ ok: false, error: 'invalid-payload' })
+    }
+    expect(permission.respond).not.toHaveBeenCalled()
+  })
+
+  it('routes the validated decision to the bridge; settled -> {ok:true}, stale -> unknown-request', async () => {
+    const { handlers, permission } = makePermissionHarness()
+    const send = { send: vi.fn() }
+    await expect(
+      handlers['permission:respond']([{ requestId: 'r1', choice: 'always' }], send)
+    ).resolves.toEqual({ ok: true })
+    expect(permission.respond).toHaveBeenCalledWith('r1', 'always')
+    permission.respond.mockReturnValueOnce(false)
+    await expect(
+      handlers['permission:respond']([{ requestId: 'gone', choice: 'deny' }], send)
+    ).resolves.toEqual({ ok: false, error: 'unknown-request' })
+  })
+})

@@ -299,6 +299,22 @@ export type AgentStatusInput = z.infer<typeof agentStatusSchema>
 export const agentCancelSchema = agentStatusSchema
 export type AgentCancelInput = z.infer<typeof agentCancelSchema>
 
+// --- permission approval (todo25) -----------------------------------------------
+
+/**
+ * Renderer's answer to a 'permission:request'. The choice enum is the ONLY
+ * escalation surface — there is deliberately no "approve everything" member
+ * (no-YOLO posture, Appendix C LLM06). requestId comes from the bridge, so a
+ * forged/stale id is refused at the bridge (unknown-request), not here.
+ */
+export const permissionRespondSchema = z
+  .object({
+    requestId: idSchema,
+    choice: z.enum(['once', 'session', 'always', 'deny'])
+  })
+  .strict()
+export type PermissionRespondInput = z.infer<typeof permissionRespondSchema>
+
 // --- validation funnel --------------------------------------------------------------
 
 export type IpcIssue = { path: string; message: string }
