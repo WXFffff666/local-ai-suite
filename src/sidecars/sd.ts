@@ -40,6 +40,54 @@ export function isValidSdQuantization(v: string): v is SdQuantization {
   return (SD_QUANTIZATIONS as readonly string[]).includes(v)
 }
 
+/**
+ * LoRA apply modes per leejet/stable-diffusion.cpp docs/lora.md (verified
+ * 2026-09-03 via raw.githubusercontent + Appendix R3 §A row 18/20):
+ * `--lora-apply-mode immediately|at_runtime`; `auto` = sd.cpp picks
+ * at_runtime when weights contain quantized params, else immediately.
+ */
+export const SD_LORA_APPLY_MODES = ['immediately', 'at_runtime', 'auto'] as const
+export type SdLoraApplyMode = (typeof SD_LORA_APPLY_MODES)[number]
+
+export function isValidSdLoraApplyMode(v: string): v is SdLoraApplyMode {
+  return (SD_LORA_APPLY_MODES as readonly string[]).includes(v)
+}
+
+/** True for GGUF quantized weight hints (everything except f32/f16). */
+function isQuantizedWeight(q: SdQuantization | undefined): boolean {
+  return q !== undefined && q !== 'f32' && q !== 'f16'
+}
+
+/** One LoRA selection: file stem inside --lora-model-dir + strength 0..2. */
+export type SdLoraTag = {
+  name: string
+  scale: number
+}
+
+/** Snap a scale to the [0,2] range on a 0.05 grid; NaN defaults to 1 (A1111 parity). */
+function clampLoraScale(scale: number): number {
+  if (!Number.isFinite(scale)) return 1
+  const clamped = Math.min(2, Math.max(0, scale))
+  return Number((Math.round(clamped / 0.05) * 0.05).toFixed(2))
+}
+
+/**
+ * A1111-style prompt tag builder — sd.cpp applies LoRAs through prompt tags
+ * `<lora:name:weight>` (docs/lora.md example `-p "a lovely cat<lora:marblesh:1>"`,
+ * Appendix R3 §A row 18/20). Each tag is followed by one space; invalid/empty
+ * names are skipped, tag-breaking characters (<> and whitespace) are replaced
+ * with '_'. Returns '' for an empty selection so it is safe to prefix anywhere.
+ */
+export function buildLoraPromptTags(loras: readonly SdLoraTag[]): string {
+  let out = ''
+  for (const lora of loras) {
+    const name = lora.name.trim().replace(/[\s<>]/g, '_')
+    if (!name) continue
+    out += `<lora:${name}:${clampLoraScale(lora.scale)}> `
+  }
+  return out
+}
+
 // ---------------------------------------------------------------------------
 // Bin resolver
 // ---------------------------------------------------------------------------
@@ -72,6 +120,17 @@ export type BuildSdArgsOptions = {
   port?: number
   /** Threads for CPU mode. */
   threads?: number
+  /**
+   * Directory holding LoRA safetensors/ckpt files -> `--lora-model-dir <dir>`
+   * (leejet/stable-diffusion.cpp docs/lora.md, Appendix R3 §A row 18/20).
+   */
+  loraModelDir?: string
+  /**
+   * `--lora-apply-mode`. Unset + quantized weights -> at_runtime (the upstream
+   * auto rule, made explicit for our default); unset + f16/f32/none -> omitted,
+   * sd.cpp auto-selects immediately.
+   */
+  loraApplyMode?: SdLoraApplyMode
   /** Extra passthrough args appended as-is. */
   extraArgs?: string[]
 }
@@ -91,6 +150,9 @@ export function buildSdArgs(opts: BuildSdArgsOptions = {}): string[] {
   if (opts.device !== undefined && !['cpu', 'cuda', 'vulkan'].includes(opts.device)) {
     throw new Error(`invalid sd device: ${opts.device}`)
   }
+  if (opts.loraApplyMode !== undefined && !isValidSdLoraApplyMode(opts.loraApplyMode)) {
+    throw new Error(`invalid sd lora-apply-mode: ${opts.loraApplyMode} — allowed: ${SD_LORA_APPLY_MODES.join(', ')}`)
+  }
 
   // sd-cli server mode: bind host/port, quiet optional
   const args: string[] = ['--host', host, '--port', String(port)]
@@ -105,6 +167,16 @@ export function buildSdArgs(opts: BuildSdArgsOptions = {}): string[] {
   if (opts.quantization) {
     // sd.cpp weight type flag
     args.push('--weight-type', opts.quantization)
+  }
+
+  // LoRA (docs/lora.md): dir + apply mode. Quantized defaults to at_runtime —
+  // the same rule upstream's `auto` applies; we pin it so the argv is explicit.
+  if (opts.loraModelDir) {
+    args.push('--lora-model-dir', opts.loraModelDir)
+  }
+  const loraMode = opts.loraApplyMode ?? (opts.loraModelDir && isQuantizedWeight(opts.quantization) ? 'at_runtime' : undefined)
+  if (loraMode !== undefined) {
+    args.push('--lora-apply-mode', loraMode)
   }
 
   // CPU fallback / device selection
@@ -241,6 +313,13 @@ export type SdGenerateRequest = {
   seed?: number
   sampler?: string
   batch_count?: number
+  /**
+   * LoRA selections folded into prompt tags by toGenerateBody BEFORE the POST
+   * (sd.cpp applies LoRAs via `<lora:name:w>` prompt tags + --lora-model-dir
+   * server flag — Appendix R3 §A row 18/20, docs/lora.md). Never sent as a
+   * body key: the sd-cli /generate parser ignores/derives on unknown fields.
+   */
+  loras?: SdLoraTag[]
   // passthrough
   [key: string]: unknown
 }
@@ -280,6 +359,21 @@ function isGpuErrorMessage(msg: string): boolean {
 // ---------------------------------------------------------------------------
 
 /**
+ * Build the /generate JSON body from a request: `loras` is consumed here —
+ * converted to an A1111-style tag prefix on the prompt (Appendix R3 §A row
+ * 18/20: sd.cpp selects adapters through prompt tags, not a body field), all
+ * other fields pass through untouched.
+ */
+export function toGenerateBody(req: SdGenerateRequest): Record<string, unknown> {
+  const { loras, ...rest } = req
+  const body: Record<string, unknown> = { ...rest }
+  if (loras && loras.length > 0) {
+    body['prompt'] = buildLoraPromptTags(loras) + String(rest.prompt ?? '')
+  }
+  return body
+}
+
+/**
  * Raw POST /generate — no queue, no fallback.
  * Throws on non-2xx.
  */
@@ -293,7 +387,7 @@ export async function generateImage(
   const res = await doFetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...(opts.headers ?? {}) },
-    body: JSON.stringify(req),
+    body: JSON.stringify(toGenerateBody(req)),
     signal: opts.signal,
   })
   if (!res.ok) {

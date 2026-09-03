@@ -14,6 +14,7 @@ import {
   resolveSdBin,
   buildSdArgs,
   buildSdCpuFallbackArgs,
+  buildLoraPromptTags,
   getGenerateUrl,
   getHealthUrl,
   createSdSidecarConfig,
@@ -370,6 +371,83 @@ describe('POST /generate — generateImage / queued / CPU回退', () => {
     expect(await checkSdHealth(11436, async () => new Response('', { status: 200 }) as Response)).toBe(true)
     expect(await checkSdHealth(11436, async () => new Response('', { status: 500 }) as Response)).toBe(false)
     expect(await checkSdHealth(11436, async () => { throw new Error('net') })).toBe(false)
+  })
+})
+
+describe('todo18 — LoRA args / apply-mode / prompt tag builder', () => {
+  it('buildSdArgs 空 options 不变（LoRA 为纯增量）', () => {
+    expect(buildSdArgs()).toEqual(['--host', '127.0.0.1', '--port', '11436'])
+  })
+
+  it('loraModelDir 拼 --lora-model-dir <dir>', () => {
+    const argv = buildSdArgs({ loraModelDir: 'D:\\models\\lora' })
+    expect(argv).toEqual(['--host', '127.0.0.1', '--port', '11436', '--lora-model-dir', 'D:\\models\\lora'])
+  })
+
+  it('显式 loraApplyMode 三枚举原样透传', () => {
+    for (const mode of ['immediately', 'at_runtime', 'auto'] as const) {
+      const argv = buildSdArgs({ loraModelDir: 'lora', loraApplyMode: mode })
+      expect(argv).toContain('--lora-apply-mode')
+      expect(argv).toContain(mode)
+    }
+  })
+
+  it('量化权重默认 at_runtime（docs/lora.md：quantized -> at_runtime auto 规则）', () => {
+    const argv = buildSdArgs({ loraModelDir: 'lora', quantization: 'q4_0' })
+    expect(argv).toEqual(expect.arrayContaining(['--lora-apply-mode', 'at_runtime']))
+    expect(argv.indexOf('--lora-apply-mode')).toBe(argv.indexOf('at_runtime') - 1)
+  })
+
+  it('非量化 (f16/f32/缺省) 不显式注入 apply-mode（留给 sd.cpp auto 选择 immediately）', () => {
+    expect(buildSdArgs({ loraModelDir: 'lora', quantization: 'f16' })).not.toContain('--lora-apply-mode')
+    expect(buildSdArgs({ loraModelDir: 'lora' })).not.toContain('--lora-apply-mode')
+  })
+
+  it('显式 mode 覆盖量化默认（immediately + q4_0 由调用方负责，sd.cpp 自行回退）', () => {
+    const argv = buildSdArgs({ loraModelDir: 'lora', quantization: 'q4_0', loraApplyMode: 'immediately' })
+    expect(argv).toContain('immediately')
+    expect(argv).not.toContain('at_runtime')
+  })
+
+  it('非法 apply mode 抛错（运行时枚举校验，防 IPC 绕过 TS）', () => {
+    expect(() => buildSdArgs({ loraModelDir: 'lora', loraApplyMode: 'YOLO' as never })).toThrow(/lora-apply-mode|apply mode/)
+  })
+
+  it('buildLoraPromptTags: <lora:name:scale> 拼接 + 尾随空格', () => {
+    expect(buildLoraPromptTags([])).toBe('')
+    expect(buildLoraPromptTags([{ name: 'marblesh', scale: 1 }])).toBe('<lora:marblesh:1> ')
+    expect(buildLoraPromptTags([{ name: 'a', scale: 0.75 }, { name: 'b', scale: 0.5 }])).toBe('<lora:a:0.75> <lora:b:0.5> ')
+  })
+
+  it('buildLoraPromptTags: scale clamp 0-2 并吸附 0.05 网格', () => {
+    expect(buildLoraPromptTags([{ name: 'x', scale: 5 }])).toBe('<lora:x:2> ')
+    expect(buildLoraPromptTags([{ name: 'x', scale: -1 }])).toBe('<lora:x:0> ')
+    expect(buildLoraPromptTags([{ name: 'x', scale: 0.77 }])).toBe('<lora:x:0.75> ')
+    expect(buildLoraPromptTags([{ name: 'x', scale: Number.NaN }])).toBe('<lora:x:1> ')
+  })
+
+  it('buildLoraPromptTags: 空/非法 name 跳过，非法字符净化为 _', () => {
+    expect(buildLoraPromptTags([{ name: '  ', scale: 1 }])).toBe('')
+    expect(buildLoraPromptTags([{ name: 'a>b c', scale: 1 }])).toBe('<lora:a_b_c:1> ')
+  })
+
+  it('generateImage: loras 折叠进 prompt 前缀且不出现在 JSON body（Appendix R3 §A 18/20 锚点）', async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse({ image: 'b64' }))
+    await generateImage(
+      { prompt: 'a lovely cat', loras: [{ name: 'marblesh', scale: 0.8 }] },
+      { fetchImpl: fetchImpl as never },
+    )
+    const body = JSON.parse(String((fetchImpl.mock.calls[0] as [unknown, { body: string }])[1]?.body)) as Record<string, unknown>
+    expect(body['prompt']).toBe('<lora:marblesh:0.8> a lovely cat')
+    expect(body['loras']).toBeUndefined()
+  })
+
+  it('generateImage: 无 loras 时 body 不含 loras 键（回归保护）', async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse({ image: 'b64' }))
+    await generateImage({ prompt: 'plain' }, { fetchImpl: fetchImpl as never })
+    const body = JSON.parse(String((fetchImpl.mock.calls[0] as [unknown, { body: string }])[1]?.body)) as Record<string, unknown>
+    expect(body['prompt']).toBe('plain')
+    expect('loras' in body).toBe(false)
   })
 })
 
