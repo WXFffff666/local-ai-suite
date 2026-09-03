@@ -216,11 +216,13 @@ test.describe('smoke v2 — real Electron app launch', () => {
     await expect(page.locator('.las-nav-brand')).toHaveText('LAS')
   })
 
-  test('b — preload whitelist exposes >=27 invoke + >=8 event channels', async () => {
+  test('b — preload whitelist exposes >=41 invoke + >=10 event channels', async () => {
     const api = await readWindowApi(page)
     expect(api.ping).toBe('pong')
-    expect(api.allowedChannels.length).toBeGreaterThanOrEqual(27)
-    expect(api.allowedEventChannels.length).toBeGreaterThanOrEqual(8)
+    // 38 (todo25) + 3 (todo30b: models:launch + engines:status/gpuDownload)
+    expect(api.allowedChannels.length).toBeGreaterThanOrEqual(41)
+    // 9 (todo25) + 1 (todo30b: engines:progress)
+    expect(api.allowedEventChannels.length).toBeGreaterThanOrEqual(10)
     for (const ch of [
       'chat:send',
       'chat:abort',
@@ -231,10 +233,14 @@ test.describe('smoke v2 — real Electron app launch', () => {
       'conversations:appendMessage',
       'conversations:listMessages',
       'gallery:insert',
+      // todo30b: engine matrix + GPU pack download + model launch
+      'engines:status',
+      'engines:gpuDownload',
+      'models:launch',
     ]) {
       expect(api.allowedChannels, `invoke channel ${ch} missing`).toContain(ch)
     }
-    for (const ev of ['chat:delta', 'chat:done', 'chat:error', 'app:notification']) {
+    for (const ev of ['chat:delta', 'chat:done', 'chat:error', 'app:notification', 'engines:progress']) {
       expect(api.allowedEventChannels, `event channel ${ev} missing`).toContain(ev)
     }
   })
