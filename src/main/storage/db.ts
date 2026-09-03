@@ -46,35 +46,53 @@ function ensureDbDir(): void {
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
 }
 
-function resolveMigrationSql(): string {
+/** Ordered list of migration files applied by migrate(). Keep append-only. */
+const MIGRATION_FILES = ['001-init.sql', '002-permissions.sql'] as const
+
+/** Inline fallbacks so the db stays usable if the .sql files are missing from the package. */
+const MIGRATION_FALLBACKS: Record<string, string> = {
+  '001-init.sql': `
+    CREATE TABLE IF NOT EXISTS chats (id TEXT PRIMARY KEY, title TEXT NOT NULL DEFAULT 'New Chat', created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL);
+    CREATE TABLE IF NOT EXISTS messages (id TEXT PRIMARY KEY, chat_id TEXT NOT NULL REFERENCES chats(id) ON DELETE CASCADE, role TEXT NOT NULL CHECK (role IN ('user','assistant','system')), content TEXT NOT NULL, created_at INTEGER NOT NULL);
+    CREATE INDEX IF NOT EXISTS idx_messages_chat_id ON messages(chat_id);
+    CREATE TABLE IF NOT EXISTS vectors (id TEXT PRIMARY KEY, chat_id TEXT, content TEXT NOT NULL, embedding BLOB, created_at INTEGER NOT NULL);
+    CREATE INDEX IF NOT EXISTS idx_vectors_chat_id ON vectors(chat_id);
+  `,
+  '002-permissions.sql': `
+    CREATE TABLE IF NOT EXISTS permissions (id INTEGER PRIMARY KEY AUTOINCREMENT, kind TEXT NOT NULL CHECK (kind IN ('fs.read','fs.write','fs.shell','net','mcp')), rule TEXT NOT NULL, scope TEXT NOT NULL CHECK (scope IN ('session','always')), decision TEXT NOT NULL CHECK (decision IN ('allow','deny','ask')), created_at INTEGER NOT NULL);
+    CREATE INDEX IF NOT EXISTS idx_permissions_kind ON permissions(kind);
+    CREATE TABLE IF NOT EXISTS audit_log (ts INTEGER NOT NULL, action TEXT, detail_json TEXT, decision TEXT);
+    CREATE INDEX IF NOT EXISTS idx_audit_log_ts ON audit_log(ts);
+    CREATE TRIGGER IF NOT EXISTS audit_log_no_update BEFORE UPDATE ON audit_log BEGIN SELECT RAISE(ABORT, 'audit_log is append-only'); END;
+    CREATE TRIGGER IF NOT EXISTS audit_log_no_delete BEFORE DELETE ON audit_log BEGIN SELECT RAISE(ABORT, 'audit_log is append-only'); END;
+  `,
+}
+
+function resolveMigrationSql(fileName: string): string {
   const candidates = [
-    // when running from src (ts-node/vitest): src/main/storage/migrations/001-init.sql
-    resolve(process.cwd(), 'src/main/storage/migrations/001-init.sql'),
+    // when running from src (ts-node/vitest): src/main/storage/migrations/<file>
+    resolve(process.cwd(), `src/main/storage/migrations/${fileName}`),
     // when running from compiled out/main/storage/db.js
-    join(__dirname, 'migrations/001-init.sql'),
-    join(__dirname, '../storage/migrations/001-init.sql'),
-    join(dirname(__dirname), 'src/main/storage/migrations/001-init.sql'),
-    resolve(__dirname, '../../src/main/storage/migrations/001-init.sql'),
+    join(__dirname, `migrations/${fileName}`),
+    join(__dirname, `../storage/migrations/${fileName}`),
+    join(dirname(__dirname), `src/main/storage/migrations/${fileName}`),
+    resolve(__dirname, `../../src/main/storage/migrations/${fileName}`),
   ]
   for (const p of candidates) {
     if (existsSync(p)) {
       return readFileSync(p, 'utf-8')
     }
   }
-  // fallback: inline minimal schema so db still usable if sql file missing
-  return `
-    CREATE TABLE IF NOT EXISTS chats (id TEXT PRIMARY KEY, title TEXT NOT NULL DEFAULT 'New Chat', created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL);
-    CREATE TABLE IF NOT EXISTS messages (id TEXT PRIMARY KEY, chat_id TEXT NOT NULL REFERENCES chats(id) ON DELETE CASCADE, role TEXT NOT NULL CHECK (role IN ('user','assistant','system')), content TEXT NOT NULL, created_at INTEGER NOT NULL);
-    CREATE INDEX IF NOT EXISTS idx_messages_chat_id ON messages(chat_id);
-    CREATE TABLE IF NOT EXISTS vectors (id TEXT PRIMARY KEY, chat_id TEXT, content TEXT NOT NULL, embedding BLOB, created_at INTEGER NOT NULL);
-    CREATE INDEX IF NOT EXISTS idx_vectors_chat_id ON vectors(chat_id);
-  `
+  // fallback: inline schema so db still usable if sql file missing
+  return MIGRATION_FALLBACKS[fileName] ?? ''
 }
 
-/** Execute migration SQL on the given db. Idempotent via IF NOT EXISTS. */
+/** Execute all migration SQL files on the given db, in order. Idempotent via IF NOT EXISTS. */
 export function migrate(db: Database): void {
-  const sql = resolveMigrationSql()
-  db.exec(sql)
+  for (const file of MIGRATION_FILES) {
+    const sql = resolveMigrationSql(file)
+    db.exec(sql)
+  }
 }
 
 function tryLoadVecExtension(db: Database): boolean {

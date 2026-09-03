@@ -1,6 +1,6 @@
 {
   "extends": "@electron-toolkit/tsconfig/tsconfig.node.json",
-  "include": ["electron.vite.config.*", "src/main/**/*", "src/preload/**/*", "src/shared/**/*", "src/core/**/*", "src/sidecars/**/*", "src/models/**/*", "src/search/**/*", "src/rag/**/*", "src/api/**/*", "src/image/**/*", "src/gallery/**/*", "src/health/**/*", "src/presets/**/*", "src/security/**/*", "src/market/**/*"],
+  "include": ["electron.vite.config.*", "src/main/**/*", "src/preload/**/*", "src/shared/**/*", "src/core/**/*", "src/sidecars/**/*", "src/models/**/*", "src/search/**/*", "src/rag/**/*", "src/api/**/*", "src/image/**/*", "src/gallery/**/*", "src/health/**/*", "src/presets/**/*", "src/security/**/*", "src/market/**/*", "src/agent/policy/**/*"],
   "exclude": ["**/*.test.ts", "**/*.test.tsx", "node_modules"],
   "compilerOptions": {
     "composite": true,

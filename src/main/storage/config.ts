@@ -4,6 +4,15 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 export type Theme = 'light' | 'dark' | 'system'
 
 /**
+ * config.json schema version (todo24, plan A9/r2). v1 files have no
+ * schemaVersion field at all; readers must treat missing as v1 and merge
+ * defaults over them. Writers always persist CURRENT_SCHEMA_VERSION
+ * (rewrite-on-save upgrade). Unknown fields from older/newer files are
+ * preserved verbatim on save.
+ */
+export const CURRENT_SCHEMA_VERSION = 2
+
+/**
  * Encrypted secret payloads persisted in config.json (todo16). Values are
  * safeStorage envelopes (`enc:v1:` / `enc:fallback:v1:`) or '' (cleared) —
  * plaintext never reaches disk (config:set handler enforces the prefix).
@@ -16,6 +25,8 @@ export type SecretPayloads = {
 }
 
 export type AppConfig = {
+  /** config.json schema version; missing on disk = v1 (tolerant read, upgrade on save) */
+  schemaVersion: number
   /** UI theme */
   theme: Theme
   /** BCP47 locale, default zh-CN */
@@ -39,6 +50,7 @@ export type AppConfig = {
 }
 
 export const DEFAULT_CONFIG: AppConfig = {
+  schemaVersion: CURRENT_SCHEMA_VERSION,
   theme: 'system',
   locale: 'zh-CN',
   modelsDir: 'models',
@@ -76,7 +88,12 @@ function ensureDirFor(filePath: string): void {
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
 }
 
-/** Read config from disk, merged with defaults. Never throws — returns defaults on missing/corrupt file. */
+/**
+ * Read config from disk, merged with defaults. Never throws — returns defaults on missing/corrupt file.
+ * Tolerant reader (todo24): a v1 file (no schemaVersion, or a non-numeric value) is merged over
+ * defaults; unknown keys are preserved for round-trip. The upgrade to the current schema version is
+ * persisted on the next save (rewrite-on-save).
+ */
 export function getConfig(): AppConfig {
   const p = getConfigPath()
   if (!existsSync(p)) return { ...DEFAULT_CONFIG }
@@ -84,7 +101,11 @@ export function getConfig(): AppConfig {
     const raw = readFileSync(p, 'utf-8')
     const parsed = JSON.parse(raw) as Partial<AppConfig>
     if (typeof parsed !== 'object' || parsed === null) return { ...DEFAULT_CONFIG }
-    return { ...DEFAULT_CONFIG, ...parsed }
+    const merged: AppConfig = { ...DEFAULT_CONFIG, ...parsed }
+    if (typeof merged.schemaVersion !== 'number' || !Number.isFinite(merged.schemaVersion)) {
+      merged.schemaVersion = DEFAULT_CONFIG.schemaVersion
+    }
+    return merged
   } catch {
     return { ...DEFAULT_CONFIG }
   }
@@ -92,11 +113,13 @@ export function getConfig(): AppConfig {
 
 /**
  * Merge partial config into existing and persist to disk.
+ * Always stamps schemaVersion = CURRENT_SCHEMA_VERSION (v1 → v2 rewrite-on-save upgrade)
+ * and keeps unknown fields from older files verbatim.
  * Returns the new full config.
  */
 export function setConfig(partial: Partial<AppConfig>): AppConfig {
   const current = getConfig()
-  const next: AppConfig = { ...current, ...partial }
+  const next: AppConfig = { ...current, ...partial, schemaVersion: CURRENT_SCHEMA_VERSION }
   const p = getConfigPath()
   ensureDirFor(p)
   writeFileSync(p, JSON.stringify(next, null, 2), 'utf-8')
