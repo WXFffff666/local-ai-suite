@@ -10,6 +10,29 @@
 
 ---
 
+## 功能全景
+
+| 功能 | 说明 | 模块 |
+|------|------|------|
+| 流式聊天 | SSE 全链路、多会话持久化（SQLite）、Markdown/代码高亮 | `src/chat/` |
+| 视觉对话 | 图片消息 → VLM（`--mmproj` 通路），截图问答 | `src/chat/` · `src/main/overlay/` |
+| 语音输入 | whisper.cpp 侧车，按住说话 → 转写入输入框 | `src/speech/whisper.ts` |
+| 本地 OCR | PaddleOCR-json 子进程，图片提取文字（Chat 右键 / 画廊按钮） | `src/ocr/` |
+| Agent 工具执行 | 权限引擎默认 ask（无 YOLO）、审计 append-only、Job Object/树杀 jail | `src/agent/` |
+| 引擎管理 | llama.cpp/Ollama/sd-cli 检测优先解析，sha256 校验 + GPU 包下载/隔离 | `src/engines/` |
+| 模型市场 | Hugging Face 浏览与下载（token 经 safeStorage 加密） | `src/market/hf.ts` |
+| 混合 RAG | 每库独立 FTS + sqlite-vec 命名空间，引用可点 | `src/rag/` |
+| MCP 集成 | stdio 本地子进程服务器，工具调用先过权限门 | `src/mcp/` |
+| 快捷提问 | 全局热键呼出迷你窗，剪贴板预填（永不离机） | `src/main/quickask/` |
+| 截图问屏 | 全局热键 → 遮罩选区 → VLM 三选快捷 chip | `src/main/overlay/` |
+| 导出 | 会话/画廊导出与缓存清理 | `src/main/export/` |
+| 系统集成 | `las://` 深链、开始菜单 Jump List、可选开机自启（默认关） | `src/main/export/jumplist.ts` · `src/renderer/src/pages/SettingsPage.tsx` |
+| OpenAI 兼容层 | `127.0.0.1:11434`，OpenCode/Continue 直连；外部 Ollama 自动接管仲裁 | `src/main/apiServer.ts` |
+
+> 安全/隐私/故障排查三册：`docs/SECURITY.md` · `PRIVACY.md` · `docs/TROUBLESHOOTING.md`（SmartScreen 首启、杀软隔离、端口冲突、卸载数据去向）。
+
+---
+
 ## 5 分钟跑通
 
 > 环境：Node.js 18+ · pnpm 9+ · Windows 10/11（macOS/Linux 同理，图标与签名见 `electron-builder.yml`）

@@ -29,6 +29,22 @@
 
 > 离线自检：断网后执行 `curl http://127.0.0.1:11434/v1/chat/completions` 与本地生图、本地 SearXNG 搜索，功能正常即代表零联网可聊。
 
+### 2.1 零外联不变量如何被强制（todo35，非口头承诺）
+
+「运行时零外联」是**被机器验证的不变量**，四条独立证据链：
+
+| 机制 | 强制方式 | 证据 |
+|------|----------|------|
+| e2e 全流量断言 | Playwright 全流程跑完后逐条检查网络请求：目标 host 非 `127.0.0.1`/`localhost` 且非 `file:` 即测试失败 | `tests/e2e/smoke.spec.ts` 用例 `e2 — zero external-network requests (loopback/file only)` |
+| 引擎离线 | 引擎二进制只从 系统 PATH / 安装包 extraResources / 用户已下载的 `userData/engines` 解析，spawn 前 sha256 校验；运行期引擎本身不拨外网（仅绑 `127.0.0.1`） | `src/engines/resolver.ts`、`src/engines/gpuPack.ts` |
+| 更新 kill-switch | `LAS_DISABLE_UPDATE_CHECK=1` 整体关闭延迟自动更新检查——e2e 与离线 CI 强制携带（CI 若意外外联更新域立即红）；用户侧设置页可永久关闭更新检查 | `src/main/testSupport.ts`、`src/main/updater.ts`、`scripts/ci-assert.mjs` 断言 |
+| 静态门禁 | CI 扫描源码禁止 `0.0.0.0` 监听与新增遥测域名白名单 | `scripts/check-privacy.mjs` |
+
+### 2.2 两个易被误解的边界
+
+- **MCP 服务器 = 本机 stdio 子进程**：MCP 集成（`src/mcp/pool.ts`、`src/mcp/sdk.ts`）只支持 stdio 传输——服务器是应用自己 spawn 的**本地子进程**，走 stdin/stdout 管道，不经任何网络端口；每次 `tools/call` 先过权限门（`src/agent/tools/fs/gating.ts`）再落 spawn。配置外部远程 MCP server 不属于本应用能力。
+- **快捷提问剪贴板预填永不出机**：QuickAsk 呼起时主进程 `clipboard.readText()` 读一次剪贴板（`src/main/ipc/whitelist.ts` 的 `quickask:prefill` 推送），内容仅作为**输入框占位符**显示在本地窗口（`src/renderer/src/quickask/QuickAskApp.tsx`），不写盘、不入日志、不发任何网络请求——是否以此提问完全由用户按 Enter 决定。
+
 ---
 
 ## 3. 数据仅落 `userData`

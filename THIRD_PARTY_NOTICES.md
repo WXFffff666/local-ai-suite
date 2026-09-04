@@ -101,6 +101,11 @@
 | better-sqlite3 | 9.x | BSD-3-Clause | 本地持久化（白名单特例） |
 | sqlite-vec | 0.1.x | MIT | 向量检索（白名单特例） |
 | sharp | 0.34.x | Apache-2.0 | 图像缩略（白名单特例） |
+| @fontsource-variable/inter | 5.3.x | OFL-1.1 | 界面字体 Inter（可变字体自托管，随包分发，无运行期字体 CDN）；OFL 属字体专用宽松许可，已在 `scripts/check-licenses.mjs` 白名单 |
+| @modelcontextprotocol/sdk | 1.30.x | MIT | MCP 客户端（`src/mcp/sdk.ts` 单点触碰，仅 stdio 本地子进程） |
+| node-downloader-helper | 2.1.x | MIT | 引擎/OCR 包下载器（`src/engines/gpuPack.ts` 的 `ndhDownloader`，断点续传+重试；`src/ocr/installer.ts` 复用同通道） |
+
+> **审计留痕：`@ricky0123/vad-web` 计划内但有意未安装**。npm 存在（v0.0.30 经 `npm view` 核实），但其 Silero VAD 模型默认**运行期从 CDN 拉取**——违反 PRIVACY.md 零外联不变量与 e2e `e2` 用例（自托管模型需额外 onnxruntime-web 捆绑工程）；且按住说话（PTT）本就不需要静音门控。裁决记录见 `.omo/evidence/task-36-desktop-native-local-ai.md`（W5 供应链审计线核对），`package.json` 未含此依赖，SBOM 与运行时依赖一致。
 
 > 白名单特例：`better-sqlite3` / `sqlite-vec` / `sharp` 含原生二进制，许可分别为 BSD-3-Clause / MIT / Apache-2.0，已在 `scripts/check-licenses.mjs` 显式白名单中。
 
