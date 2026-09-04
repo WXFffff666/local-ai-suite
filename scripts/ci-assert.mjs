@@ -67,7 +67,7 @@ check('silent install /S + -Wait', /-ArgumentList '\/S' -Wait/.test(smoke))
 check('install dir mirrors perMachine:false', /\$env:LOCALAPPDATA 'Programs\\Local AI Suite'/.test(smoke))
 check('process-alive 8s poll is mandatory', /not \$alive\) \{ throw/.test(smoke))
 check('HTTP 11434 probe is best-effort warn', /Write-Warning 'models endpoint never answered/.test(smoke))
-check('silent uninstall via Uninstall.exe /S', /'Uninstall\.exe'/.test(smoke) && /-ArgumentList '\/S' -Wait/.test(smoke))
+  check('silent uninstall via Uninstall*.exe glob (electron-builder names it "Uninstall <productName>.exe")', /Filter 'Uninstall\*\.exe'/.test(smoke) && /no Uninstall\*\.exe found in install dir/.test(smoke) && /-ArgumentList '\/S' -Wait/.test(smoke))
 check('install-dir removal asserted (20s poll)', /left \$installDir in place/.test(smoke))
 check('smoke sets update kill-switch env', /LAS_DISABLE_UPDATE_CHECK: '1'/.test(smoke))
 

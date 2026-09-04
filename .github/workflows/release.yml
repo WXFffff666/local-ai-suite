@@ -229,10 +229,14 @@ jobs:
           # --- MANDATORY gate 2: silent uninstall removes the install dir ---
           Get-Process -Name 'Local AI Suite' -ErrorAction SilentlyContinue | Stop-Process -Force
           Start-Sleep -Seconds 2
-          $uninstaller = Join-Path $installDir 'Uninstall.exe'
-          if (-not (Test-Path $uninstaller)) { throw 'Uninstall.exe missing from install dir' }
-          Write-Host "== silent uninstall: $uninstaller"
-          Start-Process -FilePath $uninstaller -ArgumentList '/S' -Wait
+          # electron-builder NSIS names the uninstaller "Uninstall <productName>.exe"
+          # (observed: 'Uninstall Local AI Suite.exe') — NOT the bare 'Uninstall.exe'
+          # this step used to assume, which failed smoke-install on run 33835456171.
+          # Resolve by wildcard, still a MANDATORY gate: zero matches => throw.
+          $uninstallerFile = Get-ChildItem -Path $installDir -Filter 'Uninstall*.exe' | Select-Object -First 1
+          if (-not $uninstallerFile) { throw 'no Uninstall*.exe found in install dir' }
+          Write-Host "== silent uninstall: $($uninstallerFile.FullName)"
+          Start-Process -FilePath $uninstallerFile.FullName -ArgumentList '/S' -Wait
           $gone = $false
           for ($i = 0; $i -lt 20; $i++) {
             if (-not (Test-Path $installDir)) { $gone = $true; break }
