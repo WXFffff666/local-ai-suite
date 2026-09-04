@@ -38,6 +38,10 @@ import { createRagHandlers, type RagManagerSurface } from '../../rag/ipc'
 // todo38: overlay/ipc is value-safe (schemas + controller types only, no
 // electron graph — same registration-only pattern as ocr/rag).
 import { createOverlayHandlers, type OverlaySurface } from '../overlay/ipc'
+// todo41: quickask/ipc is value-safe (schemas + relay/controller types only, no
+// electron graph — same registration-only pattern as overlay/ocr/rag).
+import { createQuickAskHandlers } from '../quickask/ipc'
+import type { QuickAskController } from '../quickask/controller'
 import { createOverwriteCoverageHandler } from '../handlers/overwriteCoverage'
 import { createPublishReleaseHandler } from '../handlers/publishRelease'
 import { createClearCacheHandler } from '../handlers/clearCache'
@@ -72,6 +76,7 @@ import {
   modelsSetDirSchema,
   permissionRespondSchema,
   searchRunSchema,
+  testTriggerHotkeySchema,
   updateCheckSchema,
   updateDownloadInstallSchema,
   validatePayload
@@ -216,6 +221,13 @@ export type HandlerDeps = {
    */
   overlay?: () => OverlaySurface | null
   testHooks?: () => boolean
+  /**
+   * todo41: quick-ask mini window controller behind quickask:hide/prefill:get +
+   * the '__test.triggerHotkey' quickask lane. index.ts constructs it after
+   * whenReady (same lazy-seam convention as `overlay`); the chat itself rides
+   * the existing `relay` dep — ChatRelay.start is the shared ask function.
+   */
+  quickask?: () => QuickAskController | null
   /** destructive-action backends (same no-op wiring index.ts had pre-W1). */
   onDeleteWorkspace?: (id: string) => Promise<void>
   onOverwriteCoverage?: (opts: unknown) => Promise<void>
@@ -292,6 +304,25 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
     overlay: () => deps.overlay?.() ?? null,
     testHooksEnabled: () => deps.testHooks?.() ?? false,
   })
+  // todo41: quickask:ask/hide/prefill:get + the '__test.triggerHotkey' quickask
+  // lane. The chat is relayed by the SAME ChatRelay instance chat:send uses
+  // (the shared ask function); only the delta event labels differ (remapped in
+  // ../quickask/ipc.ts so the mini window never cross-talks the main chat).
+  const quickAskHandlers = createQuickAskHandlers({
+    quickask: () => deps.quickask?.() ?? null,
+    relay: deps.relay,
+    testHooksEnabled: () => deps.testHooks?.() ?? false,
+  })
+  // '__test.triggerHotkey' dispatches by the validated name: 'screenshot' →
+  // todo38 overlay lane, 'quickask' → todo41 lane. zod already gated the enum,
+  // so the else arm is exactly the screenshot case (exhaustive by schema).
+  const testTriggerHotkey: IpcHandler = async (args, ctx) => {
+    const parsed = validatePayload(testTriggerHotkeySchema, first(args))
+    if (!parsed.ok) return parsed
+    return parsed.data.name === 'quickask'
+      ? quickAskHandlers['__test.triggerHotkey'](args, ctx)
+      : overlayHandlers['__test.triggerHotkey'](args, ctx)
+  }
 
   const passthrough =
     (fn: (args: unknown[]) => Promise<unknown>): IpcHandler =>
@@ -362,10 +393,12 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
     'config:set': async (args) => {
       const parsed = validatePayload(configSetSchema, first(args))
       if (!parsed.ok) return parsed
-      const { theme, locale, secrets, rerankEnabled, rerankModel, embeddingModel } = parsed.data
+      const { theme, locale, secrets, rerankEnabled, rerankModel, embeddingModel, quickaskHotkeyEnabled } = parsed.data
       const partial: Partial<AppConfig> = {}
       if (theme !== undefined) partial.theme = theme
       if (locale !== undefined) partial.locale = locale
+      // todo41: quick-ask hotkey enable flag (combo fixed, plan posture)
+      if (quickaskHotkeyEnabled !== undefined) partial.quickaskHotkeyEnabled = quickaskHotkeyEnabled
       // todo39: RAG prefs (rerankEnabled toggles the optional精排 lane)
       if (rerankEnabled !== undefined) partial.rerankEnabled = rerankEnabled
       if (rerankModel !== undefined) partial.rerankModel = rerankModel
@@ -645,7 +678,15 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
     'overlay:frame:get': overlayHandlers['overlay:frame:get'],
     'overlay:select': overlayHandlers['overlay:select'],
     'overlay:cancel': overlayHandlers['overlay:cancel'],
-    '__test.triggerHotkey': overlayHandlers['__test.triggerHotkey']
+    // '__test.triggerHotkey' routes by name (todo38 screenshot / todo41 quickask).
+    '__test.triggerHotkey': testTriggerHotkey,
+
+    // --- quick-ask mini window (todo41) ----------------------------------------
+    // Registration-only: window lifecycle is ../quickask/controller.ts; the ask
+    // rides the SAME ChatRelay as chat:send (deltas re-labeled quickask:*).
+    'quickask:ask': quickAskHandlers['quickask:ask'],
+    'quickask:hide': quickAskHandlers['quickask:hide'],
+    'quickask:prefill:get': quickAskHandlers['quickask:prefill:get']
   }
 
   return handlers

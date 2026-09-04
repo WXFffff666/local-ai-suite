@@ -97,6 +97,11 @@ describe('ipc whitelist', () => {
       'overlay:frame:get',
       'overlay:select',
       'overlay:cancel',
+      // todo41: quick-ask mini window (ask rides the shared ChatRelay; hide +
+      // prefill:get are sender-guarded controller verbs)
+      'quickask:ask',
+      'quickask:hide',
+      'quickask:prefill:get',
       '__test.triggerHotkey'
     ])
   })
@@ -158,7 +163,13 @@ describe('ipc event whitelist (main -> renderer)', () => {
       // todo40: MCP server lifecycle transitions ({name,state})
       'mcp:status',
       // todo38: region-crop seeds a VLM ask turn in the primary window chat
-      'ask:seed'
+      'ask:seed',
+      // todo41: quick-ask mini window stream (ChatRelay channel-remap) +
+      // clipboard prefill push (main-side gated ≤2000 chars)
+      'quickask:delta',
+      'quickask:done',
+      'quickask:error',
+      'quickask:prefill'
     ])
     for (const ch of ALLOWED_EVENT_CHANNELS) {
       expect(isAllowedEventChannel(ch)).toBe(true)

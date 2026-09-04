@@ -185,7 +185,7 @@ test.describe('smoke v2 — real Electron app launch', () => {
       // todo38: LAS_E2E_FAKE_CAPTURE swaps desktopCapturer for a fixed 1x1 PNG
       // so the overlay case drives the real region-select flow without
       // grabbing the host desktop (plan acceptance: e2e(mock capturer)).
-      env: { ...process.env, LAS_E2E_API_PORT: String(stub.port), LAS_E2E_FAKE_CAPTURE: '1' },
+      env: { ...process.env, LAS_E2E_API_PORT: String(stub.port), LAS_E2E_FAKE_CAPTURE: '1', LAS_E2E_FAKE_CLIPBOARD: '1' },
     })
 
     page = await app.firstWindow()
@@ -386,6 +386,70 @@ test.describe('smoke v2 — real Electron app launch', () => {
     // 5) single-instance guard: the live-stream main window is back in focus-
     //    able state and the overlay is gone from the page list.
     expect(app.context().pages().filter((p) => p.url().includes('#/overlay') && !p.isClosed())).toHaveLength(0)
+  })
+
+  test('g — todo41 quick-ask mini window: triggerHotkey → ask/stream → Esc hides (not destroys) → toggle', async () => {
+    const before = stub.chatRequests.length
+
+    // visibility probe through the MAIN process (a hidden BrowserWindow keeps
+    // its page alive in Playwright's context — only isVisible() is truthful).
+    const qaVisible = async (): Promise<boolean | null> =>
+      app.evaluate(({ BrowserWindow }, urlPart: string) => {
+        const w = BrowserWindow.getAllWindows().find((x) => !x.isDestroyed() && x.webContents.getURL().includes(urlPart))
+        return w ? w.isVisible() : null
+      }, '#/quickask')
+
+    // 1) shared r2 hook, quickask lane → the mini window appears exactly once.
+    const ack = (await page.evaluate(() => {
+      const api = (window as unknown as { api: { invoke: (c: string, p: unknown) => Promise<unknown> } }).api
+      return api.invoke('__test.triggerHotkey', { name: 'quickask' })
+    })) as { ok: boolean; error?: string }
+    expect(ack).toEqual({ ok: true })
+    let mini: Page | undefined
+    await expect
+      .poll(
+        async () => {
+          mini = app.context().pages().find((p) => p.url().includes('#/quickask'))
+          return mini !== undefined && (await qaVisible()) === true
+        },
+        { timeout: 15_000 },
+      )
+      .toBe(true)
+    const qa = mini as Page
+    await expect(qa.locator('[data-testid="las-quickask-input"]')).toBeVisible({ timeout: 10_000 })
+    // fake-clipboard seam (LAS_E2E_FAKE_CLIPBOARD) → prefill lands as placeholder
+    await expect(qa.locator('[data-testid="las-quickask-input"]')).toHaveAttribute('placeholder', /e2e 剪贴板预置文本/)
+
+    // 2) ask → the stub relay streams back into the mini window only.
+    await qa.locator('[data-testid="las-quickask-input"]').fill('ping from quickask')
+    await qa.keyboard.press('Enter')
+    await expect.poll(() => stub.chatRequests.length, { timeout: 20_000 }).toBeGreaterThan(before)
+    await expect(qa.getByText(STUB_REPLY_FULL)).toBeVisible({ timeout: 20_000 })
+    const sent = stub.chatRequests.at(-1) as { model: string; messages: Array<{ role: string; content: string }> }
+    expect(sent.model).toBe('local')
+    expect(sent.messages.at(-1)?.content).toBe('ping from quickask')
+
+    // 3) Esc hides TO MEMORY (window stays alive — history survives the hide).
+    await qa.keyboard.press('Escape').catch(() => undefined)
+    await expect.poll(qaVisible, { timeout: 10_000 }).toBe(false)
+    expect(qa.isClosed(), 'hide must not destroy the window').toBe(false)
+
+    // 4) toggle + single-window: second press re-shows the SAME window (连按不
+    //    重复建窗), third press hides it again.
+    await page.evaluate(() => {
+      const api = (window as unknown as { api: { invoke: (c: string, p: unknown) => Promise<unknown> } }).api
+      return api.invoke('__test.triggerHotkey', { name: 'quickask' })
+    })
+    await expect.poll(qaVisible, { timeout: 10_000 }).toBe(true)
+    expect(app.context().pages().filter((p) => p.url().includes('#/quickask'))).toHaveLength(1)
+    await page.evaluate(() => {
+      const api = (window as unknown as { api: { invoke: (c: string, p: unknown) => Promise<unknown> } }).api
+      return api.invoke('__test.triggerHotkey', { name: 'quickask' })
+    })
+    await expect.poll(qaVisible, { timeout: 10_000 }).toBe(false)
+
+    // 5) history kept across hides: the bubble from step 2 is still rendered.
+    await expect(qa.getByText(STUB_REPLY_FULL)).toBeVisible()
   })
 
   test('e2 — zero external-network requests (loopback/file only)', async () => {

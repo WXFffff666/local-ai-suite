@@ -153,6 +153,8 @@ export const configSetSchema = z
   .object({
     theme: z.enum(['light', 'dark', 'system']).optional(),
     locale: z.string().min(2).max(10).optional(),
+    /** todo41: quick-ask global hotkey enable flag (combo itself is fixed). */
+    quickaskHotkeyEnabled: z.boolean().optional(),
     /** todo39: RAG search prefs (see AppConfig field docs). */
     rerankEnabled: z.boolean().optional(),
     rerankModel: z.string().max(256).optional(),
@@ -524,9 +526,20 @@ export type OverlaySelectInput = z.infer<typeof overlaySelectSchema>
 
 export const overlayCancelSchema = z.object({}).strict()
 
-/** r2 e2e hook (todo38): only the pinned screenshot hotkey is synthesizable. */
+// --- quick-ask mini window (todo41) --------------------------------------------
+// 'quickask:ask' reuses chatSendSchema VERBATIM (the shared ask path is
+// ChatRelay.start — one zod gate, one upstream rule for both windows). hide and
+// prefill:get are strict-empty controller verbs (sender-id liveness guard
+// mirrors overlay:*). Clipboard prefill length is gated main-side against
+// QUICKASK_CLIPBOARD_MAX_CHARS (controller.ts), never by a renderer payload.
+
+export const quickAskEmptySchema = z.object({}).strict()
+
+/** r2 e2e hook (todo38, extended todo41): the two pinned hotkey ACTIONS are
+ *  synthesizable — globalShortcut itself is not. The enum is the exhaustive
+ *  dispatch table in src/main/ipc/handlers.ts ('__test.triggerHotkey'). */
 export const testTriggerHotkeySchema = z
-  .object({ name: z.enum(['screenshot']) })
+  .object({ name: z.enum(['screenshot', 'quickask']) })
   .strict()
 export type TestTriggerHotkeyInput = z.infer<typeof testTriggerHotkeySchema>
 

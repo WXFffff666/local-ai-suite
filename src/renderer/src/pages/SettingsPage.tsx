@@ -187,6 +187,32 @@ export function SettingsPage(): React.JSX.Element {
         </div>
       </section>
 
+      <section className="las-settings-group" aria-label="快捷键">
+        <h2 className="las-settings-group-title">快捷键</h2>
+        <div className="las-settings-row">
+          <span className="las-settings-label">快速问答浮窗</span>
+          <div className="las-settings-pills" role="radiogroup" aria-label="快速问答热键开关">
+            {[true, false].map((v) => (
+              <button
+                key={String(v)}
+                type="button"
+                role="radio"
+                aria-checked={(config.quickaskHotkeyEnabled ?? true) === v}
+                data-testid={`quickask-hotkey-${v}`}
+                className={`las-settings-pill${(config.quickaskHotkeyEnabled ?? true) === v ? ' las-settings-pill-on' : ''}`}
+                onClick={() => void persist({ quickaskHotkeyEnabled: v }).catch(() => setMsg('热键设置持久化失败（config:set）'))}
+              >
+                {v ? '开' : '关'}
+              </button>
+            ))}
+          </div>
+        </div>
+        <p className="las-settings-note">
+          全局 Ctrl+Shift+Space 呼起迷你问答窗（配置固定，不可改键）；Enter 发送、Shift+Enter 换行、Esc 或失焦隐藏。
+          会话仅存内存不入库，剪贴板有文本时自动带入输入框占位。开关变更需重启应用生效。
+        </p>
+      </section>
+
       <section className="las-settings-group" aria-label="密钥">
         <h2 className="las-settings-group-title">密钥（safeStorage 加密）</h2>
         {SECRET_FIELDS.map((f) => (

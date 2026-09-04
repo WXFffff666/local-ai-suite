@@ -122,8 +122,16 @@ export const ALLOWED_CHANNELS = [
   'overlay:frame:get',
   'overlay:select',
   'overlay:cancel',
+  // todo41: quick-ask mini chat window (global Ctrl+Shift+Space). ask rides the
+  // SAME zod chatSendSchema + ChatRelay upstream as chat:send (the relay is the
+  // shared ask function); its stream events are remapped to quickask:* so the
+  // mini window never interleaves with the main window's chat:delta listeners.
+  // hide/prefill:get are mini-window-verbs guarded by the controller sender id.
+  'quickask:ask',
+  'quickask:hide',
+  'quickask:prefill:get',
   '__test.triggerHotkey'
-] as const
+ ] as const
 
 export type AllowedChannel = (typeof ALLOWED_CHANNELS)[number]
 
@@ -172,7 +180,13 @@ export const ALLOWED_EVENT_CHANNELS = [
   'mcp:status',
   // todo38: the region-crop result seeds a VLM turn in the MAIN window chat
   // (App shell subscribes, navigates to #/chat and feeds the store send path).
-  'ask:seed'
+  'ask:seed',
+  // todo41: quick-ask mini window stream (chatRelay channel-remap, see below)
+  // + the clipboard prefill push (main clipboard.readText() at show time).
+  'quickask:delta',
+  'quickask:done',
+  'quickask:error',
+  'quickask:prefill'
 ] as const
 
 export type AllowedEventChannel = (typeof ALLOWED_EVENT_CHANNELS)[number]
@@ -283,6 +297,12 @@ export type EventPayloads = {
   'ocr:progress': OcrProgressEvent
   'mcp:status': McpStatusEvent
   'ask:seed': AskSeedEvent
+  // todo41: the mini window's stream is the SAME Chat*Event payloads (the relay
+  // emit is channel-remapped), and prefill carries the clipboard text verbatim.
+  'quickask:delta': ChatDeltaEvent
+  'quickask:done': ChatDoneEvent
+  'quickask:error': ChatErrorEvent
+  'quickask:prefill': QuickAskPrefillEvent
 }
 
 // ---------------------------------------------------------------------------
@@ -775,7 +795,8 @@ export type OverlaySelectReply =
 export type OverlayCancelReply = { ok: true } | { ok: false; error: 'no-overlay' }
 export type TestTriggerHotkeyReply =
   | { ok: true }
-  | { ok: false; error: 'disabled' | 'busy' | 'capture-failed' }
+  // 'create-failed' is the todo41 quickask arm (window construction failure).
+  | { ok: false; error: 'disabled' | 'busy' | 'capture-failed' | 'create-failed' }
 
 /** 'ask:seed' payload (main -> primary window renderer; todo38). */
 export type AskSeedEvent = {
@@ -784,3 +805,33 @@ export type AskSeedEvent = {
   /** chosen prompt chip: 解释这张图 / 提取文字 / 翻译 */
   prompt: string
 }
+
+// ---------------------------------------------------------------------------
+// Quick-ask mini window (todo41) wire contracts. 'quickask:ask' payloads are
+// the chatSendSchema shape verbatim (shared upstream = ChatRelay.start); the
+// stream events are the Chat*Event payloads re-labeled to quickask:* so the
+// mini window's listeners can never cross-talk with the main window's chat
+// store. Session is EPHEMERAL: nothing here touches conversations:* channels
+// (chat.db never sees a quickask turn) and history lives only in the renderer
+// (capped at QUICKASK_HISTORY_CAP messages, hide = memory, not destroy).
+// ---------------------------------------------------------------------------
+
+/** 'quickask:prefill' payload — clipboard text captured at window-show time.
+ *  Main gates it (non-empty, ≤ QUICKASK_CLIPBOARD_MAX_CHARS); absent/oversized
+ *  clipboard sends nothing. */
+export type QuickAskPrefillEvent = { text: string }
+
+/** 'quickask:hide' ack (renderer Esc / blur-grace expiry → controller.hide). */
+export type QuickAskHideReply = { ok: true } | { ok: false; error: 'no-window' }
+
+/** 'quickask:prefill:get' ack — pull twin of the 'quickask:prefill' push
+ *  (renderer mounts before the first push can land; the pull is deterministic). */
+export type QuickAskPrefillReply =
+  | { ok: true; prefill: string | null }
+  | { ok: false; error: 'no-window' }
+
+/** 'quickask:ask' ack — the relay start ack rides the chat:send contract. */
+export type QuickAskAskReply = { ok: true; id: string; streaming: true }
+
+/** '__test.triggerHotkey' now pins TWO names (todo38 screenshot + todo41
+ *  quickask); reply union shared — TestTriggerHotkeyReply above covers both. */

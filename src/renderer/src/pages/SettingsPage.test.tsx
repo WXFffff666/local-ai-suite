@@ -40,8 +40,8 @@ function makeFakeApi(opts: FakeApiOpts = {}) {
       if (patch.secrets) {
         persisted.secrets = { ...(persisted.secrets as Record<string, string>), ...patch.secrets }
       }
-      for (const k of ['theme', 'locale'] as const) {
-        if (patch[k] !== undefined) persisted[k] = patch[k]
+      for (const k of ['theme', 'locale', 'quickaskHotkeyEnabled'] as const) {
+        if (patch[k] !== undefined) (persisted as Record<string, unknown>)[k] = patch[k]
       }
       return { ok: true, config: { ...persisted } }
     }
@@ -214,5 +214,30 @@ describe('SettingsPage 主题/语言持久化', () => {
     await mount()
     const alert = container.querySelector<HTMLElement>('[role="alert"]')
     expect(alert?.textContent).toContain('window.api')
+  })
+})
+
+describe('SettingsPage 快速问答热键（todo41）', () => {
+  it('config 缺省 quickaskHotkeyEnabled → 「开」pill 默认选中（default true 与主进程一致）', async () => {
+    const fake = makeFakeApi()
+    await mount(fake)
+    const on = container.querySelector('[data-testid="quickask-hotkey-true"]')
+    expect(on?.getAttribute('aria-checked')).toBe('true')
+  })
+
+  it('点「关」→ config:set {quickaskHotkeyEnabled:false} 且 radio 迁移；说明条含组合键与重启提示', async () => {
+    const fake = makeFakeApi()
+    await mount(fake)
+    const offPill = container.querySelector<HTMLElement>('[data-testid="quickask-hotkey-false"]')!
+    await act(async () => {
+      offPill.click()
+      await flush()
+    })
+    expect(fake.invoke).toHaveBeenCalledWith('config:set', { quickaskHotkeyEnabled: false })
+    expect(offPill.getAttribute('aria-checked')).toBe('true')
+    const group = container.querySelector('section[aria-label="快捷键"]')
+    expect(group?.textContent).toContain('Ctrl+Shift+Space')
+    expect(group?.textContent).toContain('不入库')
+    expect(group?.textContent).toContain('重启')
   })
 })

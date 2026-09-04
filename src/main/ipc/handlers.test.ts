@@ -1340,3 +1340,109 @@ describe('ocr:* wiring (todo37 PaddleOCR-json sidecar)', () => {
     ).resolves.toMatchObject(invalidShape)
   })
 })
+
+// ---------------------------------------------------------------------------
+// todo41: quick-ask mini window wiring (shared '__test.triggerHotkey' dispatch
+// + the relay-bound quickask:ask). buildIpcHandlers compiles the exhaustive
+// Record<AllowedChannel> — these tests pin the RUNTIME routing only.
+// ---------------------------------------------------------------------------
+
+function makeQuickAskHarness(extra: Record<string, unknown> = {}) {
+  const h = makeHarness()
+  const quickask = {
+    trigger: vi.fn(() => ({ ok: true }) as const),
+    hide: vi.fn(() => ({ ok: true }) as const),
+    getPrefill: vi.fn(() => ({ ok: true, prefill: null }) as const),
+  }
+  const overlay = {
+    trigger: vi.fn(async () => ({ ok: true }) as const),
+    getFrame: vi.fn(() => ({ ok: false, error: 'no-frame' }) as const),
+    select: vi.fn(() => ({ ok: false, error: 'no-overlay' }) as const),
+    cancel: vi.fn(() => ({ ok: false, error: 'no-overlay' }) as const),
+  }
+  const handlers = buildIpcHandlers({
+    ...h.deps,
+    overlay: () => overlay,
+    quickask: () => quickask,
+    testHooks: () => true,
+    ...extra,
+  })
+  return { ...h, handlers, quickask, overlay }
+}
+
+describe('quickask:* wiring (todo41)', () => {
+  it('quickask:ask rides the SAME relay seam chat:send uses (shared ask function)', async () => {
+    const { handlers, relay, ctx } = makeQuickAskHarness()
+    const payload = { id: 'a_q1', model: 'local', messages: [{ role: 'user', content: 'quick?' }] }
+    // the harness relay stub answers with its own fixed ack — what is pinned is
+    // that BOTH doors land on the same relay.start with the validated payload.
+    await expect(handlers['quickask:ask']([payload], ctx)).resolves.toMatchObject({ ok: true, streaming: true })
+    expect(relay.start).toHaveBeenCalledWith(expect.objectContaining(payload), expect.any(Function))
+    // chat:send remains the untouched sibling on the same relay — one seam, two doors.
+    await handlers['chat:send']([{ id: 'c9', model: 'local', messages: [{ role: 'user', content: 'main' }] }], ctx)
+    expect(relay.start).toHaveBeenCalledTimes(2)
+  })
+
+  it('quickask:hide / quickask:prefill:get delegate with the caller senderId', async () => {
+    const { handlers, quickask } = makeQuickAskHarness()
+    const ctx = { send: vi.fn(), senderId: 42 }
+    await expect(handlers['quickask:hide']([{}], ctx)).resolves.toEqual({ ok: true })
+    await expect(handlers['quickask:prefill:get']([{}], ctx)).resolves.toEqual({ ok: true, prefill: null })
+    expect(quickask.hide).toHaveBeenCalledWith(42)
+    expect(quickask.getPrefill).toHaveBeenCalledWith(42)
+  })
+
+  it('__test.triggerHotkey dispatches by name: screenshot → overlay lane, quickask → quickask lane', async () => {
+    const { handlers, quickask, overlay } = makeQuickAskHarness()
+    const ctx = { send: vi.fn(), senderId: 1 }
+    await expect(handlers['__test.triggerHotkey']([{ name: 'quickask' }], ctx)).resolves.toEqual({ ok: true })
+    expect(quickask.trigger).toHaveBeenCalledTimes(1)
+    expect(overlay.trigger).not.toHaveBeenCalled()
+    await expect(handlers['__test.triggerHotkey']([{ name: 'screenshot' }], ctx)).resolves.toEqual({ ok: true })
+    expect(overlay.trigger).toHaveBeenCalledTimes(1)
+    expect(quickask.trigger).toHaveBeenCalledTimes(1)
+  })
+
+  it('__test.triggerHotkey quickask lane OFF gate: packaged → disabled; unknown name → 400', async () => {
+    const { handlers, quickask } = makeQuickAskHarness({ testHooks: () => false })
+    const ctx = { send: vi.fn(), senderId: 1 }
+    await expect(handlers['__test.triggerHotkey']([{ name: 'quickask' }], ctx)).resolves.toEqual({
+      ok: false,
+      error: 'disabled',
+    })
+    expect(quickask.trigger).not.toHaveBeenCalled()
+    await expect(handlers['__test.triggerHotkey']([{ name: 'nope' }], ctx)).resolves.toMatchObject(invalidShape)
+  })
+
+  it('quickask channels without the controller (pre-ready) are honest no-window / create-failed', async () => {
+    const { handlers, ctx } = makeHarness() // base harness has NO quickask seam
+    await expect(handlers['quickask:hide']([{}], ctx)).resolves.toEqual({ ok: false, error: 'no-window' })
+    await expect(handlers['quickask:prefill:get']([{}], ctx)).resolves.toEqual({ ok: false, error: 'no-window' })
+  })
+
+  it('config:set persists quickaskHotkeyEnabled (settings toggle round-trip)', async () => {
+    // getConfigPath falls back to <cwd>/userData/config.json outside Electron —
+    // the same chdir isolation the todo16 config tests use.
+    const tmp = mkdtempSync(join(tmpdir(), 'las-config-qa-'))
+    const origCwd = process.cwd()
+    process.chdir(tmp)
+    try {
+      const { handlers } = makeQuickAskHarness()
+      const ctx = { send: vi.fn(), senderId: 1 }
+      const res = (await handlers['config:set']([{ quickaskHotkeyEnabled: false }], ctx)) as {
+        ok: boolean
+        config?: { quickaskHotkeyEnabled?: boolean }
+      }
+      expect(res.ok).toBe(true)
+      expect(res.config?.quickaskHotkeyEnabled).toBe(false)
+      const back = (await handlers['config:get']([{}], ctx)) as {
+        ok: boolean
+        config: { quickaskHotkeyEnabled?: boolean }
+      }
+      expect(back.config.quickaskHotkeyEnabled).toBe(false)
+    } finally {
+      process.chdir(origCwd)
+      rmSync(tmp, { recursive: true, force: true })
+    }
+  })
+})

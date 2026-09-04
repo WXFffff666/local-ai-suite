@@ -13,6 +13,8 @@ export type WireConfig = {
   locale: string
   modelsDir: string
   openaiPort: number
+  /** todo41: quick-ask global hotkey flag (config.json; false = never binds). */
+  quickaskHotkeyEnabled?: boolean
   secrets?: Partial<Record<SecretFieldName, string>>
 }
 

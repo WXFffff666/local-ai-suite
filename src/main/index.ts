@@ -10,7 +10,7 @@ import { getMainLogger, registerGlobalErrorLogging } from './logger'
 import { registerShutdownHook, shutdownServices, type ShutdownResult } from './shutdown'
 import { getServices, initServices, SIDECAR_NAMES, type SidecarName } from './services'
 import { createUpdater, scheduleInitialUpdateCheck, type Updater } from './updater'
-import { E2E_FAKE_CAPTURE, UPDATE_CHECK_DISABLED } from './testSupport'
+import { E2E_FAKE_CAPTURE, E2E_FAKE_CLIPBOARD, E2E_FAKE_CLIPBOARD_TEXT, UPDATE_CHECK_DISABLED } from './testSupport'
 import { startApiServer, ENGINE_MIN_OLLAMA_VERSION, type ApiServerStatus } from './apiServer'
 import { canGrantMediaPermission, originFromDetails } from './mediaPermissions'
 import { createConversationService } from './storage/conversations'
@@ -25,6 +25,15 @@ import {
   SCREENSHOT_HOTKEY_ACCELERATOR,
 } from './overlay/controller'
 import { createElectronOverlayDeps } from './overlay/electronDeps'
+// todo41: quick-ask mini chat window (global Ctrl+Shift+Space, ephemeral chat).
+// Hotkey register/unregister are the todo38 generic accelerator-keyed helpers
+// (imported with neutral aliases — same single-registration semantics reused).
+import {
+  registerScreenshotHotkey as registerGlobalHotkey,
+  unregisterScreenshotHotkey as unregisterGlobalHotkey,
+} from './overlay/controller'
+import { QuickAskController, QUICKASK_HOTKEY_ACCELERATOR } from './quickask/controller'
+import { createElectronQuickAskDeps } from './quickask/electronDeps'
 import type { SidecarManager } from '../core/SidecarManager'
 import type { SidecarStatus } from '../core/types'
 
@@ -66,6 +75,13 @@ let mainWindow: BrowserWindow | null = null
 // process quits before ever reaching here, so the hotkey is only ever bound
 // by the lock owner. Handlers answer the honest not-ready shapes until then.
 let overlayController: OverlayController | null = null
+
+// --- todo41: quick-ask mini chat window controller ----------------------------
+// Same construction discipline as the overlay: built in bootstrapQuickAsk()
+// after whenReady, hotkey binding config-gated (quickaskHotkeyEnabled), the
+// controller itself always live so '__test.triggerHotkey' {name:'quickask'}
+// works with the user hotkey disabled (r2 e2e hook parity with todo38).
+let quickAskController: QuickAskController | null = null
 
 // --- W1-10: embedded API server state + tray ---------------------------------
 // The arbitration result lives in a mutable ref so BOTH the tray (status line,
@@ -245,6 +261,8 @@ function registerIpcHandlers(): void {
     updater: getUpdater,
     // todo38: overlay:* + '__test.triggerHotkey' (r2 gate: packaged → 'disabled').
     overlay: () => overlayController,
+    // todo41: quickask:* + the '__test.triggerHotkey' quickask lane (same gate).
+    quickask: () => quickAskController,
     testHooks: () => !app.isPackaged
   })
 
@@ -377,6 +395,41 @@ function bootstrapOverlay(): void {
   }
 }
 
+// todo41: quick-ask bootstrap. Mirrors bootstrapOverlay exactly: the controller
+// is ALWAYS constructed (quickask:* handlers + the e2e hook must work with the
+// user hotkey off); the Ctrl+Shift+Space binding is config-gated
+// (quickaskHotkeyEnabled, default true) and best-effort — a taken combo (IME
+// switch collisions are real for Space chords) downgrades to a warn, never a
+// crash. Toggle semantics live in the controller (second press = hide).
+function bootstrapQuickAsk(): void {
+  const controller = new QuickAskController({
+    ...createElectronQuickAskDeps({
+      fakeClipboard: E2E_FAKE_CLIPBOARD,
+      fakeClipboardText: E2E_FAKE_CLIPBOARD_TEXT,
+      preloadPath: join(__dirname, '../preload/index.js'),
+      rendererUrl: is.dev ? process.env['ELECTRON_RENDERER_URL'] : undefined,
+      rendererFile: join(__dirname, '../renderer/index.html'),
+    }),
+    logWarn: (message, error) => getMainLogger().warn({ err: error }, message),
+  })
+  quickAskController = controller
+  registerShutdownHook(() => {
+    unregisterGlobalHotkey(globalShortcut, QUICKASK_HOTKEY_ACCELERATOR)
+    controller.dispose()
+    if (quickAskController === controller) quickAskController = null
+  })
+  if (!getConfig().quickaskHotkeyEnabled) {
+    getMainLogger().info({}, 'quick-ask hotkey disabled by config')
+    return
+  }
+  const bound = registerGlobalHotkey(globalShortcut, QUICKASK_HOTKEY_ACCELERATOR, () => {
+    controller.trigger()
+  })
+  if (!bound) {
+    getMainLogger().warn({ accelerator: QUICKASK_HOTKEY_ACCELERATOR }, 'quick-ask hotkey already taken by another app')
+  }
+}
+
 app.whenReady().then(() => {
   // Service container (todo7): lazy — spawns nothing; watch + handshake start
   // here. Created BEFORE the handlers so the singleton carries the logger sink
@@ -391,6 +444,7 @@ app.whenReady().then(() => {
   registerIpcHandlers()
   createWindow()
   bootstrapOverlay()
+  bootstrapQuickAsk()
   bootstrapApiServer()
   bootstrapTray()
 

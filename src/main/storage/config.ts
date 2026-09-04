@@ -66,6 +66,12 @@ export type AppConfig = {
    * (plan: keep simple); false = globalShortcut never registers.
    */
   screenshotHotkeyEnabled: boolean
+  /**
+   * todo41: global quick-ask mini-window hotkey (fixed CommandOrControl+Shift+Space).
+   * Same enabled-flag-only posture as screenshotHotkeyEnabled; false = the combo
+   * never registers (the e2e __test.triggerHotkey hook still drives the window).
+   */
+  quickaskHotkeyEnabled: boolean
   /** Encrypted secrets (todo16) — see SecretPayloads contract above */
   secrets?: SecretPayloads
   /**
@@ -95,6 +101,7 @@ export const DEFAULT_CONFIG: AppConfig = {
   rerankModel: 'bge-reranker-v2-m3',
   embeddingModel: '',
   screenshotHotkeyEnabled: true,
+  quickaskHotkeyEnabled: true,
 }
 
 /** Resolve userData/config.json path — Electron userData in prod, ./userData/config.json fallback for tests. */

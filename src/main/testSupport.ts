@@ -55,3 +55,18 @@ export const UPDATE_CHECK_DISABLED: boolean =
  */
 export const E2E_FAKE_CAPTURE: boolean =
   process.env['LAS_E2E_FAKE_CAPTURE'] === '1' || process.env['LAS_E2E_FAKE_CAPTURE'] === 'true'
+
+/**
+ * E2E_FAKE_CLIPBOARD — deterministic-clipboard seam for the todo41 quick-ask
+ * mini-window e2e (clipboard prefill). When set, the quickask controller's
+ * clipboard read returns E2E_FAKE_CLIPBOARD_TEXT (fixed constant below)
+ * instead of the host clipboard, so the e2e can assert the prefill without
+ * depending on whatever the workstation happens to hold. Production launches
+ * never set it; behavior is byte-identical when absent (same contract as
+ * LAS_E2E_API_PORT above).
+ */
+export const E2E_FAKE_CLIPBOARD: boolean =
+  process.env['LAS_E2E_FAKE_CLIPBOARD'] === '1' || process.env['LAS_E2E_FAKE_CLIPBOARD'] === 'true'
+
+/** Fixed prefill text served when E2E_FAKE_CLIPBOARD is set (e2e only). */
+export const E2E_FAKE_CLIPBOARD_TEXT = 'e2e 剪贴板预置文本'
