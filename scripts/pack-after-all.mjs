@@ -87,7 +87,16 @@ export default async function afterAllArtifactBuild(context) {
   for (const w of warns) console.warn(`[pack-after-all] WARN: ${w}`)
   // Hygiene is advisory: never fail a pack from here (hard gates live in
   // check-pack-size / fuses --verify / CI).
-  return { artifacts: [] }
+  //
+  // RETURN CONTRACT (release-run 33832401173 post-mortem): electron-builder
+  // 26 feeds this value through asArray() and treats EVERY item as a file
+  // path string to publish (app-builder-lib index.js:60-76). Returning an
+  // OBJECT — even `{ artifacts: [] }`, the old 24.x shape — becomes
+  // asArray → [Object] → scheduleUpload({ file: Object }) →
+  // `TypeError: The "path" argument must be of type string` inside
+  // GitHubPublisher.upload basename() whenever --publish always runs.
+  // We add no extra artifacts, so the contract-true return is `[]`.
+  return []
 }
 
 // --- standalone mode: `node scripts/pack-after-all.mjs` ----------------------

@@ -88,7 +88,7 @@
 
 单点实现 `src/main/updater.ts`（渲染层只见 `src/main/ipc/whitelist.ts` 的封闭 `UpdateStateEvent` 联合类型，不直接接触 electron-updater）。
 
-**分阶段通道（staged）**：`electron-builder.yml` publish 块 = GitHub provider + `releaseType: draft` + `publishAutoUpdate: true` + `stagingPercentage: 10`。stagingPercentage 写入 `latest.yml` 元数据、**客户端侧**按 machine-id 哈希裁决（提供方无关，Appendix A 行 32）。人_promote_草稿发布，机器不 promote。
+**分阶段通道（staged）**：`electron-builder.yml` publish 块 = GitHub provider + `releaseType: draft` + `publishAutoUpdate: true`。放量由**人工 promote 节奏**控制（先 10% 关注度=不发、确认无报告后再全文发布，机器永不 promote）；`stagingPercentage` 客户端灰度键在 electron-builder 26 的 publish schema 中不存在（scheme.json 0 命中，强行写入会让整个构建校验失败，release-run 33830264348 教训后已移除，见 `electron-builder.yml` 注释与 c18578a）。发布通道事实：构建成功后由 electron-builder 的 GitHubPublisher 直接上传 Setup/Portable exe + `latest.yml` 到 tag 对应 draft Release（本地 `--publish always` 实测通过，release-run 33832401173 曾因 `scripts/pack-after-all.mjs` 返回旧版对象形状污染 asArray 上传队列而崩，已由返回 `string[]` 的契约测试钉死）。
 
 **策略不变量**（计划强制，`src/main/updater.ts`）：
 - `autoDownload=false` — 字节只在用户显式手势后移动；
@@ -101,8 +101,8 @@
 
 **离线/测试 kill-switch**：`LAS_DISABLE_UPDATE_CHECK=1`（`src/main/testSupport.ts` 解析，`src/main/index.ts` 生效）整体跳过延迟自动检查；e2e 与离线 CI 必带。
 
-**SPIKE-PENDING-FINAL（draft 可见性）**：electron-updater × GitHub **draft release 客户端可见性未证实**（R3b UNKNOWN），须在 `v0.1.0` 发布时断言：① draft 不可见 → `releaseType` 改 prerelease + `LAS_UPDATE_CHANNEL=beta` 频道覆盖出货；② yml 缺 stagingPercentage → 仅改 `electron-builder.yml` publish 块（无代码变更）。
-> **tag v0.1.0 测试结果：____（待 FINAL 交付时回写：draft 可见性 = 可见/不可见，stagingPercentage 生效 = 是/否）**
+**SPIKE-PENDING-FINAL（draft 可见性）**：electron-updater × GitHub **draft release 客户端可见性未证实**（R3b UNKNOWN），须在 `v0.1.0` 发布时断言：① draft 不可见 → `releaseType` 改 prerelease + `LAS_UPDATE_CHANNEL=beta` 频道覆盖出货；② ~~yml 缺 stagingPercentage~~ 已定案：eb-26 schema 拒绝该键，灰度改为纯人工 promote 节奏（c18578a，无代码变更）。
+> **tag v0.1.0 测试结果：服务端半边已验——GitHubPublisher 成功创建 draft Release 并上传 Setup/Portable exe + `latest.yml`（release-run 修复后 + 本地 `--publish always` 双确认）；draft 客户端可见性 = 待真机装有 0.0.x/无版本更新器探测（用户 QA 项，不可见则执行预案①）**
 
 ## 引擎供应链：spawn 前 sha256 校验链（todo30/34，LLM03）
 
