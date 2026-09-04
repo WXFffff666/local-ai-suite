@@ -118,7 +118,11 @@ publish:
   # invisible, switch releaseType to prerelease + ship with
   # LAS_UPDATE_CHANNEL=beta fallback; if stagingPercentage is absent from the
   # yml, this block gets edited (no app-code change).
-  stagingPercentage: 10
+  # EDITED per that clause: electron-builder 26.15.3's publish schema has NO
+  # stagingPercentage key (scheme.json: 0 occurrences) — keeping it fails
+  # schema validation and breaks every build. Staged rollout is therefore a
+  # RELEASE-time concern (promote draft manually at 10%/50%/100% cadence),
+  # not a build-config key. See src/main/updater.ts header for the spike note.
 
 # ---- packaging hooks (todo31) ----
 # afterPack: flip Electron fuses on the win-unpacked EXE ONLY (prod path).
