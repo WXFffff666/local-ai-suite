@@ -23,6 +23,7 @@ import type {
   ConfigSetReply,
   DecryptReply,
   EncryptReply,
+  IntegrationState,
   LocaleChoice,
   SecretFieldName,
   ThemeChoice,
@@ -49,6 +50,8 @@ const EMPTY_CONFIG: WireConfig = {
 
 export function SettingsPage(): React.JSX.Element {
   const [config, setConfig] = useState<WireConfig>(EMPTY_CONFIG)
+  // todo42: las:// 注册的 OS 诚实状态（config:get 附加读出；无窗 = 未探测）。
+  const [integration, setIntegration] = useState<IntegrationState | null>(null)
   const [apiAvailable, setApiAvailable] = useState(true)
   const [msg, setMsg] = useState<string | null>(null)
   const { setMode, setLocale } = useTheme()
@@ -63,7 +66,10 @@ export function SettingsPage(): React.JSX.Element {
     void (async () => {
       try {
         const reply = (await api.invoke('config:get')) as ConfigGetReply
-        if (!cancelled && reply?.ok !== false && reply.config) setConfig({ ...EMPTY_CONFIG, ...reply.config })
+        if (!cancelled && reply?.ok !== false && reply.config) {
+          setConfig({ ...EMPTY_CONFIG, ...reply.config })
+          if (reply.integration) setIntegration(reply.integration)
+        }
       } catch {
         if (!cancelled) setMsg('config:get 失败 — 显示默认值')
       }
@@ -98,6 +104,23 @@ export function SettingsPage(): React.JSX.Element {
     setLocale(locale as Locale)
     void persist({ locale }).catch(() => setMsg('语言持久化失败（config:set）'))
   }
+
+  /** todo42: 系统集成开关 = 持久化 + （协议）随后重读 config:get 的诚实注册态。 */
+  const toggleIntegration = useCallback(
+    async (patch: { autostartEnabled?: boolean; deeplinkEnabled?: boolean }): Promise<void> => {
+      const api = typeof window === 'undefined' ? undefined : window.api
+      await persist(patch)
+      if (patch.deeplinkEnabled !== undefined && api) {
+        try {
+          const back = (await api.invoke('config:get')) as ConfigGetReply
+          if (back.integration) setIntegration(back.integration)
+        } catch {
+          /* 保留旧读数 — 下次进页自然刷新 */
+        }
+      }
+    },
+    [persist],
+  )
 
   const decrypt = useCallback(async (payload: string): Promise<string | null> => {
     const api = typeof window === 'undefined' ? undefined : window.api
@@ -210,6 +233,54 @@ export function SettingsPage(): React.JSX.Element {
         <p className="las-settings-note">
           全局 Ctrl+Shift+Space 呼起迷你问答窗（配置固定，不可改键）；Enter 发送、Shift+Enter 换行、Esc 或失焦隐藏。
           会话仅存内存不入库，剪贴板有文本时自动带入输入框占位。开关变更需重启应用生效。
+        </p>
+      </section>
+
+      <section className="las-settings-group" aria-label="系统集成">
+        <h2 className="las-settings-group-title">系统集成</h2>
+        <div className="las-settings-row">
+          <span className="las-settings-label">开机自启</span>
+          <div className="las-settings-pills" role="radiogroup" aria-label="开机自启开关">
+            {[true, false].map((v) => (
+              <button
+                key={String(v)}
+                type="button"
+                role="radio"
+                aria-checked={(config.autostartEnabled ?? false) === v}
+                data-testid={`autostart-${v}`}
+                className={`las-settings-pill${(config.autostartEnabled ?? false) === v ? ' las-settings-pill-on' : ''}`}
+                onClick={() => void toggleIntegration({ autostartEnabled: v }).catch(() => setMsg('自启设置持久化失败（config:set）'))}
+              >
+                {v ? '开' : '关'}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="las-settings-row">
+          <span className="las-settings-label">las:// 深链协议</span>
+          <div className="las-settings-pills" role="radiogroup" aria-label="深链协议开关">
+            {[true, false].map((v) => (
+              <button
+                key={String(v)}
+                type="button"
+                role="radio"
+                aria-checked={(config.deeplinkEnabled ?? true) === v}
+                data-testid={`deeplink-${v}`}
+                className={`las-settings-pill${(config.deeplinkEnabled ?? true) === v ? ' las-settings-pill-on' : ''}`}
+                onClick={() => void toggleIntegration({ deeplinkEnabled: v }).catch(() => setMsg('深链设置持久化失败（config:set）'))}
+              >
+                {v ? '开' : '关'}
+              </button>
+            ))}
+          </div>
+          <code className="las-settings-value" data-testid="deeplink-state">
+            {integration === null ? '未探测' : integration.deeplinkRegistered ? '已注册' : '未注册'}
+          </code>
+        </div>
+        <p className="las-settings-note">
+          开机自启默认关；开启后登录项携带 --hidden 静默启动到托盘（托盘图标唤出）。深链 las://new-chat 与
+          las://models 供开始菜单 Jump List（新建会话 / 模型页，Windows）与外部调用直达。OS 写入仅打包版生效，
+          「已注册/未注册」读自系统真实状态（app.isDefaultProtocolClient）。
         </p>
       </section>
 

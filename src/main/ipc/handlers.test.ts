@@ -1446,3 +1446,84 @@ describe('quickask:* wiring (todo41)', () => {
     }
   })
 })
+
+// ---------------------------------------------------------------------------
+// todo42: chat:exportHtml registration + autostart / deeplink OS plumbing via
+// the injected integration surface (electron-mock convention: recording fakes,
+// never vi.mock('electron')).
+// ---------------------------------------------------------------------------
+describe('export & integration (todo42)', () => {
+  it('chat:exportHtml without deps.export answers the honest not-ready shape', async () => {
+    const { handlers, ctx } = makeHarness()
+    await expect(handlers['chat:exportHtml']([{ html: 'h', filename: 'x' }], ctx)).resolves.toEqual({
+      ok: false,
+      error: 'not-ready',
+    })
+  })
+
+  it('chat:exportHtml delegates to the injected export runtime (faked dialog/fs)', async () => {
+    const { handlers, ctx, deps } = makeHarness()
+    const writeFile = vi.fn()
+    const exportDeps = {
+      dialog: { showSaveDialog: vi.fn(async () => ({ canceled: false, filePath: 'C:\\out\\x.html' })) },
+      getDownloadsDir: () => 'C:\\Downloads',
+      writeFile,
+    }
+    const wired = buildIpcHandlers({ ...deps, export: exportDeps })
+    const res = await wired['chat:exportHtml']([{ html: '<p>hi</p>', filename: 'x:bad|' }], ctx)
+    expect(res).toEqual({ ok: true, path: 'C:\\out\\x.html' })
+    expect(exportDeps.dialog.showSaveDialog).toHaveBeenCalledWith(
+      expect.objectContaining({ defaultPath: 'C:\\Downloads\\x bad.html' }),
+    )
+    expect(writeFile).toHaveBeenCalledWith('C:\\out\\x.html', '<p>hi</p>')
+  })
+
+  it('config:set autostart/deeplink persists AND mirrors through the integration surface; config:get reads the honest registered state', async () => {
+    const tmp = mkdtempSync(join(tmpdir(), 'las-config-t42-'))
+    const origCwd = process.cwd()
+    process.chdir(tmp)
+    try {
+      const { handlers, ctx, deps } = makeHarness()
+      const integration = {
+        applyAutostart: vi.fn(),
+        applyProtocolRegistration: vi.fn(),
+        isProtocolRegistered: vi.fn(() => true),
+      }
+      const wired = buildIpcHandlers({ ...deps, integration })
+
+      const set = (await wired['config:set']([{ autostartEnabled: true }], ctx)) as {
+        ok: boolean
+        config: { autostartEnabled: boolean; deeplinkEnabled: boolean }
+      }
+      expect(set.ok).toBe(true)
+      // default-off autostart flips; deeplink defaults on and survives untouched
+      expect(set.config.autostartEnabled).toBe(true)
+      expect(set.config.deeplinkEnabled).toBe(true)
+      expect(integration.applyAutostart).toHaveBeenCalledWith(true)
+      expect(integration.applyProtocolRegistration).not.toHaveBeenCalled()
+
+      const off = (await wired['config:set']([{ deeplinkEnabled: false }], ctx)) as {
+        ok: boolean
+        config: { deeplinkEnabled: boolean }
+      }
+      expect(off.config.deeplinkEnabled).toBe(false)
+      expect(integration.applyProtocolRegistration).toHaveBeenCalledWith(false)
+      // persistence round-trip (config.json re-read, not memoized state)
+      const back = (await wired['config:get']([{}], ctx)) as {
+        ok: boolean
+        config: { autostartEnabled: boolean; deeplinkEnabled: boolean }
+        integration?: { deeplinkRegistered: boolean }
+      }
+      expect(back.config.autostartEnabled).toBe(true)
+      expect(back.config.deeplinkEnabled).toBe(false)
+      expect(back.integration).toEqual({ deeplinkRegistered: true })
+
+      // no surface wired -> integration field is OMITTED (never fabricated)
+      const bare = (await handlers['config:get']([{}], ctx)) as { integration?: unknown }
+      expect(bare.integration).toBeUndefined()
+    } finally {
+      process.chdir(origCwd)
+      rmSync(tmp, { recursive: true, force: true })
+    }
+  })
+})

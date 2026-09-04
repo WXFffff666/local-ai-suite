@@ -168,3 +168,66 @@ describe('app:notification toast 订阅', () => {
     expect(document.body.textContent).toContain('端口冲突')
   })
 })
+
+// todo42 (ADDITIVE): 'app:deeplink' — 主进程解析 las:// 后派发封闭 action，
+// App 壳导航 hash 路由；未知 action 忽略 + toast（第二道守卫）。
+describe('app:deeplink 导航（todo42）', () => {
+  type DeeplinkListener = (e: { action: string }) => void
+  function fakeBus(): { listeners: Map<string, DeeplinkListener[]>; api: unknown } {
+    const listeners = new Map<string, DeeplinkListener[]>()
+    const api = {
+      on: vi.fn((channel: string, cb: DeeplinkListener) => {
+        const arr = listeners.get(channel) ?? []
+        arr.push(cb)
+        listeners.set(channel, arr)
+        return () => {
+          const a = listeners.get(channel) ?? []
+          const i = a.indexOf(cb)
+          if (i >= 0) a.splice(i, 1)
+        }
+      }),
+    }
+    return { listeners, api }
+  }
+
+  it('las://new-chat → 新建会话并进入 chat 路由', async () => {
+    const { useChatStore } = await import('../../chat/store')
+    const before = useChatStore.getState().sessions.length
+    const bus = fakeBus()
+    setFakeApi(bus.api)
+    mount()
+    window.location.hash = '#/settings'
+    await act(async () => {
+      ;(bus.listeners.get('app:deeplink') ?? [])[(bus.listeners.get('app:deeplink') ?? []).length - 1]?.({
+        action: 'new-chat',
+      })
+    })
+    expect(useChatStore.getState().sessions.length).toBe(before + 1)
+    expect(window.location.hash).toBe('#/chat')
+  })
+
+  it('las://models → 导航模型页', async () => {
+    const bus = fakeBus()
+    setFakeApi(bus.api)
+    mount()
+    await act(async () => {
+      const arr = bus.listeners.get('app:deeplink') ?? []
+      arr[arr.length - 1]?.({ action: 'models' })
+    })
+    expect(window.location.hash).toBe('#/models')
+    expect(container.querySelector('h1')?.textContent).toBe('Models')
+  })
+
+  it('未知 action → 不导航、不崩，出告警 toast', async () => {
+    const bus = fakeBus()
+    setFakeApi(bus.api)
+    mount()
+    await act(async () => {
+      const arr = bus.listeners.get('app:deeplink') ?? []
+      arr[arr.length - 1]?.({ action: 'rm-rf' })
+      await new Promise((r) => setTimeout(r, 120))
+    })
+    expect(container.querySelector('h1')?.textContent).toBe('Chat')
+    expect(document.body.textContent).toContain('未知深链')
+  })
+})

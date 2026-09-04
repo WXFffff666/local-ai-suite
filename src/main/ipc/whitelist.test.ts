@@ -33,6 +33,9 @@ describe('ipc whitelist', () => {
       'config:set',
       'chat:send',
       'chat:abort',
+      // todo42: single-file HTML export (renderer-sanitized string in, save
+      // dialog + filename-sanitized UTF-8 write out; no share upload)
+      'chat:exportHtml',
       // todo23: agent tool-calling loop invoke channels
       'agent:start',
       'agent:status',
@@ -169,7 +172,9 @@ describe('ipc event whitelist (main -> renderer)', () => {
       'quickask:delta',
       'quickask:done',
       'quickask:error',
-      'quickask:prefill'
+      'quickask:prefill',
+      // todo42: las:// deep link dispatch (closed action union, main-parsed)
+      'app:deeplink'
     ])
     for (const ch of ALLOWED_EVENT_CHANNELS) {
       expect(isAllowedEventChannel(ch)).toBe(true)

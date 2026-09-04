@@ -11,6 +11,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Paperclip, X, BookOpen } from 'lucide-react'
 import { useChatStore, getChatIpcApi, IPC_UNAVAILABLE_MESSAGE } from './store'
+// todo42 (ADDITIVE): 单文件 HTML 导出（渲染层 sanitize 管线组装 + chat:exportHtml 落盘）。
+import ExportHtmlButton from '../renderer/src/components/export/ExportHtmlButton'
 import {
   MAX_IMAGES_PER_MESSAGE,
   VISION_DISABLED_TOOLTIP,
@@ -256,6 +258,7 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
             {cur ? cur.title : 'Select or create a chat'}
           </strong>
           <AgentModeToggle sessionKey={agentKey} />
+          {!inAgent && cur && cur.messages.length > 0 && <ExportHtmlButton session={cur} />}
           {!inAgent && cur && <button onClick={clearCurrentMessages} style={{ cursor: 'pointer' }}>Clear</button>}
           {!inAgent && streamingHere && <button onClick={abort} style={{ cursor: 'pointer', color: '#f55' }}>Abort</button>}
           {!inAgent && !streaming && error && error !== 'aborted' && (

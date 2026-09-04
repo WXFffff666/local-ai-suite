@@ -96,6 +96,22 @@ export const CHAT_CONTENT_WIRE_ALIGNED: ChatSendInput['messages'][number]['conte
 export const chatAbortSchema = z.object({ id: idSchema })
 export type ChatAbortInput = z.infer<typeof chatAbortSchema>
 
+/**
+ * todo42: chat:exportHtml — the renderer composes the single-file HTML with the
+ * SAME sanitize pipeline as the live chat (react-markdown + rehype-sanitize via
+ * static markup; DOMPurify is not a project dependency — deviation logged in
+ * task evidence). Main never parses/re-trusts the html: filename is sanitized
+ * and the payload is written verbatim after the save-dialog gesture. The char
+ * cap (~16M) bounds memory at the boundary; the dialog is the consent gate.
+ */
+export const chatExportHtmlSchema = z
+  .object({
+    html: z.string().min(1).max(16_000_000),
+    filename: z.string().min(1).max(1024),
+  })
+  .strict()
+export type ChatExportHtmlInput = z.infer<typeof chatExportHtmlSchema>
+
 // --- models / downloads --------------------------------------------------------
 
 /** HF repo ids are 'owner/name' — downloadWithResume enforces the slash too. */
@@ -155,6 +171,10 @@ export const configSetSchema = z
     locale: z.string().min(2).max(10).optional(),
     /** todo41: quick-ask global hotkey enable flag (combo itself is fixed). */
     quickaskHotkeyEnabled: z.boolean().optional(),
+    /** todo42: 开机自启 (setLoginItemSettings, --hidden 静默进托盘; 打包版生效). */
+    autostartEnabled: z.boolean().optional(),
+    /** todo42: las:// 协议注册开关 (setAsDefaultProtocolClient; 打包版生效). */
+    deeplinkEnabled: z.boolean().optional(),
     /** todo39: RAG search prefs (see AppConfig field docs). */
     rerankEnabled: z.boolean().optional(),
     rerankModel: z.string().max(256).optional(),

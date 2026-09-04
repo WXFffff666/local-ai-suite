@@ -15,6 +15,8 @@ const mocks = vi.hoisted(() => {
     permissionRequestHandler: ((wc: unknown, permission: string, cb: (allow: boolean) => void, details?: unknown) => void) | null =
       null
     permissionCheckHandler: ((wc: unknown, permission: string, details?: unknown) => boolean) | null = null
+    /** todo42: webContents.once capture table (did-finish-load deep-link flush). */
+    onceHandlers: Record<string, () => void> = {}
     webContents = {
       session: {
         setPermissionRequestHandler: (h: (wc: unknown, permission: string, cb: (allow: boolean) => void, details?: unknown) => void): void => {
@@ -24,7 +26,14 @@ const mocks = vi.hoisted(() => {
           this.permissionCheckHandler = h
         }
       },
-      setWindowOpenHandler: (_: unknown): void => undefined
+      setWindowOpenHandler: (_: unknown): void => undefined,
+      // todo42: createWindow subscribes the one-shot did-finish-load deep-link
+      // flush (webContents.once) — captured so a test can fire it explicitly.
+      once: (channel: string, cb: () => void): void => {
+        this.onceHandlers[channel] = cb
+      },
+      send: vi.fn(),
+      isDestroyed: (): boolean => false
     }
     isMinimizedValue = false
     isVisibleValue = true
@@ -60,7 +69,18 @@ const mocks = vi.hoisted(() => {
       quit: vi.fn(),
       exit: vi.fn(),
       requestSingleInstanceLock: vi.fn(),
-      getPath: vi.fn((): string => 'mock-userData')
+      getPath: vi.fn((): string => 'mock-userData'),
+      // todo42: bootstrapIntegration touches the Windows shell APIs (AUMID +
+      // Jump List are win32-gated; protocol/login-item writes are additionally
+      // isPackaged-gated — false here, so only the reads/registration stubs
+      // run). Honest no-ops keep the boot-ordering assertions truthful.
+      isPackaged: false,
+      setAppUserModelId: vi.fn(),
+      setJumpList: vi.fn((): boolean => true),
+      setLoginItemSettings: vi.fn(),
+      setAsDefaultProtocolClient: vi.fn((): boolean => false),
+      removeAsDefaultProtocolClient: vi.fn((): boolean => false),
+      isDefaultProtocolClient: vi.fn((): boolean => false)
     },
     ipcMain: { handle: vi.fn() },
     // todo38: bootstrapOverlay registers the screenshot hotkey through
@@ -284,6 +304,54 @@ describe('lifecycle — src/main/index.ts 生命周期接线', () => {
     expect(win.restore).toHaveBeenCalledTimes(1)
     expect(win.show).toHaveBeenCalledTimes(1)
     expect(win.focus).toHaveBeenCalledTimes(1)
+  })
+
+  // todo42 (ADDITIVE): second-instance argv may carry a las:// deep link
+  // (protocol click / Jump List relaunch). Focus happens either way; a KNOWN
+  // action additionally broadcasts the whitelisted 'app:deeplink' event to the
+  // live window; an unknown/absent link focuses only, never a stray send.
+  it('second-instance：argv 携带 las://models → 聚焦并广播 app:deeplink；未知 action 只聚焦', async () => {
+    await importIndex()
+    const onSecondInstance = requireAppListener('second-instance')
+    const win = mocks.FakeBrowserWindow.instances[0]
+    if (win === undefined) throw new Error('whenReady did not create the main window')
+
+    onSecondInstance({}, ['C:\\app.exe', 'las://models'], 'cwd')
+    const send = win.webContents.send
+    expect(send).toHaveBeenCalledTimes(1)
+    expect(send).toHaveBeenCalledWith('app:deeplink', { action: 'models' })
+
+    const before = send.mock.calls.length
+    onSecondInstance({}, ['C:\\app.exe', 'las://rm-rf'], 'cwd')
+    expect(send.mock.calls.length).toBe(before)
+
+    onSecondInstance({}, ['C:\\app.exe', '--flag'], 'cwd')
+    expect(send.mock.calls.length).toBe(before)
+  })
+
+  // todo42: first-instance launch argv (Windows protocol handler spawns a fresh
+  // process). The link is held and flushed to the renderer exactly once, after
+  // the first did-finish-load (listener mounted), never re-fires on a later
+  // reload.
+  it('首实例启动 argv 的 las:// 深链在 did-finish-load 后恰好冲刷一次', async () => {
+    const origArgv = process.argv
+    process.argv = ['C:\\app.exe', 'las://new-chat']
+    try {
+      await importIndex()
+      const win = mocks.FakeBrowserWindow.instances[0]
+      if (win === undefined) throw new Error('whenReady did not create the main window')
+      const send = win.webContents.send
+      const flush = win.onceHandlers['did-finish-load']
+      if (flush === undefined) throw new Error('no did-finish-load subscriber registered')
+
+      flush()
+      expect(send).toHaveBeenCalledWith('app:deeplink', { action: 'new-chat' })
+      const afterFirst = send.mock.calls.length
+      flush() // idempotent: pending cleared after first flush
+      expect(send.mock.calls.length).toBe(afterFirst)
+    } finally {
+      process.argv = origArgv
+    }
   })
 
   it('before-quit：preventDefault + 调用 shutdownServices 一次，清理完成后重新 quit', async () => {

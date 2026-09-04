@@ -15,10 +15,17 @@ export type WireConfig = {
   openaiPort: number
   /** todo41: quick-ask global hotkey flag (config.json; false = never binds). */
   quickaskHotkeyEnabled?: boolean
+  /** todo42: 开机自启（setLoginItemSettings + --hidden 静默；打包版写 OS）。 */
+  autostartEnabled?: boolean
+  /** todo42: las:// 协议注册开关（打包版写注册表；注册状态见 integration）。 */
+  deeplinkEnabled?: boolean
   secrets?: Partial<Record<SecretFieldName, string>>
 }
 
-export type ConfigGetReply = { ok?: boolean; config?: WireConfig }
+/** config:get 的 todo42 附加读出 — OS 诚实状态，绝不从 flag 臆测。 */
+export type IntegrationState = { deeplinkRegistered: boolean }
+
+export type ConfigGetReply = { ok?: boolean; config?: WireConfig; integration?: IntegrationState }
 export type ConfigSetReply = { ok?: boolean; config?: WireConfig; error?: string }
 
 export type EncryptReply = { ok: boolean; value?: string; warning?: string; error?: string }

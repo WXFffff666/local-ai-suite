@@ -72,6 +72,20 @@ export type AppConfig = {
    * never registers (the e2e __test.triggerHotkey hook still drives the window).
    */
   quickaskHotkeyEnabled: boolean
+  /**
+   * todo42: 开机自启 (app.setLoginItemSettings). Default OFF — never surprise-
+   * register a login item. When on, the login item carries '--hidden' so an
+   * autostarted instance minimizes to tray instead of stealing the desktop.
+   * OS application only happens in packaged builds (index.ts gate).
+   */
+  autostartEnabled: boolean
+  /**
+   * todo42: las:// deep-link protocol registration
+   * (app.setAsDefaultProtocolClient / remove). Default ON; the honest OS state
+   * is reported back via config:get's integration.deeplinkRegistered
+   * (app.isDefaultProtocolClient), never assumed from this flag.
+   */
+  deeplinkEnabled: boolean
   /** Encrypted secrets (todo16) — see SecretPayloads contract above */
   secrets?: SecretPayloads
   /**
@@ -102,6 +116,8 @@ export const DEFAULT_CONFIG: AppConfig = {
   embeddingModel: '',
   screenshotHotkeyEnabled: true,
   quickaskHotkeyEnabled: true,
+  autostartEnabled: false,
+  deeplinkEnabled: true,
 }
 
 /** Resolve userData/config.json path — Electron userData in prod, ./userData/config.json fallback for tests. */

@@ -27,7 +27,7 @@ import type { AppNotificationEvent } from '../../main/ipc/whitelist'
 // todo38 (ADDITIVE): 'ask:seed' — the screenshot overlay's confirmed crop lands
 // as a VLM turn in the main window chat (store send path untouched).
 import { useChatStore } from '../../chat/store'
-import type { AskSeedEvent } from '../../main/ipc/whitelist'
+import type { AskSeedEvent, AppDeepLinkEvent } from '../../main/ipc/whitelist'
 import { useHashRoute, type RouteId } from './hashRouter'
 import ChatPage from './pages/ChatPage'
 import ImagePage from './pages/ImagePage'
@@ -107,6 +107,27 @@ function Shell(): React.JSX.Element {
     return api.on('ask:seed', (e: AskSeedEvent) => {
       navigate('chat')
       void useChatStore.getState().send(e.prompt, undefined, [e.image])
+    })
+  }, [navigate])
+
+  // todo42 (ADDITIVE): 'app:deeplink' — las:// 深链由主进程解析成封闭 action
+  // 后派发（second-instance argv / 首实例启动 argv 双入口）。渲染层只导航：
+  // new-chat → 自建会话进 chat 页（store.createSession 契约）；models → 模型页。
+  // 类型上 action 已是联合成员，运行时 wire 值不可信 — else 守卫按字符串比对，
+  // 未知值忽略 + 诚实 toast（主进程永不发明列表外 action，这是第二道闸）。
+  useEffect(() => {
+    const api = typeof window !== 'undefined' ? window.api : undefined
+    if (!api) return
+    return api.on('app:deeplink', (e: AppDeepLinkEvent) => {
+      const action = e?.action
+      if (action === 'new-chat') {
+        useChatStore.getState().createSession()
+        navigate('chat')
+      } else if (action === 'models') {
+        navigate('models')
+      } else {
+        toast.warning('未知深链', { description: String(action) })
+      }
     })
   }, [navigate])
 

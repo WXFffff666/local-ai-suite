@@ -45,6 +45,12 @@ import type { QuickAskController } from '../quickask/controller'
 import { createOverwriteCoverageHandler } from '../handlers/overwriteCoverage'
 import { createPublishReleaseHandler } from '../handlers/publishRelease'
 import { createClearCacheHandler } from '../handlers/clearCache'
+// todo42: chat:exportHtml (save-dialog + sanitized-filename write) lives in
+// ../export/ipc.ts (registration-only here, speech/ocr precedent); the
+// autostart / protocol-registration side-effects ride an injected surface so
+// electron app never enters this module (integration.ts owns the pure halves).
+import { createExportHandlers, type ExportIpcDeps } from '../export/ipc'
+import type { IntegrationSurface } from '../export/integration'
 import { readLoraMetaFile, toLoraFiles } from './loraFs'
 import type { ChatRelay } from './chatRelay'
 import type { DownloadManager } from './downloadManager'
@@ -228,6 +234,19 @@ export type HandlerDeps = {
    * the existing `relay` dep — ChatRelay.start is the shared ask function.
    */
   quickask?: () => QuickAskController | null
+  /**
+   * todo42: chat:exportHtml runtime (save dialog + downloads dir + writer).
+   * index.ts injects the electron-backed trio; absent ⇒ the honest not-ready
+   * shape (vitest never sees a real file dialog — tests inject fakes).
+   */
+  export?: ExportIpcDeps
+  /**
+   * todo42: autostart (setLoginItemSettings) + las:// protocol registration
+   * behind config:set side-effects and the config:get honest verify-state
+   * readout. index.ts gates the OS writes on app.isPackaged inside this
+   * surface; tests inject a recording mock.
+   */
+  integration?: IntegrationSurface
   /** destructive-action backends (same no-op wiring index.ts had pre-W1). */
   onDeleteWorkspace?: (id: string) => Promise<void>
   onOverwriteCoverage?: (opts: unknown) => Promise<void>
@@ -313,6 +332,9 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
     relay: deps.relay,
     testHooksEnabled: () => deps.testHooks?.() ?? false,
   })
+  // todo42: chat:exportHtml. deps.export absent (bare buildIpcHandlers in some
+  // legacy tests) ⇒ the honest not-ready shape — never a real dialog attempt.
+  const exportHandlers = deps.export ? createExportHandlers(deps.export) : null
   // '__test.triggerHotkey' dispatches by the validated name: 'screenshot' →
   // todo38 overlay lane, 'quickask' → todo41 lane. zod already gated the enum,
   // so the else arm is exactly the screenshot case (exhaustive by schema).
@@ -388,12 +410,18 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
     'config:get': async (args) => {
       const parsed = validatePayload(configGetSchema, first(args, {}))
       if (!parsed.ok) return parsed
-      return { ok: true, config: getConfig() }
+      // todo42 (ADDITIVE): integration carries the HONEST OS readout of the
+      // las:// registration (app.isDefaultProtocolClient via the surface) —
+      // never assumed from the persisted flag. Absent surface ⇒ field omitted.
+      const integration = deps.integration
+        ? { deeplinkRegistered: deps.integration.isProtocolRegistered() }
+        : undefined
+      return { ok: true, config: getConfig(), ...(integration ? { integration } : {}) }
     },
     'config:set': async (args) => {
       const parsed = validatePayload(configSetSchema, first(args))
       if (!parsed.ok) return parsed
-      const { theme, locale, secrets, rerankEnabled, rerankModel, embeddingModel, quickaskHotkeyEnabled } = parsed.data
+      const { theme, locale, secrets, rerankEnabled, rerankModel, embeddingModel, quickaskHotkeyEnabled, autostartEnabled, deeplinkEnabled } = parsed.data
       const partial: Partial<AppConfig> = {}
       if (theme !== undefined) partial.theme = theme
       if (locale !== undefined) partial.locale = locale
@@ -407,7 +435,16 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
         // field-wise merge; zod already rejected non-enc payloads
         partial.secrets = { ...getConfig().secrets, ...secrets }
       }
-      return { ok: true, config: setConfig(partial) }
+      // todo42: OS integration flags. Persist first, then mirror to the OS
+      // through the injected surface (index.ts gates on app.isPackaged — in
+      // dev the flags persist honestly and the settings row shows the real
+      // isDefaultProtocolClient state). Only touched fields are re-applied.
+      if (autostartEnabled !== undefined) partial.autostartEnabled = autostartEnabled
+      if (deeplinkEnabled !== undefined) partial.deeplinkEnabled = deeplinkEnabled
+      const next = setConfig(partial)
+      if (autostartEnabled !== undefined) deps.integration?.applyAutostart(next.autostartEnabled)
+      if (deeplinkEnabled !== undefined) deps.integration?.applyProtocolRegistration(next.deeplinkEnabled)
+      return { ok: true, config: next }
     },
 
     // --- download control (todo14b) --------------------------------------------
@@ -428,6 +465,9 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
       if (!parsed.ok) return parsed
       return deps.relay.abort(parsed.data)
     },
+
+    // --- todo42: export (registration-only; save-dialog/write in ../export/ipc) --
+    'chat:exportHtml': exportHandlers?.['chat:exportHtml'] ?? (async () => NOT_READY),
 
     // --- agent (todo23) ----------------------------------------------------------
     // Thin registration only: validation + delegation. The tool-calling loop,

@@ -1,7 +1,14 @@
 ﻿import { app, BrowserWindow, dialog, globalShortcut, ipcMain, safeStorage } from 'electron'
 import { join } from 'path'
+import { writeFileSync } from 'fs'
 import { is } from '@electron-toolkit/utils'
-import { assertAllowedEventChannel, isAllowedChannel, type AllowedChannel, type AllowedEventChannel } from './ipc/whitelist'
+import {
+  assertAllowedEventChannel,
+  isAllowedChannel,
+  type AllowedChannel,
+  type AllowedEventChannel,
+  type DeepLinkAction,
+} from './ipc/whitelist'
 import { buildIpcHandlers, toImageQueueStatusEvent, type HandlerContext } from './ipc/handlers'
 import { ChatRelay } from './ipc/chatRelay'
 import { DownloadManager } from './ipc/downloadManager'
@@ -34,6 +41,17 @@ import {
 } from './overlay/controller'
 import { QuickAskController, QUICKASK_HOTKEY_ACCELERATOR } from './quickask/controller'
 import { createElectronQuickAskDeps } from './quickask/electronDeps'
+// todo42: export + system integration (HTML export runtime, las:// deep links,
+// Windows Jump List, autostart). Pure logic is unit-tested in ./export/**; the
+// electron side below is deliberately thin plumbing.
+import { DEEP_LINK_SCHEME, extractDeepLinkFromArgv } from './export/deeplink'
+import { APP_USER_MODEL_ID, buildJumpListEntries } from './export/jumplist'
+import {
+  AUTOSTART_HIDDEN_FLAG,
+  applyAutostart,
+  applyProtocolRegistration,
+  type IntegrationSurface,
+} from './export/integration'
 import type { SidecarManager } from '../core/SidecarManager'
 import type { SidecarStatus } from '../core/types'
 
@@ -58,16 +76,51 @@ registerGlobalErrorLogging({
 
 // Single-instance lock: a second launch asks the FIRST instance to surface its
 // window via 'second-instance' and this duplicate process quits immediately.
+// todo42 (ADDITIVE): the duplicate's argv is scanned for a las:// deep link
+// (protocol click / Jump List entry relaunch) BEFORE focusing — the action is
+// dispatched to the renderer as the whitelisted 'app:deeplink' event. Unknown
+// / absent links focus only; nothing is ever invented past the closed union.
 const ownsInstanceLock = app.requestSingleInstanceLock()
 if (!ownsInstanceLock) {
   app.quit()
 } else {
-  app.on('second-instance', () => {
+  app.on('second-instance', (_event, argv) => {
     focusMainWindow()
+    const action = extractDeepLinkFromArgv(argv)
+    if (action !== null) {
+      broadcastEvent('app:deeplink', { action })
+    }
   })
 }
 
 let mainWindow: BrowserWindow | null = null
+
+// todo42: deep link carried by the FIRST instance's launch argv (Windows
+// protocol handler starts a fresh process with las://... in argv). Held until
+// the primary window's first did-finish-load, so the renderer's listener is
+// mounted before the event arrives (webContents.send would otherwise drop).
+let pendingStartupDeepLink: DeepLinkAction | null = extractDeepLinkFromArgv(process.argv)
+
+// todo42: autostart posture — the login item registers with '--hidden'
+// (buildLoginItemSettings), so an autostarted instance builds the window but
+// never shows it; the tray (todo10) is the唤出 affordance. Interactive launches
+// without the flag are byte-identical to the pre-42 behavior.
+const launchHidden = process.argv.includes(AUTOSTART_HIDDEN_FLAG)
+
+// todo42: OS-facing integration surface handed to the IPC handlers. The
+// config flag persists in every build; the WRITE to the OS (login item /
+// protocol registry) only happens in packaged installs — dev/e2e must never
+// mutate the workstation's registry or login items. Reads stay live so the
+// settings row shows the honest isDefaultProtocolClient state.
+const integrationSurface: IntegrationSurface = {
+  applyAutostart: (enabled) => {
+    if (app.isPackaged) applyAutostart(app, enabled)
+  },
+  applyProtocolRegistration: (enabled) => {
+    if (app.isPackaged) applyProtocolRegistration(app, enabled)
+  },
+  isProtocolRegistered: () => app.isDefaultProtocolClient(DEEP_LINK_SCHEME),
+}
 
 // --- todo38: screenshot ask-overlay controller --------------------------------
 // Constructed in bootstrapOverlay() (after whenReady — globalShortcut/screen
@@ -186,7 +239,19 @@ function createWindow(): void {
   mainWindow.webContents.setWindowOpenHandler(() => ({ action: 'deny' }))
 
   mainWindow.on('ready-to-show', () => {
-    mainWindow?.show()
+    // todo42: '--hidden' (autostart login item) builds the window invisible —
+    // tray唤出 is the way back; every normal launch shows exactly as before.
+    if (!launchHidden) mainWindow?.show()
+  })
+
+  // todo42: first-instance deep link flush. did-finish-load ⇒ the renderer
+  // bundle (and App.tsx's 'app:deeplink' listener) has been evaluated; one-shot.
+  mainWindow.webContents.once('did-finish-load', () => {
+    if (pendingStartupDeepLink === null) return
+    const action = pendingStartupDeepLink
+    pendingStartupDeepLink = null
+    const contents = mainWindow?.webContents
+    if (contents && !contents.isDestroyed()) broadcastEvent('app:deeplink', { action })
   })
 
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
@@ -263,7 +328,16 @@ function registerIpcHandlers(): void {
     overlay: () => overlayController,
     // todo41: quickask:* + the '__test.triggerHotkey' quickask lane (same gate).
     quickask: () => quickAskController,
-    testHooks: () => !app.isPackaged
+    testHooks: () => !app.isPackaged,
+    // todo42: export runtime (real dialog + downloads dir + sync UTF-8 write —
+    // the handler validates + sanitizes the filename before ever reaching this)
+    // and the OS-integration surface (autostart / las:// registration / state).
+    export: {
+      dialog,
+      getDownloadsDir: () => app.getPath('downloads'),
+      writeFile: (path, data) => writeFileSync(path, data, 'utf-8'),
+    },
+    integration: integrationSurface
   })
 
   for (const [channel, fn] of Object.entries(handlers) as [AllowedChannel, (typeof handlers)[AllowedChannel]][]) {
@@ -430,6 +504,28 @@ function bootstrapQuickAsk(): void {
   }
 }
 
+// todo42: system-integration bootstrap. Windows-only surfaces (AUMID + Jump
+// List) are set unconditionally on win32 — Jump List entries live per-user in
+// system JS files and carry no registry pollution risk; the protocol/login-
+// item writes stay isPackaged-gated inside integrationSurface. Startup re-
+// applies the persisted config (idempotent) so a drifted OS state (manual
+// removal, profile move) heals to the user's declared preference.
+function bootstrapIntegration(): void {
+  if (process.platform === 'win32') {
+    app.setAppUserModelId(APP_USER_MODEL_ID)
+    try {
+      app.setJumpList([
+        { type: 'custom', name: 'Local AI Suite', items: [...buildJumpListEntries(process.execPath)] },
+      ])
+    } catch (error) {
+      getMainLogger().warn({ err: error }, 'jump list registration failed (non-fatal)')
+    }
+  }
+  const cfg = getConfig()
+  integrationSurface.applyAutostart(cfg.autostartEnabled)
+  integrationSurface.applyProtocolRegistration(cfg.deeplinkEnabled)
+}
+
 app.whenReady().then(() => {
   // Service container (todo7): lazy — spawns nothing; watch + handshake start
   // here. Created BEFORE the handlers so the singleton carries the logger sink
@@ -447,6 +543,7 @@ app.whenReady().then(() => {
   bootstrapQuickAsk()
   bootstrapApiServer()
   bootstrapTray()
+  bootstrapIntegration()
 
   // todo32: deferred post-launch update check (plan: 启动后延迟检查). Packaged
   // builds only — unpackaged dev/e2e has no app-update.yml and must stay

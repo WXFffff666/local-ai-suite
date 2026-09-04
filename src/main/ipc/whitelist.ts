@@ -36,6 +36,10 @@ export const ALLOWED_CHANNELS = [
   'config:set',
   'chat:send',
   'chat:abort',
+  // todo42: 会话导出单文件 HTML。渲染层用 todo15 同一 sanitize 管线
+  // (react-markdown + rehype-sanitize) 静态化出 html 字符串后送主进程落盘；
+  // 主进程只负责文件名净化 + save dialog + 写文件（纯本地，无分享上传）。
+  'chat:exportHtml',
   // todo23: agent tool-calling loop (permission decision channels ride with
   // todo25; agent:term event stays reserved for todo28's xterm output)
   'agent:start',
@@ -186,8 +190,11 @@ export const ALLOWED_EVENT_CHANNELS = [
   'quickask:delta',
   'quickask:done',
   'quickask:error',
-  'quickask:prefill'
-] as const
+  'quickask:prefill',
+  // todo42: las:// 深链派发（second-instance / 首实例启动 argv 两处入口，
+  // 主进程解析后只发封闭 action；渲染层 App 壳导航 hash 路由）。
+  'app:deeplink'
+ ] as const
 
 export type AllowedEventChannel = (typeof ALLOWED_EVENT_CHANNELS)[number]
 
@@ -303,6 +310,7 @@ export type EventPayloads = {
   'quickask:done': ChatDoneEvent
   'quickask:error': ChatErrorEvent
   'quickask:prefill': QuickAskPrefillEvent
+  'app:deeplink': AppDeepLinkEvent
 }
 
 // ---------------------------------------------------------------------------
@@ -835,3 +843,27 @@ export type QuickAskAskReply = { ok: true; id: string; streaming: true }
 
 /** '__test.triggerHotkey' now pins TWO names (todo38 screenshot + todo41
  *  quickask); reply union shared — TestTriggerHotkeyReply above covers both. */
+export const TEST_HOTKEY_NAMES = ['screenshot', 'quickask'] as const
+
+// ---------------------------------------------------------------------------
+// Export & system integration (todo42) wire contracts.
+// ---------------------------------------------------------------------------
+
+/**
+ * chat:exportHtml reply. The html is renderer-composed (todo15 sanitize
+ * pipeline, static markup); main sanitizes the FILENAME (destructive edge:
+ * strip <>:"/\|?* + control chars, cap 120, fallback 'chat'), opens the save
+ * dialog at the downloads dir and writes UTF-8. 'cancelled' = user dismissed
+ * the dialog — a benign outcome, not an error toast.
+ */
+export type ChatExportHtmlReply =
+  | { ok: true; path: string }
+  | { ok: false; error: 'invalid-payload'; issues?: unknown }
+  | { ok: false; error: 'cancelled' | 'write-failed' | 'not-ready'; detail?: string }
+
+/** las:// actions — the closed dispatch table (export/deeplink.ts parses into it). */
+export const DEEP_LINK_ACTIONS = ['new-chat', 'models'] as const
+export type DeepLinkAction = (typeof DEEP_LINK_ACTIONS)[number]
+
+/** 'app:deeplink' payload (main -> renderer; action already validated). */
+export type AppDeepLinkEvent = { action: DeepLinkAction }
