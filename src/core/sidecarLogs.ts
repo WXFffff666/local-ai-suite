@@ -28,6 +28,13 @@ export class SidecarLogger {
   private readonly maxBytes: number
   private readonly deps: LogFsDeps
   private stream: fs.WriteStream | null = null
+  /**
+   * Streams already handed to end() but whose fd is not yet released
+   * ('close' pending). whenIdle() lets shutdown await full flush so a
+   * later directory removal cannot race a still-open append handle
+   * (Windows CI ENOTEMPTY on temp-dir teardown).
+   */
+  private readonly closing = new Map<fs.WriteStream, Promise<void>>()
 
   constructor(opts: { name: string; logDir: string; maxBytes: number; fsDeps: LogFsDeps }) {
     this.filePath = path.join(opts.logDir, `sidecar-${opts.name}.log`)
@@ -54,12 +61,60 @@ export class SidecarLogger {
 
   close(): void {
     if (!this.stream) return
-    try {
-      this.stream.end()
-    } catch {
-      // ignore
-    }
+    const ending = this.stream
     this.stream = null
+    let settled = false
+    let settle: () => void = () => {}
+    const done = new Promise<void>((resolve) => {
+      settle = resolve
+    })
+    const finish = (): void => {
+      if (settled) return
+      settled = true
+      this.closing.delete(ending)
+      settle()
+    }
+    this.closing.set(ending, done)
+    // 'close' fires once the fd is released (after all buffered writes flush).
+    // Guarded: an injected fake fsDeps stream (tests) may not implement
+    // once/close — such a handle holds no real fd, so there is nothing to wait
+    // on and finish() resolves synchronously below.
+    const waitsForClose = typeof ending.once === 'function' && ending.writableEnded !== true
+    if (waitsForClose) {
+      ending.once('close', finish)
+      ending.once('error', () => {
+        try {
+          ending.destroy()
+        } catch {
+          // ignore — nothing left to release
+        }
+        finish()
+      })
+    }
+    try {
+      ending.end(() => {
+        // end() callback runs after the final flush; if the stream never
+        // emitted 'close' (mock, or writableEnded already true) settle here.
+        if (!waitsForClose) finish()
+      })
+    } catch {
+      try {
+        ending.destroy()
+      } catch {
+        // ignore
+      }
+      finish()
+    }
+    if (!waitsForClose && !settled) {
+      // last-resort: a mock end() that neither invoked its callback nor threw
+      finish()
+    }
+  }
+
+  /** Resolves when every handed-off stream has flushed and closed its fd. */
+  whenIdle(): Promise<void> {
+    if (this.closing.size === 0) return Promise.resolve()
+    return Promise.all([...this.closing.values()]).then(() => undefined)
   }
 
   write(msg: string, level: LogLevel = 'info'): void {

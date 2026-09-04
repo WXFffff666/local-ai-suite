@@ -112,10 +112,20 @@ beforeEach(() => {
   tmpRoots = []
 })
 
-afterEach(() => {
+afterEach(async () => {
+  // Run the registered stop hooks BEFORE wiping them: each manager hook now
+  // awaits logsIdle(), so the sidecar-<name>.log fd is released (stream
+  // 'close') before we touch the temp tree. Idempotent when the test already
+  // shut down. resetShutdownState() alone would drop the hooks with the
+  // append flush still pending — the Windows-CI ENOTEMPTY race at this line.
+  await shutdownServices()
   resetShutdownState()
   resetServices()
-  for (const dir of tmpRoots) rmSync(dir, { recursive: true, force: true })
+  for (const dir of tmpRoots) {
+    // maxRetries/maxRetryTime ride out transient ENOTEMPTY/EBUSY windows on
+    // slower runners where the fd release lags the last buffered write.
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, maxRetryTime: 2000 })
+  }
 })
 
 describe('services container — lazy wiring (todo7)', () => {

@@ -377,7 +377,14 @@ export class Services {
       }
     }
     this.managers.set(name, manager)
-    registerShutdownHook(() => manager.stop())
+    // stop() closes the log append stream (end → async flush → 'close' releases
+    // the fd). Await logsIdle so shutdownServices() does not resolve while the
+    // sidecar-<name>.log handle is still open — otherwise a caller removing the
+    // log dir (test teardown) races ENOTEMPTY on Windows CI runners.
+    registerShutdownHook(async () => {
+      manager.stop()
+      await manager.logsIdle()
+    })
     // one dispatcher per manager reading the live listener set: subscriptions
     // made before creation (buffered) and afterwards share the same path
     manager.onSidecarEvent((event, status) => {

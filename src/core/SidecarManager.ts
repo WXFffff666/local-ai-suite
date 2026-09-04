@@ -224,6 +224,15 @@ export class SidecarManager {
   }
 
   /**
+   * Resolves once the sidecar's log stream has flushed and released its fd.
+   * Shutdown hooks await this before removing the log dir so the append
+   * handle can't race an rm -rmdir (Windows CI ENOTEMPTY).
+   */
+  logsIdle(): Promise<void> {
+    return this.logger.whenIdle()
+  }
+
+  /**
    * Pre-spawn port preflight: keep the configured port when free; never touch
    * 11434; otherwise reallocate from the dynamic range and carry the resolved
    * port through config (port + healthUrl + '--port'-style args tokens).
