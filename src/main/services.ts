@@ -24,9 +24,10 @@ import { SidecarManager, type SidecarManagerOptions } from '../core/SidecarManag
 import type { ISearchAdapter, SidecarEventListener, SidecarStatus } from '../core/types'
 import { buildLlamaArgs, createLlamaSidecar, LLAMA_PORT } from '../sidecars/llama'
 import { createOllamaSidecar, OLLAMA_PORT } from '../sidecars/ollama'
-import { createSdSidecar, SD_PORT } from '../sidecars/sd'
+import { buildSdArgs, createSdSidecar, SD_PORT } from '../sidecars/sd'
 import { ModelRegistry, type RegistryOptions } from '../models/registry'
 import { ImageQueue } from '../image/queue'
+import { createSdJobHandler, pickDiffusionModel } from '../image/executor'
 import { Gallery } from '../gallery/gallery'
 import { SearchOrchestrator, type OrchestratorOptions } from '../search/orchestrator'
 import { SearxngAdapter } from '../search/searxng'
@@ -69,6 +70,11 @@ export function llamaServeFlags(entry: Pick<import('../models/registry').ModelEn
   if (/\brerank/.test(hay)) return { rerank: true }
   if (/(^|[\/\s._-])embed(ding|ings|s|ed)?([\/\s._-]|$)/.test(hay)) return { embeddings: true }
   return {}
+}
+
+/** sd 侧车启动参数（阶段0 生图接线）：模型路径切换时同端口重建 argv 并重启子进程。 */
+export type SdLaunchOptions = {
+  modelPath?: string
 }
 
 export type ServicesOptions = {
@@ -144,6 +150,8 @@ export class Services {
   private engineResolverInstance: EngineResolver | null = null
   /** Last-asked llama model+projector; consumed at (re)spawn (todo21 last hop). */
   private llamaLaunch: LlamaLaunchOptions = {}
+  /** Last-asked sd diffusion model; consumed at (re)spawn (阶段0 生图接线). */
+  private sdLaunch: SdLaunchOptions = {}
   /** Resolver outcomes by consulted engine name (availability for UI). */
   private readonly engineSources = new Map<SidecarName, ResolvedEngine>()
 
@@ -200,6 +208,18 @@ export class Services {
   get imageQueue(): ImageQueue {
     if (this.imageQueueInstance === null) {
       const queue = new ImageQueue({ concurrency: 1, defaultMaxRetries: 2, defaultBackoffMs: 400 })
+      // 阶段0 生图接线：注入真实 sd 执行器（此前为 queue.ts 默认 mock，
+      // UI 生图永远得到非 PNG 结果）。执行器按 job.model 从注册表解析
+      // models/diffusion/** 模型，ensureSidecar('sd') 拉起侧车后 POST /generate。
+      queue.setHandler(
+        createSdJobHandler({
+          resolveModel: (requested) => pickDiffusionModel(this.registry.getModels(), requested),
+          ensureSd: async (o) => {
+            const status = await this.ensureSidecar('sd', o.modelPath === undefined ? {} : { modelPath: o.modelPath })
+            return { port: status.port }
+          },
+        }),
+      )
       this.imageQueueInstance = queue
       registerShutdownHook(() => {
         for (const job of queue.listJobs()) {
@@ -258,20 +278,34 @@ export class Services {
   }
 
   /**
-   * Ensure a sidecar runs. For 'llama', optional launch options carry the
-   * todo21 last hop (registry modelPath + paired projectorPath ->
-   * buildLlamaArgs --model/--mmproj). Re-asking with a different model while
-   * running swaps argv and restarts the child (same manager, port kept).
+   * Ensure a sidecar runs. Launch options: 'llama' carries model+projector
+   * (todo21); 'sd' carries the diffusion modelPath (阶段0 生图接线). Re-asking
+   * with a different model while running swaps argv and restarts the child
+   * (same manager, port kept).
    */
-  async ensureSidecar(name: SidecarName, launch?: LlamaLaunchOptions): Promise<SidecarStatus> {
+  async ensureSidecar(
+    name: SidecarName,
+    launch?: LlamaLaunchOptions | SdLaunchOptions,
+  ): Promise<SidecarStatus> {
     if (launch !== undefined) {
-      if (name !== 'llama') throw new Error('launch options are only supported for the llama sidecar')
-      this.llamaLaunch = launch
-      const manager = this.managers.get(name)
-      if (manager !== undefined) {
-        const inFlight = this.starting.get(name)
-        if (inFlight) await inFlight
-        return this.applyLlamaArgs(manager)
+      if (name === 'llama') {
+        this.llamaLaunch = launch
+        const manager = this.managers.get(name)
+        if (manager !== undefined) {
+          const inFlight = this.starting.get(name)
+          if (inFlight) await inFlight
+          return this.applyLlamaArgs(manager)
+        }
+      } else if (name === 'sd') {
+        this.sdLaunch = launch as SdLaunchOptions
+        const manager = this.managers.get(name)
+        if (manager !== undefined) {
+          const inFlight = this.starting.get(name)
+          if (inFlight) await inFlight
+          return this.applySdArgs(manager)
+        }
+      } else {
+        throw new Error('launch options are only supported for the llama/sd sidecar')
       }
     }
     const inFlight = this.starting.get(name)
@@ -306,6 +340,22 @@ export class Services {
         manager.stop()
         void manager.start().catch((error: unknown) => {
           this.warn(`llama restart after model switch failed: ${error instanceof Error ? error.message : String(error)}`, error)
+        })
+      }
+    }
+    return manager.getStatus()
+  }
+
+  /** sd 侧车镜像 applyLlamaArgs：模型切换 → 重建 argv → 原端口重启（阶段0）。 */
+  private applySdArgs(manager: SidecarManager): SidecarStatus {
+    const args = buildSdArgs({ modelPath: this.sdLaunch.modelPath, port: manager.config.port })
+    const changed = JSON.stringify(args) !== JSON.stringify(manager.config.args)
+    if (changed) {
+      manager.config.args = args
+      if (manager.isRunning()) {
+        manager.stop()
+        void manager.start().catch((error: unknown) => {
+          this.warn(`sd restart after model switch failed: ${error instanceof Error ? error.message : String(error)}`, error)
         })
       }
     }
@@ -369,7 +419,12 @@ export class Services {
         })
         break
       case 'sd':
-        manager = createSdSidecar({ port: this.opts.sdPort, ...(bin === undefined ? {} : { bin }), ...shared })
+        manager = createSdSidecar({
+          port: this.opts.sdPort,
+          ...(bin === undefined ? {} : { bin }),
+          ...(this.sdLaunch.modelPath === undefined ? {} : { modelPath: this.sdLaunch.modelPath }),
+          ...shared,
+        })
         break
       default: {
         const unreachable: never = name

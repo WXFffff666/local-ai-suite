@@ -78,6 +78,8 @@ export type ImagesDeps = {
   /** Override generate for tests (if supplied, fetchImpl/port ignored). */
   generateImpl?: (req: SdGenerateRequest, opts?: { port?: number; fetchImpl?: FetchLike; signal?: AbortSignal }) => Promise<SdGenerateResponse>
   signal?: AbortSignal
+  /** sd 异步任务轮询间隔 ms（默认 800；测试可调小） */
+  pollMs?: number
 }
 
 // ---------------------------------------------------------------------------
@@ -191,7 +193,7 @@ export async function generateB64List(
 
   const doGenerate = deps.generateImpl
     ? (r: SdGenerateRequest) => deps.generateImpl!(r, { port: deps.port, fetchImpl: deps.fetchImpl, signal: deps.signal })
-    : (r: SdGenerateRequest) => generateImage(r, { port: deps.port, fetchImpl: deps.fetchImpl, signal: deps.signal })
+    : (r: SdGenerateRequest) => generateImage(r, { port: deps.port, fetchImpl: deps.fetchImpl, signal: deps.signal, ...(deps.pollMs === undefined ? {} : { pollMs: deps.pollMs }) })
 
   const out: string[] = []
   for (let i = 0; i < n; i++) {

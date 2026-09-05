@@ -231,17 +231,30 @@ describe('handleImagesRequest — fetch-style router (POST two paths)', () => {
     expect(res!.status).toBe(200)
   })
 
-  it('通过 fetchImpl 注入真实 sd 调用 (mock fetch) 直出 PNG b64', async () => {
-    const fetchImpl = vi.fn(async () =>
-      new Response(JSON.stringify({ image: B64 }), { status: 200, headers: { 'content-type': 'application/json' } }),
-    )
+  it('通过 fetchImpl 注入真实 sd 调用 (mock img_gen 任务流) 直出 PNG b64', async () => {
+    const fetchImpl = vi.fn(async (url: string | URL | Request, init?: RequestInit) => {
+      const u = String(url)
+      if (u.includes('/sdcpp/v1/img_gen')) {
+        return new Response(JSON.stringify({ id: 'job_1', poll_url: '/sdcpp/v1/jobs/job_1', status: 'queued' }), {
+          status: 202,
+          headers: { 'content-type': 'application/json' },
+        })
+      }
+      if (u.includes('/sdcpp/v1/jobs/job_1')) {
+        return new Response(JSON.stringify({ status: 'done', result: { images: [{ b64_json: B64 }] } }), {
+          status: 200,
+          headers: { 'content-type': 'application/json' },
+        })
+      }
+      return new Response('not found', { status: 404 })
+    })
     const req = new Request('http://127.0.0.1:11436/v1/images/generations', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ prompt: 'hi' }),
     })
-    const res = await handleImagesRequest(req, { fetchImpl: fetchImpl as never })
+    const res = await handleImagesRequest(req, { fetchImpl: fetchImpl as never, pollMs: 1 })
     expect(res!.status).toBe(200)
-    expect(fetchImpl).toHaveBeenCalledWith(expect.stringContaining('/generate'), expect.objectContaining({ method: 'POST' }))
+    expect(fetchImpl).toHaveBeenCalledWith(expect.stringContaining('/sdcpp/v1/img_gen'), expect.objectContaining({ method: 'POST' }))
   })
 })

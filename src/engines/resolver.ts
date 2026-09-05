@@ -91,7 +91,7 @@ type EngineProfile = {
 
 const PROFILES: Record<EngineBinary, EngineProfile> = {
   llama: { pathExes: ['llama-server'], manifestKey: 'llama' },
-  sd: { pathExes: ['sd-cli'], manifestKey: 'sd' },
+  sd: { pathExes: ['sd-server', 'sd-cli'], manifestKey: 'sd' },
   ollama: {
     pathExes: ['ollama'],
     manifestKey: undefined,

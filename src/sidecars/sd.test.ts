@@ -6,6 +6,7 @@ import {
   SD_PORT,
   SD_HEALTH_URL,
   SD_GENERATE_URL,
+  SD_IMG_GEN_URL,
   SD_NAME,
   SD_LOG_FILE,
   DEFAULT_SD_BIN,
@@ -18,6 +19,8 @@ import {
   toGenerateBody,
   getGenerateUrl,
   getHealthUrl,
+  getImgGenUrl,
+  getJobUrl,
   createSdSidecarConfig,
   createSdSidecar,
   SdQueue,
@@ -30,6 +33,41 @@ import {
 } from './sd'
 
 // --- helpers ---
+
+/**
+ * 原生异步任务流 mock（阶段0 升级 sd-server）：POST /sdcpp/v1/img_gen →
+ * 202 {id, poll_url}；GET /sdcpp/v1/jobs/{id} → done + result.images。
+ * 每次提交返回独立 job id（img1/img2/...）以验证队列串行语义。
+ */
+function jobFlowFetch(images: string[] = ['img1']): ReturnType<typeof vi.fn> {
+  let submits = 0
+  return vi.fn(async (url: string | URL | Request) => {
+    const u = String(url)
+    if (u.includes('/sdcpp/v1/img_gen')) {
+      submits += 1
+      const id = `job_${submits}`
+      return new Response(JSON.stringify({ id, poll_url: `/sdcpp/v1/jobs/${id}`, status: 'queued' }), {
+        status: 202,
+        headers: { 'content-type': 'application/json' },
+      })
+    }
+    const m = u.match(/\/sdcpp\/v1\/jobs\/job_(\d+)/)
+    if (m) {
+      const n = Number(m[1])
+      const b64 = images[n - 1] ?? `img${n}`
+      return new Response(JSON.stringify({ id: m[0], status: 'done', result: { images: [{ b64_json: b64 }] } }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      })
+    }
+    return new Response('not found', { status: 404 })
+  })
+}
+
+function submitBodyOf(fetchMock: ReturnType<typeof vi.fn>, callIndex = 0): Record<string, unknown> {
+  const submit = fetchMock.mock.calls.filter((c) => String(c[0]).includes('/img_gen'))[callIndex]
+  return JSON.parse(String((submit as [unknown, { body: string }])[1]?.body)) as Record<string, unknown>
+}
 
 function mockChildProcess(overrides: Partial<Record<string, unknown>> = {}) {
   const ee = new EventEmitter() as EventEmitter & {
@@ -82,22 +120,25 @@ function jsonResponse(obj: unknown, status = 200, headers: Record<string, string
 }
 
 describe('sd sidecar constants (host 127.0.0.1:11436)', () => {
-  it('常量符合 spec：127.0.0.1:11436 / health / generate / 日志', () => {
+  it('常量符合 spec：127.0.0.1:11436 / health(v1/models) / img_gen / 日志', () => {
     expect(SD_HOST).toBe('127.0.0.1')
     expect(SD_PORT).toBe(11436)
-    expect(SD_HEALTH_URL).toBe('http://127.0.0.1:11436/health')
+    expect(SD_HEALTH_URL).toBe('http://127.0.0.1:11436/v1/models')
     expect(SD_GENERATE_URL).toBe('http://127.0.0.1:11436/generate')
+    expect(SD_IMG_GEN_URL).toBe('http://127.0.0.1:11436/sdcpp/v1/img_gen')
     expect(SD_NAME).toBe('sd')
     expect(SD_LOG_FILE).toBe('sidecar-sd.log')
-    expect(DEFAULT_SD_BIN).toBe('sd-cli')
+    expect(DEFAULT_SD_BIN).toBe('sd-server')
     expect(SD_QUANTIZATIONS).toEqual(expect.arrayContaining(['f32', 'f16', 'q4_0', 'q8_0']))
   })
 
-  it('getHealthUrl / getGenerateUrl 默认与自定义端口', () => {
+  it('getHealthUrl / getGenerateUrl / getImgGenUrl 默认与自定义端口', () => {
     expect(getHealthUrl()).toBe(SD_HEALTH_URL)
     expect(getGenerateUrl()).toBe(SD_GENERATE_URL)
-    expect(getHealthUrl(12000)).toBe('http://127.0.0.1:12000/health')
+    expect(getHealthUrl(12000)).toBe('http://127.0.0.1:12000/v1/models')
     expect(getGenerateUrl(12000)).toBe('http://127.0.0.1:12000/generate')
+    expect(getImgGenUrl(12000)).toBe('http://127.0.0.1:12000/sdcpp/v1/img_gen')
+    expect(getJobUrl(12000, 'j1')).toBe('http://127.0.0.1:12000/sdcpp/v1/jobs/j1')
   })
 
   it('resolveSdBin — explicit > env > default', () => {
@@ -120,7 +161,7 @@ describe('sd sidecar constants (host 127.0.0.1:11436)', () => {
 
 describe('buildSdArgs — GGUF 量化与 CPU 回退', () => {
   it('默认产出 --host 127.0.0.1 --port 11436', () => {
-    expect(buildSdArgs()).toEqual(['--host', '127.0.0.1', '--port', '11436'])
+    expect(buildSdArgs()).toEqual(['--listen-ip', '127.0.0.1', '--listen-port', '11436'])
   })
 
   it('modelPath 追加 --model', () => {
@@ -199,10 +240,10 @@ describe('createSdSidecarConfig / createSdSidecar (复用 SidecarManager)', () =
     expect(cfg.name).toBe('sd')
     expect(cfg.bin).toBe(DEFAULT_SD_BIN)
     expect(cfg.port).toBe(11436)
-    expect(cfg.healthUrl).toBe('http://127.0.0.1:11436/health')
-    expect(cfg.args).toContain('--host')
+    expect(cfg.healthUrl).toBe('http://127.0.0.1:11436/v1/models')
+    expect(cfg.args).toContain('--listen-ip')
     expect(cfg.args).toContain('127.0.0.1')
-    expect(cfg.args).toContain('--port')
+    expect(cfg.args).toContain('--listen-port')
     expect(cfg.args).toContain('--weight-type')
     expect(cfg.args).toContain('q4_0')
     expect((cfg as unknown as { quantization: string }).quantization).toBe('q4_0')
@@ -214,7 +255,7 @@ describe('createSdSidecarConfig / createSdSidecar (复用 SidecarManager)', () =
     expect(() => new SidecarManager({ name: 'bad', bin: 'bin', args: [], port: 11436, healthUrl: 'http://0.0.0.0:11436/health' }, { fsDeps: fsMock.deps as never })).toThrow(/127\.0\.0\.1/)
   })
 
-  it('createSdSidecar spawn 使用 sd-cli 且日志落盘 logs/sidecar-sd.log + CPU 回退参数', async () => {
+  it('createSdSidecar spawn 使用 sd-server 且日志落盘 logs/sidecar-sd.log + CPU 回退参数', async () => {
     const proc = mockChildProcess()
     const spawner = vi.fn(() => proc as unknown as ReturnType<typeof import('child_process').spawn>)
     const m = createSdSidecar({
@@ -229,7 +270,7 @@ describe('createSdSidecarConfig / createSdSidecar (复用 SidecarManager)', () =
       },
     })
     await m.start()
-    expect(spawner).toHaveBeenCalledWith('sd-cli', expect.arrayContaining(['--host', '127.0.0.1', '--port', '11436', '--model', 'models/sd.gguf', '--weight-type', 'q8_0', '--cpu']), expect.objectContaining({ stdio: expect.anything() }))
+    expect(spawner).toHaveBeenCalledWith('sd-server', expect.arrayContaining(['--listen-ip', '127.0.0.1', '--listen-port', '11436', '--model', 'models/sd.gguf', '--weight-type', 'q8_0', '--cpu']), expect.objectContaining({ stdio: expect.anything() }))
     expect(fsMock.deps.mkdirSync).toHaveBeenCalled()
     const logCall = (fsMock.deps.createWriteStream as ReturnType<typeof vi.fn>).mock.calls[0][0] as string
     expect(logCall).toContain('sidecar-sd.log')
@@ -301,13 +342,13 @@ describe('SdQueue — POST /generate 队列', () => {
   })
 })
 
-describe('POST /generate — generateImage / queued / CPU回退', () => {
-  it('generateImage — 成功返回 json image/b64', async () => {
-    const fetchImpl = vi.fn(async () => jsonResponse({ image: 'b64data', seed: 42 }))
-    const res = await generateImage({ prompt: 'a cat' }, { fetchImpl: fetchImpl as never })
+describe('POST /sdcpp/v1/img_gen — generateImage / queued / CPU回退（阶段0 原生任务流）', () => {
+  it('generateImage — 提交 + 轮询 done 返回 b64', async () => {
+    const fetchImpl = jobFlowFetch(['b64data'])
+    const res = await generateImage({ prompt: 'a cat' }, { fetchImpl: fetchImpl as never, pollMs: 1 })
     expect(res.image).toBe('b64data')
     expect(fetchImpl).toHaveBeenCalledWith(
-      expect.stringContaining('/generate'),
+      expect.stringContaining('/sdcpp/v1/img_gen'),
       expect.objectContaining({ method: 'POST', body: expect.stringContaining('"prompt":"a cat"') }),
     )
   })
@@ -317,41 +358,35 @@ describe('POST /generate — generateImage / queued / CPU回退', () => {
     await expect(generateImage({ prompt: '   ' } as never)).rejects.toThrow(/prompt/)
   })
 
-  it('generateImage — HTTP 非 2xx 抛错', async () => {
+  it('generateImage — 提交 HTTP 非 2xx 抛错', async () => {
     const fetchImpl = vi.fn(async () => new Response('err', { status: 500, statusText: 'Internal' }))
     await expect(generateImage({ prompt: 'hi' }, { fetchImpl: fetchImpl as never })).rejects.toThrow(/500/)
   })
 
-  it('generateImage — 二进制 PNG 回退为 b64', async () => {
-    const pngBytes = new Uint8Array([137, 80, 78, 71]).buffer
-    const fetchImpl = vi.fn(async () => new Response(pngBytes, { status: 200, headers: { 'content-type': 'image/png' } }))
+  it('generateImage — 同步应答兼容（200 + images 数组）', async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse({ images: ['sync-b64'] }))
     const res = await generateImage({ prompt: 'hi' }, { fetchImpl: fetchImpl as never })
-    expect(res.image).toBeTruthy()
+    expect(res.image).toBe('sync-b64')
   })
 
   it('generateImageQueued — 通过队列串行', async () => {
     const q = new SdQueue()
-    let calls = 0
-    const fetchImpl = vi.fn(async () => {
-      calls++
-      return jsonResponse({ image: `img${calls}` })
-    })
-    const a = generateImageQueued({ prompt: 'a' }, { fetchImpl: fetchImpl as never, queue: q })
-    const b = generateImageQueued({ prompt: 'b' }, { fetchImpl: fetchImpl as never, queue: q })
+    const fetchImpl = jobFlowFetch(['img1', 'img2'])
+    const a = generateImageQueued({ prompt: 'a' }, { fetchImpl: fetchImpl as never, queue: q, pollMs: 1 })
+    const b = generateImageQueued({ prompt: 'b' }, { fetchImpl: fetchImpl as never, queue: q, pollMs: 1 })
     const [ra, rb] = await Promise.all([a, b])
     expect(ra.image).toBe('img1')
     expect(rb.image).toBe('img2')
-    expect(fetchImpl).toHaveBeenCalledTimes(2)
+    expect(fetchImpl.mock.calls.filter((c) => String(c[0]).includes('/img_gen'))).toHaveLength(2)
   })
 
   it('generateWithCpuFallback — GPU 失败时回退到 fallbackFetch', async () => {
     const q = new SdQueue()
     const primary = vi.fn(async () => new Response('CUDA out of memory', { status: 500, statusText: 'CUDA OOM' }))
-    const fallback = vi.fn(async () => jsonResponse({ image: 'cpu-b64' }))
-    const res = await generateWithCpuFallback({ prompt: 'hi' }, { fetchImpl: primary as never, fallbackFetchImpl: fallback as never, queue: q })
+    const fallback = jobFlowFetch(['cpu-b64'])
+    const res = await generateWithCpuFallback({ prompt: 'hi' }, { fetchImpl: primary as never, fallbackFetchImpl: fallback as never, queue: q, pollMs: 1 })
     expect(res.image).toBe('cpu-b64')
     expect(primary).toHaveBeenCalledTimes(1)
-    expect(fallback).toHaveBeenCalledTimes(1)
   })
 
   it('generateWithCpuFallback — 非 GPU 错误直接抛错不重试', async () => {
@@ -361,9 +396,9 @@ describe('POST /generate — generateImage / queued / CPU回退', () => {
   })
 
   it('generateWithCpuFallback — 成功不触发回退', async () => {
-    const primary = vi.fn(async () => jsonResponse({ image: 'ok' }))
-    const fallback = vi.fn(async () => jsonResponse({ image: 'fallback' }))
-    const res = await generateWithCpuFallback({ prompt: 'hi' }, { fetchImpl: primary as never, fallbackFetchImpl: fallback as never })
+    const primary = jobFlowFetch(['ok'])
+    const fallback = jobFlowFetch(['fallback'])
+    const res = await generateWithCpuFallback({ prompt: 'hi' }, { fetchImpl: primary as never, fallbackFetchImpl: fallback as never, pollMs: 1 })
     expect(res.image).toBe('ok')
     expect(fallback).not.toHaveBeenCalled()
   })
@@ -377,12 +412,12 @@ describe('POST /generate — generateImage / queued / CPU回退', () => {
 
 describe('todo18 — LoRA args / apply-mode / prompt tag builder', () => {
   it('buildSdArgs 空 options 不变（LoRA 为纯增量）', () => {
-    expect(buildSdArgs()).toEqual(['--host', '127.0.0.1', '--port', '11436'])
+    expect(buildSdArgs()).toEqual(['--listen-ip', '127.0.0.1', '--listen-port', '11436'])
   })
 
   it('loraModelDir 拼 --lora-model-dir <dir>', () => {
     const argv = buildSdArgs({ loraModelDir: 'D:\\models\\lora' })
-    expect(argv).toEqual(['--host', '127.0.0.1', '--port', '11436', '--lora-model-dir', 'D:\\models\\lora'])
+    expect(argv).toEqual(['--listen-ip', '127.0.0.1', '--listen-port', '11436', '--lora-model-dir', 'D:\\models\\lora'])
   })
 
   it('显式 loraApplyMode 三枚举原样透传', () => {
@@ -433,27 +468,27 @@ describe('todo18 — LoRA args / apply-mode / prompt tag builder', () => {
   })
 
   it('generateImage: loras 折叠进 prompt 前缀且不出现在 JSON body（Appendix R3 §A 18/20 锚点）', async () => {
-    const fetchImpl = vi.fn(async () => jsonResponse({ image: 'b64' }))
+    const fetchImpl = jobFlowFetch()
     await generateImage(
       { prompt: 'a lovely cat', loras: [{ name: 'marblesh', scale: 0.8 }] },
-      { fetchImpl: fetchImpl as never },
+      { fetchImpl: fetchImpl as never, pollMs: 1 },
     )
-    const body = JSON.parse(String((fetchImpl.mock.calls[0] as [unknown, { body: string }])[1]?.body)) as Record<string, unknown>
+    const body = submitBodyOf(fetchImpl)
     expect(body['prompt']).toBe('<lora:marblesh:0.8> a lovely cat')
     expect(body['loras']).toBeUndefined()
   })
 
   it('generateImage: 无 loras 时 body 不含 loras 键（回归保护）', async () => {
-    const fetchImpl = vi.fn(async () => jsonResponse({ image: 'b64' }))
-    await generateImage({ prompt: 'plain' }, { fetchImpl: fetchImpl as never })
-    const body = JSON.parse(String((fetchImpl.mock.calls[0] as [unknown, { body: string }])[1]?.body)) as Record<string, unknown>
+    const fetchImpl = jobFlowFetch()
+    await generateImage({ prompt: 'plain' }, { fetchImpl: fetchImpl as never, pollMs: 1 })
+    const body = submitBodyOf(fetchImpl)
     expect(body['prompt']).toBe('plain')
     expect('loras' in body).toBe(false)
   })
 })
 
-describe('todo20 — img2img/inpaint body mapping (sd.cpp verified flags)', () => {
-  it('toGenerateBody: initImagePath/maskPath/strength → init_img/mask/strength（--init-img 系实证旗标，非 --init-image）', () => {
+describe('todo20 — img2img/inpaint body mapping (阶段0: init/mask 转 base64 上传)', () => {
+  it('toGenerateBody: 不携带 init/mask（文件读取在 generateImage 中进行），strength 直传', () => {
     const body = toGenerateBody({
       prompt: 'cat',
       initImagePath: 'C:\\tmp\\img-1.png',
@@ -461,11 +496,11 @@ describe('todo20 — img2img/inpaint body mapping (sd.cpp verified flags)', () =
       strength: 0.65,
     })
     expect(body['prompt']).toBe('cat')
-    expect(body['init_img']).toBe('C:\\tmp\\img-1.png')
-    expect(body['mask']).toBe('C:\\tmp\\mask-1.png')
     expect(body['strength']).toBe(0.65)
     expect('initImagePath' in body).toBe(false)
     expect('maskPath' in body).toBe(false)
+    expect('init_image' in body).toBe(false)
+    expect('mask_image' in body).toBe(false)
   })
 
   it('txt2img 请求 body 不含 img2img 键（回归）', () => {
@@ -476,11 +511,12 @@ describe('todo20 — img2img/inpaint body mapping (sd.cpp verified flags)', () =
   })
 
   it('generateImage POST body 走同一映射', async () => {
-    const fetchImpl = vi.fn(async () => jsonResponse({ image: 'b64' }))
-    await generateImage({ prompt: 'cat', strength: 0.5, initImagePath: 'C:\\a.png' }, { fetchImpl: fetchImpl as never })
-    const body = JSON.parse(String((fetchImpl.mock.calls[0] as [unknown, { body: string }])[1].body)) as Record<string, unknown>
-    expect(body['init_img']).toBe('C:\\a.png')
+    const fetchImpl = jobFlowFetch()
+    await generateImage({ prompt: 'cat', strength: 0.5, initImagePath: 'C:\a.png' }, { fetchImpl: fetchImpl as never, pollMs: 1, fsRead: (p) => Buffer.from('bytes:' + p) })
+    const body = submitBodyOf(fetchImpl)
+    expect(body['init_image']).toBe(Buffer.from('bytes:C:\a.png').toString('base64'))
     expect(body['strength']).toBe(0.5)
+    expect('init_img' in body).toBe(false)
   })
 })
 
@@ -512,14 +548,14 @@ describe('SdSidecar wrapper', () => {
     s.stop()
   })
 
-  it('SdSidecar.generate 队列代理到 /generate', async () => {
+  it('SdSidecar.generate 队列代理到 img_gen 任务流', async () => {
     const s = new SdSidecar({
       managerOptions: { spawner: (() => mockChildProcess() as never) as never, fetcher: async () => true, fsDeps: fsMock.deps as never },
     })
-    const fetchImpl = vi.fn(async () => jsonResponse({ image: 'b64', seed: 1 }))
+    const fetchImpl = jobFlowFetch(['b64'])
     const res = await s.generate({ prompt: 'a cat, 8k' }, { fetchImpl: fetchImpl as never })
     expect(res.image).toBe('b64')
-    expect(fetchImpl).toHaveBeenCalledWith(expect.stringContaining('/generate'), expect.objectContaining({ method: 'POST' }))
+    expect(fetchImpl).toHaveBeenCalledWith(expect.stringContaining('/sdcpp/v1/img_gen'), expect.objectContaining({ method: 'POST' }))
     s.stop()
   })
 
@@ -528,7 +564,7 @@ describe('SdSidecar wrapper', () => {
       managerOptions: { spawner: (() => mockChildProcess() as never) as never, fetcher: async () => true, fsDeps: fsMock.deps as never },
     })
     const primary = vi.fn(async () => new Response('vulkan failed', { status: 500, statusText: 'Vulkan error' }))
-    const fallback = vi.fn(async () => jsonResponse({ image: 'cpu-ok' }))
+    const fallback = jobFlowFetch(['cpu-ok'])
     const res = await s.generateWithFallback({ prompt: 'hi' }, { fetchImpl: primary as never, fallbackFetchImpl: fallback as never })
     expect(res.image).toBe('cpu-ok')
     s.stop()
@@ -538,7 +574,7 @@ describe('SdSidecar wrapper', () => {
     const s = new SdSidecar({
       managerOptions: { spawner: (() => mockChildProcess() as never) as never, fetcher: async () => true, fsDeps: fsMock.deps as never },
     })
-    const fetchImpl = vi.fn(async () => jsonResponse({ image: 'raw' }))
+    const fetchImpl = jobFlowFetch(['raw'])
     const res = await s.generateRaw({ prompt: 'hi' }, { fetchImpl: fetchImpl as never })
     expect(res.image).toBe('raw')
     s.stop()

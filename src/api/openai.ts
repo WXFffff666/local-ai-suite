@@ -20,6 +20,8 @@
 
 import * as http from 'http'
 
+import { handleImagesRequest } from './images'
+
 // ---------------------------------------------------------------------------
 // Constants — 127.0.0.1 invariant
 // ---------------------------------------------------------------------------
@@ -60,6 +62,8 @@ export type OpenAiDeps = {
   /** 注入 fetch，测试用 */
   fetchImpl?: FetchLike
   signal?: AbortSignal
+  /** /v1/images/generations 挂载（阶段0）；缺省直连 sd 侧车 11436 */
+  images?: import('./images').ImagesDeps
 }
 
 export type OpenAIMessage = { role: string; content: string }
@@ -692,6 +696,10 @@ export async function handleOpenAiRequest(req: Request, deps: OpenAiDeps = {}): 
     if (method !== 'POST') return jsonRes(405, { error: { message: `method ${method} not allowed, use POST`, type: 'invalid_request_error' } })
     return handleEmbeddings(req, deps)
   }
+
+  // POST /v1/images/generations（阶段0 生图挂载；非图像路径返回 null 继续走 404）
+  const images = await handleImagesRequest(req, deps.images ?? {})
+  if (images) return images
 
   return null
 }

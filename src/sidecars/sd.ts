@@ -1,9 +1,13 @@
 /**
- * sd sidecar — wraps `sd-cli` (stable-diffusion.cpp single binary) as a SidecarManager child.
+ * sd sidecar — wraps stable-diffusion.cpp `sd-server` (single binary HTTP
+ * server) as a SidecarManager child.
  *
- * Spec (Todo 20 / Wave5 T20):
- * - Binary: `sd-cli` (override via SD_BIN env or constructor bin)
- * - Host: 127.0.0.1, Port: 11436 (SD_PORT)
+ * Spec (Todo 20 / Wave5 T20, 阶段0 校准 upstream master-841):
+ * - Binary: `sd-server`（旧名 sd-cli，无 server 模式；override via SD_BIN env or constructor bin）
+ * - Host: 127.0.0.1, Port: 11436 (SD_PORT) — argv `--listen-ip` / `--listen-port`
+ *   (upstream sd-server 实测参数；旧 `--host/--port` 仅存在于本仓早期设想)
+ * - Model REQUIRED at spawn (common.cpp: model_path/diffusion_model required) —
+ *   执行器始终先解析模型再 ensureSidecar('sd', {modelPath})
  * - Health: http://127.0.0.1:11436/health  (SidecarManager 5s pulse, 3 fails -> restart)
  * - Generate: POST http://127.0.0.1:11436/generate  (queued, serialized)
  * - GGUF 量化: modelPath + quantization (q4_0/q4_1/q5_0/q5_1/q8_0/f16/f32) 透传
@@ -26,10 +30,18 @@ import type { ISidecar } from '../core/types'
 export const SD_NAME = 'sd' as const
 export const SD_HOST = '127.0.0.1' as const
 export const SD_PORT = 11436 as const
-export const SD_HEALTH_URL = `http://${SD_HOST}:${SD_PORT}/health` as const
+/**
+ * sd-server（upstream master-841）无 /health；健康探针改用 OpenAI 兼容
+ * GET /v1/models（200 即存活）。旧 /generate 端点同样不存在，生成走
+ * 原生异步任务 API（POST /sdcpp/v1/img_gen + GET /sdcpp/v1/jobs/{id}）。
+ */
+export const SD_HEALTH_URL = `http://${SD_HOST}:${SD_PORT}/v1/models` as const
+/** 旧同步端点（已废弃，仅保留常量兼容外部引用） */
 export const SD_GENERATE_URL = `http://${SD_HOST}:${SD_PORT}/generate` as const
+/** 原生异步任务 API（api.md §POST /sdcpp/v1/img_gen） */
+export const SD_IMG_GEN_URL = `http://${SD_HOST}:${SD_PORT}/sdcpp/v1/img_gen` as const
 export const SD_LOG_FILE = `sidecar-${SD_NAME}.log` as const
-export const DEFAULT_SD_BIN = 'sd-cli' as const
+export const DEFAULT_SD_BIN = 'sd-server' as const
 
 /** Supported GGUF quantization / weight types for sd.cpp GGUF models. */
 export const SD_QUANTIZATIONS = ['f32', 'f16', 'q4_0', 'q4_1', 'q5_0', 'q5_1', 'q8_0'] as const
@@ -154,8 +166,8 @@ export function buildSdArgs(opts: BuildSdArgsOptions = {}): string[] {
     throw new Error(`invalid sd lora-apply-mode: ${opts.loraApplyMode} — allowed: ${SD_LORA_APPLY_MODES.join(', ')}`)
   }
 
-  // sd-cli server mode: bind host/port, quiet optional
-  const args: string[] = ['--host', host, '--port', String(port)]
+  // sd-server HTTP 模式：--listen-ip / --listen-port（upstream master-841 实测）
+  const args: string[] = ['--listen-ip', host, '--listen-port', String(port)]
 
   if (opts.modelPath) {
     // sd.cpp commonly uses --model or --diffusion-model; expose as --model
@@ -205,12 +217,21 @@ export function buildSdCpuFallbackArgs(opts: BuildSdArgsOptions = {}): string[] 
   return buildSdArgs({ ...opts, cpuFallback: true, device: 'cpu' })
 }
 
+/** 旧同步端点 URL（已废弃，保留兼容） */
 export function getGenerateUrl(port: number = SD_PORT): string {
   return `http://${SD_HOST}:${port}/generate`
 }
 
 export function getHealthUrl(port: number = SD_PORT): string {
-  return `http://${SD_HOST}:${port}/health`
+  return `http://${SD_HOST}:${port}/v1/models`
+}
+
+export function getImgGenUrl(port: number = SD_PORT): string {
+  return `http://${SD_HOST}:${port}/sdcpp/v1/img_gen`
+}
+
+export function getJobUrl(port: number = SD_PORT, jobId: string): string {
+  return `http://${SD_HOST}:${port}/sdcpp/v1/jobs/${encodeURIComponent(jobId)}`
 }
 
 // ---------------------------------------------------------------------------
@@ -369,58 +390,169 @@ function isGpuErrorMessage(msg: string): boolean {
 // ---------------------------------------------------------------------------
 
 /**
- * Build the /generate JSON body from a request: `loras` is consumed here —
- * converted to an A1111-style tag prefix on the prompt (Appendix R3 §A row
- * 18/20: sd.cpp selects adapters through prompt tags, not a body field), all
- * other fields pass through untouched.
+ * Build the native img_gen request body (api.md §POST /sdcpp/v1/img_gen):
+ * - steps/cfg_scale/sampler 折叠进 `sample_params`（sample_steps / txt_cfg /
+ *   sample_method）；
+ * - `loras` 仍以 A1111 `<lora:name:w>` prompt 标签携带（server --lora-model-dir
+ *   侧加载）；native `lora[] {path, multiplier}` 路径解析在模型页 LoRA 集成时升级；
+ * - initImagePath/maskPath 不进 body（文件读取在 generateImage 中转 base64）。
  */
 export function toGenerateBody(req: SdGenerateRequest): Record<string, unknown> {
-  const { loras, initImagePath, maskPath, ...rest } = req
+  const { loras, steps, cfg_scale, sampler, initImagePath: _init, maskPath: _mask, ...rest } = req
   const body: Record<string, unknown> = { ...rest }
-  if (initImagePath !== undefined) body['init_img'] = initImagePath
-  if (maskPath !== undefined) body['mask'] = maskPath
+  const sampleParams: Record<string, unknown> = {}
+  if (steps !== undefined) sampleParams['sample_steps'] = steps
+  if (sampler !== undefined) sampleParams['sample_method'] = sampler
+  if (cfg_scale !== undefined) sampleParams['guidance'] = { txt_cfg: cfg_scale }
+  if (Object.keys(sampleParams).length > 0) body['sample_params'] = sampleParams
   if (loras && loras.length > 0) {
     body['prompt'] = buildLoraPromptTags(loras) + String(rest.prompt ?? '')
   }
   return body
 }
 
+/** 原生异步任务句柄（POST /sdcpp/v1/img_gen 响应） */
+export type SdJobSubmit = {
+  id?: string
+  kind?: string
+  poll_url?: string
+  status?: string
+  queue_position?: number
+  [key: string]: unknown
+}
+
+/** 原生任务状态（GET /sdcpp/v1/jobs/{id} 响应的子集） */
+export type SdJobStatus = {
+  id?: string
+  status?: string
+  error?: string | null
+  queue_position?: number
+  result?: { images?: Array<{ b64_json?: string; dataURL?: string }>; [key: string]: unknown }
+  [key: string]: unknown
+}
+
+export type FsReadLike = (path: string) => Buffer
+
+function defaultFsRead(path: string): Buffer {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const fs = require('fs') as typeof import('fs')
+  return fs.readFileSync(path)
+}
+
+function sleepMs(ms: number, signal?: AbortSignal): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (signal?.aborted) {
+      reject(new DOMException('Aborted', 'AbortError'))
+      return
+    }
+    const t = setTimeout(resolve, ms)
+    signal?.addEventListener(
+      'abort',
+      () => {
+        clearTimeout(t)
+        reject(new DOMException('Aborted', 'AbortError'))
+      },
+      { once: true },
+    )
+  })
+}
+
+function isAbortErr(e: unknown): boolean {
+  return (e as DOMException)?.name === 'AbortError'
+}
+
 /**
- * Raw POST /generate — no queue, no fallback.
- * Throws on non-2xx.
+ * Generate via the native async job API (POST /sdcpp/v1/img_gen → poll job →
+ * b64 PNG). Replaces the legacy sync POST /generate which upstream sd-server
+ * (master-841) no longer exposes. Throws on submit failure / job failure.
+ * `signal` aborts polling and best-effort cancels the queued job
+ * (features.cancel_queued).
  */
 export async function generateImage(
   req: SdGenerateRequest,
-  opts: { port?: number; fetchImpl?: FetchLike; signal?: AbortSignal; headers?: Record<string, string> } = {},
+  opts: {
+    port?: number
+    fetchImpl?: FetchLike
+    signal?: AbortSignal
+    headers?: Record<string, string>
+    fsRead?: FsReadLike
+    /** 轮询间隔 ms（默认 800） */
+    pollMs?: number
+  } = {},
 ): Promise<SdGenerateResponse> {
   if (!req.prompt || !req.prompt.trim()) throw new Error('prompt is required')
-  const url = getGenerateUrl(opts.port)
   const doFetch: FetchLike = opts.fetchImpl ?? defaultFetch
-  const res = await doFetch(url, {
+  const fsRead = opts.fsRead ?? defaultFsRead
+  const headers = { 'Content-Type': 'application/json', ...(opts.headers ?? {}) }
+
+  const body = toGenerateBody(req)
+  if (req.initImagePath !== undefined) {
+    body['init_image'] = fsRead(req.initImagePath).toString('base64')
+  }
+  if (req.maskPath !== undefined) {
+    body['mask_image'] = fsRead(req.maskPath).toString('base64')
+  }
+
+  const submit = await doFetch(getImgGenUrl(opts.port), {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...(opts.headers ?? {}) },
-    body: JSON.stringify(toGenerateBody(req)),
+    headers,
+    body: JSON.stringify(body),
     signal: opts.signal,
   })
-  if (!res.ok) {
-    const text = await res.text().catch(() => '')
-    throw new Error(`sd /generate failed ${res.status} ${res.statusText} ${text}`.trim())
+  const submitText = await submit.text().catch(() => '')
+  if (!submit.ok) {
+    throw new Error(`sd img_gen submit failed ${submit.status} ${submit.statusText} ${submitText}`.trim())
   }
-  const ct = res.headers.get('content-type') ?? ''
-  if (ct.includes('application/json')) {
-    const json = (await res.json()) as SdGenerateResponse
-    return json
+  let job: SdJobSubmit
+  try {
+    job = JSON.parse(submitText) as SdJobSubmit
+  } catch {
+    throw new Error('sd img_gen submit returned non-JSON body')
   }
-  // Some builds return raw PNG bytes — encode as b64
-  const buf = await res.arrayBuffer().catch(() => null)
-  if (buf && buf.byteLength > 0) {
-    const b64 = Buffer.from(buf).toString('base64')
-    return { image: b64, images: [b64] }
+  // 兼容同步应答（少数构建直接 200 + images）
+  const directImages = (job as { images?: string[] })['images']
+  if (Array.isArray(directImages) && directImages.length > 0) {
+    return { image: directImages[0], images: directImages }
   }
-  // fallback to text as b64-ish
-  const text = await res.text().catch(() => '')
-  if (text) return { image: text } as SdGenerateResponse
-  throw new Error('sd /generate returned empty body')
+  const jobId = job.id
+  if (jobId === undefined) throw new Error('sd img_gen submit missing job id')
+
+  const pollUrl = getJobUrl(opts.port, jobId)
+  const pollMs = opts.pollMs ?? 800
+  const cancelJob = (): void => {
+    // best-effort：取消排队任务（features.cancel_queued）；运行中任务上游无法取消
+    void doFetch(pollUrl, { method: 'DELETE', headers: opts.headers }).catch(() => {})
+  }
+  for (;;) {
+    // 先查一次再等待：已完成的短任务零延迟返回，也兼容 fake-timer 测试环境
+    let st: SdJobStatus
+    try {
+      const res = await doFetch(pollUrl, { headers: opts.headers, signal: opts.signal })
+      if (!res.ok) throw new Error(`sd job poll failed ${res.status} ${res.statusText}`)
+      st = (await res.json()) as SdJobStatus
+    } catch (e) {
+      if (isAbortErr(e)) cancelJob()
+      throw e
+    }
+    if (st.status === 'failed' || (typeof st.error === 'string' && st.error !== '')) {
+      throw new Error(`sd job failed: ${st.error ?? 'unknown error'}`)
+    }
+    if (st.status === 'cancelled') {
+      throw new DOMException('Aborted', 'AbortError')
+    }
+    const imgs = st.result?.images?.map((it) => it.b64_json ?? it.dataURL ?? '').filter((s) => s !== '') ?? []
+    if (st.status === 'done' || imgs.length > 0) {
+      if (imgs.length === 0) throw new Error('sd job finished without images')
+      return { image: imgs[0], images: imgs }
+    }
+    // queued/running → 等待后继续轮询
+    try {
+      await sleepMs(pollMs, opts.signal)
+    } catch (e) {
+      if (isAbortErr(e)) cancelJob()
+      throw e
+    }
+  }
 }
 
 /**
