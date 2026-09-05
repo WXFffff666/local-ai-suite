@@ -24,6 +24,7 @@ export { parseSearchReplaceBlocks, applySearchReplace, type SearchReplaceBlock }
 export { listWorkspaceFiles, type GlobResult } from './fs/glob'
 
 export { createShellTools, registerShellTools } from './shell/index'
+export { createWebSearchTool, registerWebTools } from './web/index'
 export { shellGrantSuggestion, firstProgram } from './shell/tokenize'
 export type {
   ShellChunk,

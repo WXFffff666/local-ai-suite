@@ -219,7 +219,7 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
 
   return (
     <div style={{ display: 'flex', height: '100%', minHeight: 0, fontFamily: 'system-ui,sans-serif' }}>
-      <aside style={{ width: 220, borderRight: '1px solid #222', padding: 12, background: '#0f0f0f', color: '#ddd', overflowY: 'auto' }}>
+      <aside style={{ width: 220, borderRight: '1px solid var(--las-glass-border, rgba(255,255,255,0.09))', padding: 12, background: 'var(--las-glass-bg, rgba(22,23,34,0.62))', color: 'var(--las-fg, #eaeaf2)', overflowY: 'auto' }}>
         <button
           onClick={() => createSession()}
           style={{ width: '100%', padding: '8px 10px', marginBottom: 12, cursor: 'pointer' }}
@@ -236,25 +236,25 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
                 borderRadius: 6,
                 cursor: 'pointer',
                 background: s.id === currentId ? '#1e1e1e' : 'transparent',
-                border: '1px solid #2a2a2a',
+                border: '1px solid var(--las-border, rgba(255,255,255,0.1))',
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
               }}
             >
               <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>{s.title}</span>
               <button
                 onClick={(e) => { e.stopPropagation(); deleteSession(s.id) }}
-                style={{ marginLeft: 6, background: 'transparent', color: '#888', border: 'none', cursor: 'pointer' }}
+                style={{ marginLeft: 6, background: 'transparent', color: 'var(--las-muted, #9a9cb0)', border: 'none', cursor: 'pointer' }}
                 aria-label="delete"
               >
                 ×
               </button>
             </div>
           ))}
-          {sessions.length === 0 && <span style={{ color: '#666', fontSize: 12 }}>暂无对话</span>}
+          {sessions.length === 0 && <span style={{ color: 'var(--las-muted, #9a9cb0)', fontSize: 12 }}>暂无对话</span>}
         </div>
       </aside>
 
-      <main style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', background: '#111', color: '#e6e6e6' }}>
+      <main style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', background: 'transparent', color: 'var(--las-fg, #eaeaf2)' }}>
         <div style={{ padding: '10px 16px', borderBottom: '1px solid #222', display: 'flex', gap: 8, alignItems: 'center' }}>
           <strong style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {cur ? cur.title : '从左侧选择或新建对话'}
@@ -285,7 +285,7 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
         </div>
 
         {!canStream && (
-          <div role="status" style={{ padding: '8px 16px', background: '#2a1d1d', color: '#f0b4b4', fontSize: 12, borderBottom: '1px solid #4a2a2a' }}>
+          <div role="status" style={{ padding: '8px 16px', background: 'rgba(200,60,60,0.12)', color: '#f0b4b4', fontSize: 12, borderBottom: '1px solid rgba(200,60,60,0.25)' }}>
             {IPC_UNAVAILABLE_MESSAGE}
           </div>
         )}
@@ -303,7 +303,7 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
                   onOcrInsert={insertAtCaret}
                 />
               ) : (
-                <div style={{ padding: 16, color: '#666' }}>
+                <div style={{ padding: 16, color: 'var(--las-muted, #9a9cb0)' }}>
                   {!cur && 'Create a new chat to start. 流式经主进程 chat:delta 事件转发。'}
                   {cur && cur.messages.length === 0 && '开始新的对话吧 — 想画图直接说「画一张…」'}
                 </div>
@@ -402,7 +402,7 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
                     : '输入消息…（Enter 发送，Shift+Enter 换行；支持粘贴图片，也可说「画一张…」）'
               }
               rows={2}
-              style={{ flex: 1, resize: 'none', padding: 10, borderRadius: 8, border: '1px solid #333', background: '#0f0f0f', color: '#eee' }}
+              style={{ flex: 1, resize: 'none', padding: 10, borderRadius: 12, border: '1px solid var(--las-border, rgba(255,255,255,0.1))', background: 'var(--las-card, rgba(255,255,255,0.04))', color: 'var(--las-fg, #eaeaf2)' }}
               disabled={!canStream}
             />
             <button
@@ -414,7 +414,7 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
               }
               style={{ padding: '0 18px', cursor: (inAgent ? agentBusy : streamingHere) ? 'not-allowed' : 'pointer' }}
             >
-              {inAgent ? (agentBusy ? '…' : '运行') : streamingHere ? '…' : 'Send'}
+              {inAgent ? (agentBusy ? '…' : '运行') : streamingHere ? '…' : '发送'}
             </button>
           </div>
         </div>

@@ -248,22 +248,27 @@ test.describe('smoke v2 — real Electron app launch', () => {
     }
   })
 
-  test('c — six nav pages switch with matching headings', async () => {
+  test('c — nav pages switch with matching headings (5-item zh nav, 工具 hub embeds market/search)', async () => {
     const pages = [
-      { label: 'Chat', heading: 'Chat' },
-      { label: 'Image', heading: 'Image' },
-      { label: 'Gallery', heading: 'Gallery' },
-      { label: 'Search', heading: 'Search' },
-      { label: 'Market', heading: 'Market' },
-      { label: 'Settings', heading: 'Settings' },
+      { label: '对话', heading: '对话' },
+      { label: '画图', heading: '画图' },
+      { label: '画廊', heading: '画廊' },
+      { label: '工具', heading: '模型' },
+      { label: '设置', heading: '设置' },
     ] as const
     for (const { label, heading } of pages) {
       await navButton(label)(page).click()
       await expect(page.locator('h1.las-page-title')).toHaveText(heading)
     }
-    // return to Chat for the streaming scenario
-    await navButton('Chat')(page).click()
-    await expect(page.locator('h1.las-page-title')).toHaveText('Chat')
+    // 工具页分段：市场 / 搜索 内嵌后标题切换
+    await navButton('工具')(page).click()
+    await page.getByRole('button', { name: '模型市场' }).first().click()
+    await expect(page.locator('h1.las-page-title')).toHaveText('模型市场')
+    await page.getByRole('button', { name: '搜索' }).first().click()
+    await expect(page.locator('h1.las-page-title')).toHaveText('搜索')
+    // return to 对话 for the streaming scenario
+    await navButton('对话')(page).click()
+    await expect(page.locator('h1.las-page-title')).toHaveText('对话')
   })
 
   test('e — streamed chat round-trips through the external-takeover relay', async () => {
@@ -272,7 +277,7 @@ test.describe('smoke v2 — real Electron app launch', () => {
     await expect.poll(() => stub.modelsProbes, { timeout: 15_000 }).toBeGreaterThan(0)
 
     await page.locator('textarea').fill(CHAT_PROBE)
-    await page.getByRole('button', { name: 'Send', exact: true }).click()
+    await page.getByRole('button', { name: '发送', exact: true }).click()
 
     // user echo visible — text appears in session list, header, and the message
     // bubble; DOM order puts the bubble last. Assistant deltas then accumulate.

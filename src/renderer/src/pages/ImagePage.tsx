@@ -60,6 +60,7 @@ export function ImagePage(): React.JSX.Element {
   const [enhance, setEnhance] = useState(true)
   const [enhancedPrompt, setEnhancedPrompt] = useState<string | null>(null)
   const [pickerOpen, setPickerOpen] = useState(false)
+  const [modelOptions, setModelOptions] = useState<string[]>([])
   /** todo19 — LoraPicker 受控值；提交时经 toGenerateLoras 注入 loras 载荷 */
   const [loras, setLoras] = useState<LoraSelection[]>([])
   const [error, setError] = useState<string | null>(null)
@@ -116,9 +117,11 @@ export function ImagePage(): React.JSX.Element {
           a.invoke('engines:status') as Promise<{ ok?: boolean; nvidia?: { memoryMB?: number } | null }>,
           a.invoke('models:list') as Promise<{ models?: { name: string; file: string; corrupted?: boolean }[] }>,
         ])
-        const diffusion = (modelsReply.models ?? [])
-          .filter((m) => !m.corrupted && /^diffusion\//i.test(m.file))
-          .map((m) => `${m.name} ${m.file}`)
+        const diffusionEntries = (modelsReply.models ?? []).filter(
+          (m) => !m.corrupted && /^diffusion\//i.test(m.file),
+        )
+        const diffusion = diffusionEntries.map((m) => `${m.name} ${m.file}`)
+        setModelOptions(diffusionEntries.map((m) => m.name))
         const d = autoDefaults({ vramMB: engines.nvidia?.memoryMB ?? null, models: diffusion })
         setFields((f) => ({
           ...f,
@@ -306,7 +309,7 @@ export function ImagePage(): React.JSX.Element {
           }}
         >
           <ImageModeToggle value={mode} onChange={setMode} disabled={busy} />
-          <GenerationFields value={fields} onChange={patchFields} disabled={busy} />
+          <GenerationFields value={fields} onChange={patchFields} disabled={busy} modelOptions={modelOptions} />
           <button
             type="button"
             className="las-img-library-btn"

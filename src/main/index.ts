@@ -308,6 +308,11 @@ function registerIpcHandlers(): void {
     getMainWindow: () => mainWindow,
     getApiStatus: () => apiStatusRef.current,
     ensureSidecar: (name) => services.ensureSidecar(name),
+    // 阶段5：web_search 工具 — 搜索编排器归一卡片（标题/链接/摘要）
+    search: async (query, count) => {
+      const result = await services.search.search(query, count === undefined ? {} : { count })
+      return result.cards.map((c) => ({ title: c.title, url: c.url, snippet: c.snippet }))
+    },
   })
 
   const handlers = buildIpcHandlers({

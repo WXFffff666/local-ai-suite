@@ -14,9 +14,11 @@ export type GenerationFieldsProps = {
   value: GenerationFieldsValue
   onChange: (patch: Partial<GenerationFieldsValue>) => void
   disabled?: boolean
+  /** 阶段4：已注册画图模型（diffusion/）— 提供时渲染图形化下拉 */
+  modelOptions?: readonly string[]
 }
 
-export function GenerationFields({ value, onChange, disabled }: GenerationFieldsProps): React.JSX.Element {
+export function GenerationFields({ value, onChange, disabled, modelOptions }: GenerationFieldsProps): React.JSX.Element {
   const numField = (label: string, key: 'width' | 'height' | 'steps', min: number): React.JSX.Element => (
     <label className="las-img-field">
       {label}
@@ -56,7 +58,23 @@ export function GenerationFields({ value, onChange, disabled }: GenerationFields
         </label>
         <label className="las-img-field">
           模型
-          <input type="text" value={value.model} onChange={(e) => onChange({ model: e.target.value })} placeholder="sdxl / sd1.5…" disabled={disabled} />
+          {modelOptions !== undefined && modelOptions.length > 0 ? (
+            <select
+              value={value.model}
+              onChange={(e) => onChange({ model: e.target.value })}
+              disabled={disabled}
+              data-testid="img-model-select"
+            >
+              <option value="">自动选择（按显存）</option>
+              {modelOptions.map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input type="text" value={value.model} onChange={(e) => onChange({ model: e.target.value })} placeholder="自动（或手填模型名）" disabled={disabled} />
+          )}
         </label>
       </div>
     </>

@@ -34,6 +34,7 @@ import { SIDECAR_HOST } from '../core/types'
 import { Gallery } from '../gallery/gallery'
 import { SearchOrchestrator, type OrchestratorOptions } from '../search/orchestrator'
 import { SearxngAdapter } from '../search/searxng'
+import { DdgAdapter } from '../search/ddg'
 import { createCloudAdapters, type CreateCloudAdaptersOptions } from '../search/cloud'
 import { loadEngineManifest, type ManifestLoad } from '../engines/manifest'
 import {
@@ -282,6 +283,8 @@ export class Services {
         this.opts.searchAdapters ??
         ([
           new SearxngAdapter(),
+          // 阶段5：免费无 key 云源（DDG）——本地 SearXNG 未配置/未命中时兜底
+          new DdgAdapter(),
           ...createCloudAdapters({ hideUnconfigured: true, ...this.opts.cloudAdapterOptions }),
         ] as Pick<ISearchAdapter, 'search'>[])
       const composite: Pick<ISearchAdapter, 'search'> = {
@@ -386,6 +389,33 @@ export class Services {
     return manager.getStatus()
   }
 
+  // --- 阶段5：性能 — sd 侧车空闲自动停机（5 分钟；队列有任务/重试期不停） ----
+
+  /** sd 侧车空闲停机阈值（显存释放；下一次生图 ensureSidecar 会重新拉起） */
+  static readonly SD_IDLE_STOP_MS = 5 * 60 * 1000
+  private idleTimer: ReturnType<typeof setInterval> | null = null
+  private lastSdUsedAt = 0
+
+  private touchSdIdle(): void {
+    this.lastSdUsedAt = Date.now()
+    if (this.idleTimer !== null) return
+    this.idleTimer = setInterval(() => {
+      const sd = this.managers.get('sd')
+      if (sd === undefined || !sd.isRunning()) return
+      const pending = this.imageQueueInstance?.pending ?? 0
+      if (pending > 0) {
+        this.lastSdUsedAt = Date.now()
+        return
+      }
+      if (Date.now() - this.lastSdUsedAt > Services.SD_IDLE_STOP_MS) {
+        this.warn(`sd sidecar idle > ${Services.SD_IDLE_STOP_MS / 1000}s — stopping to free VRAM`, undefined)
+        sd.stop()
+        this.refreshHandshake()
+      }
+    }, 60_000)
+    this.idleTimer.unref?.()
+  }
+
   /** sd 侧车镜像 applyLlamaArgs：模型切换 → 重建 argv → 原端口重启（阶段0）。 */
   private applySdArgs(manager: SidecarManager): SidecarStatus {
     const args = buildSdArgs({ modelPath: this.sdLaunch.modelPath, port: manager.config.port })
@@ -404,6 +434,7 @@ export class Services {
 
   private async spawnSidecar(name: SidecarName): Promise<SidecarStatus> {
     try {
+      if (name === 'sd') this.touchSdIdle()
       const manager = this.managers.get(name) ?? (await this.createManager(name))
       await manager.start()
       this.refreshHandshake()

@@ -24,7 +24,8 @@ import type { AgentEvent, AgentSessionStatus } from '../agent/runner/types'
 import { PermissionEngine } from '../agent/policy/engine'
 import { RULE_KEYWORDS, actionValue } from '../agent/policy/rules'
 import type { PermissionAction } from '../agent/policy/types'
-import { ToolRegistry, registerFileTools, registerShellTools, shellGrantSuggestion, type PermissionPort } from '../agent/tools'
+import { ToolRegistry, registerFileTools, registerShellTools, registerWebTools, shellGrantSuggestion, type PermissionPort } from '../agent/tools'
+import type { WebSearchExecutor } from '../agent/tools/web'
 import { McpPool } from '../mcp/pool'
 import { registerMcpTools } from '../mcp/tools'
 import type { McpSdkSurface, McpServersMap, McpStatusEvent } from '../mcp/types'
@@ -51,6 +52,11 @@ export type AgentWiringDeps = {
   sendTerm: (event: AgentTermEvent) => void
   /** Resolve the OpenAI-compatible upstream origin (127.0.0.1 only). Rejects when no engine is available. */
   resolveUpstream: () => Promise<string>
+  /**
+   * 阶段5：web_search 工具执行器（搜索编排器）。ABSENT ⇒ 不注册 web 工具
+   *（与 mcpServers 同一诚实降级模式）。
+   */
+  search?: WebSearchExecutor
   log?: AgentWiringLogger
   /**
    * todo40: config.json mcpServers reader. ABSENT ⇒ no pool is built (unit
@@ -238,6 +244,9 @@ export function buildAgentWiring(deps: AgentWiringDeps): AgentWiring {
     onChunk: (callId, chunk) => deps.sendTerm({ id: callId, chunk: chunk.data }),
     onJailWarning: (warning) => deps.log?.warn('agent jail degraded', { area: warning.area, message: warning.message }),
   })
+  if (deps.search !== undefined) {
+    registerWebTools(registry, { search: deps.search, permission: port })
+  }
 
   const sessions = new AgentSessions(registry)
   const agent = createAgentSurface(sessions, deps.resolveUpstream, deps.log)

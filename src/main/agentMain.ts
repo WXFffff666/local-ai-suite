@@ -24,6 +24,7 @@ import { getDb } from './storage/db'
 import { getMainLogger } from './logger'
 import { registerShutdownHook } from './shutdown'
 import { buildAgentWiring, type AgentWiring } from './agentWiring'
+import type { WebSearchExecutor } from '../agent/tools/web'
 import type { ApiServerStatus } from './apiServer'
 import { assertAllowedEventChannel } from './ipc/whitelist'
 
@@ -34,6 +35,8 @@ export type AgentMainDeps = {
   getApiStatus: () => ApiServerStatus | null
   /** Services-surface splice: only the llama sidecar is ever ensured. */
   ensureSidecar: (name: 'llama') => Promise<SidecarStatus>
+  /** 阶段5：web_search 工具执行器（absent ⇒ 工具不注册） */
+  search?: WebSearchExecutor
 }
 
 export function createAgentMain(deps: AgentMainDeps): () => AgentWiring | null {
@@ -83,6 +86,7 @@ export function createAgentMain(deps: AgentMainDeps): () => AgentWiring | null {
         sendPermission: (event) => sendToUi('permission:request', event),
         sendTerm: (event) => sendToUi('agent:term', event),
         resolveUpstream,
+        search: deps.search,
         log: { warn: (msg, meta) => log.warn(meta ?? {}, `[agent] ${msg}`) },
         // todo40: MCP stdio pool (config.json is the truth; reads are fresh per
         // access so Settings upserts apply without a rebuild).
