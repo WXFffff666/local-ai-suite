@@ -28,6 +28,8 @@ import { buildSdArgs, createSdSidecar, SD_PORT } from '../sidecars/sd'
 import { ModelRegistry, type RegistryOptions } from '../models/registry'
 import { ImageQueue } from '../image/queue'
 import { createSdJobHandler, pickDiffusionModel } from '../image/executor'
+import { createLlamaChat, enhancePrompt, pickEnhancerModel } from '../image/enhance'
+import { SIDECAR_HOST } from '../core/types'
 import { Gallery } from '../gallery/gallery'
 import { SearchOrchestrator, type OrchestratorOptions } from '../search/orchestrator'
 import { SearxngAdapter } from '../search/searxng'
@@ -57,6 +59,11 @@ export type LlamaLaunchOptions = {
   embeddings?: boolean
   /** --rerank: serve /v1/rerank (llama.cpp default is OFF — flag required). */
   rerank?: boolean
+  /**
+   * 阶段1：透传 llama-server 附加参数（如扩写模型 ['-ngl','0'] 全 CPU 层，
+   * 避免与画图模型在 8GB 显存上冲突）。
+   */
+  extraArgs?: string[]
 }
 
 /** Registry-entry -> llama-server capability flags (todo39 launch glue). */
@@ -210,7 +217,8 @@ export class Services {
       const queue = new ImageQueue({ concurrency: 1, defaultMaxRetries: 2, defaultBackoffMs: 400 })
       // 阶段0 生图接线：注入真实 sd 执行器（此前为 queue.ts 默认 mock，
       // UI 生图永远得到非 PNG 结果）。执行器按 job.model 从注册表解析
-      // models/diffusion/** 模型，ensureSidecar('sd') 拉起侧车后 POST /generate。
+      // models/diffusion/** 模型，ensureSidecar('sd') 拉起侧车后走原生任务 API。
+      // 阶段1：job.enhance=true 时先经本地 LLM 润色提示词（CPU 层，零显存争用）。
       queue.setHandler(
         createSdJobHandler({
           resolveModel: (requested) => pickDiffusionModel(this.registry.getModels(), requested),
@@ -218,6 +226,8 @@ export class Services {
             const status = await this.ensureSidecar('sd', o.modelPath === undefined ? {} : { modelPath: o.modelPath })
             return { port: status.port }
           },
+          enhance: (text) =>
+            enhancePrompt({ text }, { chat: createLlamaChat({ resolveChatUrl: () => this.resolveEnhanceChatUrl() }) }),
         }),
       )
       this.imageQueueInstance = queue
@@ -228,6 +238,28 @@ export class Services {
       })
     }
     return this.imageQueueInstance
+  }
+
+  /**
+   * 阶段1：扩写模型端点解析。llama 已在运行（聊天中）→ 复用不重启；
+   * 否则以注册表选出的对话模型 + 全 CPU 层（-ngl 0）拉起，零显存占用。
+   * 失败抛错 → enhancePrompt 降级（查表/原文），出图永不阻塞。
+   */
+  private async resolveEnhanceChatUrl(): Promise<string> {
+    const chatPath = '/v1/chat/completions'
+    const existing = this.getSidecar('llama')
+    if (existing !== undefined && existing.isRunning()) {
+      return `http://${SIDECAR_HOST}:${existing.getStatus().port}${chatPath}`
+    }
+    const modelPath = pickEnhancerModel(this.registry.getModels())
+    if (modelPath === undefined) throw new Error('no-llm-model: models/llm/ 目录下未找到对话模型')
+    let status = await this.ensureSidecar('llama', { modelPath, extraArgs: ['-ngl', '0'] })
+    if (!status.running) {
+      // manager 已存在但停止：applyLlamaArgs 只改 argv 不拉起，这里补一次启动
+      status = await this.ensureSidecar('llama')
+    }
+    if (!status.running) throw new Error(`llama-server unavailable (state: ${status.state})`)
+    return `http://${SIDECAR_HOST}:${status.port}${chatPath}`
   }
 
   get gallery(): Gallery {
@@ -407,6 +439,7 @@ export class Services {
           ...(this.llamaLaunch.mmprojPath === undefined ? {} : { mmprojPath: this.llamaLaunch.mmprojPath }),
           ...(this.llamaLaunch.embeddings === undefined ? {} : { embeddings: this.llamaLaunch.embeddings }),
           ...(this.llamaLaunch.rerank === undefined ? {} : { rerank: this.llamaLaunch.rerank }),
+          ...(this.llamaLaunch.extraArgs === undefined ? {} : { extraArgs: this.llamaLaunch.extraArgs }),
           ...shared,
         })
         break

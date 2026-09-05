@@ -17,6 +17,8 @@ import type { ChatMessage, ChatSession, ChatSendOptions, Role } from './types'
 import { genId, newAssistantPlaceholder, newSession } from './types'
 import type { ChatIpcApi, ChatSendAck, ChatSendPayload } from './ipc'
 import { DEFAULT_CHAT_MODEL, getChatIpcApi, IPC_UNAVAILABLE_MESSAGE, toWireContent } from './ipc'
+// 阶段1：对话画图工具（[[IMG:…]] 标记 → 本地生图回填会话）
+import { asImageJobApi, extractImageMarks, IMAGE_TOOL_SYSTEM_PROMPT, runImageJob } from './imageTool'
 
 export type { Role, ChatMessage, ChatSession, ChatSendOptions } from './types'
 export { genId, newSession, newAssistantPlaceholder } from './types'
@@ -229,10 +231,15 @@ export function createChatStore(
         settle,
       })
       refreshStreaming()
+      // 阶段1：画图工具开启时本轮注入 [[IMG:…]] 标记 system 提示（additive，
+      // 关闭时 payload 与历史字节一致）
+      const wireMessages = opts.imageTool
+        ? [{ role: 'system' as const, content: IMAGE_TOOL_SYSTEM_PROMPT }, ...history]
+        : history
       const payload: ChatSendPayload = {
         id: assistantId,
         model: opts.model ?? DEFAULT_CHAT_MODEL,
-        messages: history,
+        messages: wireMessages,
       }
       if (opts.temperature !== undefined) payload.temperature = opts.temperature
       if (opts.top_p !== undefined) payload.top_p = opts.top_p
@@ -394,6 +401,46 @@ export function createChatStore(
 
         persistMessage(sessionId, 'user', text)
         await launch(sessionId, placeholder.id, historyWithout(sessionId, placeholder.id), opts ?? {})
+        // 阶段1：画图工具 — done 后解析 [[IMG:…]] 标记，逐个走本地生图并把
+        // 图片回填会话（追加 assistant 消息；额外消息不入 chat.db，刷新即失）。
+        if (opts?.imageTool === true) {
+          const api2 = resolveApi()
+          if (api2) {
+            const sess = get().sessions.find((s) => s.id === sessionId)
+            const assistant = sess?.messages.find((m) => m.id === placeholder.id)
+            const marks = assistant ? extractImageMarks(assistant.content).marks : []
+            for (const mark of marks.slice(0, 3)) {
+              const drawingId = genId('a')
+              const drawingMsg: ChatMessage = {
+                id: drawingId,
+                role: 'assistant',
+                content: `🎨 正在绘制：${mark}`,
+                createdAt: Date.now(),
+                pending: true,
+              }
+              set((st) => ({
+                sessions: updateSession(st.sessions, sessionId, (s) => ({
+                  ...s,
+                  messages: [...s.messages, drawingMsg],
+                  updatedAt: Date.now(),
+                })),
+              }))
+              try {
+                const dataUrl = await runImageJob(asImageJobApi(api2), mark, { enhance: true })
+                patchAssistant(sessionId, drawingId, {
+                  pending: false,
+                  content: `🎨 ${mark}`,
+                  images: [dataUrl],
+                })
+              } catch (e) {
+                patchAssistant(sessionId, drawingId, {
+                  pending: false,
+                  content: `🎨 绘制失败（${mark}）：${e instanceof Error ? e.message : String(e)}`,
+                })
+              }
+            }
+          }
+        }
       },
     }
   })

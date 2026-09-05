@@ -53,6 +53,8 @@ export type MarketModelCard = {
   description: string
   tags: string[]
   likes?: number
+  /** 精选目录：指定落盘子目录（models/diffusion 等），缺省按 repoId 建目录 */
+  localDir?: string
 }
 
 /** validatePayload 失败的稳定 400 形状（schemas.ts IpcValidationError）。 */

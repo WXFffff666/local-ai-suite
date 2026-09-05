@@ -81,4 +81,9 @@ export type ChatSendOptions = {
   top_p?: number
   max_tokens?: number
   stop?: string | string[]
+  /**
+   * 阶段1：画图工具开关 — true 时本轮注入 [[IMG:…]] 标记 system 提示，
+   * done 后 store 解析标记自动走本地生图并把图片回填会话。
+   */
+  imageTool?: boolean
 }

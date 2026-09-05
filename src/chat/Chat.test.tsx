@@ -114,7 +114,7 @@ describe('Chat composer — todo21 vision attach', () => {
     const sendCall = fake.calls.find(([c]) => c === 'chat:send')
     expect(sendCall).toBeDefined()
     const payload = sendCall![1] as { messages: Array<{ role: string; content: unknown }> }
-    expect(payload.messages[0]!.content).toEqual([
+    expect(payload.messages.at(-1)!.content).toEqual([
       { type: 'text', text: '看看这张图' },
       { type: 'image_url', image_url: { url: expect.stringMatching(/^data:image\/png;base64,/) } },
     ])

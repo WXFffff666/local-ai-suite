@@ -200,6 +200,14 @@ export type ImageJobOptions = {
   strength?: number
   /** todo18 LoRA 选择 — 由 sd.ts 折叠为 prompt `<lora:name:w>` 标签 */
   loras?: SdLoraTag[]
+  /**
+   * 阶段1：AI 提示词润色开关 — true 时执行器先经本地 LLM 扩写
+   * （enhance.ts），结果写入 job.enhancedPrompt 供 UI 展示/画廊存档。
+   * 缺省 false（手写提示词直出）。
+   */
+  enhance?: boolean
+  /** 阶段1：润色产物（执行器写入）；UI 只读展示 */
+  enhancedPrompt?: string
 }
 
 export type ImageJob = ImageJobOptions & {

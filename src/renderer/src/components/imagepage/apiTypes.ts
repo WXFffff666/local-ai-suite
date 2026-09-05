@@ -6,12 +6,13 @@ import type { GenerationFieldsValue } from './GenerationFields'
 /** sd.cpp sampler 展示名（A1111 parameters 串与画廊 meta 共用） */
 export const DEFAULT_SAMPLER = 'euler_a'
 
-/** image:generate 载荷（todo20: img2img/inpaint 三模式统一通道；todo19: loras） */
+/** image:generate 载荷（todo20: img2img/inpaint 三模式统一通道；todo19: loras；阶段1: enhance AI 润色开关） */
 export function buildGeneratePayload(
   f: GenerationFieldsValue,
   mode: ImageMode,
   img2img: { initImagePath?: string; maskPath?: string; strength: number },
   loras: { name: string; scale: number }[] = [],
+  enhance = true,
 ): Record<string, unknown> {
   const payload: Record<string, unknown> = {
     prompt: f.prompt.trim(),
@@ -20,6 +21,7 @@ export function buildGeneratePayload(
     steps: f.steps,
     cfg_scale: f.cfg,
     seed: f.seed,
+    enhance,
   }
   if (f.negative.trim()) payload.negative_prompt = f.negative.trim()
   if (f.model.trim()) payload.model = f.model.trim()
@@ -70,7 +72,7 @@ export type GenerateReply = SaveTempReply & { jobId?: string; warning?: string }
 
 export type QueueStatusReply = {
   ok?: boolean
-  job?: { status: string; result?: { b64?: string } } | null
+  job?: { status: string; enhancedPrompt?: string; result?: { b64?: string; enhancedPrompt?: string } } | null
 }
 
 export type GalleryListReply = { items: { id: string }[] }

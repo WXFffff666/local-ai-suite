@@ -81,6 +81,7 @@ export function useDownloadJobs(): UseDownloadJobs {
       const reply = (await api.invoke('models:download', {
         repoId: card.repoId,
         ...(card.filename === undefined ? {} : { filename: card.filename }),
+        ...(card.localDir === undefined ? {} : { localDir: card.localDir }),
       })) as DownloadAckReply
       if (reply.ok) return null
       if (reply.error === 'insufficient-disk') {

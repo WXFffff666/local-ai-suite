@@ -27,6 +27,7 @@ import {
   type QueueStatusReply,
   type SaveTempReply,
 } from '../components/imagepage/apiTypes'
+import { autoDefaults } from '../../../image/autotune'
 import type { AllowedEventChannel, ImageQueueStatusEvent } from '../../../main/ipc/whitelist'
 import '../components/imagepage/imagepage.css'
 
@@ -53,6 +54,9 @@ export function ImagePage(): React.JSX.Element {
   })
   const [initImage, setInitImage] = useState<{ path: string; preview: string } | null>(null)
   const [strength, setStrength] = useState(0.75)
+  /** 阶段1 — AI 提示词润色（本地 LLM 扩写，可关） */
+  const [enhance, setEnhance] = useState(true)
+  const [enhancedPrompt, setEnhancedPrompt] = useState<string | null>(null)
   /** todo19 — LoraPicker 受控值；提交时经 toGenerateLoras 注入 loras 载荷 */
   const [loras, setLoras] = useState<LoraSelection[]>([])
   const [error, setError] = useState<string | null>(null)
@@ -68,12 +72,47 @@ export function ImagePage(): React.JSX.Element {
   const api = getApi()
   const patchFields = (patch: Partial<GenerationFieldsValue>): void => setFields((f) => ({ ...f, ...patch }))
 
+  // 阶段1：自动档位 — 挂载时按显存 + 已装画图模型落定分辨率/步数/CFG/模型，
+  // 用户只写一句话即可出图（用户之后仍可手改）。
+  const autoTunedRef = useRef(false)
+  useEffect(() => {
+    if (autoTunedRef.current) return
+    autoTunedRef.current = true
+    const a = getApi()
+    if (!a) return
+    void (async () => {
+      try {
+        const [engines, modelsReply] = await Promise.all([
+          a.invoke('engines:status') as Promise<{ ok?: boolean; nvidia?: { memoryMB?: number } | null }>,
+          a.invoke('models:list') as Promise<{ models?: { name: string; file: string; corrupted?: boolean }[] }>,
+        ])
+        const diffusion = (modelsReply.models ?? [])
+          .filter((m) => !m.corrupted && /^diffusion\//i.test(m.file))
+          .map((m) => `${m.name} ${m.file}`)
+        const d = autoDefaults({ vramMB: engines.nvidia?.memoryMB ?? null, models: diffusion })
+        setFields((f) => ({
+          ...f,
+          width: d.width,
+          height: d.height,
+          steps: d.steps,
+          cfg: d.cfgScale,
+          model: f.model.trim() === '' && d.recommendedModel !== undefined ? d.recommendedModel : f.model,
+        }))
+        if (d.recommendedModel !== undefined) setMessage(d.message)
+      } catch {
+        /* 自动档位失败保持表单默认，不打扰用户 */
+      }
+    })()
+  }, [])
+
   const onJobDone = useCallback(async (jobId: string): Promise<void> => {
     const a = getApi()
     if (!a) return
     try {
       const status = (await a.invoke('image:queue:status', { jobId })) as QueueStatusReply
       const b64 = status?.job?.result?.b64
+      const enhanced = status?.job?.enhancedPrompt ?? status?.job?.result?.enhancedPrompt ?? undefined
+      if (typeof enhanced === 'string' && enhanced !== '') setEnhancedPrompt(enhanced)
       setBusy(false)
       setProgress(100)
       const snap = requestSnapshotRef.current ?? {}
@@ -81,6 +120,9 @@ export function ImagePage(): React.JSX.Element {
         setResultB64(b64)
         // 落画廊：todo22 会在 original.png 内嵌 parameters tEXt
         const payload: Record<string, unknown> = { b64, ...snap, sampler: DEFAULT_SAMPLER }
+        if (enhanced !== undefined) {
+          payload.extra = { ...(typeof snap.extra === 'object' && snap.extra !== null ? snap.extra : {}), enhancedPrompt: enhanced }
+        }
         const saved = (await a.invoke('gallery:save', payload)) as SaveTempReply
         if (saved?.ok) setMessage('已保存到画廊')
       } else {
@@ -167,10 +209,12 @@ export function ImagePage(): React.JSX.Element {
       mode,
       { initImagePath: initImage?.path, maskPath, strength },
       loraPayload,
+      enhance,
     )
     requestSnapshotRef.current = buildGallerySnapshot(fields, mode, strength, loraPayload)
     setBusy(true)
     setResultB64(null)
+    setEnhancedPrompt(null)
     setProgress(0)
     try {
       const reply = (await api.invoke('image:generate', payload)) as GenerateReply
@@ -222,7 +266,7 @@ export function ImagePage(): React.JSX.Element {
       <h1 id="page-title-image" className="las-page-title">
         Image
       </h1>
-      <p className="las-page-subtitle">本地生图 — sd-cli · 127.0.0.1:11436</p>
+      <p className="las-page-subtitle">本地生图 — stable-diffusion.cpp · 127.0.0.1:11436</p>
       <div className="las-page-card las-img-workbench">
         <form
           className="las-img-form"
@@ -233,6 +277,16 @@ export function ImagePage(): React.JSX.Element {
         >
           <ImageModeToggle value={mode} onChange={setMode} disabled={busy} />
           <GenerationFields value={fields} onChange={patchFields} disabled={busy} />
+          <label className="las-img-enhance-toggle">
+            <input
+              type="checkbox"
+              checked={enhance}
+              onChange={(e) => setEnhance(e.target.checked)}
+              disabled={busy}
+              data-testid="img-enhance-toggle"
+            />
+            AI 润色提示词（本地小模型自动扩写，慢一档但更贴合描述）
+          </label>
           {mode !== 'txt2img' ? <StrengthSlider value={strength} onChange={setStrength} disabled={busy} /> : null}
           <LoraPicker value={loras} onChange={setLoras} disabled={busy} />
           <div className="las-img-actions">
@@ -243,6 +297,12 @@ export function ImagePage(): React.JSX.Element {
               复用最新画廊参数
             </button>
           </div>
+          {enhancedPrompt ? (
+            <details className="las-img-enhanced" data-testid="img-enhanced">
+              <summary>AI 扩写后的提示词（可复制微调）</summary>
+              <p>{enhancedPrompt}</p>
+            </details>
+          ) : null}
           {progress !== null ? <progress className="las-img-progress" max={100} value={progress} data-testid="img-progress" /> : null}
           {error ? <p className="las-img-error" role="alert" data-testid="img-error">{error}</p> : null}
           {message ? <p className="las-img-message" data-testid="img-message">{message}</p> : null}

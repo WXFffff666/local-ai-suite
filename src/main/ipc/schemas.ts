@@ -216,7 +216,9 @@ export const imageGenerateSchema = z
     loras: z
       .array(z.object({ name: z.string().min(1).max(256), scale: z.number().min(0).max(2) }))
       .max(16)
-      .optional()
+      .optional(),
+    /** 阶段1：AI 提示词润色开关（执行器先本地 LLM 扩写再出图） */
+    enhance: z.boolean().optional()
   })
   .superRefine((val, ctx) => {
     if ((val.mode === 'img2img' || val.mode === 'inpaint') && val.initImagePath === undefined) {

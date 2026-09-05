@@ -158,3 +158,33 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* 阶段1：AI 润色开关与扩写结果展示 */
+.las-img-enhance-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  opacity: 0.9;
+  cursor: pointer;
+  user-select: none;
+}
+.las-img-enhance-toggle input {
+  accent-color: var(--las-accent, #7c6cf6);
+}
+.las-img-enhanced {
+  font-size: 13px;
+  border: 1px solid var(--las-border, rgba(255, 255, 255, 0.12));
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin-top: 8px;
+}
+.las-img-enhanced summary {
+  cursor: pointer;
+  opacity: 0.8;
+}
+.las-img-enhanced p {
+  margin: 6px 0 2px;
+  word-break: break-all;
+  opacity: 0.9;
+}

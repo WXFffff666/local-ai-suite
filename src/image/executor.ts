@@ -20,6 +20,7 @@ import {
   type SdGenerateRequest,
   type SdGenerateResponse,
 } from '../sidecars/sd'
+import type { EnhanceResult } from './enhance'
 
 // ---------------------------------------------------------------------------
 // 模型解析 — models/diffusion/** 目录约定（README「模型文件夹」）
@@ -74,6 +75,11 @@ export type SdExecutorDeps = {
   ) => Promise<SdGenerateResponse>
   /** 绘制阶段进度 tick 间隔 ms（默认 1500） */
   tickMs?: number
+  /**
+   * 阶段1：AI 提示词润色（enhance.ts）。job.enhance === true 时调用；
+   * 返回 null/抛错 = 降级原文。实现内已含查表/原文兜底。
+   */
+  enhance?: (text: string) => Promise<EnhanceResult | null>
 }
 
 function firstB64(res: SdGenerateResponse): string | undefined {
@@ -101,6 +107,23 @@ export function createSdJobHandler(deps: SdExecutorDeps): JobHandler {
   const tickMs = deps.tickMs ?? 1500
 
   return async (job: ImageJob, ctx) => {
+    // 阶段1：AI 润色（LLM 扩写 → 查表 → 原文三级兜底，永不阻塞出图）
+    let prompt = job.prompt
+    let negative = job.negative_prompt
+    if (job.enhance === true && deps.enhance !== undefined && job.prompt.trim() !== '') {
+      ctx.onProgress(3, 'AI 正在润色提示词…')
+      try {
+        const r = await deps.enhance(job.prompt)
+        if (r !== null && r.positive.trim() !== '') {
+          prompt = r.positive
+          if (negative === undefined && r.negative !== undefined) negative = r.negative
+          job.enhancedPrompt = r.positive
+        }
+      } catch {
+        /* 降级原文 */
+      }
+    }
+
     const modelPath = deps.resolveModel(job.model)
     if (modelPath === undefined) {
       throw new Error('no-diffusion-model: models/diffusion/ 目录下未找到可用的画图模型')
@@ -110,11 +133,11 @@ export function createSdJobHandler(deps: SdExecutorDeps): JobHandler {
     const { port } = await deps.ensureSd({ modelPath })
 
     const req: SdGenerateRequest = {
-      prompt: job.prompt,
+      prompt,
       width: job.width ?? DEFAULT_WIDTH,
       height: job.height ?? DEFAULT_HEIGHT,
     }
-    if (job.negative_prompt !== undefined) req.negative_prompt = job.negative_prompt
+    if (negative !== undefined) req.negative_prompt = negative
     if (job.steps !== undefined) req.steps = job.steps
     if (job.cfg_scale !== undefined) req.cfg_scale = job.cfg_scale
     if (job.seed !== undefined) req.seed = job.seed
@@ -136,11 +159,12 @@ export function createSdJobHandler(deps: SdExecutorDeps): JobHandler {
       // PNG 契约：裸 base64，iVBOR 魔数（ImagePage PNG_B64_PREFIX_RE）
       if (!b64.startsWith('iVBOR')) throw new Error('画图引擎返回的不是 PNG 图片')
       ctx.onProgress(92, '正在回传图片…')
-      const result: { b64: string; prompt: string; effectiveModel: string; seed?: number } = {
+      const result: { b64: string; prompt: string; effectiveModel: string; seed?: number; enhancedPrompt?: string } = {
         b64,
-        prompt: job.prompt,
+        prompt,
         effectiveModel: job.effectiveModel,
       }
+      if (job.enhancedPrompt !== undefined) result.enhancedPrompt = job.enhancedPrompt
       if (typeof res.seed === 'number') result.seed = res.seed
       return result
     } finally {

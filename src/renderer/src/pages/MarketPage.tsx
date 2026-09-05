@@ -27,6 +27,14 @@ import {
   type HfSearchReply,
   type MarketModelCard,
 } from '../components/market/types'
+import { FEATURED_CATALOG, type CuratedCard } from '../../../market/catalog'
+
+/** 精选卡片的中文标签（8GB 显存档位组合，见 src/market/catalog.ts） */
+const KIND_LABELS: Record<CuratedCard['kind'], string> = {
+  image: '画图',
+  enhancer: '提示词润色',
+  llm: '对话',
+}
 
 type SearchView = {
   phase: 'idle' | 'loading' | 'ready' | 'error'
@@ -110,6 +118,57 @@ export function MarketPage(): React.JSX.Element {
       </p>
 
       <MarketSearchBar busy={view.phase === 'loading'} onSearch={(p) => void runSearch(p)} />
+
+      {/* 精选推荐：一键下载（画图模型直落 models/diffusion/）+ 外链直达 */}
+      <div className="las-market-featured" data-testid="market-featured">
+        <h2 className="las-market-featured-title">精选推荐 — 8GB 显存开箱组合</h2>
+        <div className="las-market-featured-grid">
+          {FEATURED_CATALOG.map((card) => (
+            <div key={`${card.repoId}::${card.filename}`} className="las-market-featured-card">
+              <div className="las-market-featured-head">
+                <span className={`las-market-kind las-market-kind-${card.kind}`}>{KIND_LABELS[card.kind]}</span>
+                <strong>{card.name}</strong>
+              </div>
+              <p className="las-market-featured-desc">{card.description}</p>
+              <p className="las-market-featured-meta">
+                {card.sizeLabel} · {card.vramLabel}
+              </p>
+              <div className="las-market-featured-actions">
+                <button
+                  type="button"
+                  disabled={isActive(card.repoId)}
+                  onClick={() =>
+                    void onDownload({
+                      repoId: card.repoId,
+                      name: card.name,
+                      author: card.author,
+                      quant: card.quant,
+                      ...(card.filename === undefined ? {} : { filename: card.filename }),
+                      sizeLabel: card.sizeLabel,
+                      gguf: card.gguf,
+                      description: card.description,
+                      tags: [...card.tags],
+                      localDir: card.localDir,
+                    })
+                  }
+                >
+                  {isActive(card.repoId) ? '下载中…' : '一键下载'}
+                </button>
+                {card.externalUrl ? (
+                  <a href={card.externalUrl} target="_blank" rel="noreferrer">
+                    {card.externalLabel ?? '来源页'} ↗
+                  </a>
+                ) : null}
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="las-market-note">
+          更多的画图模型/LoRA 可到 <a href="https://civitai.com" target="_blank" rel="noreferrer">Civitai</a> 或{' '}
+          <a href="https://huggingface.co/models?pipeline_tag=text-to-image" target="_blank" rel="noreferrer">HuggingFace</a>{' '}
+          下载后拖入模型文件夹（模型页可直达）。
+        </p>
+      </div>
 
       <p className="las-market-note">
         受限（gated）仓库需要先在设置中配置 HuggingFace token，否则下载将以错误呈现。

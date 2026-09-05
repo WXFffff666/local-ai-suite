@@ -82,6 +82,9 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
   const startAgentRun = useAgentStore((s) => s.startRun)
   const inAgent = agentMode === 'agent'
 
+  // 阶段1：画图工具开关 — 开启时说"画一张…"直接本地出图（默认开）
+  const [imageTool, setImageTool] = useState(true)
+
   useEffect(() => {
     let cancelled = false
     void probeVisionCapability().then((v) => {
@@ -183,18 +186,17 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
       try {
         const reply = (await window.api.invoke('rag:query', { q: t, topK: 5 })) as RagQueryReply
         if (reply?.ok === true && reply.citations.length > 0) {
-          await send(t, undefined, attached, { context: formatRagContext(reply.citations), citations: reply.citations })
+          await send(t, { imageTool }, attached, { context: formatRagContext(reply.citations), citations: reply.citations })
           return
         }
       } catch {
         /* retrieval unavailable — plain turn below */
       }
     }
-    await send(t, undefined, attached)
+    await send(t, { imageTool }, attached)
   }
 
-  const applyPreset = (preset: ChatPreset): void => {
-    const fill = fillChatPreset(preset)
+  const applyPreset = (preset: ChatPreset): void => {    const fill = fillChatPreset(preset)
     if (fill) setInput(fill.prompt)
   }
 
@@ -258,6 +260,22 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
             {cur ? cur.title : 'Select or create a chat'}
           </strong>
           <AgentModeToggle sessionKey={agentKey} />
+          {!inAgent && (
+            <button
+              onClick={() => setImageTool((v) => !v)}
+              title="开启后，对话里说「画一张…」会直接本地生图"
+              style={{
+                cursor: 'pointer',
+                opacity: imageTool ? 1 : 0.5,
+                border: imageTool ? '1px solid #7c6cf6' : '1px solid #444',
+                borderRadius: 6,
+                padding: '2px 8px',
+              }}
+              data-testid="chat-image-tool-toggle"
+            >
+              🎨 画图 {imageTool ? '开' : '关'}
+            </button>
+          )}
           {!inAgent && cur && cur.messages.length > 0 && <ExportHtmlButton session={cur} />}
           {!inAgent && cur && <button onClick={clearCurrentMessages} style={{ cursor: 'pointer' }}>Clear</button>}
           {!inAgent && streamingHere && <button onClick={abort} style={{ cursor: 'pointer', color: '#f55' }}>Abort</button>}

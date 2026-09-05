@@ -65,6 +65,8 @@ export function createImageGenerateHandler(deps: { imageQueue: ImageQueueSurface
     if (input.model !== undefined) opts.model = input.model
     if (input.vramMB !== undefined) opts.vramMB = input.vramMB
     if (input.loras !== undefined) opts.loras = input.loras
+    // 阶段1：AI 提示词润色开关（执行器先本地 LLM 扩写再出图）
+    if (input.enhance !== undefined) opts.enhance = input.enhance
     // mode absent but initImagePath present implies img2img; a pure txt2img
     // payload keeps its exact pre-todo20 shape (the zod strength default is
     // dropped with the rest of the img2img bundle).
