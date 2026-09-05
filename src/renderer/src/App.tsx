@@ -1,6 +1,7 @@
 /**
- * App.tsx — todo9 渲染层应用壳
- * 左导航 rail（lucide 图标）+ hash 路由六页（chat/image/gallery/search/market/settings）
+ * App.tsx — todo9 渲染层应用壳 + 阶段4 液态玻璃/全中文
+ * 左导航 rail 收敛为 5 项（对话/画图/画廊/工具/设置）；hash 路由保留全部
+ * 7 条（深链 / e2e 兼容），市场与搜索作为「工具」页内嵌分段。
  * 面板骨架：react-resizable-panels（nav | content | 右侧详情，默认收起）
  * 主题：next-themes(class 策略, dark 默认) 与既有 src/theme ThemeProvider 单向同步
  * 通知：sonner Toaster 单点挂载，经 preload 白名单事件 'app:notification' 订阅（非 Electron 环境自动跳过）
@@ -11,13 +12,11 @@ import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'ne
 import { Toaster, toast } from 'sonner'
 import { Group as PanelGroup, Panel, Separator as PanelResizeHandle } from 'react-resizable-panels'
 import {
-  Boxes,
   Image as ImageIcon,
   LayoutGrid,
   MessageSquare,
-  Search as SearchIcon,
   Settings as SettingsIcon,
-  Store,
+  Wrench,
   type LucideIcon,
 } from 'lucide-react'
 import '@fontsource-variable/inter/index.css'
@@ -40,14 +39,13 @@ import SettingsPage from './pages/SettingsPage'
 // download-bar classes reused for its progress line).
 import UpdateBanner from './components/updater/UpdateBanner'
 
+/** 阶段4：导航 7→5 —「工具」聚合 models/market/search 三条路由（hash 保留） */
 const NAV_ITEMS: ReadonlyArray<{ id: RouteId; label: string; icon: LucideIcon }> = [
-  { id: 'chat', label: 'Chat', icon: MessageSquare },
-  { id: 'image', label: 'Image', icon: ImageIcon },
-  { id: 'gallery', label: 'Gallery', icon: LayoutGrid },
-  { id: 'search', label: 'Search', icon: SearchIcon },
-  { id: 'market', label: 'Market', icon: Store },
-  { id: 'models', label: 'Models', icon: Boxes },
-  { id: 'settings', label: 'Settings', icon: SettingsIcon },
+  { id: 'chat', label: '对话', icon: MessageSquare },
+  { id: 'image', label: '画图', icon: ImageIcon },
+  { id: 'gallery', label: '画廊', icon: LayoutGrid },
+  { id: 'models', label: '工具', icon: Wrench },
+  { id: 'settings', label: '设置', icon: SettingsIcon },
 ]
 
 const PAGES: Record<RouteId, () => React.JSX.Element> = {
@@ -137,14 +135,14 @@ function Shell(): React.JSX.Element {
     <div className="las-shell">
       <PanelGroup orientation="horizontal" id="las-shell">
         <Panel id="las-nav-panel" minSize={72} maxSize={72} defaultSize={72}>
-          <nav className="las-nav" aria-label="Primary navigation">
+          <nav className="las-nav" aria-label="主导航">
             <span className="las-nav-brand">LAS</span>
             {NAV_ITEMS.map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 type="button"
                 className="las-nav-item"
-                aria-current={route === id ? 'page' : undefined}
+                aria-current={route === id || (id === 'models' && (route === 'market' || route === 'search')) ? 'page' : undefined}
                 onClick={() => navigate(id)}
               >
                 <Icon size={18} aria-hidden="true" />
@@ -158,7 +156,7 @@ function Shell(): React.JSX.Element {
         </Panel>
         <PanelResizeHandle className="las-resize-handle" />
         <Panel id="las-detail" minSize={240} collapsedSize={0} collapsible defaultSize={0}>
-          <aside className="las-detail-panel" aria-label="Detail panel">
+          <aside className="las-detail-panel" aria-label="详情面板">
             详情面板 — 默认收起，由后续 todo（生图参数 / 会话详情）填充。
           </aside>
         </Panel>

@@ -29,6 +29,7 @@ import {
 } from '../components/imagepage/apiTypes'
 import { autoDefaults } from '../../../image/autotune'
 import { PromptPicker } from '../components/promptpicker/PromptPicker'
+import { GALLERY_REUSE_KEY } from './GalleryPage'
 import type { AllowedEventChannel, ImageQueueStatusEvent } from '../../../main/ipc/whitelist'
 import '../components/imagepage/imagepage.css'
 
@@ -73,6 +74,33 @@ export function ImagePage(): React.JSX.Element {
 
   const api = getApi()
   const patchFields = (patch: Partial<GenerationFieldsValue>): void => setFields((f) => ({ ...f, ...patch }))
+
+  // 阶段4：画廊「复用参数」跨页交接 — 挂载时消费 sessionStorage 参数快照
+  const reusedRef = useRef(false)
+  useEffect(() => {
+    if (reusedRef.current) return
+    reusedRef.current = true
+    try {
+      const raw = sessionStorage.getItem(GALLERY_REUSE_KEY)
+      if (raw === null) return
+      sessionStorage.removeItem(GALLERY_REUSE_KEY)
+      const p = JSON.parse(raw) as Record<string, unknown>
+      setFields((f) => ({
+        ...f,
+        prompt: typeof p.prompt === 'string' ? p.prompt : f.prompt,
+        negative: typeof p.negative_prompt === 'string' ? p.negative_prompt : f.negative,
+        width: typeof p.width === 'number' ? p.width : f.width,
+        height: typeof p.height === 'number' ? p.height : f.height,
+        steps: typeof p.steps === 'number' ? p.steps : f.steps,
+        cfg: typeof p.cfg_scale === 'number' ? p.cfg_scale : f.cfg,
+        seed: typeof p.seed === 'number' ? p.seed : f.seed,
+        model: typeof p.model === 'string' && p.model !== '' ? p.model : f.model,
+      }))
+      setMessage('已载入画廊条目参数')
+    } catch {
+      /* 快照损坏 — 忽略 */
+    }
+  }, [])
 
   // 阶段1：自动档位 — 挂载时按显存 + 已装画图模型落定分辨率/步数/CFG/模型，
   // 用户只写一句话即可出图（用户之后仍可手改）。
@@ -266,7 +294,7 @@ export function ImagePage(): React.JSX.Element {
   return (
     <section className="las-page" aria-labelledby="page-title-image">
       <h1 id="page-title-image" className="las-page-title">
-        Image
+        画图
       </h1>
       <p className="las-page-subtitle">本地生图 — stable-diffusion.cpp · 127.0.0.1:11436</p>
       <div className="las-page-card las-img-workbench">

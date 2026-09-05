@@ -111,7 +111,7 @@ export function MarketPage(): React.JSX.Element {
   return (
     <section className="las-page" aria-labelledby="page-title-market">
       <h1 id="page-title-market" className="las-page-title">
-        Market
+        模型市场
       </h1>
       <p className="las-page-subtitle">
         HuggingFace 模型市场 — 搜索并断点续传下载到本地 models/

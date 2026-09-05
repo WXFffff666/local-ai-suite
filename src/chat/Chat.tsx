@@ -224,7 +224,7 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
           onClick={() => createSession()}
           style={{ width: '100%', padding: '8px 10px', marginBottom: 12, cursor: 'pointer' }}
         >
-          + New Chat
+          + 新对话
         </button>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           {sessions.map((s) => (
@@ -250,14 +250,14 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
               </button>
             </div>
           ))}
-          {sessions.length === 0 && <span style={{ color: '#666', fontSize: 12 }}>No sessions</span>}
+          {sessions.length === 0 && <span style={{ color: '#666', fontSize: 12 }}>暂无对话</span>}
         </div>
       </aside>
 
       <main style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', background: '#111', color: '#e6e6e6' }}>
         <div style={{ padding: '10px 16px', borderBottom: '1px solid #222', display: 'flex', gap: 8, alignItems: 'center' }}>
           <strong style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            {cur ? cur.title : 'Select or create a chat'}
+            {cur ? cur.title : '从左侧选择或新建对话'}
           </strong>
           <AgentModeToggle sessionKey={agentKey} />
           {!inAgent && (
@@ -277,10 +277,10 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
             </button>
           )}
           {!inAgent && cur && cur.messages.length > 0 && <ExportHtmlButton session={cur} />}
-          {!inAgent && cur && <button onClick={clearCurrentMessages} style={{ cursor: 'pointer' }}>Clear</button>}
-          {!inAgent && streamingHere && <button onClick={abort} style={{ cursor: 'pointer', color: '#f55' }}>Abort</button>}
+          {!inAgent && cur && <button onClick={clearCurrentMessages} style={{ cursor: 'pointer' }}>清空</button>}
+          {!inAgent && streamingHere && <button onClick={abort} style={{ cursor: 'pointer', color: '#f55' }}>停止</button>}
           {!inAgent && !streaming && error && error !== 'aborted' && (
-            <button onClick={() => void retry()} style={{ cursor: 'pointer' }}>Retry</button>
+            <button onClick={() => void retry()} style={{ cursor: 'pointer' }}>重试</button>
           )}
         </div>
 
@@ -305,7 +305,7 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
               ) : (
                 <div style={{ padding: 16, color: '#666' }}>
                   {!cur && 'Create a new chat to start. 流式经主进程 chat:delta 事件转发。'}
-                  {cur && cur.messages.length === 0 && 'No messages — say hello.'}
+                  {cur && cur.messages.length === 0 && '开始新的对话吧 — 想画图直接说「画一张…」'}
                 </div>
               )}
               {error && error !== 'aborted' && canStream && (
@@ -399,7 +399,7 @@ export function Chat({ presets = CHAT_PRESETS }: ChatProps): React.JSX.Element {
                   ? '桌面端运行时可发送消息'
                   : inAgent
                     ? '描述一个编码任务…（Enter 启动代理，工具执行前会逐一请求授权）'
-                    : 'Type a message… (Enter to send, Shift+Enter newline; 支持粘贴图片)'
+                    : '输入消息…（Enter 发送，Shift+Enter 换行；支持粘贴图片，也可说「画一张…」）'
               }
               rows={2}
               style={{ flex: 1, resize: 'none', padding: 10, borderRadius: 8, border: '1px solid #333', background: '#0f0f0f', color: '#eee' }}

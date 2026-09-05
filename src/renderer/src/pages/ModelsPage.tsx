@@ -12,10 +12,22 @@
  */
 import { useCallback, useEffect, useState } from 'react'
 import '../components/modelspage/modelspage.css'
+import MarketPage from './MarketPage'
+import SearchPage from './SearchPage'
 import { ModelsTable } from '../components/modelspage/ModelsTable'
 import { DirControl } from '../components/modelspage/DirControl'
 import { LoraSection } from '../components/modelspage/LoraSection'
 import type { ConfigGetReply, ModelsListReply, ModelRow, SetDirReply } from '../components/modelspage/types'
+
+/** 阶段4：工具页分段（hash 路由保持 models/market/search 三条兼容深链） */
+type ToolTab = 'models' | 'market' | 'search'
+
+/** 工具分段定义 */
+const TOOL_TABS: ReadonlyArray<{ id: ToolTab; label: string }> = [
+  { id: 'models', label: '本地模型' },
+  { id: 'market', label: '模型市场' },
+  { id: 'search', label: '搜索' },
+]
 
 /** 模型分类卡片（阶段3）：点击直达对应文件夹，拖入即用 */
 const MODEL_FOLDERS: ReadonlyArray<{ sub?: string; label: string; desc: string }> = [
@@ -30,6 +42,7 @@ export function ModelsPage(): React.JSX.Element {
   const [modelsDir, setModelsDir] = useState('')
   const [phase, setPhase] = useState<'loading' | 'ready' | 'error'>('loading')
   const [message, setMessage] = useState<string | null>(null)
+  const [toolTab, setToolTab] = useState<ToolTab>('models')
 
   const refresh = useCallback(async (): Promise<void> => {
     const api = typeof window === 'undefined' ? undefined : window.api
@@ -87,12 +100,48 @@ export function ModelsPage(): React.JSX.Element {
     if (reply?.ok === false) setMessage(`打开文件夹失败：${reply.error ?? 'unknown'}`)
   }, [])
 
+  if (toolTab === 'market') {
+    return (
+      <div className="las-tools-embed">
+        <div className="las-tools-tabs" role="tablist" aria-label="工具分段">
+          {TOOL_TABS.map((tb) => (
+            <button key={tb.id} className={tb.id === toolTab ? 'las-tools-tab active' : 'las-tools-tab'} onClick={() => setToolTab(tb.id)}>
+              {tb.label}
+            </button>
+          ))}
+        </div>
+        <MarketPage />
+      </div>
+    )
+  }
+  if (toolTab === 'search') {
+    return (
+      <div className="las-tools-embed">
+        <div className="las-tools-tabs" role="tablist" aria-label="工具分段">
+          {TOOL_TABS.map((tb) => (
+            <button key={tb.id} className={tb.id === toolTab ? 'las-tools-tab active' : 'las-tools-tab'} onClick={() => setToolTab(tb.id)}>
+              {tb.label}
+            </button>
+          ))}
+        </div>
+        <SearchPage />
+      </div>
+    )
+  }
+
   return (
     <section className="las-page" aria-labelledby="page-title-models">
+      <div className="las-tools-tabs" role="tablist" aria-label="工具分段">
+        {TOOL_TABS.map((tb) => (
+          <button key={tb.id} className={tb.id === toolTab ? 'las-tools-tab active' : 'las-tools-tab'} onClick={() => setToolTab(tb.id)}>
+            {tb.label}
+          </button>
+        ))}
+      </div>
       <h1 id="page-title-models" className="las-page-title">
-        Models
+        模型
       </h1>
-      <p className="las-page-subtitle">本地模型 — 拖进文件夹就能用，自动识别注册（下载也可去 Market 页）</p>
+      <p className="las-page-subtitle">本地模型 — 拖进文件夹就能用，自动识别注册（下载也可去「市场」分段）</p>
       <div className="las-models-folders" data-testid="models-folders">
         {MODEL_FOLDERS.map((f) => (
           <button key={f.sub ?? 'root'} type="button" className="las-models-folder-card" onClick={() => void openFolder(f.sub)}>

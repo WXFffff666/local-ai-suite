@@ -158,7 +158,7 @@ export function SettingsPage(): React.JSX.Element {
   return (
     <section className="las-page" aria-labelledby="page-title-settings">
       <h1 id="page-title-settings" className="las-page-title">
-        Settings
+        设置
       </h1>
       <p className="las-page-subtitle">密钥 / 主题 / 语言 / 端口 — 密钥经 safeStorage 加密落盘，明文永不写盘（docs/SECURITY.md）</p>
       {!apiAvailable ? (

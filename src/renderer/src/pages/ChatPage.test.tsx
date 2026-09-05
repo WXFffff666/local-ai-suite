@@ -72,7 +72,7 @@ afterEach(() => {
 describe('ChatPage 降级模式（无 window.api）', () => {
   it('渲染诚实的 IPC 不可用提示且输入被禁用', () => {
     mount()
-    expect(container.textContent).toContain('Chat')
+    expect(container.textContent).toContain('对话')
     const status = container.querySelector('[role="status"]')
     expect(status?.textContent).toContain(IPC_UNAVAILABLE_MESSAGE)
     const textarea = container.querySelector('textarea')

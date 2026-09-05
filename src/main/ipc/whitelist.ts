@@ -59,6 +59,8 @@ export const ALLOWED_CHANNELS = [
   'gallery:copy',
   'gallery:insert',
   'gallery:reuse',
+  // 阶段4：缩略图/原图读取（base64；路径永不跨渲染层）
+  'gallery:readImage',
   'search:run',
   'hf:search',
   // todo39: RAG v1 hybrid retrieval (FTS5 BM25 × sqlite-vec → RRF fusion,

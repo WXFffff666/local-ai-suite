@@ -46,7 +46,7 @@ function getFakeApi(): { on: ReturnType<typeof vi.fn> } | undefined {
   return (window as unknown as { api?: { on: ReturnType<typeof vi.fn> } }).api
 }
 
-const NAV_LABELS = ['Chat', 'Image', 'Gallery', 'Search', 'Market', 'Models', 'Settings'] as const
+const NAV_LABELS = ['对话', '画图', '画廊', '工具', '设置'] as const
 
 let container: HTMLDivElement
 let root: Root
@@ -101,22 +101,22 @@ describe('应用壳导航', () => {
     expect(labels).toEqual([...NAV_LABELS])
   })
 
-  it('默认路由为 Chat，标题渲染 Chat', () => {
+  it('默认路由为 Chat，标题渲染 对话', () => {
     mount()
-    expect(container.querySelector('h1')?.textContent).toBe('Chat')
+    expect(container.querySelector('h1')?.textContent).toBe('对话')
   })
 
   it('点击导航切换路由改变页面标题', () => {
     mount()
     act(() => {
-      navButton('Settings').click()
+      navButton('设置').click()
     })
-    expect(container.querySelector('h1')?.textContent).toBe('Settings')
+    expect(container.querySelector('h1')?.textContent).toBe('设置')
     expect(window.location.hash).toBe('#/settings')
     act(() => {
-      navButton('Market').click()
+      navButton('工具').click()
     })
-    expect(container.querySelector('h1')?.textContent).toBe('Market')
+    expect(container.querySelector('h1')?.textContent).toBe('模型')
   })
 
   it('直接设置 hash 亦可路由（hashchange 驱动）', () => {
@@ -125,7 +125,7 @@ describe('应用壳导航', () => {
       window.location.hash = '#/gallery'
       window.dispatchEvent(new HashChangeEvent('hashchange'))
     })
-    expect(container.querySelector('h1')?.textContent).toBe('Gallery')
+    expect(container.querySelector('h1')?.textContent).toBe('画廊')
   })
 })
 
@@ -215,7 +215,7 @@ describe('app:deeplink 导航（todo42）', () => {
       arr[arr.length - 1]?.({ action: 'models' })
     })
     expect(window.location.hash).toBe('#/models')
-    expect(container.querySelector('h1')?.textContent).toBe('Models')
+    expect(container.querySelector('h1')?.textContent).toBe('模型')
   })
 
   it('未知 action → 不导航、不崩，出告警 toast', async () => {
@@ -227,7 +227,7 @@ describe('app:deeplink 导航（todo42）', () => {
       arr[arr.length - 1]?.({ action: 'rm-rf' })
       await new Promise((r) => setTimeout(r, 120))
     })
-    expect(container.querySelector('h1')?.textContent).toBe('Chat')
+    expect(container.querySelector('h1')?.textContent).toBe('对话')
     expect(document.body.textContent).toContain('未知深链')
   })
 })

@@ -208,3 +208,35 @@
   opacity: 0.9;
   color: var(--las-accent, #a99bff);
 }
+
+/* 阶段4：工具页分段（本地模型 | 市场 | 搜索） */
+.las-tools-tabs {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--las-card, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--las-border, rgba(255, 255, 255, 0.1));
+  margin-bottom: 14px;
+}
+.las-tools-tab {
+  border: none;
+  background: transparent;
+  color: var(--las-muted, inherit);
+  font-size: 13px;
+  padding: 6px 16px;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.las-tools-tab.active {
+  background: var(--las-accent-soft, rgba(139, 124, 255, 0.18));
+  color: var(--las-accent, #8b7cff);
+  font-weight: 600;
+}
+/* 内嵌市场/搜索时去掉双层页面 padding */
+.las-tools-embed > .las-page {
+  height: auto;
+  min-height: 100%;
+  padding-top: 0;
+}

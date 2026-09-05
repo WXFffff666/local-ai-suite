@@ -123,7 +123,7 @@ export function SearchPage(): React.JSX.Element {
   return (
     <section className="las-page" aria-labelledby="page-title-search">
       <h1 id="page-title-search" className="las-page-title">
-        Search
+        搜索
       </h1>
       <p className="las-page-subtitle">本地 FTS5 × 向量混合检索（RRF 融合 · 可选 llama.cpp 精排）</p>
 

@@ -14,7 +14,7 @@
  * { ok:false, error:'not-ready' } until the real store is injected.
  */
 
-import { mkdirSync, statSync } from 'fs'
+import { mkdirSync, readFileSync, statSync } from 'fs'
 import { isAbsolute, join, resolve, sep } from 'path'
 import { SIDECAR_HOST } from '../../core/types'
 import type { ModelEntry } from '../../models/registry'
@@ -73,6 +73,7 @@ import {
   conversationsRenameSchema,
   downloadCancelSchema,
   galleryIdSchema,
+  galleryReadImageSchema,
   gallerySaveSchema,
   hfSearchSchema,
   imageQueueStatusSchema,
@@ -591,6 +592,22 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
       const payload: InsertPayload = services.gallery.insert(parsed.data.id)
       return { ok: true, payload }
     },
+    // 阶段4：缩略图/原图读取 — base64 回渲染层（id 经 gallery 目录包含校验）
+    'gallery:readImage': async (args) => {
+      const parsed = validatePayload(galleryReadImageSchema, first(args))
+      if (!parsed.ok) return parsed
+      try {
+        const item = services.gallery.list().find((i) => i.id === parsed.data.id)
+        if (item === undefined) return { ok: false, error: 'not-found' }
+        const path = parsed.data.kind === 'original' ? item.originalPath : item.thumbPath
+        const st = statSync(path)
+        if (st.size > 24 * 1024 * 1024) return { ok: false, error: 'image-too-large' }
+        return { ok: true, b64: readFileSync(path).toString('base64') }
+      } catch (e) {
+        return { ok: false, error: e instanceof Error ? e.message : String(e) }
+      }
+    },
+
     'gallery:reuse': async (args) => {
       const parsed = validatePayload(galleryIdSchema, first(args))
       if (!parsed.ok) return parsed

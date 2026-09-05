@@ -11,6 +11,7 @@
  */
 import { useCallback, useEffect, useState } from 'react'
 import type { AllowedChannel, OcrRecognizeReply, OcrStatusReply } from '../../../main/ipc/whitelist'
+import { useHashRoute } from '../hashRouter'
 
 type ApiLike = {
   invoke: (channel: AllowedChannel, ...args: unknown[]) => Promise<unknown>
@@ -26,11 +27,17 @@ type GalleryListReply = { items?: GalleryItemWire[] }
 
 type OcrEntry = { busy: boolean; text?: string; error?: string }
 
+/** 复用参数跨页交接（sessionStorage；ImagePage 挂载时消费后清除） */
+export const GALLERY_REUSE_KEY = 'las:gallery-reuse-params'
+
 export function GalleryPage(): React.JSX.Element {
   const [items, setItems] = useState<GalleryItemWire[]>([])
   const [loadError, setLoadError] = useState<string | null>(null)
   const [engineReady, setEngineReady] = useState(false)
   const [ocrState, setOcrState] = useState<Record<string, OcrEntry>>({})
+  const [thumbs, setThumbs] = useState<Record<string, string>>({})
+  const [lightbox, setLightbox] = useState<string | null>(null)
+  const { navigate } = useHashRoute()
 
   const api = getApi()
 
@@ -40,7 +47,31 @@ export function GalleryPage(): React.JSX.Element {
     void (async () => {
       try {
         const list = (await api.invoke('gallery:list')) as GalleryListReply
-        if (!cancelled) setItems(list.items ?? [])
+        const listed = list.items ?? []
+        if (!cancelled) setItems(listed)
+        // 阶段4：缩略图懒加载（并发 4，逐批拉取 thumb.png base64）
+        const load = async (): Promise<void> => {
+          for (let i = 0; i < listed.length; i += 4) {
+            const batch = listed.slice(i, i + 4)
+            const entries = await Promise.all(
+              batch.map(async (it) => {
+                try {
+                  const r = (await api.invoke('gallery:readImage', { id: it.id, kind: 'thumb' })) as { ok?: boolean; b64?: string }
+                  return r?.ok === true && typeof r.b64 === 'string' ? ([it.id, r.b64] as const) : null
+                } catch {
+                  return null
+                }
+              }),
+            )
+            if (cancelled) return
+            setThumbs((prev) => {
+              const next = { ...prev }
+              for (const e of entries) if (e !== null) next[e[0]] = e[1]
+              return next
+            })
+          }
+        }
+        void load()
       } catch (e) {
         if (!cancelled) setLoadError(`画廊读取失败：${(e as Error).message}`)
       }
@@ -76,6 +107,27 @@ export function GalleryPage(): React.JSX.Element {
     [],
   )
 
+  const reuseParams = useCallback(
+    async (id: string): Promise<void> => {
+      const a = getApi()
+      if (!a) return
+      try {
+        const reply = (await a.invoke('gallery:reuse', { id })) as { ok?: boolean; params?: unknown }
+        if (reply?.ok === true && reply.params) {
+          try {
+            sessionStorage.setItem(GALLERY_REUSE_KEY, JSON.stringify(reply.params))
+          } catch {
+            /* storage unavailable — 复用降级为仅导航 */
+          }
+        }
+        navigate('image')
+      } catch {
+        /* 诚实忽略：复用失败留在画廊页 */
+      }
+    },
+    [navigate],
+  )
+
   const copyText = async (text: string): Promise<void> => {
     try {
       await navigator.clipboard?.writeText(text)
@@ -87,9 +139,9 @@ export function GalleryPage(): React.JSX.Element {
   return (
     <section className="las-page" aria-labelledby="page-title-gallery">
       <h1 id="page-title-gallery" className="las-page-title">
-        Gallery
+        画廊
       </h1>
-      <p className="las-page-subtitle">生图画廊 · 本地 OCR（PaddleOCR-json）</p>
+      <p className="las-page-subtitle">生图画廊 · 点击缩略图看大图，可把任一条目的参数带回画图页</p>
       {loadError ? (
         <p className="las-page-card" role="alert" data-testid="gallery-error">
           {loadError}
@@ -111,8 +163,25 @@ export function GalleryPage(): React.JSX.Element {
                   <strong>{it.prompt || it.id}</strong>
                   <span className="las-gallery-item-date">{new Date(it.createdAt).toLocaleString()}</span>
                 </header>
+                {thumbs[it.id] !== undefined ? (
+                  <img
+                    className="las-gallery-thumb"
+                    src={`data:image/png;base64,${thumbs[it.id]}`}
+                    alt={it.prompt || it.id}
+                    loading="lazy"
+                    onClick={() => setLightbox(thumbs[it.id] ?? null)}
+                  />
+                ) : null}
+                <p className="las-gallery-prompt">{it.prompt}</p>
                 <code className="las-gallery-item-id">{it.id}</code>
                 <div className="las-gallery-item-actions">
+                  <button
+                    type="button"
+                    data-testid={`gallery-reuse-${it.id}`}
+                    onClick={() => void reuseParams(it.id)}
+                  >
+                    复用参数
+                  </button>
                   <button
                     type="button"
                     data-testid={`gallery-ocr-${it.id}`}
@@ -139,6 +208,17 @@ export function GalleryPage(): React.JSX.Element {
           })}
         </div>
       )}
+      {lightbox !== null ? (
+        <button
+          type="button"
+          className="las-lightbox"
+          aria-label="关闭大图"
+          data-testid="gallery-lightbox"
+          onClick={() => setLightbox(null)}
+        >
+          <img src={`data:image/png;base64,${lightbox}`} alt="大图预览" />
+        </button>
+      ) : null}
     </section>
   )
 }

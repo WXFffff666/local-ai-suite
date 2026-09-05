@@ -77,7 +77,7 @@ describe('SearchPage — todo39', () => {
   it('mount 不崩（回归 pin：bound invoke 不得被 setState 当 updater 触发）', async () => {
     setApi()
     await mount()
-    expect(container.querySelector('h1.las-page-title')?.textContent).toBe('Search')
+    expect(container.querySelector('h1.las-page-title')?.textContent).toBe('搜索')
     expect(byTestId('rag-status-line')?.textContent).toContain('1 篇 / 7 块')
   })
 

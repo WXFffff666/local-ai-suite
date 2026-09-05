@@ -52,6 +52,7 @@ describe('ipc whitelist', () => {
       'gallery:copy',
       'gallery:insert',
       'gallery:reuse',
+  'gallery:readImage',
       'search:run',
       'hf:search',
       // todo39: RAG v1 hybrid retrieval (status probe / file|dir ingest / query)
