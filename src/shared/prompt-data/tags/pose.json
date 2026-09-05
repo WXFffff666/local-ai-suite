@@ -1,0 +1,2174 @@
+[
+  {
+    "zh": "站立",
+    "en": "standing",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "坐姿",
+    "en": "sitting",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "躺卧",
+    "en": "lying",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "举手",
+    "en": "hands_up",
+    "sfw": true
+  },
+  {
+    "zh": "抬臂",
+    "en": "arms_up",
+    "sfw": true
+  },
+  {
+    "zh": "前倾",
+    "en": "leaning_forward",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "跪姿",
+    "en": "kneeling",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "蹲姿",
+    "en": "squatting",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "单腿站立",
+    "en": "standing_on_one_leg",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "背后手",
+    "en": "arms_behind_back",
+    "sfw": true
+  },
+  {
+    "zh": "双手合握",
+    "en": "own_hands_together",
+    "sfw": true
+  },
+  {
+    "zh": "弯腰",
+    "en": "bent_over",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "手抚脸",
+    "en": "hand_on_own_face",
+    "sfw": true
+  },
+  {
+    "zh": "手插兜",
+    "en": "hand_in_pocket",
+    "sfw": true
+  },
+  {
+    "zh": "正坐",
+    "en": "seiza",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "伸手",
+    "en": "reaching",
+    "sfw": true
+  },
+  {
+    "zh": "抬腿",
+    "en": "legs_up",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "飞行",
+    "en": "flying",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "向观众伸手",
+    "en": "reaching_towards_viewer",
+    "sfw": true
+  },
+  {
+    "zh": "猫爪姿势",
+    "en": "paw_pose",
+    "sfw": true
+  },
+  {
+    "zh": "坐在人上",
+    "en": "sitting_on_person",
+    "sfw": true
+  },
+  {
+    "zh": "爪状手",
+    "en": "claw_pose",
+    "sfw": true
+  },
+  {
+    "zh": "后仰",
+    "en": "leaning_back",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "弓背",
+    "en": "arched_back",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "坐腿上",
+    "en": "sitting_on_lap",
+    "sfw": true
+  },
+  {
+    "zh": "侧倾",
+    "en": "leaning_to_the_side",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "经典姿势",
+    "en": "the_pose",
+    "sfw": true
+  },
+  {
+    "zh": "靠在人身上",
+    "en": "leaning_on_person",
+    "sfw": true
+  },
+  {
+    "zh": "仰躺",
+    "en": "lying_on_back",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "侧躺",
+    "en": "lying_on_side",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "蹲伏",
+    "en": "crouching",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "倒立",
+    "en": "handstand",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "扭身",
+    "en": "twisted_torso",
+    "sfw": true
+  },
+  {
+    "zh": "坐地上",
+    "en": "sitting_on_floor",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "坐椅子",
+    "en": "sitting_on_chair",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "坐床上",
+    "en": "sitting_on_bed",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "躺地上",
+    "en": "lying_on_floor",
+    "sfw": true
+  },
+  {
+    "zh": "躺床上",
+    "en": "lying_on_bed",
+    "sfw": true
+  },
+  {
+    "zh": "俯卧",
+    "en": "prone",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "仰卧",
+    "en": "supine",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "蜷缩",
+    "en": "fetal_position",
+    "sfw": true
+  },
+  {
+    "zh": "交叉腿",
+    "en": "crossed_legs",
+    "sfw": true
+  },
+  {
+    "zh": "盘腿坐",
+    "en": "sitting_with_legs_crossed",
+    "sfw": true
+  },
+  {
+    "zh": "打坐",
+    "en": "indian_sitting",
+    "sfw": true
+  },
+  {
+    "zh": "漂浮",
+    "en": "floating",
+    "sfw": true
+  },
+  {
+    "zh": "悬空",
+    "en": "hovering",
+    "sfw": true
+  },
+  {
+    "zh": "头靠",
+    "en": "head_rest",
+    "sfw": true
+  },
+  {
+    "zh": "叉腰",
+    "en": "hands_on_hips",
+    "sfw": true
+  },
+  {
+    "zh": "单手叉腰",
+    "en": "hand_on_hip",
+    "sfw": true
+  },
+  {
+    "zh": "双臂两侧举起",
+    "en": "two_side_up",
+    "sfw": true
+  },
+  {
+    "zh": "在地上",
+    "en": "on_ground",
+    "sfw": true
+  },
+  {
+    "zh": "斜躺",
+    "en": "reclining",
+    "sfw": true
+  },
+  {
+    "zh": "举手",
+    "en": "hand_up",
+    "sfw": true
+  },
+  {
+    "zh": "单臂举起",
+    "en": "arm_up",
+    "sfw": true
+  },
+  {
+    "zh": "手叉腰",
+    "en": "hand_on_own_hip",
+    "sfw": true
+  },
+  {
+    "zh": "手臂支撑",
+    "en": "arm_support",
+    "sfw": true
+  },
+  {
+    "zh": "四肢着地",
+    "en": "all_fours",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "趴卧",
+    "en": "on_stomach",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "仰卧",
+    "en": "on_back",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "踮脚",
+    "en": "tiptoeing",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "重心站姿",
+    "en": "contrapposto",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "倚墙",
+    "en": "leaning_against_wall",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "昂首阔步",
+    "en": "strutting",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "鸭子坐",
+    "en": "frog_pose",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "侧坐",
+    "en": "sitting_sideways",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "跪坐",
+    "en": "kneel_sit",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "抱臂",
+    "en": "arms_crossed",
+    "sfw": true
+  },
+  {
+    "zh": "双手抱头",
+    "en": "hands_on_head",
+    "sfw": true
+  },
+  {
+    "zh": "手插兜",
+    "en": "hands_in_pockets",
+    "sfw": true
+  },
+  {
+    "zh": "双臂张开",
+    "en": "arms_open",
+    "sfw": true
+  },
+  {
+    "zh": "单臂叉腰",
+    "en": "one_hand_on_hip",
+    "sfw": true
+  },
+  {
+    "zh": "手指抵唇",
+    "en": "finger_to_mouth",
+    "sfw": true
+  },
+  {
+    "zh": "高举手臂",
+    "en": "hand_raised",
+    "sfw": true
+  },
+  {
+    "zh": "手臂摆动",
+    "en": "arm_swing",
+    "sfw": true
+  },
+  {
+    "zh": "剪刀手",
+    "en": "peace_sign",
+    "sfw": true
+  },
+  {
+    "zh": "握拳",
+    "en": "clenched_fist",
+    "sfw": true
+  },
+  {
+    "zh": "手指枪",
+    "en": "finger_gun",
+    "sfw": true
+  },
+  {
+    "zh": "十字手指",
+    "en": "cross_fingers",
+    "sfw": true
+  },
+  {
+    "zh": "OK手势",
+    "en": "ok_sign",
+    "sfw": true
+  },
+  {
+    "zh": "金属手势",
+    "en": "metal_horns",
+    "sfw": true
+  },
+  {
+    "zh": "击掌",
+    "en": "high_five",
+    "sfw": true
+  },
+  {
+    "zh": "碰拳",
+    "en": "fist_bump",
+    "sfw": true
+  },
+  {
+    "zh": "敬礼手势",
+    "en": "salute_pose",
+    "sfw": true
+  },
+  {
+    "zh": "双手合十",
+    "en": "hands_clasped",
+    "sfw": true
+  },
+  {
+    "zh": "侧手翻",
+    "en": "cartwheel",
+    "sfw": true
+  },
+  {
+    "zh": "后空翻",
+    "en": "backflip",
+    "sfw": true
+  },
+  {
+    "zh": "伸展",
+    "en": "stretching",
+    "sfw": true
+  },
+  {
+    "zh": "鞠躬",
+    "en": "bowing",
+    "sfw": true
+  },
+  {
+    "zh": "屈膝礼",
+    "en": "curtsying",
+    "sfw": true
+  },
+  {
+    "zh": "敬礼",
+    "en": "saluting",
+    "sfw": true
+  },
+  {
+    "zh": "耸肩",
+    "en": "shrugging",
+    "sfw": true
+  },
+  {
+    "zh": "捂脸",
+    "en": "facepalm",
+    "sfw": true
+  },
+  {
+    "zh": "劈叉",
+    "en": "split",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "跪单膝",
+    "en": "one_knee",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "头倒立",
+    "en": "headstand",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "横劈叉",
+    "en": "side_split",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "站立劈叉",
+    "en": "standing_split",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "弓步",
+    "en": "lunge",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "马步",
+    "en": "horse_stance",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "下腰",
+    "en": "back_bend",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "平板支撑",
+    "en": "plank",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "蹲伏",
+    "en": "crouch",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "大字形",
+    "en": "spread_eagle",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "蜷缩",
+    "en": "curled_up",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "盘腿坐",
+    "en": "cross_legged",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "侧躺",
+    "en": "side_lying",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "抱膝",
+    "en": "hugging_knees",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "环抱自己",
+    "en": "hugging_self",
+    "sfw": true
+  },
+  {
+    "zh": "弯腰",
+    "en": "bending_over",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "匍匐",
+    "en": "crawling",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "拱背",
+    "en": "arching_back",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "斜靠",
+    "en": "slouching",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "抬下巴",
+    "en": "chin_up",
+    "sfw": true
+  },
+  {
+    "zh": "站军姿",
+    "en": "standing_at_attention",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "稍息",
+    "en": "standing_at_ease",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "小跳步",
+    "en": "skipping",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "鼓掌",
+    "en": "clapping",
+    "sfw": true
+  },
+  {
+    "zh": "背人",
+    "en": "piggyback",
+    "sfw": true
+  },
+  {
+    "zh": "抬腿",
+    "en": "leg_raised",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "转身",
+    "en": "twist_pose",
+    "sfw": true,
+    "dimension": "pose_type"
+  },
+  {
+    "zh": "单膝跪",
+    "en": "on_one_knee",
+    "sfw": true
+  },
+  {
+    "zh": "盘腿坐",
+    "en": "butterfly_sitting",
+    "sfw": true
+  },
+  {
+    "zh": "翘二郎腿",
+    "en": "figure_four_sitting",
+    "sfw": true
+  },
+  {
+    "zh": "盘腿坐姿",
+    "en": "indian_style",
+    "sfw": true
+  },
+  {
+    "zh": "大腿骑坐",
+    "en": "thigh_straddling",
+    "sfw": true
+  },
+  {
+    "zh": "鸭子坐",
+    "en": "wariza",
+    "sfw": true
+  },
+  {
+    "zh": "横坐",
+    "en": "yokozuwari",
+    "sfw": true
+  },
+  {
+    "zh": "倒立坐",
+    "en": "sitting_on_head",
+    "sfw": true
+  },
+  {
+    "zh": "坐肩",
+    "en": "sitting_on_shoulder",
+    "sfw": true
+  },
+  {
+    "zh": "人体椅子",
+    "en": "human_chair",
+    "sfw": true
+  },
+  {
+    "zh": "半空中",
+    "en": "midair",
+    "sfw": true
+  },
+  {
+    "zh": "下落",
+    "en": "falling",
+    "sfw": true
+  },
+  {
+    "zh": "弹跳",
+    "en": "hopping",
+    "sfw": true
+  },
+  {
+    "zh": "扑跃",
+    "en": "pouncing",
+    "sfw": true
+  },
+  {
+    "zh": "踱步",
+    "en": "walk_cycle",
+    "sfw": true
+  },
+  {
+    "zh": "墙面行走",
+    "en": "walking_on_wall",
+    "sfw": true
+  },
+  {
+    "zh": "跪伏",
+    "en": "prostration",
+    "sfw": true
+  },
+  {
+    "zh": "马步蹲",
+    "en": "bowlegged_pose",
+    "sfw": true
+  },
+  {
+    "zh": "胸腔倒立",
+    "en": "chest_stand",
+    "sfw": true
+  },
+  {
+    "zh": "胸口倒立",
+    "en": "chest_stand_handstand",
+    "sfw": true
+  },
+  {
+    "zh": "三重折叠",
+    "en": "triplefold",
+    "sfw": true
+  },
+  {
+    "zh": "四肢折叠",
+    "en": "quadfold",
+    "sfw": true
+  },
+  {
+    "zh": "蜷缩",
+    "en": "cowering",
+    "sfw": true
+  },
+  {
+    "zh": "十字架姿势",
+    "en": "crucifixion",
+    "sfw": true
+  },
+  {
+    "zh": "面朝下倒",
+    "en": "faceplant",
+    "sfw": true
+  },
+  {
+    "zh": "全蝎式",
+    "en": "full_scorpion",
+    "sfw": true
+  },
+  {
+    "zh": "拔刀姿势",
+    "en": "battoujutsu_stance",
+    "sfw": true
+  },
+  {
+    "zh": "超级英雄落地",
+    "en": "superhero_landing",
+    "sfw": true
+  },
+  {
+    "zh": "上下颠倒",
+    "en": "upside-down",
+    "sfw": true
+  },
+  {
+    "zh": "蝎子式",
+    "en": "scorpion_pose",
+    "sfw": true
+  },
+  {
+    "zh": "低头",
+    "en": "head_down",
+    "sfw": true
+  },
+  {
+    "zh": "仰头",
+    "en": "head_back",
+    "sfw": true
+  },
+  {
+    "zh": "后仰弓背",
+    "en": "bent_back",
+    "sfw": true
+  },
+  {
+    "zh": "扭腰",
+    "en": "sway_back",
+    "sfw": true
+  },
+  {
+    "zh": "手臂背后",
+    "en": "arm_behind_back",
+    "sfw": true
+  },
+  {
+    "zh": "手臂背头后",
+    "en": "arm_behind_head",
+    "sfw": true
+  },
+  {
+    "zh": "胜利姿势",
+    "en": "victory_pose",
+    "sfw": true
+  },
+  {
+    "zh": "伸展手臂",
+    "en": "outstretched_arm",
+    "sfw": true
+  },
+  {
+    "zh": "张开双臂",
+    "en": "spread_arms",
+    "sfw": true
+  },
+  {
+    "zh": "双臂垂侧",
+    "en": "arm_at_side",
+    "sfw": true
+  },
+  {
+    "zh": "飞机臂",
+    "en": "airplane_arms",
+    "sfw": true
+  },
+  {
+    "zh": "展示肌肉",
+    "en": "flexing",
+    "sfw": true
+  },
+  {
+    "zh": "太阳致敬",
+    "en": "praise_the_sun",
+    "sfw": true
+  },
+  {
+    "zh": "T字站姿",
+    "en": "t-pose",
+    "sfw": true
+  },
+  {
+    "zh": "A字站姿",
+    "en": "a-pose",
+    "sfw": true
+  },
+  {
+    "zh": "V字手势",
+    "en": "v_arms",
+    "sfw": true
+  },
+  {
+    "zh": "W字手势",
+    "en": "w_arms",
+    "sfw": true
+  },
+  {
+    "zh": "托下巴",
+    "en": "stroking_own_chin",
+    "sfw": true
+  },
+  {
+    "zh": "伸手",
+    "en": "outstretched_hand",
+    "sfw": true
+  },
+  {
+    "zh": "十指相扣",
+    "en": "interlocked_fingers",
+    "sfw": true
+  },
+  {
+    "zh": "双手合十",
+    "en": "own_hands_clasped",
+    "sfw": true
+  },
+  {
+    "zh": "星光手",
+    "en": "star_hands",
+    "sfw": true
+  },
+  {
+    "zh": "交叉脚踝",
+    "en": "crossed_ankles",
+    "sfw": true
+  },
+  {
+    "zh": "抬腿",
+    "en": "leg_up",
+    "sfw": true
+  },
+  {
+    "zh": "踢腿",
+    "en": "leg_lift",
+    "sfw": true
+  },
+  {
+    "zh": "伸腿",
+    "en": "outstretched_leg",
+    "sfw": true
+  },
+  {
+    "zh": "双膝并拢",
+    "en": "knees_together_feet_apart",
+    "sfw": true
+  },
+  {
+    "zh": "膝盖并拢",
+    "en": "knees_apart_feet_together",
+    "sfw": true
+  },
+  {
+    "zh": "双膝曲",
+    "en": "knees_up",
+    "sfw": true
+  },
+  {
+    "zh": "脚尖下压",
+    "en": "dorsiflexion",
+    "sfw": true
+  },
+  {
+    "zh": "内八字脚",
+    "en": "pigeon-toed",
+    "sfw": true
+  },
+  {
+    "zh": "绷脚尖",
+    "en": "plantar_flexion",
+    "sfw": true
+  },
+  {
+    "zh": "蜷脚趾",
+    "en": "toe_scrunch",
+    "sfw": true
+  },
+  {
+    "zh": "踮脚尖",
+    "en": "tiptoes",
+    "sfw": true
+  },
+  {
+    "zh": "背对背",
+    "en": "back-to-back",
+    "sfw": true
+  },
+  {
+    "zh": "面对面",
+    "en": "face-to-face",
+    "sfw": true
+  },
+  {
+    "zh": "额贴额",
+    "en": "forehead-to-forehead",
+    "sfw": true
+  },
+  {
+    "zh": "胸贴头",
+    "en": "head_on_chest",
+    "sfw": true
+  },
+  {
+    "zh": "头碰头",
+    "en": "heads_together",
+    "sfw": true
+  },
+  {
+    "zh": "腿缠",
+    "en": "leg_lock",
+    "sfw": true
+  },
+  {
+    "zh": "勾臂",
+    "en": "locked_arms",
+    "sfw": true
+  },
+  {
+    "zh": "搭肩",
+    "en": "shoulder-to-shoulder",
+    "sfw": true
+  },
+  {
+    "zh": "抱臂",
+    "en": "arm_hug",
+    "sfw": true
+  },
+  {
+    "zh": "腰抱",
+    "en": "waist_hug",
+    "sfw": true
+  },
+  {
+    "zh": "围成圈",
+    "en": "circle_formation",
+    "sfw": true
+  },
+  {
+    "zh": "群抱",
+    "en": "group_hug",
+    "sfw": true
+  },
+  {
+    "zh": "公主抱",
+    "en": "princess_carry",
+    "sfw": true
+  },
+  {
+    "zh": "婴儿抱",
+    "en": "baby_carry",
+    "sfw": true
+  },
+  {
+    "zh": "孩子抱",
+    "en": "child_carry",
+    "sfw": true
+  },
+  {
+    "zh": "肩扛",
+    "en": "carrying_over_shoulder",
+    "sfw": true
+  },
+  {
+    "zh": "腋下夹",
+    "en": "carrying_under_arm",
+    "sfw": true
+  },
+  {
+    "zh": "消防员抱",
+    "en": "fireman's_carry",
+    "sfw": true
+  },
+  {
+    "zh": "兔子姿势",
+    "en": "rabbit_pose",
+    "sfw": true
+  },
+  {
+    "zh": "犄角手势",
+    "en": "horns_pose",
+    "sfw": true
+  },
+  {
+    "zh": "弓手姿势",
+    "en": "archer_pose",
+    "sfw": true
+  },
+  {
+    "zh": "桥式",
+    "en": "body_bridge",
+    "sfw": true
+  },
+  {
+    "zh": "败家子姿势",
+    "en": "dojikko_pose",
+    "sfw": true
+  },
+  {
+    "zh": "幽灵姿势",
+    "en": "ghost_pose",
+    "sfw": true
+  },
+  {
+    "zh": "字母姿势",
+    "en": "letter_pose",
+    "sfw": true
+  },
+  {
+    "zh": "大小姐姿势",
+    "en": "ojou-sama_pose",
+    "sfw": true
+  },
+  {
+    "zh": "仙人掌姿势",
+    "en": "saboten_pose",
+    "sfw": true
+  },
+  {
+    "zh": "对称手势",
+    "en": "symmetrical_hand_pose",
+    "sfw": true
+  },
+  {
+    "zh": "反派姿势",
+    "en": "villain_pose",
+    "sfw": true
+  },
+  {
+    "zh": "丧尸姿势",
+    "en": "zombie_pose",
+    "sfw": true
+  },
+  {
+    "zh": "虚空引号",
+    "en": "air_quotes",
+    "sfw": true
+  },
+  {
+    "zh": "抱抱",
+    "en": "carry_me",
+    "sfw": true
+  },
+  {
+    "zh": "圆手",
+    "en": "circle_hands",
+    "sfw": true
+  },
+  {
+    "zh": "握拳相抵",
+    "en": "clenched_hands",
+    "sfw": true
+  },
+  {
+    "zh": "捧手",
+    "en": "cupping_hands",
+    "sfw": true
+  },
+  {
+    "zh": "双枪手势",
+    "en": "double_finger_gun",
+    "sfw": true
+  },
+  {
+    "zh": "双L",
+    "en": "double_l",
+    "sfw": true
+  },
+  {
+    "zh": "双拇指向下",
+    "en": "double_thumbs_down",
+    "sfw": true
+  },
+  {
+    "zh": "双拇指",
+    "en": "double_thumbs_up",
+    "sfw": true
+  },
+  {
+    "zh": "双V",
+    "en": "double_v",
+    "sfw": true
+  },
+  {
+    "zh": "手指框",
+    "en": "finger_frame",
+    "sfw": true
+  },
+  {
+    "zh": "拳头入掌",
+    "en": "fist_in_hand",
+    "sfw": true
+  },
+  {
+    "zh": "手作眼镜",
+    "en": "hand_glasses",
+    "sfw": true
+  },
+  {
+    "zh": "比心双臂",
+    "en": "heart_arms",
+    "sfw": true
+  },
+  {
+    "zh": "食指相抵",
+    "en": "index_fingers_together",
+    "sfw": true
+  },
+  {
+    "zh": "手指数数",
+    "en": "finger_counting",
+    "sfw": true
+  },
+  {
+    "zh": "摸头杀",
+    "en": "headpat",
+    "sfw": true
+  },
+  {
+    "zh": "捏手指",
+    "en": "pinching_gesture",
+    "sfw": true
+  },
+  {
+    "zh": "十指交叉",
+    "en": "steepled_fingers",
+    "sfw": true
+  },
+  {
+    "zh": "三角手",
+    "en": "triangle_hands",
+    "sfw": true
+  },
+  {
+    "zh": "X交叉手臂",
+    "en": "x_arms",
+    "sfw": true
+  },
+  {
+    "zh": "交叉手指",
+    "en": "x_fingers",
+    "sfw": true
+  },
+  {
+    "zh": "小拇指拉钩",
+    "en": "pinky_swear",
+    "sfw": true
+  },
+  {
+    "zh": "竖起食指",
+    "en": "index_finger_raised",
+    "sfw": true
+  },
+  {
+    "zh": "勾手指",
+    "en": "beckoning",
+    "sfw": true
+  },
+  {
+    "zh": "竖中指",
+    "en": "middle_finger",
+    "sfw": true
+  },
+  {
+    "zh": "嘘声",
+    "en": "shushing",
+    "sfw": true
+  },
+  {
+    "zh": "拇指向下",
+    "en": "thumbs_down",
+    "sfw": true
+  },
+  {
+    "zh": "指向他人",
+    "en": "pointing_at_another",
+    "sfw": true
+  },
+  {
+    "zh": "指下方",
+    "en": "pointing_down",
+    "sfw": true
+  },
+  {
+    "zh": "指前方",
+    "en": "pointing_forward",
+    "sfw": true
+  },
+  {
+    "zh": "指上方",
+    "en": "pointing_up",
+    "sfw": true
+  },
+  {
+    "zh": "指心",
+    "en": "finger_heart",
+    "sfw": true
+  },
+  {
+    "zh": "手指比心",
+    "en": "finger_heart_gesture",
+    "sfw": true
+  },
+  {
+    "zh": "夏卡手势",
+    "en": "shaka_sign",
+    "sfw": true
+  },
+  {
+    "zh": "二指礼",
+    "en": "two-finger_salute",
+    "sfw": true
+  },
+  {
+    "zh": "V字",
+    "en": "v",
+    "sfw": true
+  },
+  {
+    "zh": "V遮眼",
+    "en": "v_over_eye",
+    "sfw": true
+  },
+  {
+    "zh": "V遮嘴",
+    "en": "v_over_mouth",
+    "sfw": true
+  },
+  {
+    "zh": "三指礼",
+    "en": "hand_of_benediction",
+    "sfw": true
+  },
+  {
+    "zh": "OK手势(三指)",
+    "en": "money_gesture",
+    "sfw": true
+  },
+  {
+    "zh": "摊手",
+    "en": "open_hand",
+    "sfw": true
+  },
+  {
+    "zh": "五指张开",
+    "en": "spread_fingers",
+    "sfw": true
+  },
+  {
+    "zh": "瓦肯礼",
+    "en": "vulcan_salute",
+    "sfw": true
+  },
+  {
+    "zh": "握拳",
+    "en": "clenched_hand",
+    "sfw": true
+  },
+  {
+    "zh": "蜷指",
+    "en": "curled_fingers",
+    "sfw": true
+  },
+  {
+    "zh": "拳头顶",
+    "en": "fist_pump",
+    "sfw": true
+  },
+  {
+    "zh": "力量拳",
+    "en": "power_fist",
+    "sfw": true
+  },
+  {
+    "zh": "举拳",
+    "en": "raised_fist",
+    "sfw": true
+  },
+  {
+    "zh": "竖掌",
+    "en": "open_palm",
+    "sfw": true
+  },
+  {
+    "zh": "弹空气吉他",
+    "en": "air_guitar",
+    "sfw": true
+  },
+  {
+    "zh": "行屈膝礼",
+    "en": "curtsey",
+    "sfw": true
+  },
+  {
+    "zh": "兰花指",
+    "en": "orchid_fingers",
+    "sfw": true
+  },
+  {
+    "zh": "勾手挑衅",
+    "en": "beckoning_gesture",
+    "sfw": true
+  },
+  {
+    "zh": "手放耳边",
+    "en": "hand_on_own_ear",
+    "sfw": true
+  },
+  {
+    "zh": "手放头顶",
+    "en": "hand_on_own_head",
+    "sfw": true
+  },
+  {
+    "zh": "手放额头",
+    "en": "hand_on_own_forehead",
+    "sfw": true
+  },
+  {
+    "zh": "手托脸颊",
+    "en": "hand_on_own_cheek",
+    "sfw": true
+  },
+  {
+    "zh": "手托下巴",
+    "en": "hand_on_own_chin",
+    "sfw": true
+  },
+  {
+    "zh": "手撑头",
+    "en": "head_on_hand",
+    "sfw": true
+  },
+  {
+    "zh": "手放脖子",
+    "en": "hand_on_own_neck",
+    "sfw": true
+  },
+  {
+    "zh": "手放胸口",
+    "en": "hand_on_own_chest",
+    "sfw": true
+  },
+  {
+    "zh": "手放肩膀",
+    "en": "hand_on_own_shoulder",
+    "sfw": true
+  },
+  {
+    "zh": "手放肚子",
+    "en": "hand_on_own_stomach",
+    "sfw": true
+  },
+  {
+    "zh": "手放手臂",
+    "en": "hand_on_own_arm",
+    "sfw": true
+  },
+  {
+    "zh": "手放手肘",
+    "en": "hand_on_own_elbow",
+    "sfw": true
+  },
+  {
+    "zh": "手放腿",
+    "en": "hand_on_own_leg",
+    "sfw": true
+  },
+  {
+    "zh": "手放大腿",
+    "en": "hand_on_own_thigh",
+    "sfw": true
+  },
+  {
+    "zh": "手放膝盖",
+    "en": "hand_on_own_knee",
+    "sfw": true
+  },
+  {
+    "zh": "手放脚",
+    "en": "hand_on_own_foot",
+    "sfw": true
+  },
+  {
+    "zh": "手放他头",
+    "en": "hand_on_another's_head",
+    "sfw": true
+  },
+  {
+    "zh": "手放他脸",
+    "en": "hand_on_another's_face",
+    "sfw": true
+  },
+  {
+    "zh": "手放他颊",
+    "en": "hand_on_another's_cheek",
+    "sfw": true
+  },
+  {
+    "zh": "手放他下巴",
+    "en": "hand_on_another's_chin",
+    "sfw": true
+  },
+  {
+    "zh": "手放他脖",
+    "en": "hand_on_another's_neck",
+    "sfw": true
+  },
+  {
+    "zh": "手放他肩",
+    "en": "hand_on_another's_shoulder",
+    "sfw": true
+  },
+  {
+    "zh": "手放他背",
+    "en": "hand_on_another's_back",
+    "sfw": true
+  },
+  {
+    "zh": "手放他胸",
+    "en": "hand_on_another's_chest",
+    "sfw": true
+  },
+  {
+    "zh": "手放他肚",
+    "en": "hand_on_another's_stomach",
+    "sfw": true
+  },
+  {
+    "zh": "手放他腰",
+    "en": "hand_on_another's_waist",
+    "sfw": true
+  },
+  {
+    "zh": "手放他臂",
+    "en": "hand_on_another's_arm",
+    "sfw": true
+  },
+  {
+    "zh": "搂肩",
+    "en": "arm_around_shoulder",
+    "sfw": true
+  },
+  {
+    "zh": "拍背",
+    "en": "patting_back",
+    "sfw": true
+  },
+  {
+    "zh": "拉他手",
+    "en": "holding_another's_hand",
+    "sfw": true
+  },
+  {
+    "zh": "抱腰",
+    "en": "arm_around_waist",
+    "sfw": true
+  },
+  {
+    "zh": "鸭子坐姿",
+    "en": "wariza_sitting",
+    "sfw": true
+  },
+  {
+    "zh": "正座",
+    "en": "seiza_sitting",
+    "sfw": true
+  },
+  {
+    "zh": "蹲",
+    "en": "squatting_down",
+    "sfw": true
+  },
+  {
+    "zh": "站立",
+    "en": "standing_up",
+    "sfw": true
+  },
+  {
+    "zh": "倚靠",
+    "en": "leaning_on_something",
+    "sfw": true
+  },
+  {
+    "zh": "靠桌",
+    "en": "leaning_on_table",
+    "sfw": true
+  },
+  {
+    "zh": "躺",
+    "en": "reclining_on_back",
+    "sfw": true
+  },
+  {
+    "zh": "趴",
+    "en": "lying_prone",
+    "sfw": true
+  },
+  {
+    "zh": "侧躺",
+    "en": "reclining_on_side",
+    "sfw": true
+  },
+  {
+    "zh": "蜷腿坐",
+    "en": "hugging_own_legs_sitting",
+    "sfw": true
+  },
+  {
+    "zh": "盘腿",
+    "en": "cross_legged_sitting",
+    "sfw": true
+  },
+  {
+    "zh": "二郎腿",
+    "en": "legs_crossed_sitting",
+    "sfw": true
+  },
+  {
+    "zh": "翘腿",
+    "en": "crossed_ankles_sitting",
+    "sfw": true
+  },
+  {
+    "zh": "手托下巴",
+    "en": "hand_on_chin",
+    "sfw": true
+  },
+  {
+    "zh": "摸下巴",
+    "en": "stroking_chin",
+    "sfw": true
+  },
+  {
+    "zh": "单臂抱胸",
+    "en": "arm_crossed",
+    "sfw": true
+  },
+  {
+    "zh": "背手",
+    "en": "hands_behind_back",
+    "sfw": true
+  },
+  {
+    "zh": "双手举",
+    "en": "hands_up_high",
+    "sfw": true
+  },
+  {
+    "zh": "伸展",
+    "en": "stretching_arms",
+    "sfw": true
+  },
+  {
+    "zh": "抬腿坐",
+    "en": "legs_up_sitting",
+    "sfw": true
+  },
+  {
+    "zh": "抬脚",
+    "en": "leg_raised_sitting",
+    "sfw": true
+  },
+  {
+    "zh": "八字坐",
+    "en": "w_sitting",
+    "sfw": true
+  },
+  {
+    "zh": "鸭子坐",
+    "en": "wariza_pose",
+    "sfw": true
+  },
+  {
+    "zh": "翘脚坐",
+    "en": "crossed_legs_sitting",
+    "sfw": true
+  },
+  {
+    "zh": "倚墙站",
+    "en": "leaning_on_wall",
+    "sfw": true
+  },
+  {
+    "zh": "踢腿站",
+    "en": "leg_raised_standing",
+    "sfw": true
+  },
+  {
+    "zh": "金鸡独立",
+    "en": "flamingo_pose",
+    "sfw": true
+  },
+  {
+    "zh": "舞蹈姿势",
+    "en": "dance_pose",
+    "sfw": true
+  },
+  {
+    "zh": "芭蕾姿势",
+    "en": "ballet_pose",
+    "sfw": true
+  },
+  {
+    "zh": "谢幕礼",
+    "en": "curtain_call",
+    "sfw": true
+  },
+  {
+    "zh": "飞吻",
+    "en": "blowing_kiss",
+    "sfw": true
+  },
+  {
+    "zh": "飞吻手势",
+    "en": "flying_kiss",
+    "sfw": true
+  },
+  {
+    "zh": "比心",
+    "en": "heart_with_hands",
+    "sfw": true
+  },
+  {
+    "zh": "单手比心",
+    "en": "one_hand_heart",
+    "sfw": true
+  },
+  {
+    "zh": "手比爱心",
+    "en": "finger_heart_over_head",
+    "sfw": true
+  },
+  {
+    "zh": "举双手投降",
+    "en": "hands_up_surrender",
+    "sfw": true
+  },
+  {
+    "zh": "挥手再见",
+    "en": "waving_goodbye",
+    "sfw": true
+  },
+  {
+    "zh": "行军礼",
+    "en": "military_salute",
+    "sfw": true
+  },
+  {
+    "zh": "三指礼",
+    "en": "three_finger_salute",
+    "sfw": true
+  },
+  {
+    "zh": "双指礼",
+    "en": "two_finger_gesture",
+    "sfw": true
+  },
+  {
+    "zh": "竖拇指",
+    "en": "thumb_up",
+    "sfw": true
+  },
+  {
+    "zh": "竖小指",
+    "en": "pinky_raised",
+    "sfw": true
+  },
+  {
+    "zh": "摇手指",
+    "en": "wagging_finger",
+    "sfw": true
+  },
+  {
+    "zh": "弹指",
+    "en": "finger_snap",
+    "sfw": true
+  },
+  {
+    "zh": "打响指",
+    "en": "snapping_fingers",
+    "sfw": true
+  },
+  {
+    "zh": "握拳挥",
+    "en": "fist_raised",
+    "sfw": true
+  },
+  {
+    "zh": "握拳前伸",
+    "en": "fist_outstretched",
+    "sfw": true
+  },
+  {
+    "zh": "鼓掌",
+    "en": "clapping_hands",
+    "sfw": true
+  },
+  {
+    "zh": "祈祷手势",
+    "en": "praying_hands",
+    "sfw": true
+  },
+  {
+    "zh": "合十",
+    "en": "praying_gesture",
+    "sfw": true
+  },
+  {
+    "zh": "十指交叉握",
+    "en": "clasped_hands",
+    "sfw": true
+  },
+  {
+    "zh": "叉腰手",
+    "en": "hand_on_hip_pose",
+    "sfw": true
+  },
+  {
+    "zh": "手放耳朵",
+    "en": "hand_on_ear",
+    "sfw": true
+  },
+  {
+    "zh": "手放眼睛",
+    "en": "hand_over_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "手遮眼",
+    "en": "shading_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "手放嘴",
+    "en": "hand_on_mouth",
+    "sfw": true
+  },
+  {
+    "zh": "手放脸颊",
+    "en": "hand_on_cheek",
+    "sfw": true
+  },
+  {
+    "zh": "手放额头",
+    "en": "hand_on_forehead",
+    "sfw": true
+  },
+  {
+    "zh": "手放头顶",
+    "en": "hand_on_top_of_head",
+    "sfw": true
+  },
+  {
+    "zh": "手放胸口",
+    "en": "hand_over_chest",
+    "sfw": true
+  },
+  {
+    "zh": "手放肚子",
+    "en": "hand_on_stomach",
+    "sfw": true
+  },
+  {
+    "zh": "手放大腿",
+    "en": "hand_on_thigh",
+    "sfw": true
+  },
+  {
+    "zh": "手放膝盖",
+    "en": "hand_on_knee",
+    "sfw": true
+  },
+  {
+    "zh": "手放臀部",
+    "en": "hand_on_own_hip_back",
+    "sfw": true
+  },
+  {
+    "zh": "手托腮",
+    "en": "hand_under_chin",
+    "sfw": true
+  },
+  {
+    "zh": "手撑下巴",
+    "en": "hand_supporting_chin",
+    "sfw": true
+  },
+  {
+    "zh": "手撑地面",
+    "en": "hand_on_ground",
+    "sfw": true
+  },
+  {
+    "zh": "手撑墙",
+    "en": "hand_on_wall",
+    "sfw": true
+  },
+  {
+    "zh": "手扶栏杆",
+    "en": "hand_on_railing",
+    "sfw": true
+  },
+  {
+    "zh": "双手撑地",
+    "en": "hands_on_ground",
+    "sfw": true
+  },
+  {
+    "zh": "双手撑桌",
+    "en": "hands_on_table",
+    "sfw": true
+  },
+  {
+    "zh": "双手扶墙",
+    "en": "hands_on_wall",
+    "sfw": true
+  },
+  {
+    "zh": "双手抱头",
+    "en": "hands_behind_head",
+    "sfw": true
+  },
+  {
+    "zh": "双手捂脸",
+    "en": "hands_covering_face",
+    "sfw": true
+  },
+  {
+    "zh": "双手捂嘴",
+    "en": "hands_over_mouth",
+    "sfw": true
+  },
+  {
+    "zh": "单手捂脸",
+    "en": "hand_covering_face",
+    "sfw": true
+  },
+  {
+    "zh": "手抚头发",
+    "en": "hand_in_hair",
+    "sfw": true
+  },
+  {
+    "zh": "撩头发",
+    "en": "hair_flip",
+    "sfw": true
+  },
+  {
+    "zh": "玩头发",
+    "en": "playing_with_own_hair",
+    "sfw": true
+  },
+  {
+    "zh": "摸耳",
+    "en": "hand_on_own_ear_tip",
+    "sfw": true
+  },
+  {
+    "zh": "咬手指",
+    "en": "biting_finger",
+    "sfw": true
+  },
+  {
+    "zh": "咬指甲",
+    "en": "biting_own_nails",
+    "sfw": true
+  },
+  {
+    "zh": "手指绕发",
+    "en": "twirling_own_hair",
+    "sfw": true
+  },
+  {
+    "zh": "拉衣角",
+    "en": "pulling_clothes",
+    "sfw": true
+  },
+  {
+    "zh": "拉裙摆",
+    "en": "pulling_skirt",
+    "sfw": true
+  },
+  {
+    "zh": "整衣领",
+    "en": "adjusting_collar",
+    "sfw": true
+  },
+  {
+    "zh": "整理领带",
+    "en": "adjusting_necktie",
+    "sfw": true
+  },
+  {
+    "zh": "整袖口",
+    "en": "adjusting_cuffs",
+    "sfw": true
+  },
+  {
+    "zh": "戴手套",
+    "en": "putting_on_gloves",
+    "sfw": true
+  },
+  {
+    "zh": "脱手套",
+    "en": "removing_gloves",
+    "sfw": true
+  },
+  {
+    "zh": "摘眼镜",
+    "en": "removing_glasses",
+    "sfw": true
+  },
+  {
+    "zh": "推眼镜",
+    "en": "adjusting_glasses",
+    "sfw": true
+  },
+  {
+    "zh": "戴帽子",
+    "en": "putting_on_hat",
+    "sfw": true
+  },
+  {
+    "zh": "脱帽",
+    "en": "removing_hat",
+    "sfw": true
+  },
+  {
+    "zh": "扶帽沿",
+    "en": "adjusting_hat",
+    "sfw": true
+  },
+  {
+    "zh": "举杯",
+    "en": "raising_cup",
+    "sfw": true
+  },
+  {
+    "zh": "举酒",
+    "en": "raising_glass",
+    "sfw": true
+  },
+  {
+    "zh": "碰杯",
+    "en": "cheers",
+    "sfw": true
+  },
+  {
+    "zh": "敬酒",
+    "en": "toasting",
+    "sfw": true
+  },
+  {
+    "zh": "干杯",
+    "en": "kanpai",
+    "sfw": true
+  },
+  {
+    "zh": "背靠背坐",
+    "en": "back_to_back_sitting",
+    "sfw": true
+  },
+  {
+    "zh": "依偎",
+    "en": "cuddling",
+    "sfw": true
+  },
+  {
+    "zh": "抱枕",
+    "en": "hugging_pillow",
+    "sfw": true
+  },
+  {
+    "zh": "抱玩具",
+    "en": "hugging_toy",
+    "sfw": true
+  },
+  {
+    "zh": "抱尾",
+    "en": "hugging_tail",
+    "sfw": true
+  },
+  {
+    "zh": "抱翼",
+    "en": "hugging_wings",
+    "sfw": true
+  },
+  {
+    "zh": "骑跨坐",
+    "en": "straddling_sitting",
+    "sfw": true
+  },
+  {
+    "zh": "骑肩",
+    "en": "riding_shoulders",
+    "sfw": true
+  },
+  {
+    "zh": "骑背",
+    "en": "piggyback_ride",
+    "sfw": true
+  },
+  {
+    "zh": "坐膝盖",
+    "en": "sitting_on_knees",
+    "sfw": true
+  },
+  {
+    "zh": "坐腿",
+    "en": "sitting_on_legs",
+    "sfw": true
+  },
+  {
+    "zh": "躺腿",
+    "en": "resting_on_lap",
+    "sfw": true
+  },
+  {
+    "zh": "枕腿",
+    "en": "head_on_lap",
+    "sfw": true
+  },
+  {
+    "zh": "膝枕",
+    "en": "lap_pillow",
+    "sfw": true
+  },
+  {
+    "zh": "公主抱",
+    "en": "bridal_carry",
+    "sfw": true
+  },
+  {
+    "zh": "抱腰",
+    "en": "waist_carry",
+    "sfw": true
+  },
+  {
+    "zh": "托举",
+    "en": "lifted_up",
+    "sfw": true
+  },
+  {
+    "zh": "扛",
+    "en": "carried_on_shoulder",
+    "sfw": true
+  },
+  {
+    "zh": "背人",
+    "en": "carrying_person_on_back",
+    "sfw": true
+  },
+  {
+    "zh": "抱小孩",
+    "en": "holding_child",
+    "sfw": true
+  },
+  {
+    "zh": "牵",
+    "en": "holding_hands_walking",
+    "sfw": true
+  },
+  {
+    "zh": "勾小指",
+    "en": "pinky_link",
+    "sfw": true
+  },
+  {
+    "zh": "挽臂",
+    "en": "linking_arms",
+    "sfw": true
+  },
+  {
+    "zh": "搭肩走",
+    "en": "arm_around_shoulder_walk",
+    "sfw": true
+  }
+]

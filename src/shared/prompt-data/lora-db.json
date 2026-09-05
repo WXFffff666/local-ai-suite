@@ -1,0 +1,1553 @@
+{
+  "loras": {
+    "21f61607-ec31-4851-bbe1-4c1ba401d57a.TA_trained.safetensors": {
+      "fileName": "21f61607-ec31-4851-bbe1-4c1ba401d57a.TA_trained.safetensors",
+      "sha256": "B814DF52E45E519FBF0066F9C423CA085FCA33CDDDDEAAA92192747302C1B266",
+      "triggerWords": [
+        "alisa mikhailovna kujou",
+        "1girl",
+        "long hair",
+        "silver hair",
+        "grey hair",
+        "ahoge",
+        "crossed bangs",
+        "hair between eyes",
+        "blue eyes",
+        "hair ribbon",
+        "red ribbon",
+        "sidelocks",
+        "school uniform",
+        "grey blazer",
+        "open jacket",
+        "white shirt",
+        "collared shirt",
+        "red bowtie",
+        "black vest",
+        "pleated skirt",
+        "black skirt",
+        "white thighhighs",
+        "zettai ryouiki",
+        "loafers"
+      ],
+      "triggerWordsZh": {
+        "alisa mikhailovna kujou": "艾莉莎",
+        "1girl": "单女",
+        "long hair": "长发",
+        "silver hair": "银发",
+        "grey hair": "灰发",
+        "ahoge": "呆毛",
+        "crossed bangs": "交叉刘海",
+        "hair between eyes": "眼间发",
+        "blue eyes": "蓝瞳",
+        "hair ribbon": "发带",
+        "red ribbon": "红发带",
+        "sidelocks": "侧发",
+        "school uniform": "校服",
+        "grey blazer": "灰西装外套",
+        "open jacket": "敞开外套",
+        "white shirt": "白衬衫",
+        "collared shirt": "有领衬衫",
+        "red bowtie": "红蝴蝶结",
+        "black vest": "黑背心",
+        "pleated skirt": "百褶裙",
+        "black skirt": "黑裙",
+        "white thighhighs": "白过膝袜",
+        "zettai ryouiki": "绝对领域",
+        "loafers": "乐福鞋"
+      },
+      "description": "邻座艾莉同学角色艾莉莎（Alisa）角色 LoRA（TA 版，高清细节）。",
+      "category": "character",
+      "characterEnName": "Alisa Mikhailovna Kujou",
+      "details": "文件头信息（safetensors 元数据确认）：base=sdxl_base_v1-0（SDXL 架构，Illustrious 系）、训练集约 200 图、训练触发词 alisa mikhailovna kujou；特征/服装词含 1girl/long hair/silver hair/grey hair/ahoge/crossed bangs/hair between eyes/blue eyes/hair ribbon/red ribbon/sidelocks/school uniform/grey blazer/open jacket/white shirt/collared shirt/red bowtie/black vest/pleated skirt/black skirt/white thighhighs/zettai ryouiki/loafers。\n\n联网确认（Civitai by-name 命中模型页）：Alisa Mikhailovna Kujou - Alya sometimes hides her feelings in russian，模型页 https://civitai.com/models/2523438 ，Illustrious 底模，约 435MB。\n\n触发词：alisa mikhailovna kujou（主触发词）；特征词 long hair（长发）/ silver hair（银发）/ grey hair（灰发）/ ahoge（呆毛）/ crossed bangs（交叉刘海）/ hair between eyes（眼间发）/ blue eyes（蓝瞳）/ hair ribbon（发带）/ red ribbon（红发带）/ sidelocks（侧发）；服装词 school uniform（校服）/ grey blazer（灰西装外套）/ open jacket（敞开外套）/ white shirt（白衬衫）/ collared shirt（有领衬衫）/ red bowtie（红蝴蝶结）/ black vest（黑背心）/ pleated skirt（百褶裙）/ black skirt（黑裙）/ white thighhighs（白过膝袜）/ zettai ryouiki（绝对领域）/ loafers（乐福鞋）。\n\n⚠ 版本区分：与 Alisa Mikhailovna Kujou_v1.0_illustrious-000026.safetensors（21MB 轻量版）同为邻座艾莉同学艾莉莎（Alisa）角色——本文件为 TA 版（435MB，高清细节），文件名不同互不冲突，按需求选择（轻量版适合快速出图，TA 版细节更丰富）。\n\n何时用：生成邻座艾莉同学（Alya Sometimes Hides Her Feelings in Russian）角色艾莉莎（Alisa Mikhailovna Kujou）的图——银发红丝带校服形象，含俄语遮羞邻座的傲娇表情。配什么：Illustrious 系底模（文件头确认 sdxl_base_v1-0）。权重建议 0.8。效果：人物形象向艾莉莎原设靠拢，还原银发、红发带、校服与绝对领域细节。",
+      "baseModel": "Illustrious",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/2523438",
+      "weight": 0.8
+    },
+    "8.BSS_Detail_Enhancer_v3Best.safetensors": {
+      "fileName": "8.BSS_Detail_Enhancer_v3Best.safetensors",
+      "sha256": "55BBAAE26DE484170528FC5EFD292F464E5F98AEAC5867CA8CD3FE3049D277A6",
+      "triggerWords": [],
+      "description": "通用细节增强滑杆（BSS v3，XL/IL/PN），提升锐度与纹理。",
+      "category": "detail",
+      "details": "联网确认（Civitai by-hash 精确命中）：[BSS] - Detail Enhancer Slider (XL/IL/PN)，作者 llikswonskcalb，版本 v3.0，模型页 https://civitai.com/models/1850267 。本地文件头无 __metadata__，识别基于 SHA256 与 Civitai 版本库匹配。\n\n触发词：无（滑杆类模型，靠权重生效，无需触发词）。\n\n何时用：任何觉得画面「糊、平、缺乏质感」的图都可以加，特别适合立绘、半身像、特写；全尺寸全身图同样有效但效果随分辨率分散。配什么：兼容 SDXL / Illustrious / PonyXL 等 XL 系底模，与任意风格/角色 LoRA 叠加均可；正面提示词搭配 'detailed'、'highly detailed' 类细节词更明显。权重建议 1.0-3.0+（滑杆型可拉高），默认 0.8；过高（>1.2）可能出现边缘过锐、噪点感。效果：发丝分缕更清楚、布料纹理更明显、眼睛更清晰锐利，整体锐度与层次感提升；v3.0 针对锐度优化、跨风格一致性更好。",
+      "baseModel": "Illustrious",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/1850267",
+      "weight": 0.8
+    },
+    "addDetailAesthetic_v20_32.safetensors": {
+      "fileName": "addDetailAesthetic_v20_32.safetensors",
+      "sha256": "0444F6834D0F7A2FE32236408828939663B8C6345543C2676BE7321C89B08AC6",
+      "triggerWords": [],
+      "description": "Illustrious 细节美学增强 LoRA（RIN Add Detail Aesthetic），锐化纹理与光影。",
+      "category": "detail",
+      "details": "文件头信息（safetensors 元数据确认）：base=sdxl_base_v1-0（Illustrious 系）、sd_model=noobaiXLNAIXL_vPred10Version.safetensors（NoobAI vPred 系）、训练维度 dim32/alpha32、fp16；无 tag_frequency（纯细节增强器）。\n\n联网确认（Civitai 命中模型页）：RIN Add Detail Aesthetic，版本 v2.0，模型页 https://civitai.com/models/2096899 ，baseModel=Illustrious；作者说明为「用更锐利的纹理与表现力光影丰富角色视觉」。\n\n触发词：无（作者明确 This LoRA is without Trigger Words）。\n\n何时用：Illustrious 系底模出图后觉得「质感不够、纹理不锐、光影平淡」时使用——补充角色视觉的细节密度与光影表现力。配什么：作者推荐参数 Clip skip 2、分辨率 1024×1024 / 832×1152 / 896×1152 等、采样器 Euler / Euler a / DPM++ 2M / DPM++ 2M Karras、Steps 20-40。权重建议 0.3-1.0（作者推荐 0.8，默认 0.8）；输出出现变形或过拟合时降低权重。效果：皮肤与布料纹理更锐利、光影更有表现力，整体完成度提升。",
+      "baseModel": "Illustrious",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/2096899",
+      "weight": 0.8
+    },
+    "AddMicroDetails_Anima_v1.safetensors": {
+      "fileName": "AddMicroDetails_Anima_v1.safetensors",
+      "sha256": "8510AB3B4B2651E66129129C95B1C4D985396CE8A95E82CCE58C17E81F18A9AF",
+      "triggerWords": [
+        "addmicrodetails"
+      ],
+      "description": "Anima 系微细节增强器，补充微小细节（发丝/眼睛/皮肤）。",
+      "category": "detail",
+      "details": "文件头信息（safetensors 元数据确认）：base_model=anima（SD1.5 架构）、训练维度 dim32/alpha16、训练触发标签 addmicrodetails（tag_frequency 出现 50 次）；训练集含 1girl/solo/长发/红瞳 等标签。\n\n联网确认（Civitai by-hash 精确命中）：Add Micro Details - Concept (Illustrious | Pony | NoobAI)，作者 UnholyDesiresStudio，本文件为 v1.0_Anima 版本，模型页 https://civitai.com/models/1377820 ；Civitai trainedWords=addmicrodetails，与本地文件头一致。\n\n何时用：配合 Anima 系底模使用（文件头确认专为该系训练），用于在保持画风不变的前提下补充微小细节——适合已经满意整体构图、但觉得画面「缺了点精致度」的图；对画风改变极小的特点也适合批量套用。配什么：触发词 addmicrodetails；可与角色 LoRA 叠加，权重建议 0.5-0.8；若搭配 Anima 系以外的底模，建议权重降到 0.5 以下并先小图测试。作者推荐 Steps 25-40、CFG 5-7。效果：衣料纹理、光影过渡、边缘锐度等微细节更丰富，画面质感细腻度上升，但不会大幅改变整体画风。",
+      "baseModel": "Anima",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/1377820",
+      "weight": 0.7
+    },
+    "air_bjob.pt": {
+      "fileName": "air_bjob.pt",
+      "sha256": "E8C7BA09ECD75921FF569191524D14DA4B31A16D1803934C3FFD23585DD5376A",
+      "triggerWords": [],
+      "description": "NSFW 手势概念 LoRA（空气口交手势，作者 Akito）。",
+      "category": "action",
+      "details": "联网确认（HuggingFace 存档库 swl-models/sd-concepts-library-lora 哈希精确命中）：文件 air_bjob.pt，LFS oid sha256 与本地完全一致；仓库 README 标注「口∠手势(空气口交)，类型 #LoRA，作者 Akito」。Civitai by-hash 404（原始发布平台不可考，为公开归档库收录）。\n\n格式说明：.pt 为 PyTorch pickle 格式，无法解析 safetensors 文件头，读不到任何元数据（属格式限制而非文件损坏）；文件仅约 19MB，为早期 LoRA 训练产物。\n\n何时用：NSFW 动作/手势类出图（口交手势主题）；属早期 .pt 格式，建议在支持 pickle 格式的 SD 环境中使用。配什么：未知触发词（README 未提供），直接挂载靠权重生效，建议 0.6-0.8 起测。注意：该内容为 NSFW 动作概念，请按需使用。",
+      "baseModel": "SD1.5",
+      "source": "filename",
+      "sourceUrl": "https://huggingface.co/swl-models/sd-concepts-library-lora/blob/main/air_bjob.pt",
+      "weight": 0.5
+    },
+    "Alisa Mikhailovna Kujou_v1.0_illustrious-000026.safetensors": {
+      "fileName": "Alisa Mikhailovna Kujou_v1.0_illustrious-000026.safetensors",
+      "sha256": "98B926988E497A2D5D1A65669F5691CEB9A9B51AEE701872810542BA4749800B",
+      "triggerWords": [
+        "Alisa Mikhailovna Kujou",
+        "silver hair",
+        "grey hair",
+        "blue eyes",
+        "hair ribbon",
+        "red ribbon",
+        "school uniform",
+        "red bowtie",
+        "black skirt",
+        "white thighhighs"
+      ],
+      "triggerWordsZh": {
+        "Alisa Mikhailovna Kujou": "艾莉莎",
+        "silver hair": "银发",
+        "grey hair": "灰发",
+        "blue eyes": "蓝瞳",
+        "hair ribbon": "发带",
+        "red ribbon": "红发带",
+        "school uniform": "校服",
+        "red bowtie": "红蝴蝶结",
+        "black skirt": "黑裙",
+        "white thighhighs": "白过膝袜"
+      },
+      "description": "邻座艾莉同学角色艾莉莎（Alisa）角色 LoRA。",
+      "category": "character",
+      "characterEnName": "Alisa Mikhailovna Kujou",
+      "details": "文件头信息（safetensors 元数据确认）：base=stable-diffusion-xl-v1-base/lora（SDXL 架构，Illustrious 系）、训练触发词 Alisa Mikhailovna Kujou（tag_frequency 高频 112 次）；特征词 silver hair / grey hair / blue eyes / hair ribbon / red ribbon / school uniform / red bowtie / black skirt / white thighhighs。\n\n联网确认（Civitai by-name 命中模型页）：Alya Sometimes Hides Her Feelings in Russian_Alisa Mikhailovna Kujou，模型页 https://civitai.com/models/1369114 ，Illustrious 底模，约 21MB；Civitai 描述建议权重 ≥0.8。\n\n触发词：Alisa Mikhailovna Kujou（主触发词）；特征词 silver hair（银发）/ grey hair（灰发）/ blue eyes（蓝瞳）/ hair ribbon（发带）/ red ribbon（红发带）/ school uniform（校服）/ red bowtie（红蝴蝶结）/ black skirt（黑裙）/ white thighhighs（白过膝袜）。\n\n⚠ 版本区分：TA 版（21f61607-ec31-4851-bbe1-4c1ba401d57a.TA_trained.safetensors，435MB 高清版）为同一角色（艾莉莎）的另一版本——本文件为 v1.0 轻量版（21MB），文件名不同互不冲突，按需求选择（轻量版适合快速出图，TA 版细节更丰富）。\n\n何时用：生成邻座艾莉同学（Alya Sometimes Hides Her Feelings in Russian）角色艾莉莎（Alisa Mikhailovna Kujou）的图——银发红丝带校服形象，含俄语遮羞邻座的傲娇表情。配什么：Illustrious 系底模（文件头确认 SDXL 架构）；角色 LoRA 直接挂载即可。权重建议 0.8（Civitai 描述权重≥0.8）。效果：人物形象向艾莉莎原设靠拢，还原银发、红发带与校服形象。",
+      "baseModel": "Illustrious",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/1369114",
+      "weight": 0.8
+    },
+    "All_inone_Amphoreus_V3.6.safetensors": {
+      "fileName": "All_inone_Amphoreus_V3.6.safetensors",
+      "sha256": "18798573456a8659c76cd42e14c80b4b2c5520fa35bcd7bdd3e5e501ad2be4fc",
+      "triggerWords": [
+        "aglaea (honkai: star rail)",
+        "castorice (honkai: star rail)",
+        "cyrene (honkai: star rail)",
+        "cyrene (ripples of past reverie) (honkai: star rail)",
+        "cipher (honkai: star rail)",
+        "evernight (honkai: star rail)",
+        "hyacine (honkai: star rail)",
+        "cerydra (honkai: star rail)",
+        "hysilens (honkai: star rail)",
+        "tribbie (honkai: star rail)"
+      ],
+      "triggerWordsZh": {
+        "aglaea (honkai: star rail)": "阿格莱雅",
+        "castorice (honkai: star rail)": "遐蝶",
+        "cyrene (honkai: star rail)": "昔涟",
+        "cyrene (ripples of past reverie) (honkai: star rail)": "昔涟",
+        "cipher (honkai: star rail)": "赛飞儿",
+        "evernight (honkai: star rail)": "长夜月",
+        "hyacine (honkai: star rail)": "风堇",
+        "cerydra (honkai: star rail)": "刻律德菈",
+        "hysilens (honkai: star rail)": "海瑟音",
+        "tribbie (honkai: star rail)": "缇宝"
+      },
+      "triggerWordGroups": [
+        {
+          "label": "阿格莱雅",
+          "words": [
+            "aglaea (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "遐蝶",
+          "words": [
+            "castorice (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "昔涟",
+          "words": [
+            "cyrene (honkai: star rail)",
+            "cyrene (ripples of past reverie) (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "赛飞儿",
+          "words": [
+            "cipher (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "长夜月",
+          "words": [
+            "evernight (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "风堇",
+          "words": [
+            "hyacine (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "刻律德菈",
+          "words": [
+            "cerydra (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "海瑟音",
+          "words": [
+            "hysilens (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "缇宝",
+          "words": [
+            "tribbie (honkai: star rail)"
+          ]
+        }
+      ],
+      "description": "崩铁·翁法罗斯（Amphoreus）角色合集 LoRA（女性 9 位，Illustrious），触发词按角色分组。",
+      "category": "character",
+      "characterEnName": "Aglaea (honkai: star rail)",
+      "sourceUrl": "https://civitai.com/models/1866697",
+      "weight": 0.8,
+      "packMembers": [
+        "Aglaea (honkai: star rail)",
+        "Castorice (honkai: star rail)",
+        "Cyrene (honkai: star rail)"
+      ],
+      "packMedia": "Honkai: Star Rail",
+      "details": "文件头信息（safetensors 元数据确认）：训练分辨率 1024×1024、sd_model=illustriousXL_v01（Illustrious 系）、输出名 All_Amphoreus_V3.6；ss_tag_frequency 共 16 个数据集——女性 9（aglaea 阿格莱雅 / castorice 遐蝶 / cyrene 昔涟 / cipher 赛飞儿 / evernight 长夜月 / hyacine 风堇 / cerydra 刻律德菈 / hysilens 海瑟音 / tribbie 缇宝）+ 男性 5（anaxa / dan heng / mydei / phainon，剔除）+ 非角色 1（newst1500）。⚠ 小伊卡（little ica）为风堇的忆灵，性别未确认（Fandom 英文 she 系误译、中文原文中性代词）——按「只加女性」不收录（核对表 docs/lora-civitai16-characters.md 汇总标注「不放/谨慎」）。角色中文名均为官方/社区认可译名（Castorice=遐蝶、Cerydra=刻律德菈、Evernight=长夜月）。\n\n联网确认（Civitai by-hash 精确命中）：All Characters in Amphoreus (V3.6) -Honkai: Star Rail，模型页 https://civitai.com/models/1866697 ，约 50MB（轻量，多角色场景优化；作者注明女性角色还原度优于男性）。\n\n触发词：每角色以其数据集 top 角色 tag 为触发词（形如 aglaea (honkai: star rail)）；昔涟含「涟漪往梦」形态变体词 cyrene (ripples of past reverie) (honkai: star rail)。\n\n何时用：生成翁法罗斯女性角色图（单人或同作品多人场景均适合，作者为多角色场景优化）。配什么：Illustrious 系底模（文件头确认 illustriousXL_v01）。权重建议 0.8（默认 0.8）。效果：人物形象向所选翁法罗斯角色原设靠拢。",
+      "baseModel": "Illustrious",
+      "source": "civitai"
+    },
+    "ASIAN.safetensors": {
+      "fileName": "ASIAN.safetensors",
+      "sha256": "49E7DCF05C83A27F318975FC78F1D34FC9AE65C3E6AAB150EE3C3B438622CA9A",
+      "triggerWords": [
+        "ASIAN"
+      ],
+      "triggerWordsZh": {
+        "ASIAN": "亚洲"
+      },
+      "description": "Illustrious 亚洲少女写实 LoRA（MySlvGirl），真实感少女肖像。",
+      "category": "style",
+      "details": "文件头信息（safetensors 元数据确认）：base=sdxl_base_v1-0（Illustrious 系）、训练维度 dim32/alpha16、训练约 200 图（50 图×4 重复）；tag_frequency 高频：asian 1girl / solo / realistic / brown hair / long hair / lips——真实亚洲女性人像概念。\n\n联网确认（Civitai 命中模型页）：ASIAN，版本 V1，模型页 https://civitai.com/models/2069377 ，baseModel=Illustrious；作者说明为「MySlvGirl 真实亚洲女性 SDXL LoRA（Illustrious 风格）」，训练自精选人像数据，主打柔和光线、自然皮肤纹理与有神的灰眸。\n\n触发词：ASIAN（Civitai trainedWords；作者描述正文另写触发词 myslvgirl，实际以 trainedWords=ASIAN 为准）。\n\n何时用：Illustrious 系底模下生成真实亚洲女性人像——肖像特写、自拍、生活方式摄影、柔和电影/日光构图。配什么：作者推荐底模 SDXL-Illustrious（或 RealVisXL 中性色调）；参数推荐 CFG 6.0-6.5、Steps 35-45、DPM++ 2M Karras、分辨率 1024×1024 或 1024×1536；负向 blurry, bad anatomy, deformed face, extra limbs, lowres, cartoon, 3d render。权重建议 0.6-0.9（最佳约 0.75，默认 0.75）。效果：面部特征自然真实、皮肤纹理细腻、眼神有神，接近真实相机摄影而非 CG 渲染。",
+      "baseModel": "Illustrious",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/2069377",
+      "weight": 0.75
+    },
+    "Asian_style_face.safetensors": {
+      "fileName": "Asian_style_face.safetensors",
+      "sha256": "DD27DC1FBF236B0404A02B984BE16DD816FDCA85D255D7045F5DD5482138471D",
+      "triggerWords": [
+        "as1an",
+        "black eyes",
+        "cute face",
+        "asian face"
+      ],
+      "triggerWordsZh": {
+        "as1an": "亚洲脸",
+        "black eyes": "黑瞳",
+        "cute face": "可爱脸",
+        "asian face": "亚洲脸"
+      },
+      "description": "Illustrious 亚洲萌妹脸型 LoRA（Asian style face），可爱系亚洲脸型。",
+      "category": "style",
+      "details": "文件头信息（safetensors 元数据确认）：base=sdxl_base_v1-0（Illustrious 系）、sd_model=889818.safetensors、训练维度 dim32/alpha16、训练约 87 图×3 重复=261 图；tag_frequency 仅 as1an（87 次）——单一触发词概念。\n\n联网确认（Civitai 命中模型页）：Asian style face，版本 Asian girl style，模型页 https://civitai.com/models/1964565 ，baseModel=Illustrious；Civitai trainedWords=as1an | black eyes, cute face, asian face，与文件头 as1an 一致。\n\n触发词：as1an（主触发词）；辅助特征词 black eyes（黑瞳）/ cute face（可爱脸）/ asian face（亚洲脸）。\n\n何时用：想要「亚洲萌妹脸型」时使用——把角色脸型/五官拉向可爱系亚洲少女风格。配什么：Illustrious 系底模；主触发词 as1an + 辅助特征词按需组合。权重建议 0.6-1.0（默认 0.8）。效果：脸型与五官向亚洲萌妹靠拢，可爱感与辨识度提升。",
+      "baseModel": "Illustrious",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/1964565",
+      "weight": 0.8
+    },
+    "Char-HonkaiSR-Firefly-V4-IL.safetensors": {
+      "fileName": "Char-HonkaiSR-Firefly-V4-IL.safetensors",
+      "sha256": "1408a33c623ffa812b37bfdc6276cc57f7575f41dcf1d5a711d98ba21aa8a9b3",
+      "triggerWords": [
+        "firefly (honkai: star rail)",
+        "plugsuit"
+      ],
+      "triggerWordsZh": {
+        "firefly (honkai: star rail)": "流萤",
+        "plugsuit": "流萤（战斗装甲）"
+      },
+      "triggerWordGroups": [
+        {
+          "label": "流萤",
+          "words": [
+            "firefly (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "流萤（战斗装甲）",
+          "words": [
+            "plugsuit"
+          ]
+        }
+      ],
+      "description": "崩铁 流萤（Firefly）2 形态角色 LoRA（默认/战斗装甲，全女，Illustrious），触发词按形态分组。",
+      "category": "character",
+      "characterEnName": "Firefly (honkai: star rail)",
+      "sourceUrl": "https://civitai.com/models/314105",
+      "weight": 0.8,
+      "details": "文件头信息（safetensors 元数据确认）：sd_model=illustriousXL_v01（Illustrious 系）、输出名 Char-HonkaiSR-Firefly-V4-IL；ss_tag_frequency 5 个数据集（firefly-default / firefly-BS / firefly-3d / firefly-nude / firefly-other）——核心 2 形态：默认形态（firefly-default，触发词 firefly (honkai: star rail)）与战斗装甲形态（firefly-BS，数据集含 plugsuit 装甲词；3d/nude/other 为渲染风格与拓展数据集，非独立形态）。\n\n联网确认（Civitai by-hash 精确命中）：Firefly 流萤 2in1 (IL,Pony,XL,1.5)，版本 v4.0-IL，模型页 https://civitai.com/models/314105 ；作者说明触发词 firefly (honkai: star rail)，默认服装附加词（hairband / gradient skirt / frilled shirt 等）、装甲形态附加词（hairband / hair ribbon / plugsuit），建议权重 0.7~0.9。\n\n触发词：默认形态 firefly (honkai: star rail)；战斗装甲形态 plugsuit（与默认形态触发词组合使用：流萤 + plugsuit 出装甲形态）。\n\n何时用：生成星穹铁道流萤（女）默认形态或战斗装甲（SAM 装甲中文名待核名——保留「战斗装甲」描述性标签不臆造）形态的图。配什么：Illustrious 系底模（文件头确认 illustriousXL_v01）。权重建议 0.8（默认 0.8，作者区间 0.7~0.9）。效果：人物形象向流萤原设靠拢；勾选 plugsuit 出装甲形态。",
+      "baseModel": "Illustrious",
+      "source": "civitai"
+    },
+    "civitTop50AnimeV2-000008.safetensors": {
+      "fileName": "civitTop50AnimeV2-000008.safetensors",
+      "sha256": "B1BD761169A5B2E1DC6A4C328155FAB58FBC78E8FA5072A7DFC31DAD18444313",
+      "triggerWords": [
+        "civittop50anime"
+      ],
+      "description": "CivitAI 年度 Top50 动漫图风格 LoRA（Illustrious），华丽细节画风。",
+      "category": "style",
+      "details": "文件头信息（safetensors 元数据确认）：base=sdxl_base_v1-0、sd_model=illustriousXL_v01.safetensors（Illustrious 系）、训练维度 dim16/alpha16、输出名 CivitTop50Anime；训练集含 nsfw/breasts/cyborg/蓝红主题 等多样内容。\n\n联网确认（Civitai by-hash 精确命中）：CivitAI Top50 anime Lora，作者 jpie，版本 v1.0，模型页 https://civitai.com/models/2332382 ；基于 CivitAI 按「动漫、最多 Reactions、年份」筛选的前 50 张图训练。文件名中 -000008 是 A1111 批量保存序号，非版本号。\n\n触发词：civittop50anime（本地文件头高频词，Civitai trainedWords=CivitTop50Anime，大小写差异不影响匹配）。\n\n何时用：想要「社区热门动漫画风」时使用——效果倾向添加华丽花卉细节、超精细眼睛、数字绘画式线稿，「基本会把图变成花哨的恶魔少女」；二次 pass 时可当细节增强器。配什么：Illustrious 系底模（文件头确认）；训练图均带 1girl, solo 及松散主题词（red theme / blue theme / breasts / nsfw / cyborg），附加这些标签会明显改变输出。权重建议 0.5-0.9 起测。效果：画面向华丽精细的社区热门动漫风格靠拢。",
+      "baseModel": "Illustrious",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/2332382",
+      "weight": 0.7
+    },
+    "Denia-10.safetensors": {
+      "fileName": "Denia-10.safetensors",
+      "sha256": "F53C2BF7FAE7EB46B51A75C70093553E2D4D26447C33A5BC4154FF7D380300DD",
+      "triggerWords": [
+        "Denia",
+        "dnia_hairband",
+        "dnia_layered_dress",
+        "dnia_collar",
+        "dnia_chain_leash",
+        "dnia_bowtie",
+        "dnia_gloves",
+        "dnia_fur_trim_off_shoulder_jacket",
+        "dnia_high_heels",
+        "dnia_hairclip",
+        "dnia_medallion",
+        "dnia_chain",
+        "dnia_stuffed_cat"
+      ],
+      "triggerWordsZh": {
+        "Denia": "达妮娅",
+        "dnia_hairband": "发带",
+        "dnia_layered_dress": "分层连衣裙",
+        "dnia_collar": "项圈",
+        "dnia_chain_leash": "链式牵引绳",
+        "dnia_bowtie": "蝴蝶结",
+        "dnia_gloves": "手套",
+        "dnia_fur_trim_off_shoulder_jacket": "毛领露肩夹克",
+        "dnia_high_heels": "高跟鞋",
+        "dnia_hairclip": "发夹",
+        "dnia_medallion": "奖章",
+        "dnia_chain": "链条",
+        "dnia_stuffed_cat": "玩偶猫"
+      },
+      "description": "鸣潮角色达妮娅（Denia）角色 LoRA。",
+      "category": "character",
+      "characterEnName": "Denia",
+      "details": "文件头信息（safetensors 元数据确认）：base=stable-diffusion-xl-v1-base/lora（SDXL 架构，Illustrious 系）、训练触发词 Denia；本地文件头 tag_frequency 确认 dnia_* 系列服饰/配饰变体词。\n\n联网确认（Civitai by-hash 精确命中）：Denia | Wuthering Waves，模型页 https://civitai.com/models/2488372 ，约 55MB。\n\n触发词：Denia（主触发词）；服饰/配饰变体词 dnia_hairband（发带）/ dnia_layered_dress（多层连衣裙）/ dnia_collar（项圈）/ dnia_chain_leash（链式牵引绳）/ dnia_bowtie（蝴蝶结）/ dnia_gloves（手套）/ dnia_fur_trim_off_shoulder_jacket（毛领露肩夹克）/ dnia_high_heels（高跟鞋）/ dnia_hairclip（发夹）/ dnia_medallion（奖章）/ dnia_chain（链条）/ dnia_stuffed_cat（玩偶猫）。\n\n何时用：生成鸣潮（Wuthering Waves）角色达妮娅（Denia）的图，主触发词 + 完整服装变体词组合还原原设造型。配什么：Illustrious 系底模（文件头确认 SDXL 架构）；角色 LoRA 直接挂载即可。权重建议 0.6-1.0（默认 0.8）。效果：人物形象向达妮娅原设靠拢，含标志性发型、发色与配饰。",
+      "baseModel": "Illustrious",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/2488372",
+      "weight": 0.8
+    },
+    "Detail_enhancer_IL_v2.safetensors": {
+      "fileName": "Detail_enhancer_IL_v2.safetensors",
+      "sha256": "54A203F0A909FDC9B1D74F29FD5A16E33387A824D7D2161322F4DB3EA250455E",
+      "triggerWords": [],
+      "description": "Illustrious 细节增强器 v2，提升画质与角色细节。",
+      "category": "detail",
+      "details": "文件头信息（safetensors 元数据确认）：base=sdxl_base_v1-0、sd_model=889818.safetensors（Illustrious 系）、训练维度 dim32/alpha16；训练集含 jewelry/耳环/项链/long hair/白长发/蓝瞳 等标签——对饰品（耳环、项链）与发丝细节特别有效。\n\n联网确认（Civitai by-hash 精确命中）：Detail enhancer IL | Pony，作者 Screwy，模型页 https://civitai.com/models/1450571 。定位是「质量增强器」而非「风格覆盖」——适合精修输出而不改动核心风格。\n\n触发词：无（作者建议正向提示词中使用质量词激活：masterpiece, best quality, high quality, absurdres, very aesthetic）。\n\n何时用：配合 Illustrious 系底模使用，提升画质——锐化视觉质量、改善纹理、增强面部定义；对动漫、半写实、风格化画风尤其有效；适合立绘、半身像、特写及二次放大精修。配什么：质量词 + 建议搭配 Face Fix / Restore Faces 功能，可显著改善面部结构、对称性和清晰度；与角色 LoRA 兼容叠加。权重建议 0.6-0.9（默认 0.8）；低于 0.5 几乎无感，高于 1.0 有细节噪点风险。效果：皮肤高光与纹理更细腻、服装褶皱更真实、面部更清晰，整体观感向「高完成度立绘」靠拢。",
+      "baseModel": "Illustrious",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/1450571",
+      "weight": 0.8
+    },
+    "Detail_Tweaker_Illustrious_BSY_V3.safetensors": {
+      "fileName": "Detail_Tweaker_Illustrious_BSY_V3.safetensors",
+      "sha256": "C2E47B1ADF8E197ABE60965EA7DD328ED24A6033DEFAF94EE3CCF41125A747CD",
+      "triggerWords": [
+        "detailed",
+        "realistic"
+      ],
+      "description": "Illustrious 细节微调 + 写实感增强（Stable Yogi v3）。",
+      "category": "detail",
+      "details": "文件头信息（safetensors 元数据确认）：base=sdxl_base_v1-0（Illustrious 系）、训练维度 dim32/alpha16；无 tag_frequency（训练不含标签频率表，是纯细节调整器而非内容型 LoRA）。\n\n联网确认（Civitai by-hash 精确命中）：Detail Tweaker Illustrious By Stable Yogi，作者 Stable_Yogi，版本 v3.0（免费版），模型页 https://civitai.com/models/1016670 ；使用 3200 张写实聚焦的细节图片训练，用于「增加细节并增强写实感」。作者有 Pro 付费版（本文件为免费版 V3）。\n\n触发词：detailed, realistic, photorealstic（Civitai trainedWords；版本说明另含 overall detailed，可单用或组合）。\n\n何时用：与纯增强器不同，这是一个「写实感旋钮」——写实/半写实出图的细节与皮肤质感增强；适合校正两种场景：① 画面细节过多杂乱（降权重）② 细节不足/写实感弱（升权重）。配什么：Illustrious 系底模；作者建议搭配其 Negative Embedding 与 Detail sliders 获得最佳效果。权重建议 0.5-1.0：0.5 附近轻微增强、1.0 明显增强。效果：按权重方向精细增减画面细节密度并增强写实感，对整体画风无破坏性影响。",
+      "baseModel": "Illustrious",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/1016670",
+      "weight": 0.7
+    },
+    "elaina_v1.0.safetensors": {
+      "fileName": "elaina_v1.0.safetensors",
+      "sha256": "5866FC44BC9B8F200A68598085A492B9C4FCDF0F5898A42838D18DBF267D35E3",
+      "triggerWords": [
+        "aaelaina",
+        "elainawitch",
+        "elainacasual",
+        "elainasleep",
+        "purple eyes",
+        "white hair",
+        "long hair",
+        "single braid",
+        "pink hair bow",
+        "hair tubes"
+      ],
+      "triggerWordsZh": {
+        "aaelaina": "伊蕾娜",
+        "elainawitch": "魔女装",
+        "elainacasual": "日常装",
+        "elainasleep": "睡裙装",
+        "purple eyes": "紫瞳",
+        "white hair": "白发",
+        "long hair": "长发",
+        "single braid": "单侧辫",
+        "pink hair bow": "粉色发饰",
+        "hair tubes": "发管"
+      },
+      "description": "魔女之旅角色伊蕾娜（Elaina）角色 LoRA。",
+      "category": "character",
+      "characterEnName": "Elaina",
+      "details": "文件头信息（safetensors 元数据确认）：本地文件头 tag_frequency 高频触发词 aaelaina；另有 elainawitch（魔女装）/ elainacasual（日常装）/ elainasleep（睡裙）变体词。\n\n联网确认（Civitai by-hash 精确命中）：Elaina | Wandering Witch，模型页 https://civitai.com/models/1574405 ，Illustrious 底模，约 49MB；作者建议权重 0.90。\n\n触发词：aaelaina（主要触发词）；变体词 elainawitch（魔女装）/ elainacasual（日常装）/ elainasleep（睡裙）；特征词 purple eyes / white hair / long hair / single braid / pink hair bow / hair tubes。\n\n何时用：生成魔女之旅（The Journey of Elaina）主角伊蕾娜的图——魔女装用 elainawitch、日常便服用 elainacasual、睡裙场景用 elainasleep。配什么：Illustrious 系底模。权重建议 0.90（作者建议，默认 0.9）。效果：人物形象向伊蕾娜原设靠拢，含紫瞳、白发长辫与粉色发饰。",
+      "baseModel": "Illustrious",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/1574405",
+      "weight": 0.9
+    },
+    "elaina_v3.safetensors": {
+      "fileName": "elaina_v3.safetensors",
+      "sha256": "99CBC59F7FC0FE91AC104804745D3565EB77342C643D75AE842A5F85108E7FFF",
+      "triggerWords": [
+        "elaina",
+        "cyan_style_costume",
+        "pink_style_costume",
+        "crimson_style_costume",
+        "witch_hat",
+        "brooch",
+        "boots",
+        "broom",
+        "wand"
+      ],
+      "triggerWordsZh": {
+        "elaina": "伊蕾娜",
+        "cyan_style_costume": "青色服装",
+        "pink_style_costume": "粉色服装",
+        "crimson_style_costume": "深红服装",
+        "witch_hat": "魔女帽",
+        "brooch": "胸针",
+        "boots": "靴子",
+        "broom": "扫帚",
+        "wand": "魔杖"
+      },
+      "description": "魔女之旅角色伊蕾娜 V3（Elaina，SD 1.5）角色 LoRA。",
+      "category": "character",
+      "details": "文件头信息（safetensors 元数据确认）：ss_sd_model_name=Counterfeit-V2.5.safetensors（SD 1.5 架构）、ss_tag_frequency 确认 elaina 与 *_style_costume 系列变体词（cyan_style_costume / pink_style_costume / crimson_style_costume 等）。\n\n联网确认（Civitai by-hash 精确命中）：Majo no Tabitabi-Elaina V3.0，模型页 https://civitai.com/models/15424 ，SD 1.5 底模，约 144MB。\n\n触发词：elaina（主触发词）；服装变体 *_style_costume 系列（cyan_style_costume 青色装 / pink_style_costume 粉色装 / crimson_style_costume 深红装 等）；特征词 witch_hat（魔女帽）/ brooch（胸针）/ boots（靴子）/ broom（扫帚）/ wand（魔杖）。\n\n⚠ 版本区分：这是与 elaina_v1.0（Illustrious 版、作者建议权重 0.90）完全不同的另一版本——不同作者、SD 1.5 底模（Counterfeit-V2.5）训练，请勿混用；SD 1.5 系环境请使用本文件。何时用：SD 1.5 底模下生成魔女之旅伊蕾娜的图。配什么：SD 1.5 系底模（文件头确认 Counterfeit-V2.5）。权重建议 0.6-0.9（默认 0.8）。效果：人物形象向伊蕾娜原设靠拢，含白紫配色魔女装与扫帚/魔杖道具。",
+      "baseModel": "SD1.5",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/15424",
+      "weight": 0.8
+    },
+    "hatsune_miku_illust_scarxzys.safetensors": {
+      "fileName": "hatsune_miku_illust_scarxzys.safetensors",
+      "sha256": "EBA8F0678DD4596AB7517C2B013BCAB60013A9639E6C34E1DD07665398F7F770",
+      "triggerWords": [
+        "hatsune miku",
+        "blue eyes",
+        "aqua hair",
+        "absurdly long hair",
+        "twintails",
+        "hair ornament",
+        "arm tattoo",
+        "detached sleeves",
+        "grey shirt",
+        "aqua necktie",
+        "sleeveless shirt",
+        "black skirt",
+        "miniskirt",
+        "pleated skirt",
+        "thigh boots"
+      ],
+      "triggerWordsZh": {
+        "hatsune miku": "初音未来",
+        "blue eyes": "蓝瞳",
+        "aqua hair": "水蓝发",
+        "absurdly long hair": "极长发",
+        "twintails": "双马尾",
+        "hair ornament": "发饰",
+        "arm tattoo": "手臂纹身",
+        "detached sleeves": "分离袖",
+        "grey shirt": "灰色衬衫",
+        "aqua necktie": "水蓝领带",
+        "sleeveless shirt": "无袖衬衫",
+        "black skirt": "黑裙",
+        "miniskirt": "迷你裙",
+        "pleated skirt": "百褶裙",
+        "thigh boots": "过膝靴"
+      },
+      "description": "初音未来（Hatsune Miku，Vocaloid）角色 LoRA。",
+      "category": "character",
+      "characterEnName": "Miku Hatsune",
+      "details": "文件头信息（safetensors 元数据确认）：base=sdxl_base_v1-0（Illustrious 系）、训练触发词 hatsune miku；训练集含蓝色长发双马尾与服装特征标签。\n\n联网确认（Civitai by-hash 精确命中）：[ILLUST] Hatsune Miku | Vocaloid，模型页 https://civitai.com/models/2009651 ，Illustrious 底模，约 244MB；作者建议权重 0.7~1.0。\n\n触发词：hatsune miku（主触发词）；特征词 blue eyes（蓝瞳）/ aqua hair（水蓝发）/ absurdly long hair（超长发）/ twintails（双马尾）/ hair ornament（发饰）/ arm tattoo（手臂纹身）；服装词 detached sleeves（分离袖）/ grey shirt（灰衬衫）/ aqua necktie（水蓝领带）/ sleeveless shirt（无袖衬衫）/ black skirt（黑裙）/ miniskirt（迷你裙）/ pleated skirt（百褶裙）/ thigh boots（过膝靴）。\n\n何时用：生成初音未来（Vocaloid）的图，主触发词 + 特征词组合还原经典形象。配什么：Illustrious 系底模（文件头确认 sdxl_base_v1-0）。权重建议 0.7~1.0（作者建议，默认 0.8）。效果：人物形象向初音未来原设靠拢，含标志性水蓝双马尾与经典服装。",
+      "baseModel": "Illustrious",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/2009651",
+      "weight": 0.8
+    },
+    "HFZQ.safetensors": {
+      "fileName": "HFZQ.safetensors",
+      "sha256": "1B98093780784818BAFA4CB97A6AC1FD224C10F82FDB318BF7233AF5F5F11F82",
+      "triggerWords": [],
+      "description": "用途待确认（拼音缩写，联网未找到）。",
+      "details": "⚠ 诚实标注：本地文件头无元数据（safetensors 头部缺失 __metadata__），联网调研未找到——Civitai by-hash 404、Civitai 模型搜索无结果、websearch / GitHub 代码搜索无任何 SD LoRA 相关命中。\n\nHFZQ 为拼音首字母缩写，语义不明确（推测方向：可能是「汉服/旗袍」类服饰词、角色名缩写、或「黑白制服」等主题的拼音缩写，也可能来自中文平台如哩布哩布 liblib / 吐司 tusi，或为已下架模型）。\n\n何时用：尚未确认，不建议直接用于正式出图；如需试探，以低权重 0.5 叠加并观察画面出现的倾向（服饰/画风/角色变化）来判断主题。配什么：未知，triggerWords 留空，无底模信息。建议从下载来源（启动器下载记录 / Civitai 收藏 / 预览图）查证原名后，在应用内「LoRA 补录」补上说明再投入使用。",
+      "baseModel": "Unknown",
+      "source": "filename",
+      "sourceUrl": "",
+      "weight": 0.5
+    },
+    "ILDetailerV2.safetensors": {
+      "fileName": "ILDetailerV2.safetensors",
+      "sha256": "E6867DB0628CD2976C4C364213FA6DA3C20152DB0B816CE516082E6C0712002A",
+      "triggerWords": [],
+      "description": "Illustrious 细节增强器 v2（Detailer），光影/细节/反射强化。",
+      "category": "detail",
+      "details": "文件头信息（safetensors 元数据确认）：__metadata__ 几乎为空（仅 ss_datasets=[]，无 base_model/dim 信息）——纯细节增强器，无法从文件头确认训练架构。\n\n联网确认（Civitai 命中模型页）：illustrious Detailer，版本 v2.0，模型页 https://civitai.com/models/1586731 ，baseModel=Illustrious；作者说明 v2.0 对光影、精细细节与反射处理大幅改善，但更强力——1.5-2.0 强度可能产生伪影甚至毁图。\n\n触发词：无（Civitai trainedWords 为空）。\n\n何时用：Illustrious 系底模出图后增强光影/细节/反射时使用——发丝、皮肤纹理、反光表现。配什么：Illustrious 系底模；与角色/风格 LoRA 叠加均可。权重建议 0.6-0.8（作者推荐，默认 0.7）；⚠ 勿用 1.5-2.0（伪影/毁图风险）；v1.0 版作者推荐权重 1。效果：光影过渡、发丝/皮肤细节与反射表现提升，二次精修利器。",
+      "baseModel": "Illustrious",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/1586731",
+      "weight": 0.7
+    },
+    "KraiAnimePony.safetensors": {
+      "fileName": "KraiAnimePony.safetensors",
+      "sha256": "79222557E8A894834F431CC0061E6899C4A4066528ED6B0E5BB86FB84C3A4FA6",
+      "triggerWords": [],
+      "description": "OsorubeshiAI 出品 Pony 系动漫风格 LoRA。",
+      "category": "style",
+      "details": "联网确认（Civitai by-hash 精确命中）：Osorubeshi Pony style LORAs，作者 OsorubeshiAI，版本 KraiAnimePony（版本名与文件名一致），模型页 https://civitai.com/models/350716 。该模型页是一个大型系列合集（同系列还有 DcAnimePony / NeisAnimePony / GemuHentaiPony / ShonkaPony 等 60+ 版本），KraiAnimePony 为其一；本地文件头含 Pony 线索，与 Civitai 标注 baseModel=Pony 一致。\n\n触发词：无（该系列多数版本无 trainedWords，直接挂载即可）。\n\n何时用：Pony 系底模下的动漫风出图，作为风格挂件——把 Pony 底模输出拉向日系动漫风格。配什么：Pony 底模；作者通用说明：几乎所有模型常需配合 ADetailer 或 Hires fix 使用，系列内 LoRA 可按低比例互相混合，无需特殊参数。权重建议 0.6-0.9 起测。效果：动漫风格强度提升，具体倾向（赛璐璐/厚涂/某画师风格）以实测为准。",
+      "baseModel": "Pony",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/350716",
+      "weight": 0.7
+    },
+    "modern_anime_screencap_v1_0.safetensors": {
+      "fileName": "modern_anime_screencap_v1_0.safetensors",
+      "sha256": "0FEE00D101F9C1EAC060C3FD881E1F3A292E23985F7F8810F63A35EF7B34FB99",
+      "triggerWords": [
+        "anime screencap"
+      ],
+      "description": "现代动漫截图风（2018-2024 番剧截图训练），Pony XL。",
+      "category": "style",
+      "details": "文件头信息（safetensors 元数据确认）：base=sdxl_base_v1-0、sd_model=ponyDiffusionV6XL_v6StartWithThisOne.safetensors（Pony 系）、输出名 Anime_Screencap、训练维度 dim32/alpha32；训练集含 军服/制服/蓝外套/白衬衫 等标签——偏现代制服系动画截图风格。\n\n联网确认（Civitai by-hash 精确命中）：Modern Anime Screencap (Style) - Pony XL，作者 Cosmos，版本 v1.0，模型页 https://civitai.com/models/396772 ；使用 200+ 张现代番剧（2018-2024）高清截图训练，兼容 Pony Diffusion XL v6 及其衍生（如 AutismMix_pony），支持 SFW 与 NSFW。\n\n触发词：anime screencap（Civitai trainedWords 与本地文件头输出一致）。\n\n何时用：想要「现代番剧一帧」式平涂截图质感时使用——画面干净、光影自然、线条规整、构图像剧集定格帧；适合动画截图仿制、日常场景插画、想要「克制不夸张」画风的图。配什么：可搭配 'screenshot'、'animation cel' 类提示词强化截图感，也可加场景/日常类标签模拟番剧场景。推荐参数：CFG 6-7、采样器 Euler a、Steps > 30、权重 0.8-1.4（PonyXL 衍生底模需 >1.2）；建议配合 ADetailer 修脸。效果：画面呈现现代动画正片般的干净光影与规整线条，色彩自然不浓艳。",
+      "baseModel": "Pony",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/396772",
+      "weight": 0.8
+    },
+    "PVC-L.safetensors": {
+      "fileName": "PVC-L.safetensors",
+      "sha256": "861D18D30B0CB4A13FB70DE16AF2AC5282B31B55B2EFE678769F764D5B99A6E0",
+      "triggerWords": [],
+      "description": "PVC 手办质感风格 LoRA（名称匹配，哈希未确认）。",
+      "category": "style",
+      "details": "⚠ 诚实标注：本地文件头无元数据；联网 by-hash 反查 404——Civitai 同名模型 PVC-L（作者 StarChen17，https://civitai.com/models/34331 ）现有文件哈希为 C6F88B84...，与本地哈希 861D18D3... 不同。按文件名精确匹配，但无法确认字节级同源（可能是搬运/重打包版，或来自其他平台）。\n\n作者描述（原文大意）：「有点遗憾，上传模型时不小心把原账号注销了，现在模型全部重新上传」。\n\n何时用：想要「PVC 手办/景品质感」的角色图——塑料手办光泽质感、玩具摆件风（如手办风立绘、展示姿势）。配什么：如确为手办风格，可搭配 'figure'、'PVC figure'、'toy' 类提示词；Civitai 标注 baseModel=SD1.5，本地无文件头信息待实测确认。权重从 0.5-0.6 起测，观察是否出现手办光泽质感。效果：预期为角色呈现涂装光泽与塑料质感；因哈希未匹配，建议实测确认后补录准确说明。",
+      "baseModel": "SD1.5",
+      "source": "filename",
+      "sourceUrl": "https://civitai.com/models/34331",
+      "weight": 0.6
+    },
+    "r3-genshin-000005.safetensors": {
+      "fileName": "r3-genshin-000005.safetensors",
+      "sha256": "9bf7c0e6ac382b3f38aedef04e56eb0bc5d64ca13d440a24713e1dedaa9b45a0",
+      "triggerWords": [
+        "eula (genshin impact)",
+        "keqing (opulent splendor) (genshin impact)",
+        "lisa (genshin impact)",
+        "nilou (genshin impact)",
+        "mona (genshin impact)",
+        "yae miko",
+        "hu tao (genshin impact)",
+        "ganyu (genshin impact)",
+        "shenhe (genshin impact)",
+        "yanfei (genshin impact)",
+        "barbara (genshin impact)",
+        "dori (genshin impact)"
+      ],
+      "triggerWordsZh": {
+        "eula (genshin impact)": "优菈",
+        "keqing (opulent splendor) (genshin impact)": "刻晴",
+        "lisa (genshin impact)": "丽莎",
+        "nilou (genshin impact)": "妮露",
+        "mona (genshin impact)": "莫娜",
+        "yae miko": "八重神子",
+        "hu tao (genshin impact)": "胡桃",
+        "ganyu (genshin impact)": "甘雨",
+        "shenhe (genshin impact)": "申鹤",
+        "yanfei (genshin impact)": "烟绯",
+        "barbara (genshin impact)": "芭芭拉",
+        "dori (genshin impact)": "多莉"
+      },
+      "triggerWordGroups": [
+        {
+          "label": "优菈",
+          "words": [
+            "eula (genshin impact)"
+          ]
+        },
+        {
+          "label": "刻晴",
+          "words": [
+            "keqing (opulent splendor) (genshin impact)"
+          ]
+        },
+        {
+          "label": "丽莎",
+          "words": [
+            "lisa (genshin impact)"
+          ]
+        },
+        {
+          "label": "妮露",
+          "words": [
+            "nilou (genshin impact)"
+          ]
+        },
+        {
+          "label": "莫娜",
+          "words": [
+            "mona (genshin impact)"
+          ]
+        },
+        {
+          "label": "八重神子",
+          "words": [
+            "yae miko"
+          ]
+        },
+        {
+          "label": "胡桃",
+          "words": [
+            "hu tao (genshin impact)"
+          ]
+        },
+        {
+          "label": "甘雨",
+          "words": [
+            "ganyu (genshin impact)"
+          ]
+        },
+        {
+          "label": "申鹤",
+          "words": [
+            "shenhe (genshin impact)"
+          ]
+        },
+        {
+          "label": "烟绯",
+          "words": [
+            "yanfei (genshin impact)"
+          ]
+        },
+        {
+          "label": "芭芭拉",
+          "words": [
+            "barbara (genshin impact)"
+          ]
+        },
+        {
+          "label": "多莉",
+          "words": [
+            "dori (genshin impact)"
+          ]
+        }
+      ],
+      "description": "原神（Genshin Impact）角色合集 LoRA（写实 12 位全女，Illustrious），触发词按角色分组。",
+      "category": "character",
+      "characterEnName": "Eula (genshin impact)",
+      "sourceUrl": "https://civitai.com/models/1328376",
+      "weight": 0.8,
+      "details": "文件头信息（safetensors 元数据确认）：训练分辨率 640×640、sd_model=r3.safetensors、输出名 r3-genshin；ss_tag_frequency 为单数据集（5_1girl）多角色混合训练（top 标签均为通用特征词，角色触发词以 Civitai trainedWords 为准）。\n\n联网确认（Civitai by-hash 精确命中）：Genshin realistic characters are all-in-one.原神写实角色大合一，模型页 https://civitai.com/models/1328376 ，基于 Cyberill（CyberIllustrious | CyberRealistic v3.0 | Illustrious Checkpoint）训练。\n\n触发词：12 位女性角色各带独立触发词——eula (genshin impact)（优菈）/ keqing (opulent splendor) (genshin impact)（刻晴·华彩的荣光）/ lisa (genshin impact)（丽莎）/ nilou (genshin impact)（妮露）/ mona (genshin impact)（莫娜）/ yae miko（八重神子）/ hu tao (genshin impact)（胡桃）/ ganyu (genshin impact)（甘雨）/ shenhe (genshin impact)（申鹤）/ yanfei (genshin impact)（烟绯）/ barbara (genshin impact)（芭芭拉）/ dori (genshin impact)（多莉）。角色中文名均为米哈游官方译名。\n\n何时用：生成原神女性角色写实向图片。配什么：Illustrious 系底模（Civitai 标注基于 CyberIllustrious/CyberRealistic v3.0）。权重建议 0.8（默认 0.8）。效果：人物形象向所选原神角色靠拢；写实风格向，刻晴触发词对应「华彩的荣光」服装形态。",
+      "baseModel": "Illustrious",
+      "source": "civitai"
+    },
+    "realistic_style_lora.safetensors": {
+      "fileName": "realistic_style_lora.safetensors",
+      "sha256": "6591BB2E27BD9F8C9543A987E2CB6F4CB3DC714F502DD2DC7867BD23AF1B4FB6",
+      "triggerWords": [],
+      "description": "ILXL/Noob 半写实风格 LoRA（semi realistic style），无触发词。",
+      "category": "style",
+      "details": "文件头信息（safetensors 元数据确认）：base=sdxl_base_v1-0（Illustrious 系）、sd_model=889818.safetensors、训练维度 dim8/alpha6、训练约 1010 图、clip_skip 2；⚠ 训练集 NSFW 标签密集（breasts/nipples/sex/nude/penis 等高频，属成人内容训练产物）。\n\n联网确认（Civitai 命中模型页）：ILXL semi realistic style lora，版本 v1.0，模型页 https://civitai.com/models/1624536 ，baseModel=Illustrious；作者说明为 ILXL 与 Noob 系兼容的半写实风格 LoRA，专注角色表情的半写实表现；无特定触发词（作者在 ComfyUI 用 <lora:~> 语法挂载）；示例图使用 LunarCherryMix v23 底模。\n\n触发词：无（Civitai trainedWords 为空；作者说明无触发词，直接挂载生效）。\n\n何时用：ILXL/Noob 系底模下半写实风格出图——保留动漫角色的表情表现力、同时皮肤与光影接近写实。配什么：正向建议加 realistic；加 shiny skin / pale skin 可增强整体吸引力。权重建议 0.7-0.9（作者建议，默认 0.8）。效果：画面呈半写实质感，动漫结构与真实肤感兼顾，角色表情更有感染力。",
+      "baseModel": "Illustrious",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/1624536",
+      "weight": 0.8
+    },
+    "Robertlu1021_elysia_herrscher_of_human_ego_v2.1.safetensors": {
+      "fileName": "Robertlu1021_elysia_herrscher_of_human_ego_v2.1.safetensors",
+      "sha256": "53778c3da09d321c7929ea526e3123a73d3efc81a4324568f4389e412083db4d",
+      "triggerWords": [
+        "elysia_(herrscher_of_human_ego)",
+        "elysia_(peachy_spring)",
+        "elysia_(bikini)",
+        "elysia_(sports)",
+        "elysia_(pure_white)",
+        "elysia_(hi_elf_of_love)"
+      ],
+      "triggerWordsZh": {
+        "elysia_(herrscher_of_human_ego)": "人之律者",
+        "elysia_(peachy_spring)": "爱莉希雅",
+        "elysia_(bikini)": "爱莉希雅",
+        "elysia_(sports)": "爱莉希雅",
+        "elysia_(pure_white)": "爱莉希雅",
+        "elysia_(hi_elf_of_love)": "爱莉希雅"
+      },
+      "triggerWordGroups": [
+        {
+          "label": "人之律者",
+          "words": [
+            "elysia_(herrscher_of_human_ego)"
+          ]
+        },
+        {
+          "label": "爱莉希雅",
+          "words": [
+            "elysia_(peachy_spring)"
+          ]
+        },
+        {
+          "label": "爱莉希雅",
+          "words": [
+            "elysia_(bikini)"
+          ]
+        },
+        {
+          "label": "爱莉希雅",
+          "words": [
+            "elysia_(sports)"
+          ]
+        },
+        {
+          "label": "爱莉希雅",
+          "words": [
+            "elysia_(pure_white)"
+          ]
+        },
+        {
+          "label": "爱莉希雅",
+          "words": [
+            "elysia_(hi_elf_of_love)"
+          ]
+        }
+      ],
+      "description": "崩坏3 爱莉希雅（Elysia）6 套装扮角色 LoRA（全女，Illustrious），触发词按装扮分组。",
+      "category": "character",
+      "characterEnName": "Elysia (honkai impact)",
+      "sourceUrl": "https://civitai.com/models/1944085",
+      "weight": 0.8,
+      "details": "文件头信息（safetensors 元数据确认）：sd_model=889818.safetensors（Illustrious 系）、输出名 Robertlu1021_elysia_herrscher_of_human_ego_v2.1；ss_tag_frequency 为统一风格集（top 标签均为爱莉希雅特征：purple eyes / pink hair / diamond-shaped pupils / pointy ears）。\n\n联网确认（Civitai by-hash 精确命中）：Elysia｜爱莉希雅｜エーリシア-人之律者 [6 Outfits]（崩坏3rd / Honkai Impact 3 / 崩壊3rd），版本 v2.1 for IL，模型页 https://civitai.com/models/1944085 。\n\n触发词：6 套装扮各一个触发词——elysia_(herrscher_of_human_ego)（人之律者，官方形态名）/ elysia_(peachy_spring)（桃枝春色）/ elysia_(bikini)（泳装）/ elysia_(sports)（运动装）/ elysia_(pure_white)（纯白）/ elysia_(hi_elf_of_love)（爱之精灵）。⚠ 除「人之律者」为官方确认形态名外，其余 5 装中文名均为社区称呼待核名——按「宁缺毋滥」保留英文 tag + 中文角色名「爱莉希雅」，不臆造中文服装名（核对表 docs/lora-civitai16-characters.md）。\n\n何时用：生成崩坏3 爱莉希雅（逐火之蛾英桀，女性）任一装扮的图。配什么：Illustrious 系底模（版本标注 for IL）。权重建议 0.8（默认 0.8）。效果：人物形象向爱莉希雅原设靠拢（粉发钻石瞳精灵耳），按所选装扮形态出装。",
+      "baseModel": "Illustrious",
+      "source": "civitai"
+    },
+    "roxy_mskt_v3-04.safetensors": {
+      "fileName": "roxy_mskt_v3-04.safetensors",
+      "sha256": "2EED51B213E8BE1777866BE880B0E4435E8E72D378D3516F38B7D0B5E24AF1F5",
+      "triggerWords": [
+        "roxy migurdia",
+        "roxycozy",
+        "roxymagea"
+      ],
+      "triggerWordsZh": {
+        "roxy migurdia": "洛琪希",
+        "roxycozy": "洛琪希·日常装",
+        "roxymagea": "洛琪希·魔法师装"
+      },
+      "description": "无职转生角色洛琪希（Roxy Migurdia）角色 LoRA。",
+      "category": "character",
+      "details": "文件头信息（safetensors 元数据确认）：SDXL 架构（Illustrious 系）；本地文件头变体 roxycozy（RoxyCozy 日常装）/ roxymagea（RoxyMageA 魔法师装）。\n\n联网确认（Civitai by-hash 精确命中）：Roxy Migurdia - Mushoku Tensei，模型页 https://civitai.com/models/232861 ，Illustrious 底模，约 109MB。\n\n触发词：roxy migurdia（主触发词）；变体词 roxycozy（日常装 RoxyCozy）/ roxymagea（魔法师装 RoxyMageA）。\n\n何时用：生成无职转生（Mushoku Tensei）角色洛琪希（Roxy Migurdia）的图。配什么：Illustrious 系底模；角色 LoRA 直接挂载即可。权重建议 0.6-1.0（默认 0.8）。效果：人物形象向洛琪希原设靠拢，含标志性蓝发与魔法师造型。",
+      "baseModel": "Illustrious",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/232861",
+      "weight": 0.8
+    },
+    "Star_Rail_251013.safetensors": {
+      "fileName": "Star_Rail_251013.safetensors",
+      "sha256": "f15b05b4134ac376d8cee702e4bc60f0ecca11678cffa8d3b2f0de9438115717",
+      "triggerWords": [
+        "character: acheron (honkai: star rail)",
+        "character: aglaea (honkai: star rail)",
+        "character: asta (honkai: star rail)",
+        "character: bailu (honkai: star rail)",
+        "character: black swan (honkai: star rail)",
+        "character: castorice (honkai: star rail)",
+        "character: cerydra (honkai: star rail)",
+        "character: cipher (honkai: star rail)",
+        "character: clara (honkai: star rail)",
+        "character: feixiao (honkai: star rail)",
+        "character: firefly (honkai: star rail)",
+        "firefly (spring missive) (honkai: star rail)",
+        "character: fu xuan (honkai: star rail)",
+        "fugue (honkai: star rail)",
+        "character: guinaifen (honkai: star rail)",
+        "character: hanya (honkai: star rail)",
+        "character: herta (honkai: star rail)",
+        "herta (puppet) (honkai: star rail)",
+        "character: himeko (honkai: star rail)",
+        "character: huohuo (honkai: star rail)",
+        "character: hyacine (honkai: star rail)",
+        "character: hysilens (honkai: star rail)",
+        "character: jade (honkai: star rail)",
+        "character: jingliu (honkai: star rail)",
+        "character: kafka (honkai: star rail)",
+        "character: lingsha (honkai: star rail)",
+        "character: march 7th (honkai: star rail)",
+        "march 7th (preservation) (honkai: star rail)",
+        "character: natasha (honkai: star rail)",
+        "character: pela (honkai: star rail)",
+        "character: qingque (honkai: star rail)",
+        "character: rappa (honkai: star rail)",
+        "character: robin (honkai: star rail)",
+        "character: ruan mei (honkai: star rail)",
+        "character: seele (honkai: star rail)",
+        "character: silver wolf (honkai: star rail)",
+        "character: sparkle (honkai: star rail)",
+        "character: stelle (honkai: star rail)",
+        "character: trailblazer (honkai: star rail)",
+        "character: sushang (honkai: star rail)",
+        "character: the herta (honkai: star rail)",
+        "character: tingyun (honkai: star rail)",
+        "character: topaz (honkai: star rail)",
+        "character: tribbie (honkai: star rail)",
+        "character: xueyi (honkai: star rail)",
+        "character: yukong (honkai: star rail)",
+        "character: yunli (honkai: star rail)",
+        "character: bronya rand",
+        "character: serval landau",
+        "character: hook (honkai: star rail)",
+        "character: lynx landau",
+        "character: evernight (honkai: star rail)",
+        "character: cyrene (honkai: star rail)",
+        "character: cyrene (ripples of past reverie) (honkai: star rail)",
+        "character: artoria pendragon (fate)",
+        "character: saber (fate)",
+        "character: saber (honkai: star rail) (fate)"
+      ],
+      "triggerWordsZh": {
+        "character: acheron (honkai: star rail)": "黄泉",
+        "character: aglaea (honkai: star rail)": "阿格莱雅",
+        "character: asta (honkai: star rail)": "艾丝妲",
+        "character: bailu (honkai: star rail)": "白露",
+        "character: black swan (honkai: star rail)": "黑天鹅",
+        "character: castorice (honkai: star rail)": "遐蝶",
+        "character: cerydra (honkai: star rail)": "刻律德菈",
+        "character: cipher (honkai: star rail)": "赛飞儿",
+        "character: clara (honkai: star rail)": "克拉拉",
+        "character: feixiao (honkai: star rail)": "飞霄",
+        "character: firefly (honkai: star rail)": "流萤",
+        "firefly (spring missive) (honkai: star rail)": "流萤",
+        "character: fu xuan (honkai: star rail)": "符玄",
+        "fugue (honkai: star rail)": "忘归人",
+        "character: guinaifen (honkai: star rail)": "桂乃芬",
+        "character: hanya (honkai: star rail)": "寒鸦",
+        "character: herta (honkai: star rail)": "黑塔",
+        "herta (puppet) (honkai: star rail)": "黑塔",
+        "character: himeko (honkai: star rail)": "姬子",
+        "character: huohuo (honkai: star rail)": "藿藿",
+        "character: hyacine (honkai: star rail)": "风堇",
+        "character: hysilens (honkai: star rail)": "海瑟音",
+        "character: jade (honkai: star rail)": "翡翠",
+        "character: jingliu (honkai: star rail)": "镜流",
+        "character: kafka (honkai: star rail)": "卡芙卡",
+        "character: lingsha (honkai: star rail)": "灵砂",
+        "character: march 7th (honkai: star rail)": "三月七",
+        "march 7th (preservation) (honkai: star rail)": "三月七",
+        "character: natasha (honkai: star rail)": "娜塔莎",
+        "character: pela (honkai: star rail)": "佩拉",
+        "character: qingque (honkai: star rail)": "青雀",
+        "character: rappa (honkai: star rail)": "乱破",
+        "character: robin (honkai: star rail)": "知更鸟",
+        "character: ruan mei (honkai: star rail)": "阮·梅",
+        "character: seele (honkai: star rail)": "希儿",
+        "character: silver wolf (honkai: star rail)": "银狼",
+        "character: sparkle (honkai: star rail)": "花火",
+        "character: stelle (honkai: star rail)": "星",
+        "character: trailblazer (honkai: star rail)": "星",
+        "character: sushang (honkai: star rail)": "素裳",
+        "character: the herta (honkai: star rail)": "大黑塔",
+        "character: tingyun (honkai: star rail)": "停云",
+        "character: topaz (honkai: star rail)": "托帕",
+        "character: tribbie (honkai: star rail)": "缇宝",
+        "character: xueyi (honkai: star rail)": "雪衣",
+        "character: yukong (honkai: star rail)": "驭空",
+        "character: yunli (honkai: star rail)": "云璃",
+        "character: bronya rand": "布洛妮娅",
+        "character: serval landau": "希露瓦",
+        "character: hook (honkai: star rail)": "虎克",
+        "character: lynx landau": "玲可",
+        "character: evernight (honkai: star rail)": "长夜月",
+        "character: cyrene (honkai: star rail)": "昔涟",
+        "character: cyrene (ripples of past reverie) (honkai: star rail)": "昔涟",
+        "character: artoria pendragon (fate)": "阿尔托莉雅",
+        "character: saber (fate)": "阿尔托莉雅",
+        "character: saber (honkai: star rail) (fate)": "阿尔托莉雅"
+      },
+      "triggerWordGroups": [
+        {
+          "label": "黄泉",
+          "words": [
+            "character: acheron (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "阿格莱雅",
+          "words": [
+            "character: aglaea (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "艾丝妲",
+          "words": [
+            "character: asta (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "白露",
+          "words": [
+            "character: bailu (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "黑天鹅",
+          "words": [
+            "character: black swan (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "遐蝶",
+          "words": [
+            "character: castorice (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "刻律德菈",
+          "words": [
+            "character: cerydra (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "赛飞儿",
+          "words": [
+            "character: cipher (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "克拉拉",
+          "words": [
+            "character: clara (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "飞霄",
+          "words": [
+            "character: feixiao (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "流萤",
+          "words": [
+            "character: firefly (honkai: star rail)",
+            "firefly (spring missive) (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "符玄",
+          "words": [
+            "character: fu xuan (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "忘归人",
+          "words": [
+            "fugue (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "桂乃芬",
+          "words": [
+            "character: guinaifen (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "寒鸦",
+          "words": [
+            "character: hanya (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "黑塔",
+          "words": [
+            "character: herta (honkai: star rail)",
+            "herta (puppet) (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "姬子",
+          "words": [
+            "character: himeko (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "藿藿",
+          "words": [
+            "character: huohuo (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "风堇",
+          "words": [
+            "character: hyacine (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "海瑟音",
+          "words": [
+            "character: hysilens (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "翡翠",
+          "words": [
+            "character: jade (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "镜流",
+          "words": [
+            "character: jingliu (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "卡芙卡",
+          "words": [
+            "character: kafka (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "灵砂",
+          "words": [
+            "character: lingsha (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "三月七",
+          "words": [
+            "character: march 7th (honkai: star rail)",
+            "march 7th (preservation) (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "娜塔莎",
+          "words": [
+            "character: natasha (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "佩拉",
+          "words": [
+            "character: pela (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "青雀",
+          "words": [
+            "character: qingque (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "乱破",
+          "words": [
+            "character: rappa (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "知更鸟",
+          "words": [
+            "character: robin (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "阮·梅",
+          "words": [
+            "character: ruan mei (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "希儿",
+          "words": [
+            "character: seele (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "银狼",
+          "words": [
+            "character: silver wolf (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "花火",
+          "words": [
+            "character: sparkle (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "星",
+          "words": [
+            "character: stelle (honkai: star rail)",
+            "character: trailblazer (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "素裳",
+          "words": [
+            "character: sushang (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "大黑塔",
+          "words": [
+            "character: the herta (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "停云",
+          "words": [
+            "character: tingyun (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "托帕",
+          "words": [
+            "character: topaz (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "缇宝",
+          "words": [
+            "character: tribbie (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "雪衣",
+          "words": [
+            "character: xueyi (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "驭空",
+          "words": [
+            "character: yukong (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "云璃",
+          "words": [
+            "character: yunli (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "布洛妮娅",
+          "words": [
+            "character: bronya rand"
+          ]
+        },
+        {
+          "label": "希露瓦",
+          "words": [
+            "character: serval landau"
+          ]
+        },
+        {
+          "label": "虎克",
+          "words": [
+            "character: hook (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "玲可",
+          "words": [
+            "character: lynx landau"
+          ]
+        },
+        {
+          "label": "长夜月",
+          "words": [
+            "character: evernight (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "昔涟",
+          "words": [
+            "character: cyrene (honkai: star rail)",
+            "character: cyrene (ripples of past reverie) (honkai: star rail)"
+          ]
+        },
+        {
+          "label": "阿尔托莉雅",
+          "words": [
+            "character: artoria pendragon (fate)",
+            "character: saber (fate)",
+            "character: saber (honkai: star rail) (fate)"
+          ]
+        }
+      ],
+      "description": "崩坏：星穹铁道（Honkai: Star Rail）2025 角色合集 LoRA（女性 50 位，Illustrious），触发词按角色分组。",
+      "category": "character",
+      "characterEnName": "Acheron (honkai: star rail)",
+      "sourceUrl": "https://civitai.com/models/2043415",
+      "weight": 0.8,
+      "packMembers": [
+        "Acheron (honkai: star rail)",
+        "Aglaea (honkai: star rail)",
+        "Black Swan (honkai: star rail)",
+        "Castorice (honkai: star rail)",
+        "Cyrene (honkai: star rail)",
+        "Firefly (honkai: star rail)",
+        "Herta (honkai: star rail)",
+        "Himeko (honkai: star rail)",
+        "Kafka (honkai: star rail)",
+        "March 7th (honkai: star rail)",
+        "Robin (honkai: star rail)",
+        "Ruan Mei (honkai: star rail)",
+        "Silver Wolf (honkai: star rail)",
+        "Sparkle (honkai: star rail)",
+        "Stelle (honkai: star rail)",
+        "The Herta (honkai: star rail)",
+        "Topaz (honkai: star rail)"
+      ],
+      "packMedia": "Honkai: Star Rail",
+      "details": "文件头信息（safetensors 元数据确认）：训练分辨率 1024×1024、sd_model=Illustrious-XL-v0.1（Illustrious 系）、输出名 Star_Rail_251013；ss_tag_frequency 共 78 个数据集——女性 50（含 bronya rand 布洛妮娅·兰德 / serval landau 希露瓦·朗道 / hook 虎克 / lynx landau 玲可·朗道 / evernight 长夜月 / cyrene 昔涟 / saber(fate) 阿尔托莉雅 等易混淆/联动角色，均为女性，核对表 docs/lora-civitai16-characters.md 确认）+ 男性 28（dan heng / blade / argenti / aventurine / boothill / caelus / dr. ratio / gallagher / jiaoqiu / luka / luocha / misha / moze / mydei / phainon / sunday / yanqing / sampo / welt / jing yuan / anaxa / arlan / gepard / archer(fate) 等，剔除）+ 通用集 1（reg_absurdres）。Castorice 官方中文名=遐蝶（characters.json 旧音译「卡斯托莉丝」不采用）；Cerydra=刻律德菈；Evernight=长夜月（三月七化身形态）；Huohuo=藿藿；Ruan Mei=阮·梅（带中点）。\n\n联网确认（Civitai by-hash 精确命中）：2025-All characters Honkai: Star Rail（星穹铁道全角色），模型页 https://civitai.com/models/2043415 ，支持 80+ 角色、历经 4 版迭代；作者推荐 NoobAI-XL 底模、输出分辨率 832×1216；角色关键词清单见作者文章（KEY WORD 提示词，article 20764）。\n\n触发词：本 LoRA 角色触发词带训练前缀「character: X (honkai: star rail)」形式（如 character: acheron (honkai: star rail)），按作者关键词清单逐字符核对；流萤含 firefly (spring missive) 形态变体、三月七为 march 7th (preservation) 形态、停云/忘归人为 character: tingyun 与 fugue 双词、黑塔含 herta (puppet)、阿尔托莉雅含 saber (fate) 系三词、星含 trailblazer 双词。\n\n何时用：生成星穹铁道任一女性角色图（单人/同作品多人场景均可）。配什么：Illustrious/NoobAI-XL 系底模（文件头确认 Illustrious-XL；作者推荐 NoobAI-XL）。权重建议 0.8（默认 0.8）。效果：人物形象向所选角色原设靠拢；50 角色打包，多人同框时逐角色勾选触发词。",
+      "baseModel": "Illustrious",
+      "source": "civitai"
+    },
+    "Torn Clothes (Anima) v1.safetensors": {
+      "fileName": "Torn Clothes (Anima) v1.safetensors",
+      "triggerWords": [
+        "torn clothes",
+        "exploding clothes",
+        "tearing own clothes",
+        "tearing another's clothes",
+        "burnt clothes"
+      ],
+      "triggerWordsZh": {
+        "torn clothes": "撕衣",
+        "exploding clothes": "爆衣",
+        "tearing own clothes": "撕自己的衣服",
+        "tearing another's clothes": "撕别人的衣服",
+        "burnt clothes": "烧衣"
+      },
+      "description": "撕衣/烧衣/爆衣概念 LoRA（Anima），可指定损坏部位与服装。",
+      "category": "action",
+      "details": "联网确认（Civitai 模型页）：Torn Clothes（Anima）概念 LoRA，模型页 https://civitai.red/models/630151 ，Anima 底模（SD1.5 系架构）。\n\n触发词：torn clothes（撕衣）/ exploding clothes（爆衣）/ tearing own clothes（撕自己的衣服）/ tearing another's clothes（撕别人的衣服）/ burnt clothes（烧衣）——5 个触发词按场景选用：torn clothes 通用撕衣破损、exploding clothes 力量型爆衣（布料炸裂）、tearing own clothes 撕自己的衣服（自毁/羞涩）、tearing another's clothes 撕别人的衣服（主动撕他人衣物）、burnt clothes 烧衣（火烧焦损）。可多词组合（如 torn clothes + burnt clothes 表达战斗破坏后的烧焦破衣）。\n\n何时用：NSFW 动作/战斗破坏类出图（撕衣、烧衣、爆衣主题）；可搭配角色 LoRA 指定角色服装破损。配什么：Anima 系底模（baseModel=Anima）；触发词按需选用，建议与服装标签配合（如 torn clothes + shirt/校服 指定破损部位）。权重建议 0.6-1.2（默认 0.8，破损程度按需调节；过低破损不明显、过高易出破布堆叠）。负向建议：crying, tears（避免撕衣场景误配哭泣/眼泪情绪）。效果：服装按所选触发词表现撕裂/烧焦/爆裂破损，可指定损坏部位与服装。",
+      "baseModel": "Anima",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.red/models/630151",
+      "weight": 0.8
+    },
+    "Wuthering Waves_all-000008.safetensors": {
+      "fileName": "Wuthering Waves_all-000008.safetensors",
+      "sha256": "065e08b953e581410adb79ee4ed88c5d8a201a0ce9106cb74e2fada77197fe91",
+      "triggerWords": [
+        "jinhsi",
+        "jianxin",
+        "phoebe",
+        "lumi",
+        "chixia",
+        "baizhi",
+        "encore",
+        "hyouhakusha",
+        "roccia",
+        "lupa",
+        "carlotta",
+        "cantarella",
+        "cartethyia",
+        "zhezhi",
+        "changli",
+        "zani",
+        "youhu",
+        "yinlin",
+        "yangyang",
+        "ciaccona",
+        "verina",
+        "taoqi",
+        "the shorekeeper",
+        "sanhua",
+        "danjin",
+        "camellya"
+      ],
+      "triggerWordsZh": {
+        "jinhsi": "今汐",
+        "jianxin": "鉴心",
+        "phoebe": "菲比",
+        "lumi": "灯灯",
+        "chixia": "炽霞",
+        "baizhi": "白芷",
+        "encore": "安可",
+        "hyouhakusha": "漂泊者",
+        "roccia": "洛可可",
+        "lupa": "露帕",
+        "carlotta": "珂莱塔",
+        "cantarella": "坎特蕾拉",
+        "cartethyia": "卡提希娅",
+        "zhezhi": "折枝",
+        "changli": "长离",
+        "zani": "赞妮",
+        "youhu": "釉瑚",
+        "yinlin": "吟霖",
+        "yangyang": "秧秧",
+        "ciaccona": "夏空",
+        "verina": "维里奈",
+        "taoqi": "桃祈",
+        "the shorekeeper": "守岸人",
+        "sanhua": "散华",
+        "danjin": "丹瑾",
+        "camellya": "椿"
+      },
+      "triggerWordGroups": [
+        {
+          "label": "今汐",
+          "words": [
+            "jinhsi"
+          ]
+        },
+        {
+          "label": "鉴心",
+          "words": [
+            "jianxin"
+          ]
+        },
+        {
+          "label": "菲比",
+          "words": [
+            "phoebe"
+          ]
+        },
+        {
+          "label": "灯灯",
+          "words": [
+            "lumi"
+          ]
+        },
+        {
+          "label": "炽霞",
+          "words": [
+            "chixia"
+          ]
+        },
+        {
+          "label": "白芷",
+          "words": [
+            "baizhi"
+          ]
+        },
+        {
+          "label": "安可",
+          "words": [
+            "encore"
+          ]
+        },
+        {
+          "label": "漂泊者",
+          "words": [
+            "hyouhakusha"
+          ]
+        },
+        {
+          "label": "洛可可",
+          "words": [
+            "roccia"
+          ]
+        },
+        {
+          "label": "露帕",
+          "words": [
+            "lupa"
+          ]
+        },
+        {
+          "label": "珂莱塔",
+          "words": [
+            "carlotta"
+          ]
+        },
+        {
+          "label": "坎特蕾拉",
+          "words": [
+            "cantarella"
+          ]
+        },
+        {
+          "label": "卡提希娅",
+          "words": [
+            "cartethyia"
+          ]
+        },
+        {
+          "label": "折枝",
+          "words": [
+            "zhezhi"
+          ]
+        },
+        {
+          "label": "长离",
+          "words": [
+            "changli"
+          ]
+        },
+        {
+          "label": "赞妮",
+          "words": [
+            "zani"
+          ]
+        },
+        {
+          "label": "釉瑚",
+          "words": [
+            "youhu"
+          ]
+        },
+        {
+          "label": "吟霖",
+          "words": [
+            "yinlin"
+          ]
+        },
+        {
+          "label": "秧秧",
+          "words": [
+            "yangyang"
+          ]
+        },
+        {
+          "label": "夏空",
+          "words": [
+            "ciaccona"
+          ]
+        },
+        {
+          "label": "维里奈",
+          "words": [
+            "verina"
+          ]
+        },
+        {
+          "label": "桃祈",
+          "words": [
+            "taoqi"
+          ]
+        },
+        {
+          "label": "守岸人",
+          "words": [
+            "the shorekeeper"
+          ]
+        },
+        {
+          "label": "散华",
+          "words": [
+            "sanhua"
+          ]
+        },
+        {
+          "label": "丹瑾",
+          "words": [
+            "danjin"
+          ]
+        },
+        {
+          "label": "椿",
+          "words": [
+            "camellya"
+          ]
+        }
+      ],
+      "description": "鸣潮（Wuthering Waves）角色合集 LoRA（女性 26 位，Illustrious），触发词按角色分组。",
+      "category": "character",
+      "characterEnName": "jinhsi",
+      "sourceUrl": "https://civitai.com/models/1759581",
+      "weight": 0.7,
+      "details": "文件头信息（safetensors 元数据确认）：训练分辨率 1024×1024、sd_model=waiNSFWIllustrious_v140（Illustrious 系）、输出名 Wuthering Waves_all；ss_tag_frequency 共 28 个角色数据集——女性 26（jinhsi 今汐 / jianxin 鉴心 / phoebe 菲比 / lumi 灯灯 / chixia 炽霞 / baizhi 白芷 / encore 安可 / hyouhakusha 漂泊者(女) / roccia 洛可可 / lupa 露帕 / carlotta 珂莱塔 / cantarella 坎特蕾拉 / cartethyia 卡提希娅 / zhezhi 折枝 / changli 长离 / zani 赞妮 / youhu 釉瑚 / yinlin 吟霖 / yangyang 秧秧 / ciaccona 夏空 / verina 维里奈 / taoqi 桃祈 / the shorekeeper 守岸人 / sanhua 散华 / danjin 丹瑾 / camellya 椿）+ 男性 2（linyang 凌阳 / brant 布兰特，剔除）。角色中文名均为官方/社区认可译名（核对表 docs/lora-civitai16-characters.md，T5a 联网核名）。\n\n联网确认（Civitai by-hash 精确命中）：Wuthering Waves Character LoRA Collection（Based on ILL / SDXL），模型页 https://civitai.com/models/1759581 ，约 100MB；作者推荐权重 0.7（超过 0.9 易出伪影）。\n\n触发词：每角色以其数据集 top 角色 tag 为触发词（jinhsi / jianxin / phoebe / lumi / chixia / baizhi / encore / hyouhakusha / roccia / lupa / carlotta / cantarella / cartethyia / zhezhi / changli / zani / youhu / yinlin / yangyang / ciaccona / verina / taoqi / the shorekeeper / sanhua / danjin / camellya），可配合特征词增强还原。\n\n何时用：生成鸣潮任一女性角色的图。配什么：Illustrious 系底模（文件头确认 waiNSFWIllustrious_v140）；作者建议可用强化括号突出角色名（如 (((jinhsi)))）增强激活。权重建议 0.7（默认 0.7，勿超 0.9）。效果：人物形象向所选鸣潮角色原设靠拢；多角色打包 LoRA，单角色出图时建议配角色特征词。",
+      "baseModel": "Illustrious",
+      "source": "civitai"
+    },
+    "Xian-T-Betterhand-v1.1.safetensors": {
+      "fileName": "Xian-T-Betterhand-v1.1.safetensors",
+      "sha256": "ED316A5364B250910785CC1E090CD1D7C0C729B69C5CBF10694490F1926CB524",
+      "triggerWords": [
+        "shou"
+      ],
+      "description": "手部修复 LoRA（Xian-T/知秋 v1.1，SD1.5 系），显著改善手部结构。",
+      "category": "hands",
+      "details": "文件头信息（safetensors 元数据确认）：sd_model=animefull-final-pruned-fp16.safetensors（NAI 系）、输出名 shou、训练维度 dim32/alpha16；训练集含大量手部动作标签（hand/finger/pinch/point/grab/sign language/拍手 等）。\n\n联网确认（HuggingFace 存档库 ArrayCats/LoRA-1.5 哈希精确命中）：原模型在哩布哩布 liblib（作者「Xian-T 知秋」，页面 https://www.liblib.art/modelinfo/855ea21b14ad4c04810eade3f05b0fdd ），名为「Xian-T手部修复lora」，本文件为 SD1.5 版 v1.1；LFS oid sha256 与本地完全一致。注意：作者另有 SDXL V1.0 版（TensorArt/CivitAI 镜像，哈希 4ec9e988...，与本地文件不同，勿混淆）。\n\n触发词说明：shou 为文件头输出名（日文「手」），作为候选触发词收录；作者说明「生图挂着就行」，无需触发词，主要靠权重生效。\n\n何时用：强烈建议常驻——AI 出图最常见的问题就是手部畸变（手指数量错误、扭曲、黏连），此 LoRA 专门改善手部结构；「不用 ControlNet 也不坏手」；适合所有需要清晰手部姿势的图。配什么：配 NAI/SD1.5 系底模最佳（文件头确认训练自 NAI 系）；与任意角色 LoRA/画风 LoRA 叠加均可（作者保证不会对画风、人物服装、构图及其它 LoRA 造成负面影响）；配合提示词明确手部动作（'open hand'、'pointing'）效果最佳。直出建议权重 0.8-1.0；图生图重绘幅度 0.7 时可拉到 1.2。作者对 SD1.5 系建议用 V3.0/V3.1（本文件为较早的 v1.1，效果可能弱于新版）。效果：手指数量与结构正确率显著提升、畸变明显减少，手部轮廓更自然。",
+      "baseModel": "SD1.5",
+      "source": "fileheader",
+      "sourceUrl": "https://huggingface.co/ArrayCats/LoRA-1.5/blob/5e3a2984f26873d6a7f94cabbad85cd9e1c2f20d/J-Not-Civitai/Xian-T-Betterhand-v1.1.safetensors",
+      "weight": 0.8
+    },
+    "zy_illustrious_Realism_Enhancer_v1.safetensors": {
+      "fileName": "zy_illustrious_Realism_Enhancer_v1.safetensors",
+      "sha256": "15084CBCA8E5DB7AB8580081DE34F2B98C709219B9900F61AC53CB337FB966FA",
+      "triggerWords": [
+        "realistic"
+      ],
+      "triggerWordsZh": {
+        "realistic": "写实"
+      },
+      "description": "Illustrious 写实增强 LoRA（Realism Enhancer），半写实风格。",
+      "category": "style",
+      "details": "文件头信息（safetensors 元数据确认）：base=sdxl_base_v1-0（Illustrious 系）、sd_model=waiNSFWIllustrious_v70.safetensors（WAI-NSFW-Illustrious）、训练维度 dim32/alpha1.0、fp16、输出名 zy_illustrious_Realism_Enhancer_v1；无 tag_frequency（纯风格增强器）。\n\n联网确认（Civitai 命中模型页）：Illustrious Realism Enhancer，版本 v1.0，模型页 https://civitai.com/models/1115090 ，baseModel=Illustrious；作者说明训练自 WAI-NSFW-illustrious-SDXL 达到「半写实」风格，换用其他模型时需调整强度。\n\n触发词：realistic（Civitai trainedWords；文件头无 tag_frequency，靠触发词 + 权重生效）。\n\n何时用：Illustrious 系底模下想要「半写实」质感时使用——保留动漫构图但皮肤/光影更真实。配什么：作者建议正向加 realistic、负向加 3d, anime, 2d；作者推荐参数 Strength 0.7-0.9。权重建议 0.8（作者推荐区间 0.7-0.9）。效果：画面从纯动漫向半写实靠拢，肤色、皮肤纹理与光影更真实。",
+      "baseModel": "Illustrious",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/1115090",
+      "weight": 0.8
+    },
+    "三视图 threeviews.safetensors": {
+      "fileName": "三视图 threeviews.safetensors",
+      "sha256": "BA0B40D531AC65D3E360A2E5958AC7F7220181C3BB70DC0ABC90A28616A790A9",
+      "triggerWords": [
+        "three sided view"
+      ],
+      "description": "角色三视图设定 LoRA（正面+背面+侧面，SD1.5）。",
+      "category": "three_views",
+      "details": "文件头信息（safetensors 元数据确认）：sd_model=ACertainThing.ckpt（SD1.5 系）、输出名 threeviews、训练维度 dim128/alpha32、训练分辨率 832x512。\n\n联网确认（HuggingFace 存档库 swl-models/lora-pub 哈希精确命中，151MB）：最可能的原始出处为 Civitai Three Sided View LoRA（作者 NuIl，https://civitai.com/models/13581/three-sided-view-lora ）——原始文件名「三视图.safetensors」、概念完全一致；⚠ 诚实标注：Civitai 该模型现有版本哈希为 8F1CE645...，与本地文件不同，无法 100% 确认字节级同源，但本地文件与存档文件哈希一致、名称/概念吻合度最高。\n\n触发词（Civitai Three Sided View LoRA 官方标签）：((three sided view, full body, simple background, multiple views, highres)).\n\n何时用：生成角色的三视图设定（正面 + 背面 + 侧面，常用于角色设计、立绘设定、模型参考图）。配什么：提示词搭配 'character sheet'、'multiple views'、'front view, back view, side view' 类设定图标签；与角色 LoRA 叠加可获得指定角色的三视图设定图。Civitai 原模型建议：图片尺寸最好是 832×512 的倍数；⚠ 不要使用 Anything 系列底模（作者已拉黑）。权重建议 0.6-1.0（默认 0.8）；权重过低时三视图构图不稳定、可能退化为单视角。注意：Civitai 上还有多个同名「三视图」LoRA（Three views2、写实风格多视图人物、mw_3d角色ip三视图q版 等），本地文件的触发词请以实际出图验证为准。效果：画面按标准三视图构图排布（通常正面居中、侧背分列），每格视角一致的同一角色。",
+      "baseModel": "SD1.5",
+      "source": "fileheader",
+      "sourceUrl": "https://huggingface.co/swl-models/lora-pub/blob/main/%E4%B8%89%E8%A7%86%E5%9B%BE%20threeviews.safetensors",
+      "weight": 0.8
+    }
+  }
+}

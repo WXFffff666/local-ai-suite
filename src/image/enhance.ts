@@ -98,8 +98,8 @@ export type EnhanceDeps = {
    * 抛错即降级（查表 → 原文）。
    */
   chat: (messages: Array<{ role: 'system' | 'user'; content: string }>) => Promise<string>
-  /** zh2en 查表直译兜底（prompt-weaver 数据），键为中文词/短语 */
-  lookupZh?: (zh: string) => string | undefined
+  /** zh2en 查表直译兜底（prompt-weaver 数据，纯本地；允许异步懒加载） */
+  lookupZh?: (zh: string) => string | undefined | Promise<string | undefined>
   /** 单测注入 fetch 等 */
 }
 
@@ -155,15 +155,16 @@ export async function enhancePrompt(input: EnhanceInput, deps: EnhanceDeps): Pro
 
   // 2) zh2en 查表直译（整句 → 逐词拼接）
   if (deps.lookupZh !== undefined) {
-    const whole = deps.lookupZh(text)
+    const whole = await deps.lookupZh(text)
     if (whole !== undefined && whole.trim() !== '') return { positive: whole.trim(), source: 'table' }
     const parts = text
       .split(/[，,。.、\s]+/)
       .map((p) => p.trim())
       .filter((p) => p !== '')
-    const translated = parts
-      .map((p) => deps.lookupZh?.(p))
-      .filter((v): v is string => v !== undefined && v.trim() !== '')
+    const translated = (
+      await Promise.all(parts.map(async (p) => deps.lookupZh?.(p)))
+    )
+      .filter((v): v is string => typeof v === 'string' && v.trim() !== '')
     if (translated.length > 0) {
       return { positive: translated.join(', '), source: 'table' }
     }

@@ -1,0 +1,2989 @@
+[
+  {
+    "zh": "微笑",
+    "en": "smile",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "脸红",
+    "en": "blush",
+    "sfw": true
+  },
+  {
+    "zh": "闭眼",
+    "en": "closed_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "吐舌",
+    "en": "tongue",
+    "sfw": true
+  },
+  {
+    "zh": "吐舌头",
+    "en": "tongue_out",
+    "sfw": true
+  },
+  {
+    "zh": "咧嘴笑",
+    "en": "grin",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "汗滴",
+    "en": "sweatdrop",
+    "sfw": true
+  },
+  {
+    "zh": "流泪",
+    "en": "tears",
+    "sfw": true
+  },
+  {
+    "zh": "面无表情",
+    "en": "expressionless",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "脸红贴纸",
+    "en": "blush_stickers",
+    "sfw": true
+  },
+  {
+    "zh": "尖牙",
+    "en": "fangs",
+    "sfw": true
+  },
+  {
+    "zh": "皱眉",
+    "en": "frown",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "鼻尖红",
+    "en": "nose_blush",
+    "sfw": true
+  },
+  {
+    "zh": "半闭眼",
+    "en": "half-closed_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "尴尬",
+    "en": "embarrassed",
+    "sfw": true
+  },
+  {
+    "zh": "开心",
+    "en": "happy",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "微红脸",
+    "en": "light_blush",
+    "sfw": true
+  },
+  {
+    "zh": "浅笑",
+    "en": "light_smile",
+    "sfw": true
+  },
+  {
+    "zh": "惊讶",
+    "en": "surprised",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "生气",
+    "en": "angry",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "挑眉",
+    "en": "raised_eyebrows",
+    "sfw": true
+  },
+  {
+    "zh": "严肃",
+    "en": "serious",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "嘟嘴",
+    "en": "pout",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "坏笑",
+    "en": "smirk",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "得意",
+    "en": "smug",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "满脸通红",
+    "en": "full-face_blush",
+    "sfw": true
+  },
+  {
+    "zh": "轻皱眉",
+    "en": "light_frown",
+    "sfw": true
+  },
+  {
+    "zh": "邪笑",
+    "en": "evil_smile",
+    "sfw": true
+  },
+  {
+    "zh": "害怕",
+    "en": "scared",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "恼怒",
+    "en": "annoyed",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "耳红",
+    "en": "ear_blush",
+    "sfw": true
+  },
+  {
+    "zh": "空洞眼神",
+    "en": "blank_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "紧张",
+    "en": "nervous",
+    "sfw": true
+  },
+  {
+    "zh": "难过",
+    "en": "sad",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "魅惑笑",
+    "en": "seductive_smile",
+    "sfw": true
+  },
+  {
+    "zh": "害羞",
+    "en": "shy",
+    "sfw": true
+  },
+  {
+    "zh": "困倦",
+    "en": "sleepy",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "小汗滴",
+    "en": "small_sweatdrop",
+    "sfw": true
+  },
+  {
+    "zh": "泪流满面",
+    "en": "streaming_tears",
+    "sfw": true
+  },
+  {
+    "zh": "紧张笑",
+    "en": "nervous_smile",
+    "sfw": true
+  },
+  {
+    "zh": "单挑眉",
+    "en": "raised_eyebrow",
+    "sfw": true
+  },
+  {
+    "zh": "眨眼",
+    "en": "wink",
+    "sfw": true
+  },
+  {
+    "zh": "平静",
+    "en": "neutral",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "空白",
+    "en": "blank",
+    "sfw": true
+  },
+  {
+    "zh": "喜极而泣",
+    "en": "happy_tears",
+    "sfw": true
+  },
+  {
+    "zh": "凝视",
+    "en": "staring",
+    "sfw": true
+  },
+  {
+    "zh": "怒视",
+    "en": "glaring",
+    "sfw": true
+  },
+  {
+    "zh": "兴奋",
+    "en": "excited",
+    "sfw": true
+  },
+  {
+    "zh": "无语",
+    "en": "unamused",
+    "sfw": true
+  },
+  {
+    "zh": "失望",
+    "en": "disappointed",
+    "sfw": true
+  },
+  {
+    "zh": "困惑",
+    "en": "confused",
+    "sfw": true
+  },
+  {
+    "zh": "微笑露齿",
+    "en": "open_smile",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "抿嘴笑",
+    "en": "demure_smile",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "坏笑",
+    "en": "sly_smile",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "苦笑",
+    "en": "bitter_smile",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "傻笑",
+    "en": "silly_smile",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "嚎啕大哭",
+    "en": "wailing",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "含泪",
+    "en": "teary_eyes",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "抽泣",
+    "en": "sobbing",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "鼓腮",
+    "en": "puffed_cheeks",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "皱眉",
+    "en": "frowning",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "瞪眼",
+    "en": "glare",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "嘟嘴",
+    "en": "pouting",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "捂脸",
+    "en": "hands_on_face",
+    "sfw": true
+  },
+  {
+    "zh": "躲闪",
+    "en": "averting_gaze",
+    "sfw": true
+  },
+  {
+    "zh": "害羞",
+    "en": "bashful_smile",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "呆滞",
+    "en": "blank_stare",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "震惊",
+    "en": "shocked",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "无语",
+    "en": "speechless",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "黑化",
+    "en": "yandere",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "病娇",
+    "en": "yandere_smile",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "得意",
+    "en": "smug_smile",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "委屈",
+    "en": "sulking",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "疲惫",
+    "en": "tired",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "嫌弃",
+    "en": "disgusted",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "期待",
+    "en": "eager",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "困惑",
+    "en": "puzzled",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "严肃",
+    "en": "stern",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "鬼脸",
+    "en": "funny_face",
+    "sfw": true
+  },
+  {
+    "zh": "眨眼",
+    "en": "winking",
+    "sfw": true
+  },
+  {
+    "zh": "单眼眨眼",
+    "en": "one_eye_closed",
+    "sfw": true
+  },
+  {
+    "zh": "闭眼笑",
+    "en": "happy_closed_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "邪笑",
+    "en": "evil_grin",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "大笑",
+    "en": "guffaw",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "咪咪眼",
+    "en": "slit_eyes",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "开心",
+    "en": "joyful",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "愉悦",
+    "en": "delighted",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "平静",
+    "en": "calm",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "冷淡",
+    "en": "aloof",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "轻蔑",
+    "en": "contempt",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "傲慢",
+    "en": "arrogant",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "自信",
+    "en": "confident",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "怀疑",
+    "en": "skeptical",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "惊讶",
+    "en": "startled",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "惊恐",
+    "en": "horrified",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "害怕",
+    "en": "frightened",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "紧张",
+    "en": "anxious",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "放松",
+    "en": "relaxed",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "满足",
+    "en": "content",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "空虚",
+    "en": "empty_eyes",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "发呆",
+    "en": "spacing_out",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "睡眼惺忪",
+    "en": "drowsy_eyes",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "挑眉",
+    "en": "arched_eyebrow",
+    "sfw": true
+  },
+  {
+    "zh": "死鱼眼",
+    "en": "dead_fish_eyes",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "咯咯笑",
+    "en": "giggling",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "吹口哨",
+    "en": "whistling",
+    "sfw": true
+  },
+  {
+    "zh": "抿唇",
+    "en": "pursing_lips",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "吐舌挑逗",
+    "en": "tongue_poke",
+    "sfw": true
+  },
+  {
+    "zh": "咬唇",
+    "en": "biting_lip",
+    "sfw": true
+  },
+  {
+    "zh": "星星眼",
+    "en": "starry_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "冒汗",
+    "en": "flustered",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "面红耳赤",
+    "en": "blushing_furiously",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "斜视",
+    "en": "sideways_glance",
+    "sfw": true
+  },
+  {
+    "zh": "瞳孔放大",
+    "en": "dilated_pupils",
+    "sfw": true
+  },
+  {
+    "zh": "瞳孔缩小",
+    "en": "constricted_pupils",
+    "sfw": true
+  },
+  {
+    "zh": "调皮",
+    "en": "mischievous",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "无聊",
+    "en": "bored",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "恼怒",
+    "en": "irritated",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "阴郁",
+    "en": "gloomy",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "忧郁",
+    "en": "melancholy",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "绝望",
+    "en": "desperate",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "恳求",
+    "en": "pleading",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "渴望",
+    "en": "longing",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "崇拜",
+    "en": "adoring",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "欣喜若狂",
+    "en": "overjoyed",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "狂喜",
+    "en": "ecstatic",
+    "sfw": true,
+    "dimension": "expression_type"
+  },
+  {
+    "zh": "怒筋",
+    "en": "anger_vein",
+    "sfw": true
+  },
+  {
+    "zh": "咬牙",
+    "en": "clenched_teeth",
+    "sfw": true
+  },
+  {
+    "zh": "皱眉",
+    "en": "scowl",
+    "sfw": true
+  },
+  {
+    "zh": "疯狂",
+    "en": "crazy",
+    "sfw": true
+  },
+  {
+    "zh": "绝望",
+    "en": "despair",
+    "sfw": true
+  },
+  {
+    "zh": "坚定",
+    "en": "determined",
+    "sfw": true
+  },
+  {
+    "zh": "轻蔑",
+    "en": "disdain",
+    "sfw": true
+  },
+  {
+    "zh": "厌恶",
+    "en": "disgust",
+    "sfw": true
+  },
+  {
+    "zh": "痛苦",
+    "en": "distress",
+    "sfw": true
+  },
+  {
+    "zh": "醉态",
+    "en": "drunk",
+    "sfw": true
+  },
+  {
+    "zh": "狂喜",
+    "en": "ecstasy",
+    "sfw": true
+  },
+  {
+    "zh": "嫉妒",
+    "en": "envy",
+    "sfw": true
+  },
+  {
+    "zh": "沮丧",
+    "en": "frustrated",
+    "sfw": true
+  },
+  {
+    "zh": "眉头紧锁",
+    "en": "furrowed_brow",
+    "sfw": true
+  },
+  {
+    "zh": "苦脸",
+    "en": "grimace",
+    "sfw": true
+  },
+  {
+    "zh": "内疚",
+    "en": "guilt",
+    "sfw": true
+  },
+  {
+    "zh": "孤独",
+    "en": "lonely",
+    "sfw": true
+  },
+  {
+    "zh": "流鼻血",
+    "en": "nosebleed",
+    "sfw": true
+  },
+  {
+    "zh": "张嘴",
+    "en": "open_mouth",
+    "sfw": true
+  },
+  {
+    "zh": "嘴唇微张",
+    "en": "parted_lips",
+    "sfw": true
+  },
+  {
+    "zh": "疼痛",
+    "en": "pain",
+    "sfw": true
+  },
+  {
+    "zh": "鼓腮",
+    "en": "puffy_cheeks",
+    "sfw": true
+  },
+  {
+    "zh": "内眉上挑",
+    "en": "raised_inner_eyebrows",
+    "sfw": true
+  },
+  {
+    "zh": "抑郁",
+    "en": "depressed",
+    "sfw": true
+  },
+  {
+    "zh": "担心",
+    "en": "worried",
+    "sfw": true
+  },
+  {
+    "zh": "遮面阴影",
+    "en": "shaded_face",
+    "sfw": true
+  },
+  {
+    "zh": "叹气",
+    "en": "sigh",
+    "sfw": true
+  },
+  {
+    "zh": "发呆",
+    "en": "pensive",
+    "sfw": true
+  },
+  {
+    "zh": "痛苦表情",
+    "en": "wince",
+    "sfw": true
+  },
+  {
+    "zh": "V形眉",
+    "en": "v-shaped_eyebrows",
+    "sfw": true
+  },
+  {
+    "zh": "疯狂笑",
+    "en": "crazy_smile",
+    "sfw": true
+  },
+  {
+    "zh": "悲伤笑",
+    "en": "sad_smile",
+    "sfw": true
+  },
+  {
+    "zh": "憋笑",
+    "en": "stifled_laugh",
+    "sfw": true
+  },
+  {
+    "zh": "得意",
+    "en": "doyagao",
+    "sfw": true
+  },
+  {
+    "zh": "奸笑",
+    "en": "troll_face",
+    "sfw": true
+  },
+  {
+    "zh": "吓呆",
+    "en": "traumatized",
+    "sfw": true
+  },
+  {
+    "zh": "脸色发白",
+    "en": "turn_pale",
+    "sfw": true
+  },
+  {
+    "zh": "波浪嘴",
+    "en": "wavy_mouth",
+    "sfw": true
+  },
+  {
+    "zh": "沮丧(阴郁)",
+    "en": "gloom",
+    "sfw": true
+  },
+  {
+    "zh": "心动",
+    "en": "smitten",
+    "sfw": true
+  },
+  {
+    "zh": "敬畏",
+    "en": "awe",
+    "sfw": true
+  },
+  {
+    "zh": "专注",
+    "en": "focused",
+    "sfw": true
+  },
+  {
+    "zh": "困惑",
+    "en": "perplexed",
+    "sfw": true
+  },
+  {
+    "zh": "不耐烦",
+    "en": "impatient",
+    "sfw": true
+  },
+  {
+    "zh": "满足",
+    "en": "satisfied",
+    "sfw": true
+  },
+  {
+    "zh": "欣慰",
+    "en": "relieved",
+    "sfw": true
+  },
+  {
+    "zh": "期待",
+    "en": "anticipation",
+    "sfw": true
+  },
+  {
+    "zh": "羡慕",
+    "en": "envious",
+    "sfw": true
+  },
+  {
+    "zh": "悔恨",
+    "en": "remorse",
+    "sfw": true
+  },
+  {
+    "zh": "骄傲",
+    "en": "proud",
+    "sfw": true
+  },
+  {
+    "zh": "谦虚",
+    "en": "humble",
+    "sfw": true
+  },
+  {
+    "zh": "困惑(歪头)",
+    "en": "tilting_head",
+    "sfw": true
+  },
+  {
+    "zh": "头疼",
+    "en": "headache",
+    "sfw": true
+  },
+  {
+    "zh": "晕眩",
+    "en": "dizzy",
+    "sfw": true
+  },
+  {
+    "zh": "恶心",
+    "en": "nauseated",
+    "sfw": true
+  },
+  {
+    "zh": "痛苦挣扎",
+    "en": "wincing",
+    "sfw": true
+  },
+  {
+    "zh": "红晕全脸",
+    "en": "blushing_heavily",
+    "sfw": true
+  },
+  {
+    "zh": "羞红",
+    "en": "bashful",
+    "sfw": true
+  },
+  {
+    "zh": "捂脸",
+    "en": "hiding_face",
+    "sfw": true
+  },
+  {
+    "zh": "掩嘴",
+    "en": "covering_mouth",
+    "sfw": true
+  },
+  {
+    "zh": "捂眼",
+    "en": "covering_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "捂耳",
+    "en": "covering_ears",
+    "sfw": true
+  },
+  {
+    "zh": "捂胸",
+    "en": "covering_chest",
+    "sfw": true
+  },
+  {
+    "zh": "傻笑(嘿嘿)",
+    "en": "heehee",
+    "sfw": true
+  },
+  {
+    "zh": "窃笑",
+    "en": "chuckling",
+    "sfw": true
+  },
+  {
+    "zh": "狂笑",
+    "en": "howling_with_laughter",
+    "sfw": true
+  },
+  {
+    "zh": "捧腹大笑",
+    "en": "laughing_hysterically",
+    "sfw": true
+  },
+  {
+    "zh": "眨眼",
+    "en": "blinking",
+    "sfw": true
+  },
+  {
+    "zh": "瞪大眼睛",
+    "en": "wide_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "呆滞眼",
+    "en": "glazed_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "上目线",
+    "en": "aegyo_sal_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "哭红眼",
+    "en": "crying_red_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "含泪",
+    "en": "eyes_brimming_with_tears",
+    "sfw": true
+  },
+  {
+    "zh": "泪珠",
+    "en": "tear_drops",
+    "sfw": true
+  },
+  {
+    "zh": "泪痕",
+    "en": "tear_tracks",
+    "sfw": true
+  },
+  {
+    "zh": "泣颜",
+    "en": "crying_face",
+    "sfw": true
+  },
+  {
+    "zh": "痛哭",
+    "en": "sobbing_heavily",
+    "sfw": true
+  },
+  {
+    "zh": "哽咽",
+    "en": "choking_back_tears",
+    "sfw": true
+  },
+  {
+    "zh": "委屈",
+    "en": "wronged_expression",
+    "sfw": true
+  },
+  {
+    "zh": "生气嘟嘴",
+    "en": "angry_pout",
+    "sfw": true
+  },
+  {
+    "zh": "鼓腮帮",
+    "en": "puffed_out_cheeks",
+    "sfw": true
+  },
+  {
+    "zh": "瘪嘴",
+    "en": "pursed_lips",
+    "sfw": true
+  },
+  {
+    "zh": "撇嘴",
+    "en": "lip_pout",
+    "sfw": true
+  },
+  {
+    "zh": "舔唇",
+    "en": "licking_lips",
+    "sfw": true
+  },
+  {
+    "zh": "露齿笑",
+    "en": "toothy_smile",
+    "sfw": true
+  },
+  {
+    "zh": "龇牙",
+    "en": "baring_teeth",
+    "sfw": true
+  },
+  {
+    "zh": "吐舌笑",
+    "en": "tongue_sticking_out",
+    "sfw": true
+  },
+  {
+    "zh": "扮鬼脸",
+    "en": "making_a_face",
+    "sfw": true
+  },
+  {
+    "zh": "翻白眼(厌恶)",
+    "en": "eye_roll",
+    "sfw": true
+  },
+  {
+    "zh": "眯眼笑",
+    "en": "squinting_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "眯眼(算计)",
+    "en": "scheming_look",
+    "sfw": true
+  },
+  {
+    "zh": "斜眼",
+    "en": "side_eye",
+    "sfw": true
+  },
+  {
+    "zh": "偷瞄",
+    "en": "peeking_glance",
+    "sfw": true
+  },
+  {
+    "zh": "凝视",
+    "en": "staring_intently",
+    "sfw": true
+  },
+  {
+    "zh": "怒视",
+    "en": "glaring_angrily",
+    "sfw": true
+  },
+  {
+    "zh": "瞪",
+    "en": "glowering",
+    "sfw": true
+  },
+  {
+    "zh": "冷眼",
+    "en": "cold_stare",
+    "sfw": true
+  },
+  {
+    "zh": "俯视",
+    "en": "looking_down_condescendingly",
+    "sfw": true
+  },
+  {
+    "zh": "仰视",
+    "en": "looking_up_adoringly",
+    "sfw": true
+  },
+  {
+    "zh": "偷窥",
+    "en": "peeping",
+    "sfw": true
+  },
+  {
+    "zh": "空虚眼",
+    "en": "hollow_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "困倦",
+    "en": "drowsy",
+    "sfw": true
+  },
+  {
+    "zh": "昏昏欲睡",
+    "en": "dozing",
+    "sfw": true
+  },
+  {
+    "zh": "眼皮打架",
+    "en": "heavy_eyelids",
+    "sfw": true
+  },
+  {
+    "zh": "瞌睡",
+    "en": "nodding_off",
+    "sfw": true
+  },
+  {
+    "zh": "揉眼",
+    "en": "rubbing_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "打哈欠",
+    "en": "yawn",
+    "sfw": true
+  },
+  {
+    "zh": "傲娇",
+    "en": "tsundere",
+    "sfw": true
+  },
+  {
+    "zh": "冷酷",
+    "en": "kuudere",
+    "sfw": true
+  },
+  {
+    "zh": "电波",
+    "en": "deredere",
+    "sfw": true
+  },
+  {
+    "zh": "温柔",
+    "en": "gentle",
+    "sfw": true
+  },
+  {
+    "zh": "亲切",
+    "en": "kind",
+    "sfw": true
+  },
+  {
+    "zh": "开朗",
+    "en": "cheerful",
+    "sfw": true
+  },
+  {
+    "zh": "元气",
+    "en": "energetic",
+    "sfw": true
+  },
+  {
+    "zh": "活泼",
+    "en": "lively",
+    "sfw": true
+  },
+  {
+    "zh": "热血",
+    "en": "hot-blooded",
+    "sfw": true
+  },
+  {
+    "zh": "沉着",
+    "en": "composed",
+    "sfw": true
+  },
+  {
+    "zh": "从容",
+    "en": "poised",
+    "sfw": true
+  },
+  {
+    "zh": "威严",
+    "en": "dignified",
+    "sfw": true
+  },
+  {
+    "zh": "高傲",
+    "en": "haughty",
+    "sfw": true
+  },
+  {
+    "zh": "目中无人",
+    "en": "condescending",
+    "sfw": true
+  },
+  {
+    "zh": "自恋",
+    "en": "narcissistic",
+    "sfw": true
+  },
+  {
+    "zh": "得意忘形",
+    "en": "smug_satisfaction",
+    "sfw": true
+  },
+  {
+    "zh": "炫耀",
+    "en": "showing_off",
+    "sfw": true
+  },
+  {
+    "zh": "赌气",
+    "en": "sulky",
+    "sfw": true
+  },
+  {
+    "zh": "闹别扭",
+    "en": "in_a_huff",
+    "sfw": true
+  },
+  {
+    "zh": "赌气(傲)",
+    "en": "tsundere_pout",
+    "sfw": true
+  },
+  {
+    "zh": "冷战",
+    "en": "giving_cold_shoulder",
+    "sfw": true
+  },
+  {
+    "zh": "别扭",
+    "en": "awkward",
+    "sfw": true
+  },
+  {
+    "zh": "尴尬",
+    "en": "embarrassed_awkward",
+    "sfw": true
+  },
+  {
+    "zh": "难为情",
+    "en": "mortified",
+    "sfw": true
+  },
+  {
+    "zh": "害臊",
+    "en": "shamefaced",
+    "sfw": true
+  },
+  {
+    "zh": "脸红到耳根",
+    "en": "red_to_the_ears",
+    "sfw": true
+  },
+  {
+    "zh": "脸烧",
+    "en": "burning_face",
+    "sfw": true
+  },
+  {
+    "zh": "慌乱",
+    "en": "flustered_panicked",
+    "sfw": true
+  },
+  {
+    "zh": "手足无措",
+    "en": "at_a_loss",
+    "sfw": true
+  },
+  {
+    "zh": "惊慌失措",
+    "en": "panicking_heavily",
+    "sfw": true
+  },
+  {
+    "zh": "冷汗",
+    "en": "cold_sweat",
+    "sfw": true
+  },
+  {
+    "zh": "直冒汗",
+    "en": "sweating_bullets",
+    "sfw": true
+  },
+  {
+    "zh": "心慌",
+    "en": "anxious_heart",
+    "sfw": true
+  },
+  {
+    "zh": "忐忑",
+    "en": "uneasy",
+    "sfw": true
+  },
+  {
+    "zh": "坐立不安",
+    "en": "restless",
+    "sfw": true
+  },
+  {
+    "zh": "焦躁",
+    "en": "agitated",
+    "sfw": true
+  },
+  {
+    "zh": "恼火",
+    "en": "peeved",
+    "sfw": true
+  },
+  {
+    "zh": "愤怒",
+    "en": "furious",
+    "sfw": true
+  },
+  {
+    "zh": "暴怒",
+    "en": "enraged",
+    "sfw": true
+  },
+  {
+    "zh": "气炸",
+    "en": "seething",
+    "sfw": true
+  },
+  {
+    "zh": "恼羞成怒",
+    "en": "angry_and_embarrassed",
+    "sfw": true
+  },
+  {
+    "zh": "强压怒火",
+    "en": "suppressing_anger",
+    "sfw": true
+  },
+  {
+    "zh": "不服",
+    "en": "grudging",
+    "sfw": true
+  },
+  {
+    "zh": "委屈巴巴",
+    "en": "pouty_sad",
+    "sfw": true
+  },
+  {
+    "zh": "可怜巴巴",
+    "en": "pitiful_look",
+    "sfw": true
+  },
+  {
+    "zh": "撒娇",
+    "en": "acting_cute",
+    "sfw": true
+  },
+  {
+    "zh": "卖萌",
+    "en": "cute_pose",
+    "sfw": true
+  },
+  {
+    "zh": "对镜头眨眼",
+    "en": "winking_at_viewer",
+    "sfw": true
+  },
+  {
+    "zh": "眉目传情",
+    "en": "making_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "暗送秋波",
+    "en": "giving_the_eye",
+    "sfw": true
+  },
+  {
+    "zh": "瞠目结舌",
+    "en": "dumbfounded",
+    "sfw": true
+  },
+  {
+    "zh": "目瞪口呆",
+    "en": "flabbergasted",
+    "sfw": true
+  },
+  {
+    "zh": "惊呆",
+    "en": "frozen_in_shock",
+    "sfw": true
+  },
+  {
+    "zh": "石化",
+    "en": "petrified",
+    "sfw": true
+  },
+  {
+    "zh": "吓一跳",
+    "en": "jumping_in_fright",
+    "sfw": true
+  },
+  {
+    "zh": "畏缩",
+    "en": "flinching",
+    "sfw": true
+  },
+  {
+    "zh": "退缩",
+    "en": "recoiling",
+    "sfw": true
+  },
+  {
+    "zh": "戒备",
+    "en": "on_guard",
+    "sfw": true
+  },
+  {
+    "zh": "警惕",
+    "en": "vigilant",
+    "sfw": true
+  },
+  {
+    "zh": "狐疑",
+    "en": "suspicious",
+    "sfw": true
+  },
+  {
+    "zh": "将信将疑",
+    "en": "doubting",
+    "sfw": true
+  },
+  {
+    "zh": "半信半疑",
+    "en": "uncertain",
+    "sfw": true
+  },
+  {
+    "zh": "将就",
+    "en": "resigned",
+    "sfw": true
+  },
+  {
+    "zh": "认命",
+    "en": "accepting_fate",
+    "sfw": true
+  },
+  {
+    "zh": "释然",
+    "en": "let_down_easy",
+    "sfw": true
+  },
+  {
+    "zh": "豁然开朗",
+    "en": "enlightened",
+    "sfw": true
+  },
+  {
+    "zh": "欣慰",
+    "en": "gratified",
+    "sfw": true
+  },
+  {
+    "zh": "感动",
+    "en": "moved_to_tears",
+    "sfw": true
+  },
+  {
+    "zh": "鼻酸",
+    "en": "getting_choked_up",
+    "sfw": true
+  },
+  {
+    "zh": "眼眶泛红",
+    "en": "tearing_up",
+    "sfw": true
+  },
+  {
+    "zh": "喜极而泣",
+    "en": "crying_with_joy",
+    "sfw": true
+  },
+  {
+    "zh": "破涕为笑",
+    "en": "smile_through_tears",
+    "sfw": true
+  },
+  {
+    "zh": "哭笑不得",
+    "en": "mixed_emotions",
+    "sfw": true
+  },
+  {
+    "zh": "欲哭无泪",
+    "en": "past_tears",
+    "sfw": true
+  },
+  {
+    "zh": "面无表情(冷)",
+    "en": "poker_face",
+    "sfw": true
+  },
+  {
+    "zh": "扑克脸",
+    "en": "stone-faced",
+    "sfw": true
+  },
+  {
+    "zh": "面无表情",
+    "en": "deadpan",
+    "sfw": true
+  },
+  {
+    "zh": "面瘫",
+    "en": "emotionless",
+    "sfw": true
+  },
+  {
+    "zh": "冷漠",
+    "en": "indifferent",
+    "sfw": true
+  },
+  {
+    "zh": "无所谓",
+    "en": "nonchalant",
+    "sfw": true
+  },
+  {
+    "zh": "看戏",
+    "en": "watching_curiously",
+    "sfw": true
+  },
+  {
+    "zh": "好奇",
+    "en": "curious",
+    "sfw": true
+  },
+  {
+    "zh": "探询",
+    "en": "inquiring",
+    "sfw": true
+  },
+  {
+    "zh": "兴致盎然",
+    "en": "interested",
+    "sfw": true
+  },
+  {
+    "zh": "入迷",
+    "en": "fascinated",
+    "sfw": true
+  },
+  {
+    "zh": "着迷",
+    "en": "captivated",
+    "sfw": true
+  },
+  {
+    "zh": "心不在焉",
+    "en": "distracted",
+    "sfw": true
+  },
+  {
+    "zh": "走神",
+    "en": "mind_wandering",
+    "sfw": true
+  },
+  {
+    "zh": "打盹",
+    "en": "nodding_off_sleep",
+    "sfw": true
+  },
+  {
+    "zh": "不耐烦(叹)",
+    "en": "sighing_impatiently",
+    "sfw": true
+  },
+  {
+    "zh": "烦躁不安",
+    "en": "fidgety",
+    "sfw": true
+  },
+  {
+    "zh": "豆豆眼",
+    "en": "dot_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "黑线眼",
+    "en": "line_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "^^眼",
+    "en": "happy_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "螺旋眼",
+    "en": "spiral_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "黑眼圈(熊猫眼)",
+    "en": "dark_circles_under_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "泪痣",
+    "en": "beauty_spot",
+    "sfw": true
+  },
+  {
+    "zh": "眉心痣",
+    "en": "forehead_mole",
+    "sfw": true
+  },
+  {
+    "zh": "眼影(浓)",
+    "en": "heavy_eyeshadow",
+    "sfw": true
+  },
+  {
+    "zh": "鼻梁贴",
+    "en": "nose_bandage",
+    "sfw": true
+  },
+  {
+    "zh": "笑眼",
+    "en": "smiling_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "月牙眼",
+    "en": "crescent_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "细长眼",
+    "en": "narrow_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "丹凤眼",
+    "en": "phoenix_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "垂眼",
+    "en": "droopy_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "耷拉眼皮",
+    "en": "drooping_eyelids",
+    "sfw": true
+  },
+  {
+    "zh": "大眼无神",
+    "en": "big_empty_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "闪闪发光眼",
+    "en": "shining_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "水灵眼",
+    "en": "glossy_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "湿润眼",
+    "en": "moist_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "楚楚可怜",
+    "en": "pathetic_look",
+    "sfw": true
+  },
+  {
+    "zh": "惹人怜爱",
+    "en": "endearing_look",
+    "sfw": true
+  },
+  {
+    "zh": "羞怯",
+    "en": "timid",
+    "sfw": true
+  },
+  {
+    "zh": "怯生生",
+    "en": "shy_timid",
+    "sfw": true
+  },
+  {
+    "zh": "畏首畏尾",
+    "en": "timid_expression",
+    "sfw": true
+  },
+  {
+    "zh": "战战兢兢",
+    "en": "trembling_in_fear",
+    "sfw": true
+  },
+  {
+    "zh": "瑟瑟发抖",
+    "en": "shivering",
+    "sfw": true
+  },
+  {
+    "zh": "打冷颤",
+    "en": "shuddering",
+    "sfw": true
+  },
+  {
+    "zh": "后怕",
+    "en": "lingering_fear",
+    "sfw": true
+  },
+  {
+    "zh": "心有余悸",
+    "en": "shaken",
+    "sfw": true
+  },
+  {
+    "zh": "劫后余生",
+    "en": "survived",
+    "sfw": true
+  },
+  {
+    "zh": "如释重负",
+    "en": "greatly_relieved",
+    "sfw": true
+  },
+  {
+    "zh": "松口气",
+    "en": "sigh_of_relief",
+    "sfw": true
+  },
+  {
+    "zh": "长舒一口气",
+    "en": "long_sigh",
+    "sfw": true
+  },
+  {
+    "zh": "得意洋洋",
+    "en": "triumphant",
+    "sfw": true
+  },
+  {
+    "zh": "志得意满",
+    "en": "self-satisfied",
+    "sfw": true
+  },
+  {
+    "zh": "沾沾自喜",
+    "en": "smug_satisfied",
+    "sfw": true
+  },
+  {
+    "zh": "美滋滋",
+    "en": "gleeful",
+    "sfw": true
+  },
+  {
+    "zh": "喜上眉梢",
+    "en": "joyful_grin",
+    "sfw": true
+  },
+  {
+    "zh": "眉开眼笑",
+    "en": "beaming",
+    "sfw": true
+  },
+  {
+    "zh": "笑逐颜开",
+    "en": "radiant_smile",
+    "sfw": true
+  },
+  {
+    "zh": "温柔笑",
+    "en": "gentle_smile",
+    "sfw": true
+  },
+  {
+    "zh": "慈祥笑",
+    "en": "benevolent_smile",
+    "sfw": true
+  },
+  {
+    "zh": "淡然笑",
+    "en": "serene_smile",
+    "sfw": true
+  },
+  {
+    "zh": "恬静",
+    "en": "serene",
+    "sfw": true
+  },
+  {
+    "zh": "平和",
+    "en": "peaceful",
+    "sfw": true
+  },
+  {
+    "zh": "宁静",
+    "en": "tranquil",
+    "sfw": true
+  },
+  {
+    "zh": "安详",
+    "en": "placid",
+    "sfw": true
+  },
+  {
+    "zh": "闲适",
+    "en": "at_ease",
+    "sfw": true
+  },
+  {
+    "zh": "慵懒",
+    "en": "languid",
+    "sfw": true
+  },
+  {
+    "zh": "散漫",
+    "en": "laid_back",
+    "sfw": true
+  },
+  {
+    "zh": "吊儿郎当",
+    "en": "slacker_attitude",
+    "sfw": true
+  },
+  {
+    "zh": "玩世不恭",
+    "en": "cynical",
+    "sfw": true
+  },
+  {
+    "zh": "轻浮",
+    "en": "flippant",
+    "sfw": true
+  },
+  {
+    "zh": "轻佻",
+    "en": "saucy",
+    "sfw": true
+  },
+  {
+    "zh": "俏皮",
+    "en": "playful",
+    "sfw": true
+  },
+  {
+    "zh": "调皮",
+    "en": "mischievous_grin",
+    "sfw": true
+  },
+  {
+    "zh": "狡黠",
+    "en": "sly_grin",
+    "sfw": true
+  },
+  {
+    "zh": "机灵",
+    "en": "clever_look",
+    "sfw": true
+  },
+  {
+    "zh": "精明",
+    "en": "shrewd",
+    "sfw": true
+  },
+  {
+    "zh": "老练",
+    "en": "worldly",
+    "sfw": true
+  },
+  {
+    "zh": "世故",
+    "en": "streetwise",
+    "sfw": true
+  },
+  {
+    "zh": "天真",
+    "en": "naive",
+    "sfw": true
+  },
+  {
+    "zh": "纯真",
+    "en": "innocent",
+    "sfw": true
+  },
+  {
+    "zh": "无邪",
+    "en": "guileless",
+    "sfw": true
+  },
+  {
+    "zh": "懵懂",
+    "en": "oblivious",
+    "sfw": true
+  },
+  {
+    "zh": "呆萌",
+    "en": "adorkable",
+    "sfw": true
+  },
+  {
+    "zh": "天然呆",
+    "en": "airhead",
+    "sfw": true
+  },
+  {
+    "zh": "迷糊",
+    "en": "befuddled",
+    "sfw": true
+  },
+  {
+    "zh": "犯迷糊",
+    "en": "clueless",
+    "sfw": true
+  },
+  {
+    "zh": "短路",
+    "en": "blank_moment",
+    "sfw": true
+  },
+  {
+    "zh": "脑筋转不过来",
+    "en": "confused_brain",
+    "sfw": true
+  },
+  {
+    "zh": "歪头杀",
+    "en": "head_tilt_confused",
+    "sfw": true
+  },
+  {
+    "zh": "恍然大悟",
+    "en": "sudden_realization",
+    "sfw": true
+  },
+  {
+    "zh": "灵光一闪",
+    "en": "lightbulb_moment",
+    "sfw": true
+  },
+  {
+    "zh": "若有所思",
+    "en": "thoughtful",
+    "sfw": true
+  },
+  {
+    "zh": "陷入沉思",
+    "en": "deep_in_thought",
+    "sfw": true
+  },
+  {
+    "zh": "闭目养神",
+    "en": "eyes_closed_resting",
+    "sfw": true
+  },
+  {
+    "zh": "养精蓄锐",
+    "en": "recharging",
+    "sfw": true
+  },
+  {
+    "zh": "蓄势待发",
+    "en": "poised_to_strike",
+    "sfw": true
+  },
+  {
+    "zh": "跃跃欲试",
+    "en": "eager_to_go",
+    "sfw": true
+  },
+  {
+    "zh": "摩拳擦掌",
+    "en": "rubbing_hands_eagerly",
+    "sfw": true
+  },
+  {
+    "zh": "摩挲手掌",
+    "en": "rubbing_palms",
+    "sfw": true
+  },
+  {
+    "zh": "皱眉思考",
+    "en": "frowning_in_thought",
+    "sfw": true
+  },
+  {
+    "zh": "咬指思考",
+    "en": "biting_nails_thinking",
+    "sfw": true
+  },
+  {
+    "zh": "托腮思考",
+    "en": "chin_in_hand_thinking",
+    "sfw": true
+  },
+  {
+    "zh": "托腮发呆",
+    "en": "chin_in_hand_daydreaming",
+    "sfw": true
+  },
+  {
+    "zh": "发呆望天",
+    "en": "staring_at_sky",
+    "sfw": true
+  },
+  {
+    "zh": "望远方",
+    "en": "gazing_afar",
+    "sfw": true
+  },
+  {
+    "zh": "眺望",
+    "en": "looking_into_distance",
+    "sfw": true
+  },
+  {
+    "zh": "远眺",
+    "en": "gazing_at_horizon",
+    "sfw": true
+  },
+  {
+    "zh": "目送",
+    "en": "watching_someone_leave",
+    "sfw": true
+  },
+  {
+    "zh": "回眸",
+    "en": "looking_back_over_shoulder",
+    "sfw": true
+  },
+  {
+    "zh": "回眸一笑",
+    "en": "looking_back_with_smile",
+    "sfw": true
+  },
+  {
+    "zh": "莞尔一笑",
+    "en": "gentle_smile_bashful",
+    "sfw": true
+  },
+  {
+    "zh": "抿嘴笑",
+    "en": "suppressed_smile",
+    "sfw": true
+  },
+  {
+    "zh": "似笑非笑",
+    "en": "wry_smile",
+    "sfw": true
+  },
+  {
+    "zh": "苦笑",
+    "en": "wry_grin",
+    "sfw": true
+  },
+  {
+    "zh": "讪笑",
+    "en": "sheepish_grin",
+    "sfw": true
+  },
+  {
+    "zh": "讪讪",
+    "en": "sheepish",
+    "sfw": true
+  },
+  {
+    "zh": "尴尬笑",
+    "en": "awkward_smile",
+    "sfw": true
+  },
+  {
+    "zh": "赔笑",
+    "en": "placating_smile",
+    "sfw": true
+  },
+  {
+    "zh": "谄媚",
+    "en": "fawning",
+    "sfw": true
+  },
+  {
+    "zh": "巴结",
+    "en": "sycophantic",
+    "sfw": true
+  },
+  {
+    "zh": "谄媚笑",
+    "en": "ingratiating_smile",
+    "sfw": true
+  },
+  {
+    "zh": "假笑",
+    "en": "fake_smile",
+    "sfw": true
+  },
+  {
+    "zh": "皮笑肉不笑",
+    "en": "insincere_smile",
+    "sfw": true
+  },
+  {
+    "zh": "冷笑",
+    "en": "sneer",
+    "sfw": true
+  },
+  {
+    "zh": "嗤笑",
+    "en": "snicker",
+    "sfw": true
+  },
+  {
+    "zh": "讥笑",
+    "en": "taunting_laugh",
+    "sfw": true
+  },
+  {
+    "zh": "嘲笑",
+    "en": "mocking",
+    "sfw": true
+  },
+  {
+    "zh": "揶揄",
+    "en": "teasing",
+    "sfw": true
+  },
+  {
+    "zh": "打趣",
+    "en": "bantering",
+    "sfw": true
+  },
+  {
+    "zh": "起哄",
+    "en": "egging_on",
+    "sfw": true
+  },
+  {
+    "zh": "逗弄",
+    "en": "teasingly",
+    "sfw": true
+  },
+  {
+    "zh": "捉弄",
+    "en": "playing_trick",
+    "sfw": true
+  },
+  {
+    "zh": "恶作剧",
+    "en": "prankster_grin",
+    "sfw": true
+  },
+  {
+    "zh": "顽皮",
+    "en": "impish",
+    "sfw": true
+  },
+  {
+    "zh": "古灵精怪",
+    "en": "whimsical",
+    "sfw": true
+  },
+  {
+    "zh": "古怪",
+    "en": "quirky",
+    "sfw": true
+  },
+  {
+    "zh": "怪诞",
+    "en": "bizarre_expression",
+    "sfw": true
+  },
+  {
+    "zh": "诡异笑",
+    "en": "uncanny_smile",
+    "sfw": true
+  },
+  {
+    "zh": "渗人笑",
+    "en": "unnerving_smile",
+    "sfw": true
+  },
+  {
+    "zh": "阴森",
+    "en": "ominous_look",
+    "sfw": true
+  },
+  {
+    "zh": "阴郁",
+    "en": "sullen",
+    "sfw": true
+  },
+  {
+    "zh": "阴沉",
+    "en": "gloomy_face",
+    "sfw": true
+  },
+  {
+    "zh": "黑脸",
+    "en": "dark_expression",
+    "sfw": true
+  },
+  {
+    "zh": "沉下脸",
+    "en": "scowling_fiercely",
+    "sfw": true
+  },
+  {
+    "zh": "拉长脸",
+    "en": "long_face",
+    "sfw": true
+  },
+  {
+    "zh": "垮脸",
+    "en": "displeased_face",
+    "sfw": true
+  },
+  {
+    "zh": "撅嘴(生气)",
+    "en": "pouting_angrily",
+    "sfw": true
+  },
+  {
+    "zh": "撇嘴(不满)",
+    "en": "lip_curling",
+    "sfw": true
+  },
+  {
+    "zh": "不满",
+    "en": "disgruntled",
+    "sfw": true
+  },
+  {
+    "zh": "怏怏不乐",
+    "en": "down_in_the_dumps",
+    "sfw": true
+  },
+  {
+    "zh": "闷闷不乐",
+    "en": "moody",
+    "sfw": true
+  },
+  {
+    "zh": "郁郁寡欢",
+    "en": "gloomy_mood",
+    "sfw": true
+  },
+  {
+    "zh": "消沉",
+    "en": "dejected",
+    "sfw": true
+  },
+  {
+    "zh": "垂头丧气",
+    "en": "crestfallen",
+    "sfw": true
+  },
+  {
+    "zh": "灰心",
+    "en": "disheartened",
+    "sfw": true
+  },
+  {
+    "zh": "心灰意冷",
+    "en": "discouraged",
+    "sfw": true
+  },
+  {
+    "zh": "万念俱灰",
+    "en": "hopeless",
+    "sfw": true
+  },
+  {
+    "zh": "自暴自弃",
+    "en": "giving_up",
+    "sfw": true
+  },
+  {
+    "zh": "摆烂",
+    "en": "not_bothering",
+    "sfw": true
+  },
+  {
+    "zh": "破罐破摔",
+    "en": "defiant_give_up",
+    "sfw": true
+  },
+  {
+    "zh": "认输",
+    "en": "conceding",
+    "sfw": true
+  },
+  {
+    "zh": "妥协",
+    "en": "compromising",
+    "sfw": true
+  },
+  {
+    "zh": "让步",
+    "en": "yielding",
+    "sfw": true
+  },
+  {
+    "zh": "忍耐",
+    "en": "enduring",
+    "sfw": true
+  },
+  {
+    "zh": "隐忍",
+    "en": "restrained_anger",
+    "sfw": true
+  },
+  {
+    "zh": "忍气吞声",
+    "en": "swallowing_pride",
+    "sfw": true
+  },
+  {
+    "zh": "逆来顺受",
+    "en": "resigned_acceptance",
+    "sfw": true
+  },
+  {
+    "zh": "敢怒不敢言",
+    "en": "angry_but_silent",
+    "sfw": true
+  },
+  {
+    "zh": "哑口无言",
+    "en": "speechless_with_anger",
+    "sfw": true
+  },
+  {
+    "zh": "语塞",
+    "en": "at_a_loss_for_words",
+    "sfw": true
+  },
+  {
+    "zh": "无言以对",
+    "en": "stunned_silence",
+    "sfw": true
+  },
+  {
+    "zh": "呆若木鸡",
+    "en": "frozen_stiff",
+    "sfw": true
+  },
+  {
+    "zh": "目瞪口呆(惊)",
+    "en": "astonished",
+    "sfw": true
+  },
+  {
+    "zh": "目瞪口呆(吓)",
+    "en": "petrified_with_fear",
+    "sfw": true
+  },
+  {
+    "zh": "吓破胆",
+    "en": "terrified_out_of_wits",
+    "sfw": true
+  },
+  {
+    "zh": "魂飞魄散",
+    "en": "scared_out_of_one's_wits",
+    "sfw": true
+  },
+  {
+    "zh": "心惊胆战",
+    "en": "quaking_in_fear",
+    "sfw": true
+  },
+  {
+    "zh": "提心吊胆",
+    "en": "on_tenterhooks",
+    "sfw": true
+  },
+  {
+    "zh": "忐忑不安",
+    "en": "antsy",
+    "sfw": true
+  },
+  {
+    "zh": "心神不宁",
+    "en": "disturbed",
+    "sfw": true
+  },
+  {
+    "zh": "坐卧不宁",
+    "en": "restlessly_pacing",
+    "sfw": true
+  },
+  {
+    "zh": "急得团团转",
+    "en": "pacing_nervously",
+    "sfw": true
+  },
+  {
+    "zh": "火烧眉毛",
+    "en": "urgent_panic",
+    "sfw": true
+  },
+  {
+    "zh": "十万火急",
+    "en": "frantic_urgency",
+    "sfw": true
+  },
+  {
+    "zh": "抓狂",
+    "en": "losing_it",
+    "sfw": true
+  },
+  {
+    "zh": "崩溃",
+    "en": "mentally_breaking_down",
+    "sfw": true
+  },
+  {
+    "zh": "心态崩了",
+    "en": "devastated",
+    "sfw": true
+  },
+  {
+    "zh": "崩溃大哭",
+    "en": "breaking_down_in_tears",
+    "sfw": true
+  },
+  {
+    "zh": "哭成泪人",
+    "en": "crying_bucketful",
+    "sfw": true
+  },
+  {
+    "zh": "嚎啕",
+    "en": "loud_crying",
+    "sfw": true
+  },
+  {
+    "zh": "啜泣",
+    "en": "whimpering",
+    "sfw": true
+  },
+  {
+    "zh": "抽泣",
+    "en": "sniffling",
+    "sfw": true
+  },
+  {
+    "zh": "呜呜",
+    "en": "whining_cry",
+    "sfw": true
+  },
+  {
+    "zh": "呜咽",
+    "en": "sobbing_quietly",
+    "sfw": true
+  },
+  {
+    "zh": "泣不成声",
+    "en": "choking_on_sobs",
+    "sfw": true
+  },
+  {
+    "zh": "失声痛哭",
+    "en": "crying_uncontrollably",
+    "sfw": true
+  },
+  {
+    "zh": "嚎哭",
+    "en": "howling_cry",
+    "sfw": true
+  },
+  {
+    "zh": "干嚎",
+    "en": "wailing_without_tears",
+    "sfw": true
+  },
+  {
+    "zh": "装哭",
+    "en": "fake_crying",
+    "sfw": true
+  },
+  {
+    "zh": "挤眼泪",
+    "en": "forced_tears",
+    "sfw": true
+  },
+  {
+    "zh": "偷偷抹泪",
+    "en": "wiping_away_tears_secretly",
+    "sfw": true
+  },
+  {
+    "zh": "眼泪汪汪",
+    "en": "teary_eyed",
+    "sfw": true
+  },
+  {
+    "zh": "含泪欲滴",
+    "en": "on_the_verge_of_tears",
+    "sfw": true
+  },
+  {
+    "zh": "强忍泪水",
+    "en": "fighting_back_tears",
+    "sfw": true
+  },
+  {
+    "zh": "强颜欢笑(含泪)",
+    "en": "smiling_through_pain",
+    "sfw": true
+  },
+  {
+    "zh": "苦涩",
+    "en": "bitter_expression",
+    "sfw": true
+  },
+  {
+    "zh": "辛酸",
+    "en": "poignant",
+    "sfw": true
+  },
+  {
+    "zh": "心酸",
+    "en": "aching_heart",
+    "sfw": true
+  },
+  {
+    "zh": "揪心",
+    "en": "heart_wrenching",
+    "sfw": true
+  },
+  {
+    "zh": "心疼",
+    "en": "heartbroken_for",
+    "sfw": true
+  },
+  {
+    "zh": "百感交集",
+    "en": "a_mix_of_emotions",
+    "sfw": true
+  },
+  {
+    "zh": "五味杂陈",
+    "en": "mixed_feelings",
+    "sfw": true
+  },
+  {
+    "zh": "情绪复杂",
+    "en": "complicated_feelings",
+    "sfw": true
+  },
+  {
+    "zh": "面无表情(震惊)",
+    "en": "shock_blank",
+    "sfw": true
+  },
+  {
+    "zh": "神色凝重",
+    "en": "grave_expression",
+    "sfw": true
+  },
+  {
+    "zh": "表情严肃",
+    "en": "solemn",
+    "sfw": true
+  },
+  {
+    "zh": "肃穆",
+    "en": "solemn_face",
+    "sfw": true
+  },
+  {
+    "zh": "庄重",
+    "en": "dignified_expression",
+    "sfw": true
+  },
+  {
+    "zh": "正经",
+    "en": "serious_mood",
+    "sfw": true
+  },
+  {
+    "zh": "一本正经",
+    "en": "dead_serious",
+    "sfw": true
+  },
+  {
+    "zh": "不苟言笑",
+    "en": "rarely_smiling",
+    "sfw": true
+  },
+  {
+    "zh": "高冷",
+    "en": "ice_queen_look",
+    "sfw": true
+  },
+  {
+    "zh": "冷若冰霜",
+    "en": "frosty_look",
+    "sfw": true
+  },
+  {
+    "zh": "生人勿近",
+    "en": "intimidating_aura",
+    "sfw": true
+  },
+  {
+    "zh": "强势",
+    "en": "domineering",
+    "sfw": true
+  },
+  {
+    "zh": "霸道",
+    "en": "overbearing",
+    "sfw": true
+  },
+  {
+    "zh": "有压迫感",
+    "en": "oppressive_presence",
+    "sfw": true
+  },
+  {
+    "zh": "气场强",
+    "en": "commanding_presence",
+    "sfw": true
+  },
+  {
+    "zh": "上位者",
+    "en": "authoritative",
+    "sfw": true
+  },
+  {
+    "zh": "威严十足",
+    "en": "imposing",
+    "sfw": true
+  },
+  {
+    "zh": "王者风范",
+    "en": "regal",
+    "sfw": true
+  },
+  {
+    "zh": "高贵",
+    "en": "noble_air",
+    "sfw": true
+  },
+  {
+    "zh": "优雅",
+    "en": "elegant_poise",
+    "sfw": true
+  },
+  {
+    "zh": "端庄",
+    "en": "demure",
+    "sfw": true
+  },
+  {
+    "zh": "文静",
+    "en": "quiet_composed",
+    "sfw": true
+  },
+  {
+    "zh": "知性",
+    "en": "intellectual_air",
+    "sfw": true
+  },
+  {
+    "zh": "书卷气",
+    "en": "bookish",
+    "sfw": true
+  },
+  {
+    "zh": "儒雅",
+    "en": "cultured",
+    "sfw": true
+  },
+  {
+    "zh": "温文尔雅",
+    "en": "gentlemanly",
+    "sfw": true
+  },
+  {
+    "zh": "彬彬有礼",
+    "en": "polite",
+    "sfw": true
+  },
+  {
+    "zh": "恭顺",
+    "en": "deferential",
+    "sfw": true
+  },
+  {
+    "zh": "乖巧",
+    "en": "well_behaved",
+    "sfw": true
+  },
+  {
+    "zh": "听话",
+    "en": "obedient_look",
+    "sfw": true
+  },
+  {
+    "zh": "顺从",
+    "en": "submissive_expression",
+    "sfw": true
+  },
+  {
+    "zh": "乖巧可爱",
+    "en": "obedient_and_cute",
+    "sfw": true
+  },
+  {
+    "zh": "黏人",
+    "en": "clingy",
+    "sfw": true
+  },
+  {
+    "zh": "撒娇卖萌",
+    "en": "begging_cutely",
+    "sfw": true
+  },
+  {
+    "zh": "求表扬",
+    "en": "seeking_praise",
+    "sfw": true
+  },
+  {
+    "zh": "得意求夸",
+    "en": "proudly_awaiting_praise",
+    "sfw": true
+  },
+  {
+    "zh": "邀功",
+    "en": "fishing_for_compliments",
+    "sfw": true
+  },
+  {
+    "zh": "邀宠",
+    "en": "seeking_favor",
+    "sfw": true
+  },
+  {
+    "zh": "争宠",
+    "en": "vying_for_attention",
+    "sfw": true
+  },
+  {
+    "zh": "吃醋",
+    "en": "jealous_pout",
+    "sfw": true
+  },
+  {
+    "zh": "醋意大发",
+    "en": "green_with_envy",
+    "sfw": true
+  },
+  {
+    "zh": "眼红",
+    "en": "envious_glare",
+    "sfw": true
+  },
+  {
+    "zh": "羡慕嫉妒恨",
+    "en": "envious_and_bitter",
+    "sfw": true
+  },
+  {
+    "zh": "酸溜溜",
+    "en": "sour_grapes",
+    "sfw": true
+  },
+  {
+    "zh": "不服气",
+    "en": "unconvinced_defiance",
+    "sfw": true
+  },
+  {
+    "zh": "较劲",
+    "en": "competitive_glare",
+    "sfw": true
+  },
+  {
+    "zh": "挑衅",
+    "en": "provocative_look",
+    "sfw": true
+  },
+  {
+    "zh": "叫嚣",
+    "en": "taunting_shout",
+    "sfw": true
+  },
+  {
+    "zh": "示威",
+    "en": "showing_off_taunt",
+    "sfw": true
+  },
+  {
+    "zh": "耀武扬威",
+    "en": "swaggering",
+    "sfw": true
+  },
+  {
+    "zh": "嚣张",
+    "en": "brazen",
+    "sfw": true
+  },
+  {
+    "zh": "狂妄",
+    "en": "audacious",
+    "sfw": true
+  },
+  {
+    "zh": "目中无人(傲)",
+    "en": "looking_down_on_others",
+    "sfw": true
+  },
+  {
+    "zh": "趾高气扬",
+    "en": "walking_tall",
+    "sfw": true
+  },
+  {
+    "zh": "得意忘形(傲)",
+    "en": "getting_ahead_of_oneself",
+    "sfw": true
+  },
+  {
+    "zh": "无忧无虑",
+    "en": "carefree",
+    "sfw": true
+  },
+  {
+    "zh": "顺从",
+    "en": "submissive",
+    "sfw": true
+  },
+  {
+    "zh": "梦幻",
+    "en": "dreamy",
+    "sfw": true
+  },
+  {
+    "zh": "得意地笑",
+    "en": "smirking",
+    "sfw": true
+  },
+  {
+    "zh": "出神",
+    "en": "spaced_out",
+    "sfw": true
+  },
+  {
+    "zh": "凶悍",
+    "en": "fierce",
+    "sfw": true
+  },
+  {
+    "zh": "惊叹",
+    "en": "amazed",
+    "sfw": true
+  }
+]

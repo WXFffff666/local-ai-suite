@@ -237,6 +237,12 @@ export type ImageGenerateInput = z.infer<typeof imageGenerateSchema>
  * (~12MB decoded); the real 8MB limit is enforced on decoded bytes in the
  * handler so oversize payloads get the dedicated dataurl-too-large error.
  */
+export const modelsOpenDirSchema = z.object({
+  /** modelsDir 下子目录（llm/diffusion/lora/embedding…），缺省打开根目录 */
+  sub: z.string().max(64).regex(/^[\w-]+$/).optional()
+})
+export type ModelsOpenDirInput = z.infer<typeof modelsOpenDirSchema>
+
 export const imageSaveTempImageSchema = z.object({
   dataURL: z.string().min(1).max(16_000_000).regex(/^data:image\/png;base64,[A-Za-z0-9+/=]+$/, 'dataURL must be a base64 PNG data URL')
 })

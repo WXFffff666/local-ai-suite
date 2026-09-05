@@ -1,0 +1,680 @@
+[
+  {
+    "zh": "杰作",
+    "en": "masterpiece",
+    "sfw": true,
+    "weight": 1.2
+  },
+  {
+    "zh": "最佳质量",
+    "en": "best_quality",
+    "sfw": true,
+    "weight": 1.15
+  },
+  {
+    "zh": "超精细",
+    "en": "ultra_detailed",
+    "sfw": true,
+    "weight": 1.1
+  },
+  {
+    "zh": "高分辨率",
+    "en": "high_resolution",
+    "sfw": true,
+    "weight": 1.1
+  },
+  {
+    "zh": "高分辨率",
+    "en": "highres",
+    "sfw": true,
+    "weight": 1.1
+  },
+  {
+    "zh": "超高分辨率",
+    "en": "absurdres",
+    "sfw": true,
+    "weight": 1.15
+  },
+  {
+    "zh": "极其精细",
+    "en": "extremely_detailed",
+    "sfw": true,
+    "weight": 1.1
+  },
+  {
+    "zh": "精细背景",
+    "en": "detailed_background",
+    "sfw": true
+  },
+  {
+    "zh": "复杂细节",
+    "en": "intricate_details",
+    "sfw": true
+  },
+  {
+    "zh": "锐利对焦",
+    "en": "sharp_focus",
+    "sfw": true
+  },
+  {
+    "zh": "获奖作品",
+    "en": "award_winning",
+    "sfw": true
+  },
+  {
+    "zh": "ArtStation热门",
+    "en": "trending_on_artstation",
+    "sfw": true
+  },
+  {
+    "zh": "专业",
+    "en": "professional",
+    "sfw": true
+  },
+  {
+    "zh": "8K",
+    "en": "8k",
+    "sfw": true,
+    "weight": 1.1
+  },
+  {
+    "zh": "4K",
+    "en": "4k",
+    "sfw": true,
+    "weight": 1.05
+  },
+  {
+    "zh": "超高清",
+    "en": "uhd",
+    "sfw": true,
+    "weight": 1.05
+  },
+  {
+    "zh": "HDR",
+    "en": "hdr",
+    "sfw": true
+  },
+  {
+    "zh": "电影感",
+    "en": "cinematic",
+    "sfw": true
+  },
+  {
+    "zh": "美丽",
+    "en": "beautiful",
+    "sfw": true
+  },
+  {
+    "zh": "华丽",
+    "en": "gorgeous",
+    "sfw": true
+  },
+  {
+    "zh": "优雅",
+    "en": "elegant",
+    "sfw": true
+  },
+  {
+    "zh": "精致",
+    "en": "refined",
+    "sfw": true
+  },
+  {
+    "zh": "打磨细腻",
+    "en": "polished",
+    "sfw": true
+  },
+  {
+    "zh": "干净线条",
+    "en": "clean_lines",
+    "sfw": true
+  },
+  {
+    "zh": "清晰",
+    "en": "crisp",
+    "sfw": true
+  },
+  {
+    "zh": "生动",
+    "en": "vivid",
+    "sfw": true
+  },
+  {
+    "zh": "鲜活",
+    "en": "vibrant",
+    "sfw": true
+  },
+  {
+    "zh": "色彩丰富",
+    "en": "colorful",
+    "sfw": true
+  },
+  {
+    "zh": "饱和",
+    "en": "saturated",
+    "sfw": true
+  },
+  {
+    "zh": "动感",
+    "en": "dynamic",
+    "sfw": true
+  },
+  {
+    "zh": "富有表现力",
+    "en": "expressive",
+    "sfw": true
+  },
+  {
+    "zh": "氛围感",
+    "en": "atmospheric",
+    "sfw": true
+  },
+  {
+    "zh": "惊艳",
+    "en": "stunning",
+    "sfw": true
+  },
+  {
+    "zh": "叹为观止",
+    "en": "breathtaking",
+    "sfw": true
+  },
+  {
+    "zh": "无瑕",
+    "en": "flawless",
+    "sfw": true
+  },
+  {
+    "zh": "完美",
+    "en": "pristine",
+    "sfw": true
+  },
+  {
+    "zh": "无瑕",
+    "en": "immaculate",
+    "sfw": true
+  },
+  {
+    "zh": "精巧",
+    "en": "intricate",
+    "sfw": true
+  },
+  {
+    "zh": "精细",
+    "en": "elaborate",
+    "sfw": true
+  },
+  {
+    "zh": "考究",
+    "en": "sophisticated",
+    "sfw": true
+  },
+  {
+    "zh": "高质量",
+    "en": "high_quality",
+    "sfw": true
+  },
+  {
+    "zh": "高级",
+    "en": "premium",
+    "sfw": true
+  },
+  {
+    "zh": "顶级质量",
+    "en": "top_quality",
+    "sfw": true
+  },
+  {
+    "zh": "精美",
+    "en": "exquisite",
+    "sfw": true
+  },
+  {
+    "zh": "奢华",
+    "en": "luxurious",
+    "sfw": true
+  },
+  {
+    "zh": "无可挑剔",
+    "en": "impeccable",
+    "sfw": true
+  },
+  {
+    "zh": "一流",
+    "en": "superb",
+    "sfw": true
+  },
+  {
+    "zh": "华丽",
+    "en": "splendid",
+    "sfw": true
+  },
+  {
+    "zh": "出众",
+    "en": "outstanding",
+    "sfw": true
+  },
+  {
+    "zh": "超精细",
+    "en": "super_detailed",
+    "sfw": true
+  },
+  {
+    "zh": "超高分辨率",
+    "en": "ultra_high_resolution",
+    "sfw": true
+  },
+  {
+    "zh": "高细节",
+    "en": "high_detail",
+    "sfw": true
+  },
+  {
+    "zh": "锐利",
+    "en": "sharp",
+    "sfw": true
+  },
+  {
+    "zh": "平衡",
+    "en": "balanced",
+    "sfw": true
+  },
+  {
+    "zh": "光追",
+    "en": "ray_tracing",
+    "sfw": true
+  },
+  {
+    "zh": "体积雾",
+    "en": "volumetric_fog",
+    "sfw": true
+  },
+  {
+    "zh": "次表面散射",
+    "en": "subsurface_scattering",
+    "sfw": true
+  },
+  {
+    "zh": "全局光照",
+    "en": "global_illumination",
+    "sfw": true
+  },
+  {
+    "zh": "环境光遮蔽",
+    "en": "ambient_occlusion",
+    "sfw": true
+  },
+  {
+    "zh": "艺术性强",
+    "en": "artistic",
+    "sfw": true
+  },
+  {
+    "zh": "构图好",
+    "en": "good_composition",
+    "sfw": true
+  },
+  {
+    "zh": "透视正确",
+    "en": "correct_perspective",
+    "sfw": true
+  },
+  {
+    "zh": "比例正确",
+    "en": "correct_proportions",
+    "sfw": true
+  },
+  {
+    "zh": "色彩和谐",
+    "en": "harmonious_colors",
+    "sfw": true
+  },
+  {
+    "zh": "细节丰富",
+    "en": "rich_details",
+    "sfw": true
+  },
+  {
+    "zh": "精细细节",
+    "en": "fine_details",
+    "sfw": true
+  },
+  {
+    "zh": "材质真实",
+    "en": "realistic_materials",
+    "sfw": true
+  },
+  {
+    "zh": "皮肤质感",
+    "en": "skin_texture",
+    "sfw": true
+  },
+  {
+    "zh": "布料质感",
+    "en": "fabric_texture",
+    "sfw": true
+  },
+  {
+    "zh": "色彩准确",
+    "en": "accurate_colors",
+    "sfw": true
+  },
+  {
+    "zh": "风格统一",
+    "en": "consistent_style",
+    "sfw": true
+  },
+  {
+    "zh": "风格独特",
+    "en": "unique_style",
+    "sfw": true
+  },
+  {
+    "zh": "主体突出",
+    "en": "prominent_subject",
+    "sfw": true
+  },
+  {
+    "zh": "笔触流畅",
+    "en": "smooth_brushwork",
+    "sfw": true
+  },
+  {
+    "zh": "空间感",
+    "en": "sense_of_depth",
+    "sfw": true
+  },
+  {
+    "zh": "层次丰富",
+    "en": "rich_layers",
+    "sfw": true
+  },
+  {
+    "zh": "光影出色",
+    "en": "good_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "渐变平滑",
+    "en": "smooth_gradients",
+    "sfw": true
+  },
+  {
+    "zh": "边缘清晰",
+    "en": "crisp_edges",
+    "sfw": true
+  },
+  {
+    "zh": "高光自然",
+    "en": "natural_highlights",
+    "sfw": true
+  },
+  {
+    "zh": "阴影自然",
+    "en": "natural_shadows",
+    "sfw": true
+  },
+  {
+    "zh": "反射真实",
+    "en": "realistic_reflections",
+    "sfw": true
+  },
+  {
+    "zh": "皮肤光泽",
+    "en": "skin_glow",
+    "sfw": true
+  },
+  {
+    "zh": "眼睛高光",
+    "en": "eye_highlight",
+    "sfw": true
+  },
+  {
+    "zh": "发丝细节",
+    "en": "detailed_hair",
+    "sfw": true
+  },
+  {
+    "zh": "服饰细节",
+    "en": "detailed_clothing",
+    "sfw": true
+  },
+  {
+    "zh": "色调准确",
+    "en": "accurate_tone",
+    "sfw": true
+  },
+  {
+    "zh": "完成度高",
+    "en": "highly_finished",
+    "sfw": true
+  },
+  {
+    "zh": "渲染精良",
+    "en": "well_rendered",
+    "sfw": true
+  },
+  {
+    "zh": "工作室品质",
+    "en": "studio_quality",
+    "sfw": true
+  },
+  {
+    "zh": "照片级细节",
+    "en": "photorealistic_detail",
+    "sfw": true
+  },
+  {
+    "zh": "对焦精准",
+    "en": "crisp_focus",
+    "sfw": true
+  },
+  {
+    "zh": "细节锐利",
+    "en": "sharp_details",
+    "sfw": true
+  },
+  {
+    "zh": "大师级细节",
+    "en": "masterful_detail",
+    "sfw": true
+  },
+  {
+    "zh": "专业完成度",
+    "en": "professional_finish",
+    "sfw": true
+  },
+  {
+    "zh": "干净渲染",
+    "en": "clean_rendering",
+    "sfw": true
+  },
+  {
+    "zh": "打磨细节",
+    "en": "polished_detail",
+    "sfw": true
+  },
+  {
+    "zh": "精修细节",
+    "en": "refined_detail",
+    "sfw": true
+  },
+  {
+    "zh": "高级光影",
+    "en": "sophisticated_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "动态光影",
+    "en": "dynamic_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "色彩生动",
+    "en": "vivid_detail",
+    "sfw": true
+  },
+  {
+    "zh": "色彩浓郁",
+    "en": "rich_color",
+    "sfw": true
+  },
+  {
+    "zh": "自然色彩",
+    "en": "natural_color",
+    "sfw": true
+  },
+  {
+    "zh": "真实还原",
+    "en": "true_to_life",
+    "sfw": true
+  },
+  {
+    "zh": "明暗对比",
+    "en": "chiaroscuro",
+    "sfw": true
+  },
+  {
+    "zh": "大师杰作",
+    "en": "masterwork",
+    "sfw": true
+  },
+  {
+    "zh": "高清",
+    "en": "high-definition",
+    "sfw": true
+  },
+  {
+    "zh": "卓越",
+    "en": "excellent_quality",
+    "sfw": true
+  },
+  {
+    "zh": "精良",
+    "en": "well-crafted",
+    "sfw": true
+  },
+  {
+    "zh": "精工细作",
+    "en": "finely_crafted",
+    "sfw": true
+  },
+  {
+    "zh": "细节满满",
+    "en": "detail_heavy",
+    "sfw": true
+  },
+  {
+    "zh": "高还原",
+    "en": "highly_accurate",
+    "sfw": true
+  },
+  {
+    "zh": "画质精细",
+    "en": "fine_grain_detail",
+    "sfw": true
+  },
+  {
+    "zh": "干净画面",
+    "en": "clean_image",
+    "sfw": true
+  },
+  {
+    "zh": "亮丽",
+    "en": "bright_and_vivid",
+    "sfw": true
+  },
+  {
+    "zh": "通透感",
+    "en": "translucent_quality",
+    "sfw": true
+  },
+  {
+    "zh": "质感",
+    "en": "texture_quality",
+    "sfw": true
+  },
+  {
+    "zh": "材质真实",
+    "en": "true_materials",
+    "sfw": true
+  },
+  {
+    "zh": "光影到位",
+    "en": "proper_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "构图平衡",
+    "en": "balanced_framing",
+    "sfw": true
+  },
+  {
+    "zh": "主体醒目",
+    "en": "prominent_focus",
+    "sfw": true
+  },
+  {
+    "zh": "唯美",
+    "en": "very_aesthetic",
+    "sfw": true
+  },
+  {
+    "zh": "精美细节",
+    "en": "beautiful_detailed",
+    "sfw": true
+  },
+  {
+    "zh": "普通质量",
+    "en": "normal_quality",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "低质量",
+    "en": "low_quality",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "最差质量",
+    "en": "worst_quality",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "评分9",
+    "en": "score_9",
+    "sfw": true
+  },
+  {
+    "zh": "评分8以上",
+    "en": "score_8_up",
+    "sfw": true
+  },
+  {
+    "zh": "评分7以上",
+    "en": "score_7_up",
+    "sfw": true
+  },
+  {
+    "zh": "评分6以上",
+    "en": "score_6_up",
+    "sfw": true
+  },
+  {
+    "zh": "惊艳质量",
+    "en": "amazing_quality",
+    "sfw": true
+  },
+  {
+    "zh": "超可爱",
+    "en": "very_awa",
+    "sfw": true
+  },
+  {
+    "zh": "最新",
+    "en": "newest",
+    "sfw": true
+  }
+]

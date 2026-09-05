@@ -1,0 +1,554 @@
+{
+  "草神": [
+    "Nahida"
+  ],
+  "小吉祥草王": [
+    "Nahida"
+  ],
+  "纳西妲": [
+    "Nahida"
+  ],
+  "雷电将军": [
+    "Raiden Shogun"
+  ],
+  "雷神": [
+    "Raiden Shogun",
+    "Mei Raiden"
+  ],
+  "钟离": [
+    "Zhongli"
+  ],
+  "岩王帝君": [
+    "Zhongli"
+  ],
+  "Saber": [
+    "Artoria Pendragon",
+    "Nero Claudius",
+    "Mordred Pendragon"
+  ],
+  "呆毛王": [
+    "Artoria Pendragon"
+  ],
+  "阿尔托莉雅": [
+    "Artoria Pendragon"
+  ],
+  "亚瑟王": [
+    "Artoria Pendragon"
+  ],
+  "尼禄": [
+    "Nero Claudius"
+  ],
+  "罗马之花": [
+    "Nero Claudius"
+  ],
+  "莫德雷德": [
+    "Mordred Pendragon"
+  ],
+  "玛修": [
+    "Mash Kyrielight"
+  ],
+  "学妹": [
+    "Mash Kyrielight"
+  ],
+  "贞德": [
+    "Jeanne  d'Arc"
+  ],
+  "圣女": [
+    "Jeanne  d'Arc"
+  ],
+  "玉藻前": [
+    "Tamamo-no-Mae"
+  ],
+  "玉藻": [
+    "Tamamo-no-Mae"
+  ],
+  "狐狸精": [
+    "Tamamo-no-Mae"
+  ],
+  "远坂凛": [
+    "Rin Tohsaka"
+  ],
+  "间桐樱": [
+    "Sakura Matou"
+  ],
+  "美杜莎": [
+    "Medusa"
+  ],
+  "R姐": [
+    "Medusa"
+  ],
+  "美狄亚": [
+    "Medea"
+  ],
+  "伊莉雅": [
+    "Illyasviel von Einzbern"
+  ],
+  "伊利亚": [
+    "Illyasviel von Einzbern"
+  ],
+  "斯卡哈": [
+    "Scáthach"
+  ],
+  "师匠": [
+    "Scáthach"
+  ],
+  "冲田总司": [
+    "Souji Okita"
+  ],
+  "冲田": [
+    "Souji Okita"
+  ],
+  "阿比盖尔": [
+    "Abigail Williams"
+  ],
+  "阿比": [
+    "Abigail Williams"
+  ],
+  "刑部姬": [
+    "Osakabehime"
+  ],
+  "梅露辛": [
+    "Melusine"
+  ],
+  "巴格斯特": [
+    "Barghest"
+  ],
+  "牛若丸": [
+    "Ushiwakamaru"
+  ],
+  "初音未来": [
+    "Miku Hatsune"
+  ],
+  "初音": [
+    "Miku Hatsune"
+  ],
+  "葱娘": [
+    "Miku Hatsune"
+  ],
+  "miku": [
+    "Miku Hatsune"
+  ],
+  "镜音铃": [
+    "Rin Kagamine"
+  ],
+  "镜音": [
+    "Rin Kagamine"
+  ],
+  "重音": [
+    "Teto Kasane"
+  ],
+  "灵梦": [
+    "Reimu Hakurei"
+  ],
+  "红白": [
+    "Reimu Hakurei"
+  ],
+  "魔理沙": [
+    "Marisa Kirisame"
+  ],
+  "黑白": [
+    "Marisa Kirisame"
+  ],
+  "蕾米莉亚": [
+    "Remilia Scarlet"
+  ],
+  "蕾米": [
+    "Remilia Scarlet"
+  ],
+  "大小姐": [
+    "Remilia Scarlet"
+  ],
+  "咲夜": [
+    "Sakuya Izayoi"
+  ],
+  "女仆长": [
+    "Sakuya Izayoi"
+  ],
+  "恋恋": [
+    "Koishi Komeiji"
+  ],
+  "小恋": [
+    "Koishi Komeiji"
+  ],
+  "觉": [
+    "Satori Komeiji"
+  ],
+  "爱丽丝": [
+    "Alice Margatroid"
+  ],
+  "帕秋莉": [
+    "Patchouli Knowledge"
+  ],
+  "姆Q": [
+    "Patchouli Knowledge"
+  ],
+  "八云紫": [
+    "Yukari Yakumo"
+  ],
+  "紫妈": [
+    "Yukari Yakumo"
+  ],
+  "文文": [
+    "Aya Shameimaru"
+  ],
+  "射命丸": [
+    "Aya Shameimaru"
+  ],
+  "铃仙": [
+    "Reisen Udongein Inaba"
+  ],
+  "月兔": [
+    "Reisen Udongein Inaba"
+  ],
+  "妹红": [
+    "Fujiwara no Mokou"
+  ],
+  "不死鸟": [
+    "Fujiwara no Mokou"
+  ],
+  "诹访子": [
+    "Suwako Moriya"
+  ],
+  "青蛙子": [
+    "Suwako Moriya"
+  ],
+  "灵乌路空": [
+    "Utsuho Reiuji"
+  ],
+  "荷取": [
+    "Nitori Kawashiro"
+  ],
+  "河童": [
+    "Nitori Kawashiro"
+  ],
+  "辉夜姬": [
+    "Kaguya Houraisan"
+  ],
+  "辉夜": [
+    "Kaguya Houraisan"
+  ],
+  "因幡帝": [
+    "Tewi Inaba"
+  ],
+  "水桥帕露西": [
+    "Parsee Mizuhashi"
+  ],
+  "神奈子": [
+    "Kanako Yasaka"
+  ],
+  "晓美焰": [
+    "Homura Akemi"
+  ],
+  "吼姆拉": [
+    "Homura Akemi"
+  ],
+  "鹿目圆": [
+    "Madoka Kaname"
+  ],
+  "小圆": [
+    "Madoka Kaname"
+  ],
+  "圆神": [
+    "Madoka Kaname"
+  ],
+  "沙耶加": [
+    "Sayaka Miki"
+  ],
+  "美树沙耶香": [
+    "Sayaka Miki"
+  ],
+  "巴麻美": [
+    "Mami Tomoe"
+  ],
+  "学姐": [
+    "Mami Tomoe"
+  ],
+  "旅行者": [
+    "Ying"
+  ],
+  "椰羊": [
+    "Ganyu"
+  ],
+  "芽衣": [
+    "Mei Raiden"
+  ],
+  "雷之律者": [
+    "Mei Raiden"
+  ],
+  "琪亚娜": [
+    "Kiana Kaslana"
+  ],
+  "布洛妮娅": [
+    "Bronya Zaychik"
+  ],
+  "希儿": [
+    "Seele Vollerei"
+  ],
+  "德丽莎": [
+    "Theresa Apocalypse"
+  ],
+  "丽塔": [
+    "Rita Rossweisse"
+  ],
+  "玛琳": [
+    "Marine Houshou"
+  ],
+  "船长": [
+    "Marine Houshou"
+  ],
+  "吹雪": [
+    "Fubuki Shirakami"
+  ],
+  "白上吹雪": [
+    "Fubuki Shirakami"
+  ],
+  "鲨鱼": [
+    "Gura Gawr"
+  ],
+  "噶呜·古拉": [
+    "Gura Gawr"
+  ],
+  "星街彗星": [
+    "Suisei Hoshimachi"
+  ],
+  "彗星": [
+    "Suisei Hoshimachi"
+  ],
+  "佩克拉": [
+    "Pekora Usada"
+  ],
+  "兔田": [
+    "Pekora Usada"
+  ],
+  "小粥": [
+    "Okayu Nekomata"
+  ],
+  "伊那": [
+    "Ina'nis Ninomae"
+  ],
+  "卡莉奥佩": [
+    "Calliope Mori"
+  ],
+  "死神": [
+    "Calliope Mori"
+  ],
+  "克洛尼": [
+    "Kronii Ouro"
+  ],
+  "穆梅": [
+    "Mumei Nanashi"
+  ],
+  "阿米娅": [
+    "Amiya"
+  ],
+  "星野": [
+    "Hoshino Takanashi"
+  ],
+  "大叔": [
+    "Hoshino Takanashi"
+  ],
+  "优香": [
+    "Yuuka Hayase"
+  ],
+  "明日奈": [
+    "Asuna Ichinose"
+  ],
+  "白子": [
+    "Shiroko Sunaookami"
+  ],
+  "佳代子": [
+    "Kayoko Onikata"
+  ],
+  "野乃美": [
+    "Nonomi Izayoi"
+  ],
+  "日富美": [
+    "Hifumi Ajitani"
+  ],
+  "东海帝王": [
+    "Toukai Teiou"
+  ],
+  "帝宝": [
+    "Toukai Teiou"
+  ],
+  "爱丽速子": [
+    "Agnes Tachyon"
+  ],
+  "速子": [
+    "Agnes Tachyon"
+  ],
+  "曼城茶座": [
+    "Manhattan Cafe"
+  ],
+  "茶座": [
+    "Manhattan Cafe"
+  ],
+  "黄金船": [
+    "Gold Ship"
+  ],
+  "金船": [
+    "Gold Ship"
+  ],
+  "特别周": [
+    "Special Week"
+  ],
+  "米浴": [
+    "Rice Shower"
+  ],
+  "无声铃鹿": [
+    "Silence Suzuka"
+  ],
+  "目白麦昆": [
+    "Mejiro McQueen"
+  ],
+  "麦昆": [
+    "Mejiro McQueen"
+  ],
+  "大和赤骥": [
+    "Daiwa Scarlet"
+  ],
+  "气槽": [
+    "Air Groove"
+  ],
+  "小栗帽": [
+    "Oguri Cap"
+  ],
+  "青云天空": [
+    "Seiun Sky"
+  ],
+  "乌拉拉": [
+    "Haru Urara"
+  ],
+  "岛风": [
+    "Shimakaze"
+  ],
+  "夕立": [
+    "Yuudachi"
+  ],
+  "长门": [
+    "Nagato"
+  ],
+  "天龙": [
+    "Tenryuu"
+  ],
+  "苍龙": [
+    "Souryuu"
+  ],
+  "爱宕": [
+    "Atago"
+  ],
+  "贝尔法斯特": [
+    "Belfast"
+  ],
+  "欧根亲王": [
+    "Prinz Eugen"
+  ],
+  "独角兽": [
+    "Unicorn"
+  ],
+  "企业": [
+    "Enterprise"
+  ],
+  "后藤一里": [
+    "Hitori Gotou"
+  ],
+  "波奇": [
+    "Hitori Gotou"
+  ],
+  "喜多郁代": [
+    "Ikuyo Kita"
+  ],
+  "虹夏": [
+    "Nijika Ijichi"
+  ],
+  "凉宫春日": [
+    "Haruhi Suzumiya"
+  ],
+  "团长": [
+    "Haruhi Suzumiya"
+  ],
+  "炮姐": [
+    "Mikoto Misaka"
+  ],
+  "御坂": [
+    "Mikoto Misaka"
+  ],
+  "超电磁炮": [
+    "Mikoto Misaka"
+  ],
+  "时崎狂三": [
+    "Kurumi Tokisaki"
+  ],
+  "狂三": [
+    "Kurumi Tokisaki"
+  ],
+  "三笠": [
+    "Mikasa Ackerman"
+  ],
+  "芙莉莲": [
+    "Frieren"
+  ],
+  "葬送的芙莉莲": [
+    "Frieren"
+  ],
+  "蒂法": [
+    "Tifa Lockhart"
+  ],
+  "四宫辉夜": [
+    "Kaguya Shinomiya"
+  ],
+  "辉夜大小姐": [
+    "Kaguya Shinomiya"
+  ],
+  "桔梗": [
+    "Kikyou"
+  ],
+  "帕瓦": [
+    "Power"
+  ],
+  "蕾姆": [
+    "Rem"
+  ],
+  "拉姆": [
+    "Ram"
+  ],
+  "艾米莉亚": [
+    "Emilia"
+  ],
+  "玛奇玛": [
+    "Makima"
+  ],
+  "零二": [
+    "Zero Two"
+  ],
+  "02": [
+    "Zero Two"
+  ],
+  "锦木千束": [
+    "Chisato Nishikigi"
+  ],
+  "泷奈": [
+    "Takina Inoue"
+  ],
+  "阿尼亚": [
+    "Anya Forger"
+  ],
+  "约尔": [
+    "Yor Forger"
+  ],
+  "娜美": [
+    "Nami"
+  ],
+  "女帝": [
+    "Hancock Boa"
+  ],
+  "春丽": [
+    "Chun-Li"
+  ],
+  "不知火舞": [
+    "Mai Shiranui"
+  ],
+  "雷电芽衣": [
+    "Mei Raiden"
+  ]
+}

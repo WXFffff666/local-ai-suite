@@ -1,0 +1,2793 @@
+[
+  {
+    "zh": "衬衫",
+    "en": "shirt",
+    "sfw": true
+  },
+  {
+    "zh": "长袖",
+    "en": "long_sleeves",
+    "sfw": true
+  },
+  {
+    "zh": "裙子",
+    "en": "skirt",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "连衣裙",
+    "en": "dress",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "手套",
+    "en": "gloves",
+    "sfw": true
+  },
+  {
+    "zh": "帽子",
+    "en": "hat",
+    "sfw": true
+  },
+  {
+    "zh": "过膝袜",
+    "en": "thighhighs",
+    "sfw": true
+  },
+  {
+    "zh": "夹克",
+    "en": "jacket",
+    "sfw": true
+  },
+  {
+    "zh": "缎带",
+    "en": "ribbon",
+    "sfw": true
+  },
+  {
+    "zh": "白衬衫",
+    "en": "white_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "校服",
+    "en": "school_uniform",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "泳装",
+    "en": "swimsuit",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "短袖",
+    "en": "short_sleeves",
+    "sfw": true
+  },
+  {
+    "zh": "鞋子",
+    "en": "shoes",
+    "sfw": true
+  },
+  {
+    "zh": "立领衬衫",
+    "en": "collared_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "连裤袜",
+    "en": "pantyhose",
+    "sfw": true
+  },
+  {
+    "zh": "百褶裙",
+    "en": "pleated_skirt",
+    "sfw": true
+  },
+  {
+    "zh": "靴子",
+    "en": "boots",
+    "sfw": true
+  },
+  {
+    "zh": "长裤",
+    "en": "pants",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "发箍",
+    "en": "hairband",
+    "sfw": true
+  },
+  {
+    "zh": "比基尼",
+    "en": "bikini",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "黑手套",
+    "en": "black_gloves",
+    "sfw": true
+  },
+  {
+    "zh": "领带",
+    "en": "necktie",
+    "sfw": true
+  },
+  {
+    "zh": "短裤",
+    "en": "shorts",
+    "sfw": true
+  },
+  {
+    "zh": "无袖",
+    "en": "sleeveless",
+    "sfw": true
+  },
+  {
+    "zh": "颈链",
+    "en": "choker",
+    "sfw": true
+  },
+  {
+    "zh": "分离袖",
+    "en": "detached_sleeves",
+    "sfw": true
+  },
+  {
+    "zh": "短袜",
+    "en": "socks",
+    "sfw": true
+  },
+  {
+    "zh": "泡泡袖",
+    "en": "puffy_sleeves",
+    "sfw": true
+  },
+  {
+    "zh": "腰带",
+    "en": "belt",
+    "sfw": true
+  },
+  {
+    "zh": "黑过膝袜",
+    "en": "black_thighhighs",
+    "sfw": true
+  },
+  {
+    "zh": "眼镜",
+    "en": "glasses",
+    "sfw": true
+  },
+  {
+    "zh": "黑裙",
+    "en": "black_skirt",
+    "sfw": true
+  },
+  {
+    "zh": "白裙",
+    "en": "white_dress",
+    "sfw": true
+  },
+  {
+    "zh": "白手套",
+    "en": "white_gloves",
+    "sfw": true
+  },
+  {
+    "zh": "兜帽",
+    "en": "hood",
+    "sfw": true
+  },
+  {
+    "zh": "水手领",
+    "en": "sailor_collar",
+    "sfw": true
+  },
+  {
+    "zh": "黑夹克",
+    "en": "black_jacket",
+    "sfw": true
+  },
+  {
+    "zh": "迷你裙",
+    "en": "miniskirt",
+    "sfw": true
+  },
+  {
+    "zh": "大衣",
+    "en": "coat",
+    "sfw": true
+  },
+  {
+    "zh": "黑裙",
+    "en": "black_dress",
+    "sfw": true
+  },
+  {
+    "zh": "露指手套",
+    "en": "fingerless_gloves",
+    "sfw": true
+  },
+  {
+    "zh": "黑衬衫",
+    "en": "black_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "宽袖",
+    "en": "wide_sleeves",
+    "sfw": true
+  },
+  {
+    "zh": "白过膝袜",
+    "en": "white_thighhighs",
+    "sfw": true
+  },
+  {
+    "zh": "露肩装",
+    "en": "off_shoulder",
+    "sfw": true
+  },
+  {
+    "zh": "和服",
+    "en": "kimono",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "马甲",
+    "en": "vest",
+    "sfw": true
+  },
+  {
+    "zh": "围裙",
+    "en": "apron",
+    "sfw": true
+  },
+  {
+    "zh": "盔甲",
+    "en": "armor",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "毛衣",
+    "en": "sweater",
+    "sfw": true
+  },
+  {
+    "zh": "披风",
+    "en": "cape",
+    "sfw": true
+  },
+  {
+    "zh": "黑连裤袜",
+    "en": "black_pantyhose",
+    "sfw": true
+  },
+  {
+    "zh": "高跟鞋",
+    "en": "high_heels",
+    "sfw": true
+  },
+  {
+    "zh": "露脐上衣",
+    "en": "crop_top",
+    "sfw": true
+  },
+  {
+    "zh": "围巾",
+    "en": "scarf",
+    "sfw": true
+  },
+  {
+    "zh": "领子",
+    "en": "collar",
+    "sfw": true
+  },
+  {
+    "zh": "黑鞋",
+    "en": "black_shoes",
+    "sfw": true
+  },
+  {
+    "zh": "蓬松短袖",
+    "en": "puffy_short_sleeves",
+    "sfw": true
+  },
+  {
+    "zh": "无袖衬衫",
+    "en": "sleeveless_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "白袜",
+    "en": "white_socks",
+    "sfw": true
+  },
+  {
+    "zh": "颈间缎带",
+    "en": "neck_ribbon",
+    "sfw": true
+  },
+  {
+    "zh": "腰带饰",
+    "en": "sash",
+    "sfw": true
+  },
+  {
+    "zh": "面具",
+    "en": "mask",
+    "sfw": true
+  },
+  {
+    "zh": "连帽衫",
+    "en": "hoodie",
+    "sfw": true
+  },
+  {
+    "zh": "正装衬衫",
+    "en": "dress_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "凉鞋",
+    "en": "sandals",
+    "sfw": true
+  },
+  {
+    "zh": "墨镜",
+    "en": "sunglasses",
+    "sfw": true
+  },
+  {
+    "zh": "遮阳帽",
+    "en": "sun_hat",
+    "sfw": true
+  },
+  {
+    "zh": "制服",
+    "en": "uniform",
+    "sfw": true
+  },
+  {
+    "zh": "太阳裙",
+    "en": "sundress",
+    "sfw": true
+  },
+  {
+    "zh": "连指手套",
+    "en": "mittens",
+    "sfw": true
+  },
+  {
+    "zh": "婚纱",
+    "en": "wedding_dress",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "铅笔裙",
+    "en": "pencil_skirt",
+    "sfw": true
+  },
+  {
+    "zh": "背带裙",
+    "en": "suspender_skirt",
+    "sfw": true
+  },
+  {
+    "zh": "浴衣",
+    "en": "yukata",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "女仆装",
+    "en": "maid_outfit",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "军装",
+    "en": "military_uniform",
+    "sfw": true
+  },
+  {
+    "zh": "T恤",
+    "en": "t-shirt",
+    "sfw": true
+  },
+  {
+    "zh": "高领",
+    "en": "turtleneck",
+    "sfw": true
+  },
+  {
+    "zh": "西装外套",
+    "en": "blazer",
+    "sfw": true
+  },
+  {
+    "zh": "运动服",
+    "en": "tracksuit",
+    "sfw": true
+  },
+  {
+    "zh": "雨衣",
+    "en": "raincoat",
+    "sfw": true
+  },
+  {
+    "zh": "派克大衣",
+    "en": "parka",
+    "sfw": true
+  },
+  {
+    "zh": "连帽夹克",
+    "en": "hooded_jacket",
+    "sfw": true
+  },
+  {
+    "zh": "无袖裙",
+    "en": "sleeveless_dress",
+    "sfw": true
+  },
+  {
+    "zh": "舞会礼服",
+    "en": "ball_gown",
+    "sfw": true
+  },
+  {
+    "zh": "POLO衫",
+    "en": "polo_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "柔道服",
+    "en": "judo_gi",
+    "sfw": true
+  },
+  {
+    "zh": "水手服",
+    "en": "serafuku",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "背心",
+    "en": "tank_top",
+    "sfw": true
+  },
+  {
+    "zh": "女式衬衫",
+    "en": "blouse",
+    "sfw": true
+  },
+  {
+    "zh": "开衫",
+    "en": "cardigan",
+    "sfw": true
+  },
+  {
+    "zh": "套头衫",
+    "en": "pullover",
+    "sfw": true
+  },
+  {
+    "zh": "运动衫",
+    "en": "sweatshirt",
+    "sfw": true
+  },
+  {
+    "zh": "挂脖上衣",
+    "en": "halter_top",
+    "sfw": true
+  },
+  {
+    "zh": "抹胸",
+    "en": "tube_top",
+    "sfw": true
+  },
+  {
+    "zh": "牛仔夹克",
+    "en": "denim_jacket",
+    "sfw": true
+  },
+  {
+    "zh": "皮夹克",
+    "en": "leather_jacket",
+    "sfw": true
+  },
+  {
+    "zh": "飞行员夹克",
+    "en": "bomber_jacket",
+    "sfw": true
+  },
+  {
+    "zh": "风衣",
+    "en": "trench_coat",
+    "sfw": true
+  },
+  {
+    "zh": "皮草大衣",
+    "en": "fur_coat",
+    "sfw": true
+  },
+  {
+    "zh": "白大褂",
+    "en": "lab_coat",
+    "sfw": true
+  },
+  {
+    "zh": "长袍",
+    "en": "robe",
+    "sfw": true
+  },
+  {
+    "zh": "裹身裙",
+    "en": "wrap_dress",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "马甲",
+    "en": "waistcoat",
+    "sfw": true
+  },
+  {
+    "zh": "连体裤",
+    "en": "jumpsuit",
+    "sfw": true
+  },
+  {
+    "zh": "热裤",
+    "en": "hotpants",
+    "sfw": true
+  },
+  {
+    "zh": "工装裤",
+    "en": "cargo_pants",
+    "sfw": true
+  },
+  {
+    "zh": "牛仔裤",
+    "en": "jeans",
+    "sfw": true
+  },
+  {
+    "zh": "紧身裤",
+    "en": "leggings",
+    "sfw": true
+  },
+  {
+    "zh": "运动裤",
+    "en": "sweatpants",
+    "sfw": true
+  },
+  {
+    "zh": "裙裤",
+    "en": "culottes",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "阔腿裤",
+    "en": "wide_leg_pants",
+    "sfw": true
+  },
+  {
+    "zh": "七分裤",
+    "en": "capri_pants",
+    "sfw": true
+  },
+  {
+    "zh": "背带裤",
+    "en": "overalls",
+    "sfw": true
+  },
+  {
+    "zh": "灯笼裤",
+    "en": "bloomers",
+    "sfw": true
+  },
+  {
+    "zh": "长裙",
+    "en": "long_skirt",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "层叠裙",
+    "en": "layered_skirt",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "及膝袜",
+    "en": "knee_socks",
+    "sfw": true
+  },
+  {
+    "zh": "短袜",
+    "en": "short_socks",
+    "sfw": true
+  },
+  {
+    "zh": "紧身袜",
+    "en": "tights",
+    "sfw": true
+  },
+  {
+    "zh": "运动鞋",
+    "en": "sneakers",
+    "sfw": true
+  },
+  {
+    "zh": "乐福鞋",
+    "en": "loafers",
+    "sfw": true
+  },
+  {
+    "zh": "玛丽珍鞋",
+    "en": "mary_janes",
+    "sfw": true
+  },
+  {
+    "zh": "厚底靴",
+    "en": "platform_boots",
+    "sfw": true
+  },
+  {
+    "zh": "长靴",
+    "en": "thigh_boots",
+    "sfw": true
+  },
+  {
+    "zh": "短靴",
+    "en": "ankle_boots",
+    "sfw": true
+  },
+  {
+    "zh": "拖鞋",
+    "en": "slippers",
+    "sfw": true
+  },
+  {
+    "zh": "贝雷帽",
+    "en": "beret",
+    "sfw": true
+  },
+  {
+    "zh": "冷帽",
+    "en": "beanie",
+    "sfw": true
+  },
+  {
+    "zh": "鸭舌帽",
+    "en": "baseball_cap",
+    "sfw": true
+  },
+  {
+    "zh": "高顶礼帽",
+    "en": "top_hat",
+    "sfw": true
+  },
+  {
+    "zh": "巫师帽",
+    "en": "witch_hat",
+    "sfw": true
+  },
+  {
+    "zh": "圣诞帽",
+    "en": "santa_hat",
+    "sfw": true
+  },
+  {
+    "zh": "面纱",
+    "en": "veil",
+    "sfw": true
+  },
+  {
+    "zh": "头冠",
+    "en": "tiara",
+    "sfw": true
+  },
+  {
+    "zh": "领结",
+    "en": "bow_tie",
+    "sfw": true
+  },
+  {
+    "zh": "背带",
+    "en": "suspenders",
+    "sfw": true
+  },
+  {
+    "zh": "臂铠",
+    "en": "arm_guards",
+    "sfw": true
+  },
+  {
+    "zh": "耳罩",
+    "en": "earmuffs",
+    "sfw": true
+  },
+  {
+    "zh": "警服",
+    "en": "police_uniform",
+    "sfw": true
+  },
+  {
+    "zh": "护士服",
+    "en": "nurse_uniform",
+    "sfw": true
+  },
+  {
+    "zh": "啦啦队服",
+    "en": "cheerleading_uniform",
+    "sfw": true
+  },
+  {
+    "zh": "商务装",
+    "en": "business_suit",
+    "sfw": true
+  },
+  {
+    "zh": "服务员制服",
+    "en": "waiter_uniform",
+    "sfw": true
+  },
+  {
+    "zh": "旗袍",
+    "en": "cheongsam",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "袴",
+    "en": "hakama",
+    "sfw": true
+  },
+  {
+    "zh": "振袖",
+    "en": "furisode",
+    "sfw": true
+  },
+  {
+    "zh": "连体泳衣",
+    "en": "one_piece_swimsuit",
+    "sfw": true
+  },
+  {
+    "zh": "平角内裤",
+    "en": "boxers",
+    "sfw": true
+  },
+  {
+    "zh": "斗篷",
+    "en": "cloak",
+    "sfw": true
+  },
+  {
+    "zh": "披风",
+    "en": "poncho",
+    "sfw": true
+  },
+  {
+    "zh": "礼帽",
+    "en": "bowler_hat",
+    "sfw": true
+  },
+  {
+    "zh": "渔夫帽",
+    "en": "bucket_hat",
+    "sfw": true
+  },
+  {
+    "zh": "牛仔帽",
+    "en": "cowboy_hat",
+    "sfw": true
+  },
+  {
+    "zh": "软呢帽",
+    "en": "fedora",
+    "sfw": true
+  },
+  {
+    "zh": "平顶帽",
+    "en": "flat_cap",
+    "sfw": true
+  },
+  {
+    "zh": "水手帽",
+    "en": "sailor_hat",
+    "sfw": true
+  },
+  {
+    "zh": "巫师帽",
+    "en": "wizard_hat",
+    "sfw": true
+  },
+  {
+    "zh": "厨师帽",
+    "en": "chef_hat",
+    "sfw": true
+  },
+  {
+    "zh": "学士帽",
+    "en": "mortarboard",
+    "sfw": true
+  },
+  {
+    "zh": "军帽",
+    "en": "military_hat",
+    "sfw": true
+  },
+  {
+    "zh": "警帽",
+    "en": "police_hat",
+    "sfw": true
+  },
+  {
+    "zh": "护士帽",
+    "en": "nurse_cap",
+    "sfw": true
+  },
+  {
+    "zh": "派对帽",
+    "en": "party_hat",
+    "sfw": true
+  },
+  {
+    "zh": "头盔",
+    "en": "helmet",
+    "sfw": true
+  },
+  {
+    "zh": "摩托头盔",
+    "en": "motorcycle_helmet",
+    "sfw": true
+  },
+  {
+    "zh": "安全帽",
+    "en": "hard_hat",
+    "sfw": true
+  },
+  {
+    "zh": "头巾",
+    "en": "bandana",
+    "sfw": true
+  },
+  {
+    "zh": "头巾(穆斯林)",
+    "en": "hijab",
+    "sfw": true
+  },
+  {
+    "zh": "方巾",
+    "en": "kerchief",
+    "sfw": true
+  },
+  {
+    "zh": "防风帽",
+    "en": "balaclava",
+    "sfw": true
+  },
+  {
+    "zh": "帽带",
+    "en": "hat_ribbon",
+    "sfw": true
+  },
+  {
+    "zh": "动物帽",
+    "en": "animal_hat",
+    "sfw": true
+  },
+  {
+    "zh": "猫耳帽",
+    "en": "cat_hat",
+    "sfw": true
+  },
+  {
+    "zh": "兔耳帽",
+    "en": "rabbit_hat",
+    "sfw": true
+  },
+  {
+    "zh": "熊帽",
+    "en": "bear_hat",
+    "sfw": true
+  },
+  {
+    "zh": "帽花",
+    "en": "hat_flower",
+    "sfw": true
+  },
+  {
+    "zh": "向后戴帽",
+    "en": "backwards_hat",
+    "sfw": true
+  },
+  {
+    "zh": "歪戴帽",
+    "en": "sideways_hat",
+    "sfw": true
+  },
+  {
+    "zh": "钟形帽",
+    "en": "cloche_hat",
+    "sfw": true
+  },
+  {
+    "zh": "头戴花环",
+    "en": "flower_crown",
+    "sfw": true
+  },
+  {
+    "zh": "褶边衬衫",
+    "en": "frilled_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "束胸衣",
+    "en": "bustier",
+    "sfw": true
+  },
+  {
+    "zh": "马甲背心",
+    "en": "cardigan_vest",
+    "sfw": true
+  },
+  {
+    "zh": "羽绒服",
+    "en": "duffel_coat",
+    "sfw": true
+  },
+  {
+    "zh": "毛领大衣",
+    "en": "fur-trimmed_coat",
+    "sfw": true
+  },
+  {
+    "zh": "长外套",
+    "en": "long_coat",
+    "sfw": true
+  },
+  {
+    "zh": "大衣",
+    "en": "overcoat",
+    "sfw": true
+  },
+  {
+    "zh": "双排扣大衣",
+    "en": "peacoat",
+    "sfw": true
+  },
+  {
+    "zh": "冬衣",
+    "en": "winter_coat",
+    "sfw": true
+  },
+  {
+    "zh": "压缩衣",
+    "en": "compression_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "露肩衬衫",
+    "en": "off-shoulder_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "条纹衬衫",
+    "en": "striped_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "中空毛衫",
+    "en": "sleeveless_turtleneck",
+    "sfw": true
+  },
+  {
+    "zh": "毛衣裙",
+    "en": "sweater_dress",
+    "sfw": true
+  },
+  {
+    "zh": "罗纹毛衫",
+    "en": "ribbed_sweater",
+    "sfw": true
+  },
+  {
+    "zh": "无袖背心",
+    "en": "stringer",
+    "sfw": true
+  },
+  {
+    "zh": "吊带胸衣",
+    "en": "bandeau",
+    "sfw": true
+  },
+  {
+    "zh": "露脐胸衣",
+    "en": "underbust",
+    "sfw": true
+  },
+  {
+    "zh": "毛衣背心",
+    "en": "sweater_vest",
+    "sfw": true
+  },
+  {
+    "zh": "燕尾服",
+    "en": "tailcoat",
+    "sfw": true
+  },
+  {
+    "zh": "罩衫",
+    "en": "smock",
+    "sfw": true
+  },
+  {
+    "zh": "短罩衫",
+    "en": "bolero",
+    "sfw": true
+  },
+  {
+    "zh": "披风外套",
+    "en": "surcoat",
+    "sfw": true
+  },
+  {
+    "zh": "衬衫夹克",
+    "en": "shirt_jacket",
+    "sfw": true
+  },
+  {
+    "zh": "睡衣",
+    "en": "pajamas",
+    "sfw": true
+  },
+  {
+    "zh": "睡裙",
+    "en": "nightgown",
+    "sfw": true
+  },
+  {
+    "zh": "浴袍",
+    "en": "bathrobe",
+    "sfw": true
+  },
+  {
+    "zh": "宽大睡袍",
+    "en": "dressing_gown",
+    "sfw": true
+  },
+  {
+    "zh": "喇叭裤",
+    "en": "bell-bottoms",
+    "sfw": true
+  },
+  {
+    "zh": "低腰裤",
+    "en": "lowleg_pants",
+    "sfw": true
+  },
+  {
+    "zh": "卷边裤",
+    "en": "pants_rolled_up",
+    "sfw": true
+  },
+  {
+    "zh": "瑜伽裤",
+    "en": "yoga_pants",
+    "sfw": true
+  },
+  {
+    "zh": "健身短裤",
+    "en": "gym_shorts",
+    "sfw": true
+  },
+  {
+    "zh": "平角短裤",
+    "en": "short_shorts",
+    "sfw": true
+  },
+  {
+    "zh": "裙下短裤",
+    "en": "shorts_under_skirt",
+    "sfw": true
+  },
+  {
+    "zh": "泡泡裙",
+    "en": "bubble_skirt",
+    "sfw": true
+  },
+  {
+    "zh": "高腰裙",
+    "en": "high-waist_skirt",
+    "sfw": true
+  },
+  {
+    "zh": "高低裙",
+    "en": "high-low_skirt",
+    "sfw": true
+  },
+  {
+    "zh": "超短裙",
+    "en": "microskirt",
+    "sfw": true
+  },
+  {
+    "zh": "背带裙",
+    "en": "overall_skirt",
+    "sfw": true
+  },
+  {
+    "zh": "罩裙",
+    "en": "overskirt",
+    "sfw": true
+  },
+  {
+    "zh": "格纹裙",
+    "en": "plaid_skirt",
+    "sfw": true
+  },
+  {
+    "zh": "舞台裙",
+    "en": "showgirl_skirt",
+    "sfw": true
+  },
+  {
+    "zh": "蓬蓬裙",
+    "en": "tutu",
+    "sfw": true
+  },
+  {
+    "zh": "苏格兰裙",
+    "en": "kilt",
+    "sfw": true
+  },
+  {
+    "zh": "马裤",
+    "en": "chaps",
+    "sfw": true
+  },
+  {
+    "zh": "纱笼",
+    "en": "sarong",
+    "sfw": true
+  },
+  {
+    "zh": "衬裙",
+    "en": "petticoat",
+    "sfw": true
+  },
+  {
+    "zh": "慢跑裤",
+    "en": "jogging_pants",
+    "sfw": true
+  },
+  {
+    "zh": "过膝袜",
+    "en": "kneehighs",
+    "sfw": true
+  },
+  {
+    "zh": "膝上袜",
+    "en": "over-kneehighs",
+    "sfw": true
+  },
+  {
+    "zh": "髋高袜",
+    "en": "hiphighs",
+    "sfw": true
+  },
+  {
+    "zh": "分趾袜",
+    "en": "detached_leggings",
+    "sfw": true
+  },
+  {
+    "zh": "渐变袜",
+    "en": "gradient_legwear",
+    "sfw": true
+  },
+  {
+    "zh": "多色袜",
+    "en": "multicolored_socks",
+    "sfw": true
+  },
+  {
+    "zh": "双色袜",
+    "en": "two-tone_legwear",
+    "sfw": true
+  },
+  {
+    "zh": "渔网袜",
+    "en": "fishnet_pantyhose",
+    "sfw": true
+  },
+  {
+    "zh": "渔网长袜",
+    "en": "fishnet_thighhighs",
+    "sfw": true
+  },
+  {
+    "zh": "编织袜",
+    "en": "knit_thighhighs",
+    "sfw": true
+  },
+  {
+    "zh": "蕾丝袜",
+    "en": "lace_thighhighs",
+    "sfw": true
+  },
+  {
+    "zh": "蕾丝长袜",
+    "en": "lace_pantyhose",
+    "sfw": true
+  },
+  {
+    "zh": "乳胶袜",
+    "en": "latex_legwear",
+    "sfw": true
+  },
+  {
+    "zh": "罗纹袜",
+    "en": "ribbed_socks",
+    "sfw": true
+  },
+  {
+    "zh": "后缝袜",
+    "en": "back-seamed_legwear",
+    "sfw": true
+  },
+  {
+    "zh": "透明袜",
+    "en": "see-through_legwear",
+    "sfw": true
+  },
+  {
+    "zh": "光泽袜",
+    "en": "shiny_legwear",
+    "sfw": true
+  },
+  {
+    "zh": "吊带袜",
+    "en": "garter_straps",
+    "sfw": true
+  },
+  {
+    "zh": "袜带",
+    "en": "legwear_garter",
+    "sfw": true
+  },
+  {
+    "zh": "短袜",
+    "en": "ankle_socks",
+    "sfw": true
+  },
+  {
+    "zh": "泡泡袜",
+    "en": "loose_socks",
+    "sfw": true
+  },
+  {
+    "zh": "分趾袜(日式)",
+    "en": "tabi",
+    "sfw": true
+  },
+  {
+    "zh": "五趾袜",
+    "en": "toe_socks",
+    "sfw": true
+  },
+  {
+    "zh": "过膝袜带",
+    "en": "thighband_pantyhose",
+    "sfw": true
+  },
+  {
+    "zh": "高跟鞋靴",
+    "en": "high_heel_boots",
+    "sfw": true
+  },
+  {
+    "zh": "膝靴",
+    "en": "knee_boots",
+    "sfw": true
+  },
+  {
+    "zh": "系带靴",
+    "en": "lace-up_boots",
+    "sfw": true
+  },
+  {
+    "zh": "橡胶靴",
+    "en": "rubber_boots",
+    "sfw": true
+  },
+  {
+    "zh": "工作靴",
+    "en": "work_boots",
+    "sfw": true
+  },
+  {
+    "zh": "帆布鞋",
+    "en": "converse",
+    "sfw": true
+  },
+  {
+    "zh": "牛津鞋",
+    "en": "oxfords",
+    "sfw": true
+  },
+  {
+    "zh": "平底鞋",
+    "en": "flats",
+    "sfw": true
+  },
+  {
+    "zh": "细高跟",
+    "en": "stiletto_heels",
+    "sfw": true
+  },
+  {
+    "zh": "坡跟鞋",
+    "en": "wedge_heels",
+    "sfw": true
+  },
+  {
+    "zh": "厚底鞋",
+    "en": "platform_shoes",
+    "sfw": true
+  },
+  {
+    "zh": "人字拖",
+    "en": "flip-flops",
+    "sfw": true
+  },
+  {
+    "zh": "木屐",
+    "en": "geta",
+    "sfw": true
+  },
+  {
+    "zh": "室内鞋",
+    "en": "uwabaki",
+    "sfw": true
+  },
+  {
+    "zh": "皮鞋",
+    "en": "dress_shoes",
+    "sfw": true
+  },
+  {
+    "zh": "兽爪鞋",
+    "en": "claw_footwear",
+    "sfw": true
+  },
+  {
+    "zh": "护目镜",
+    "en": "goggles",
+    "sfw": true
+  },
+  {
+    "zh": "3D眼镜",
+    "en": "3d_glasses",
+    "sfw": true
+  },
+  {
+    "zh": "飞行员墨镜",
+    "en": "aviator_sunglasses",
+    "sfw": true
+  },
+  {
+    "zh": "飞行员眼镜",
+    "en": "aviator_glasses",
+    "sfw": true
+  },
+  {
+    "zh": "无框眼镜",
+    "en": "rimless_eyewear",
+    "sfw": true
+  },
+  {
+    "zh": "圆框眼镜",
+    "en": "round_eyewear",
+    "sfw": true
+  },
+  {
+    "zh": "猫眼框眼镜",
+    "en": "cat_eye-framed_eyewear",
+    "sfw": true
+  },
+  {
+    "zh": "方框眼镜",
+    "en": "rectangular_eyewear",
+    "sfw": true
+  },
+  {
+    "zh": "黑框眼镜",
+    "en": "black-framed_eyewear",
+    "sfw": true
+  },
+  {
+    "zh": "蓝框眼镜",
+    "en": "blue-framed_eyewear",
+    "sfw": true
+  },
+  {
+    "zh": "红框眼镜",
+    "en": "red-framed_eyewear",
+    "sfw": true
+  },
+  {
+    "zh": "粉框眼镜",
+    "en": "pink-framed_eyewear",
+    "sfw": true
+  },
+  {
+    "zh": "紫框眼镜",
+    "en": "purple-framed_eyewear",
+    "sfw": true
+  },
+  {
+    "zh": "眼镜链",
+    "en": "eyewear_strap",
+    "sfw": true
+  },
+  {
+    "zh": "隐形眼镜",
+    "en": "contact_lens",
+    "sfw": true
+  },
+  {
+    "zh": "滑雪镜",
+    "en": "ski_goggles",
+    "sfw": true
+  },
+  {
+    "zh": "护目镜(潜水)",
+    "en": "diving_mask",
+    "sfw": true
+  },
+  {
+    "zh": "望远镜",
+    "en": "binoculars",
+    "sfw": true
+  },
+  {
+    "zh": "肘长手套",
+    "en": "elbow_gloves",
+    "sfw": true
+  },
+  {
+    "zh": "半指手套",
+    "en": "partially_fingerless_gloves",
+    "sfw": true
+  },
+  {
+    "zh": "翻盖手套",
+    "en": "fold-over_gloves",
+    "sfw": true
+  },
+  {
+    "zh": "手套袖口",
+    "en": "glove_cuffs",
+    "sfw": true
+  },
+  {
+    "zh": "半手套",
+    "en": "half_gloves",
+    "sfw": true
+  },
+  {
+    "zh": "猫爪手套",
+    "en": "paw_gloves",
+    "sfw": true
+  },
+  {
+    "zh": "单只手套",
+    "en": "single_glove",
+    "sfw": true
+  },
+  {
+    "zh": "不匹配手套",
+    "en": "mismatched_gloves",
+    "sfw": true
+  },
+  {
+    "zh": "渔网手套",
+    "en": "fishnet_gloves",
+    "sfw": true
+  },
+  {
+    "zh": "蕾丝手套",
+    "en": "lace_gloves",
+    "sfw": true
+  },
+  {
+    "zh": "乳胶手套",
+    "en": "latex_gloves",
+    "sfw": true
+  },
+  {
+    "zh": "皮手套",
+    "en": "leather_gloves",
+    "sfw": true
+  },
+  {
+    "zh": "透明手套",
+    "en": "see-through_gloves",
+    "sfw": true
+  },
+  {
+    "zh": "拳击手套",
+    "en": "boxing_gloves",
+    "sfw": true
+  },
+  {
+    "zh": "护腕",
+    "en": "wristband",
+    "sfw": true
+  },
+  {
+    "zh": "腕带",
+    "en": "wrist_cuffs",
+    "sfw": true
+  },
+  {
+    "zh": "烤箱手套",
+    "en": "oven_mitts",
+    "sfw": true
+  },
+  {
+    "zh": "皮草项圈",
+    "en": "fur_collar",
+    "sfw": true
+  },
+  {
+    "zh": "心形项圈",
+    "en": "heart_collar",
+    "sfw": true
+  },
+  {
+    "zh": "圆环项圈",
+    "en": "o-ring_choker",
+    "sfw": true
+  },
+  {
+    "zh": "挂坠项圈",
+    "en": "pendant_choker",
+    "sfw": true
+  },
+  {
+    "zh": "皮草围巾",
+    "en": "fur_scarf",
+    "sfw": true
+  },
+  {
+    "zh": "领结",
+    "en": "ascot",
+    "sfw": true
+  },
+  {
+    "zh": "波洛领带",
+    "en": "bolo_tie",
+    "sfw": true
+  },
+  {
+    "zh": "领巾",
+    "en": "neckerchief",
+    "sfw": true
+  },
+  {
+    "zh": "彼得潘领",
+    "en": "peter_pan_collar",
+    "sfw": true
+  },
+  {
+    "zh": "方巾领",
+    "en": "neckerchief_collar",
+    "sfw": true
+  },
+  {
+    "zh": "护颈",
+    "en": "neck_warmer",
+    "sfw": true
+  },
+  {
+    "zh": "披肩",
+    "en": "stole",
+    "sfw": true
+  },
+  {
+    "zh": "皮草披肩",
+    "en": "feather_boa",
+    "sfw": true
+  },
+  {
+    "zh": "斗篷(短)",
+    "en": "capelet",
+    "sfw": true
+  },
+  {
+    "zh": "西服",
+    "en": "suit",
+    "sfw": true
+  },
+  {
+    "zh": "燕尾服礼服",
+    "en": "tuxedo",
+    "sfw": true
+  },
+  {
+    "zh": "裙装",
+    "en": "skirt_suit",
+    "sfw": true
+  },
+  {
+    "zh": "裤装",
+    "en": "pant_suit",
+    "sfw": true
+  },
+  {
+    "zh": "连体工作服",
+    "en": "coveralls",
+    "sfw": true
+  },
+  {
+    "zh": "体操服",
+    "en": "gym_uniform",
+    "sfw": true
+  },
+  {
+    "zh": "潜水服",
+    "en": "diving_suit",
+    "sfw": true
+  },
+  {
+    "zh": "紧身连体衣",
+    "en": "catsuit",
+    "sfw": true
+  },
+  {
+    "zh": "驾驶服",
+    "en": "racing_suit",
+    "sfw": true
+  },
+  {
+    "zh": "紧身衣",
+    "en": "leotard",
+    "sfw": true
+  },
+  {
+    "zh": "连体衣",
+    "en": "unitard",
+    "sfw": true
+  },
+  {
+    "zh": "马戏服",
+    "en": "circus_costume",
+    "sfw": true
+  },
+  {
+    "zh": "女仆装",
+    "en": "maid_costume",
+    "sfw": true
+  },
+  {
+    "zh": "兔女郎装",
+    "en": "bunny_costume",
+    "sfw": true
+  },
+  {
+    "zh": "羽织",
+    "en": "haori",
+    "sfw": true
+  },
+  {
+    "zh": "旗袍",
+    "en": "qipao",
+    "sfw": true
+  },
+  {
+    "zh": "唐装",
+    "en": "tangzhuang",
+    "sfw": true
+  },
+  {
+    "zh": "汉服",
+    "en": "hanfu",
+    "sfw": true
+  },
+  {
+    "zh": "韩服",
+    "en": "hanbok",
+    "sfw": true
+  },
+  {
+    "zh": "奥黛",
+    "en": "ao_dai",
+    "sfw": true
+  },
+  {
+    "zh": "民族服饰",
+    "en": "traditional_clothes",
+    "sfw": true
+  },
+  {
+    "zh": "童话装",
+    "en": "fairytale_costume",
+    "sfw": true
+  },
+  {
+    "zh": "恶魔装",
+    "en": "devil_costume",
+    "sfw": true
+  },
+  {
+    "zh": "天使装",
+    "en": "angel_costume",
+    "sfw": true
+  },
+  {
+    "zh": "女巫装",
+    "en": "witch_costume",
+    "sfw": true
+  },
+  {
+    "zh": "猫耳女仆装",
+    "en": "cat_maid",
+    "sfw": true
+  },
+  {
+    "zh": "海军制服",
+    "en": "naval_uniform",
+    "sfw": true
+  },
+  {
+    "zh": "空军制服",
+    "en": "air_force_uniform",
+    "sfw": true
+  },
+  {
+    "zh": "法袍",
+    "en": "judge_robe",
+    "sfw": true
+  },
+  {
+    "zh": "学士服",
+    "en": "academic_dress",
+    "sfw": true
+  },
+  {
+    "zh": "僧袍",
+    "en": "monk_robe",
+    "sfw": true
+  },
+  {
+    "zh": "修女服",
+    "en": "nun_outfit",
+    "sfw": true
+  },
+  {
+    "zh": "神父服",
+    "en": "priest_outfit",
+    "sfw": true
+  },
+  {
+    "zh": "法衣",
+    "en": "cassock",
+    "sfw": true
+  },
+  {
+    "zh": "教父长袍",
+    "en": "clergy_robe",
+    "sfw": true
+  },
+  {
+    "zh": "竞速泳装",
+    "en": "competition_swimsuit",
+    "sfw": true
+  },
+  {
+    "zh": "学校泳装",
+    "en": "school_swimsuit",
+    "sfw": true
+  },
+  {
+    "zh": "运动比基尼",
+    "en": "sports_bikini",
+    "sfw": true
+  },
+  {
+    "zh": "吊带泳装",
+    "en": "tankini",
+    "sfw": true
+  },
+  {
+    "zh": "冲浪服",
+    "en": "rash_guard",
+    "sfw": true
+  },
+  {
+    "zh": "湿衣",
+    "en": "wetsuit",
+    "sfw": true
+  },
+  {
+    "zh": "连体衣(泳)",
+    "en": "racesuit",
+    "sfw": true
+  },
+  {
+    "zh": "徽章",
+    "en": "badge",
+    "sfw": true
+  },
+  {
+    "zh": "胸针",
+    "en": "brooch",
+    "sfw": true
+  },
+  {
+    "zh": "纽扣",
+    "en": "buttons",
+    "sfw": true
+  },
+  {
+    "zh": "袖扣",
+    "en": "cuff_links",
+    "sfw": true
+  },
+  {
+    "zh": "怀表",
+    "en": "pocket_watch",
+    "sfw": true
+  },
+  {
+    "zh": "手表",
+    "en": "watch",
+    "sfw": true
+  },
+  {
+    "zh": "腰包",
+    "en": "fanny_pack",
+    "sfw": true
+  },
+  {
+    "zh": "腰带链",
+    "en": "waist_chain",
+    "sfw": true
+  },
+  {
+    "zh": "耳环(环)",
+    "en": "hoop_earrings",
+    "sfw": true
+  },
+  {
+    "zh": "耳钉",
+    "en": "stud_earrings",
+    "sfw": true
+  },
+  {
+    "zh": "鼻环",
+    "en": "nose_ring",
+    "sfw": true
+  },
+  {
+    "zh": "唇环",
+    "en": "lip_piercing",
+    "sfw": true
+  },
+  {
+    "zh": "眉环",
+    "en": "eyebrow_piercing",
+    "sfw": true
+  },
+  {
+    "zh": "肚脐环",
+    "en": "navel_piercing",
+    "sfw": true
+  },
+  {
+    "zh": "头饰",
+    "en": "headdress",
+    "sfw": true
+  },
+  {
+    "zh": "发带(装饰)",
+    "en": "head_ribbon",
+    "sfw": true
+  },
+  {
+    "zh": "格子纹",
+    "en": "argyle",
+    "sfw": true
+  },
+  {
+    "zh": "迷彩",
+    "en": "camouflage",
+    "sfw": true
+  },
+  {
+    "zh": "格纹",
+    "en": "checkered",
+    "sfw": true
+  },
+  {
+    "zh": "碎花",
+    "en": "floral_print",
+    "sfw": true
+  },
+  {
+    "zh": "千鸟格",
+    "en": "houndstooth",
+    "sfw": true
+  },
+  {
+    "zh": "细条纹",
+    "en": "pinstripe_pattern",
+    "sfw": true
+  },
+  {
+    "zh": "格呢",
+    "en": "plaid",
+    "sfw": true
+  },
+  {
+    "zh": "波点",
+    "en": "polka_dot",
+    "sfw": true
+  },
+  {
+    "zh": "条纹",
+    "en": "striped",
+    "sfw": true
+  },
+  {
+    "zh": "多色条纹",
+    "en": "multicolored_stripes",
+    "sfw": true
+  },
+  {
+    "zh": "动物纹",
+    "en": "animal_print",
+    "sfw": true
+  },
+  {
+    "zh": "豹纹",
+    "en": "leopard_print",
+    "sfw": true
+  },
+  {
+    "zh": "虎纹",
+    "en": "tiger_print",
+    "sfw": true
+  },
+  {
+    "zh": "蛇纹",
+    "en": "snake_print",
+    "sfw": true
+  },
+  {
+    "zh": "奶牛纹",
+    "en": "cow_print",
+    "sfw": true
+  },
+  {
+    "zh": "蝴蝶纹",
+    "en": "butterfly_print",
+    "sfw": true
+  },
+  {
+    "zh": "花叶纹",
+    "en": "leaf_print",
+    "sfw": true
+  },
+  {
+    "zh": "波浪纹",
+    "en": "wave_print",
+    "sfw": true
+  },
+  {
+    "zh": "星纹",
+    "en": "star_print",
+    "sfw": true
+  },
+  {
+    "zh": "心纹",
+    "en": "heart_print",
+    "sfw": true
+  },
+  {
+    "zh": "月亮纹",
+    "en": "moon_print",
+    "sfw": true
+  },
+  {
+    "zh": "音符纹",
+    "en": "musical_note_print",
+    "sfw": true
+  },
+  {
+    "zh": "果纹",
+    "en": "fruit_pattern",
+    "sfw": true
+  },
+  {
+    "zh": "草莓纹",
+    "en": "strawberry_print",
+    "sfw": true
+  },
+  {
+    "zh": "樱桃纹",
+    "en": "cherry_print",
+    "sfw": true
+  },
+  {
+    "zh": "柠檬纹",
+    "en": "lemon_print",
+    "sfw": true
+  },
+  {
+    "zh": "爪子纹",
+    "en": "paw_print",
+    "sfw": true
+  },
+  {
+    "zh": "透明衣服",
+    "en": "see-through_clothes",
+    "sfw": true
+  },
+  {
+    "zh": "卷袖",
+    "en": "rolled_up_sleeves",
+    "sfw": true
+  },
+  {
+    "zh": "敞开外套",
+    "en": "open_coat",
+    "sfw": true
+  },
+  {
+    "zh": "外套披肩",
+    "en": "coat_over_shoulders",
+    "sfw": true
+  },
+  {
+    "zh": "拉链",
+    "en": "zipper",
+    "sfw": true
+  },
+  {
+    "zh": "口袋",
+    "en": "pocket",
+    "sfw": true
+  },
+  {
+    "zh": "翻领",
+    "en": "lapels",
+    "sfw": true
+  },
+  {
+    "zh": "双排扣",
+    "en": "double-breasted",
+    "sfw": true
+  },
+  {
+    "zh": "荷叶边",
+    "en": "frills",
+    "sfw": true
+  },
+  {
+    "zh": "毛边",
+    "en": "fur_trim",
+    "sfw": true
+  },
+  {
+    "zh": "金边",
+    "en": "gold_trim",
+    "sfw": true
+  },
+  {
+    "zh": "蕾丝边",
+    "en": "lace_trim",
+    "sfw": true
+  },
+  {
+    "zh": "裙摆",
+    "en": "skirt_flounce",
+    "sfw": true
+  },
+  {
+    "zh": "衣服开口",
+    "en": "clothing_cutout",
+    "sfw": true
+  },
+  {
+    "zh": "露脐上衣",
+    "en": "midriff_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "长筒袜",
+    "en": "stockings",
+    "sfw": true
+  },
+  {
+    "zh": "高跟鞋",
+    "en": "heels",
+    "sfw": true
+  },
+  {
+    "zh": "露肩毛衣",
+    "en": "off_shoulder_sweater",
+    "sfw": true
+  },
+  {
+    "zh": "针织开衫",
+    "en": "knit_cardigan",
+    "sfw": true
+  },
+  {
+    "zh": "粗针毛衣",
+    "en": "chunky_knit_sweater",
+    "sfw": true
+  },
+  {
+    "zh": "细针毛衣",
+    "en": "fine_knit_sweater",
+    "sfw": true
+  },
+  {
+    "zh": "高领毛衣",
+    "en": "high_neck_sweater",
+    "sfw": true
+  },
+  {
+    "zh": "半高领",
+    "en": "mock_neck",
+    "sfw": true
+  },
+  {
+    "zh": "一字领",
+    "en": "boat_neck",
+    "sfw": true
+  },
+  {
+    "zh": "方领",
+    "en": "square_neck",
+    "sfw": true
+  },
+  {
+    "zh": "心形领",
+    "en": "sweetheart_neckline",
+    "sfw": true
+  },
+  {
+    "zh": "挂脖露背",
+    "en": "halter_neck_backless",
+    "sfw": true
+  },
+  {
+    "zh": "露背上衣",
+    "en": "backless_top",
+    "sfw": true
+  },
+  {
+    "zh": "短款卫衣",
+    "en": "cropped_hoodie",
+    "sfw": true
+  },
+  {
+    "zh": "加长卫衣",
+    "en": "oversized_hoodie",
+    "sfw": true
+  },
+  {
+    "zh": "无袖卫衣",
+    "en": "sleeveless_hoodie",
+    "sfw": true
+  },
+  {
+    "zh": "条纹卫衣",
+    "en": "striped_hoodie",
+    "sfw": true
+  },
+  {
+    "zh": "拼接衬衫",
+    "en": "patchwork_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "牛仔衬衫",
+    "en": "denim_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "格子衬衫",
+    "en": "plaid_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "绸缎衬衫",
+    "en": "satin_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "蕾丝衬衫",
+    "en": "lace_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "泡泡袖衬衫",
+    "en": "puffy_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "荷叶边衬衫",
+    "en": "ruffled_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "褶皱衬衫",
+    "en": "pleated_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "系带衬衫",
+    "en": "lace_up_shirt",
+    "sfw": true
+  },
+  {
+    "zh": "露脐卫衣",
+    "en": "cropped_sweatshirt",
+    "sfw": true
+  },
+  {
+    "zh": "紧身露脐",
+    "en": "tight_crop_top",
+    "sfw": true
+  },
+  {
+    "zh": "宽松露脐",
+    "en": "loose_crop_top",
+    "sfw": true
+  },
+  {
+    "zh": "抹胸露脐",
+    "en": "bandeau_crop_top",
+    "sfw": true
+  },
+  {
+    "zh": "露肩连衣裙",
+    "en": "off_shoulder_dress",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "吊带连衣裙",
+    "en": "spaghetti_strap_dress",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "露背连衣裙",
+    "en": "backless_dress",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "高开衩裙",
+    "en": "high_slit_dress",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "鱼尾裙",
+    "en": "mermaid_dress",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "A字裙",
+    "en": "a_line_dress",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "伞裙",
+    "en": "umbrella_skirt",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "蛋糕裙",
+    "en": "tiered_skirt",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "包臀裙",
+    "en": "bodycon_skirt",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "百褶短裙",
+    "en": "pleated_miniskirt",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "牛仔短裙",
+    "en": "denim_miniskirt",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "皮质短裙",
+    "en": "leather_miniskirt",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "蕾丝短裙",
+    "en": "lace_miniskirt",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "格纹短裙",
+    "en": "plaid_miniskirt",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "蓬蓬短裙",
+    "en": "puffy_miniskirt",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "高腰长裙",
+    "en": "high_waist_long_skirt",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "低腰长裙",
+    "en": "low_waist_long_skirt",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "百褶长裙",
+    "en": "pleated_long_skirt",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "开衩长裙",
+    "en": "slit_long_skirt",
+    "sfw": true,
+    "dimension": "clothing_type"
+  },
+  {
+    "zh": "超短热裤",
+    "en": "micro_shorts",
+    "sfw": true
+  },
+  {
+    "zh": "高腰热裤",
+    "en": "high_waist_shorts",
+    "sfw": true
+  },
+  {
+    "zh": "低腰热裤",
+    "en": "low_waist_shorts",
+    "sfw": true
+  },
+  {
+    "zh": "牛仔热裤",
+    "en": "denim_shorts",
+    "sfw": true
+  },
+  {
+    "zh": "运动热裤",
+    "en": "athletic_shorts",
+    "sfw": true
+  },
+  {
+    "zh": "皮质热裤",
+    "en": "leather_shorts",
+    "sfw": true
+  },
+  {
+    "zh": "喇叭裤",
+    "en": "flare_pants",
+    "sfw": true
+  },
+  {
+    "zh": "直筒裤",
+    "en": "straight_pants",
+    "sfw": true
+  },
+  {
+    "zh": "阔腿裤",
+    "en": "baggy_pants",
+    "sfw": true
+  },
+  {
+    "zh": "紧身牛仔裤",
+    "en": "skinny_jeans",
+    "sfw": true
+  },
+  {
+    "zh": "破洞牛仔裤",
+    "en": "ripped_jeans",
+    "sfw": true
+  },
+  {
+    "zh": "高腰牛仔裤",
+    "en": "high_waist_jeans",
+    "sfw": true
+  },
+  {
+    "zh": "低腰牛仔裤",
+    "en": "low_waist_jeans",
+    "sfw": true
+  },
+  {
+    "zh": "工装牛仔裤",
+    "en": "cargo_jeans",
+    "sfw": true
+  },
+  {
+    "zh": "连体牛仔裤",
+    "en": "denim_jumpsuit",
+    "sfw": true
+  },
+  {
+    "zh": "皮裤",
+    "en": "leather_pants",
+    "sfw": true
+  },
+  {
+    "zh": "西装裤",
+    "en": "slacks",
+    "sfw": true
+  },
+  {
+    "zh": "哈伦裤",
+    "en": "harem_pants",
+    "sfw": true
+  },
+  {
+    "zh": "纸袋裤",
+    "en": "paperbag_pants",
+    "sfw": true
+  },
+  {
+    "zh": "短款夹克",
+    "en": "cropped_jacket",
+    "sfw": true
+  },
+  {
+    "zh": "长款风衣",
+    "en": "long_trench",
+    "sfw": true
+  },
+  {
+    "zh": "斗篷大衣",
+    "en": "cape_coat",
+    "sfw": true
+  },
+  {
+    "zh": "泰迪大衣",
+    "en": "teddy_coat",
+    "sfw": true
+  },
+  {
+    "zh": "羽绒马甲",
+    "en": "puffer_vest",
+    "sfw": true
+  },
+  {
+    "zh": "牛仔外套",
+    "en": "denim_coat",
+    "sfw": true
+  },
+  {
+    "zh": "皮草外套",
+    "en": "fur_jacket",
+    "sfw": true
+  },
+  {
+    "zh": "针织外套",
+    "en": "knit_jacket",
+    "sfw": true
+  },
+  {
+    "zh": "棒球夹克",
+    "en": "varsity_jacket",
+    "sfw": true
+  },
+  {
+    "zh": "工装夹克",
+    "en": "work_jacket",
+    "sfw": true
+  },
+  {
+    "zh": "西装马甲",
+    "en": "suit_vest",
+    "sfw": true
+  },
+  {
+    "zh": "燕尾服外套",
+    "en": "tailcoat_jacket",
+    "sfw": true
+  },
+  {
+    "zh": "单肩泳衣",
+    "en": "one_shoulder_swimsuit",
+    "sfw": true
+  },
+  {
+    "zh": "露背泳衣",
+    "en": "backless_swimsuit",
+    "sfw": true
+  },
+  {
+    "zh": "高腰泳衣",
+    "en": "high_waist_swimsuit",
+    "sfw": true
+  },
+  {
+    "zh": "系带比基尼",
+    "en": "string_bikini",
+    "sfw": true
+  },
+  {
+    "zh": "三角比基尼",
+    "en": "triangle_bikini",
+    "sfw": true
+  },
+  {
+    "zh": "抹胸比基尼",
+    "en": "bandeau_bikini",
+    "sfw": true
+  },
+  {
+    "zh": "运动泳衣",
+    "en": "athletic_swimsuit",
+    "sfw": true
+  },
+  {
+    "zh": "潜水泳衣",
+    "en": "dive_swimsuit",
+    "sfw": true
+  },
+  {
+    "zh": "尖头高跟",
+    "en": "pointed_high_heels",
+    "sfw": true
+  },
+  {
+    "zh": "圆头高跟",
+    "en": "round_toe_heels",
+    "sfw": true
+  },
+  {
+    "zh": "方头高跟",
+    "en": "square_toe_heels",
+    "sfw": true
+  },
+  {
+    "zh": "细带高跟",
+    "en": "strappy_heels",
+    "sfw": true
+  },
+  {
+    "zh": "厚底高跟",
+    "en": "chunky_heels",
+    "sfw": true
+  },
+  {
+    "zh": "猫跟鞋",
+    "en": "kitten_heels",
+    "sfw": true
+  },
+  {
+    "zh": "及膝高跟靴",
+    "en": "knee_high_heels_boots",
+    "sfw": true
+  },
+  {
+    "zh": "过膝靴",
+    "en": "over_knee_boots",
+    "sfw": true
+  },
+  {
+    "zh": "马丁靴",
+    "en": "martin_boots",
+    "sfw": true
+  },
+  {
+    "zh": "切尔西靴",
+    "en": "chelsea_boots",
+    "sfw": true
+  },
+  {
+    "zh": "高筒雨靴",
+    "en": "tall_rain_boots",
+    "sfw": true
+  },
+  {
+    "zh": "网袜",
+    "en": "fishnet_tights",
+    "sfw": true
+  },
+  {
+    "zh": "蕾丝过膝",
+    "en": "lace_over_kneehighs",
+    "sfw": true
+  },
+  {
+    "zh": "条纹过膝",
+    "en": "striped_over_kneehighs",
+    "sfw": true
+  },
+  {
+    "zh": "格纹过膝",
+    "en": "plaid_thighhighs",
+    "sfw": true
+  },
+  {
+    "zh": "双色过膝",
+    "en": "two_tone_thighhighs",
+    "sfw": true
+  },
+  {
+    "zh": "渔夫帽",
+    "en": "fishing_hat",
+    "sfw": true
+  },
+  {
+    "zh": "报童帽",
+    "en": "newsboy_cap",
+    "sfw": true
+  },
+  {
+    "zh": "贝雷帽改",
+    "en": "beret_hat_alt",
+    "sfw": true
+  },
+  {
+    "zh": "针织帽",
+    "en": "knitted_hat",
+    "sfw": true
+  },
+  {
+    "zh": "毛线帽",
+    "en": "wool_hat",
+    "sfw": true
+  },
+  {
+    "zh": "宽檐帽",
+    "en": "wide_brim_hat",
+    "sfw": true
+  },
+  {
+    "zh": "牛仔帽",
+    "en": "western_hat",
+    "sfw": true
+  },
+  {
+    "zh": "珍珠项链",
+    "en": "pearl_necklace",
+    "sfw": true
+  },
+  {
+    "zh": "锁骨链",
+    "en": "collarbone_necklace",
+    "sfw": true
+  },
+  {
+    "zh": "十字项链",
+    "en": "cross_necklace",
+    "sfw": true
+  },
+  {
+    "zh": "心形项链",
+    "en": "heart_necklace",
+    "sfw": true
+  },
+  {
+    "zh": "星星项链",
+    "en": "star_necklace",
+    "sfw": true
+  },
+  {
+    "zh": "蝴蝶项链",
+    "en": "butterfly_necklace",
+    "sfw": true
+  },
+  {
+    "zh": "羽毛耳环",
+    "en": "feather_earrings",
+    "sfw": true
+  },
+  {
+    "zh": "流苏耳环",
+    "en": "tassel_earrings",
+    "sfw": true
+  },
+  {
+    "zh": "珍珠耳环",
+    "en": "pearl_earrings",
+    "sfw": true
+  },
+  {
+    "zh": "露肩针织",
+    "en": "off_shoulder_knit",
+    "sfw": true
+  },
+  {
+    "zh": "高腰工装裤",
+    "en": "high_waist_cargo_pants",
+    "sfw": true
+  },
+  {
+    "zh": "低腰工装裤",
+    "en": "low_waist_cargo_pants",
+    "sfw": true
+  },
+  {
+    "zh": "破洞工装裤",
+    "en": "ripped_cargo_pants",
+    "sfw": true
+  },
+  {
+    "zh": "束脚工装裤",
+    "en": "tapered_cargo_pants",
+    "sfw": true
+  },
+  {
+    "zh": "皮质工装裤",
+    "en": "leather_cargo_pants",
+    "sfw": true
+  },
+  {
+    "zh": "工装背带裤",
+    "en": "cargo_overalls",
+    "sfw": true
+  },
+  {
+    "zh": "工装短裤",
+    "en": "cargo_shorts",
+    "sfw": true
+  },
+  {
+    "zh": "工装马甲",
+    "en": "cargo_vest",
+    "sfw": true
+  },
+  {
+    "zh": "工装外套2",
+    "en": "cargo_jacket",
+    "sfw": true
+  }
+]

@@ -1,0 +1,2070 @@
+[
+  {
+    "zh": "动漫",
+    "en": "anime",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "插画",
+    "en": "illustration",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "半写实",
+    "en": "semi_realistic",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "照片写实",
+    "en": "photorealistic",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "写实",
+    "en": "realistic",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "像素风",
+    "en": "pixel_art",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "水彩",
+    "en": "watercolor",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "油画",
+    "en": "oil_painting",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "浮世绘",
+    "en": "ukiyo_e",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "素描",
+    "en": "sketch",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "线稿",
+    "en": "lineart",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "漫画",
+    "en": "comic",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "日漫",
+    "en": "manga",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "卡通",
+    "en": "cartoon",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "赛璐璐上色",
+    "en": "cel_shading",
+    "sfw": true
+  },
+  {
+    "zh": "平涂",
+    "en": "flat_color",
+    "sfw": true
+  },
+  {
+    "zh": "绘画质感",
+    "en": "painterly",
+    "sfw": true
+  },
+  {
+    "zh": "概念设计",
+    "en": "concept_art",
+    "sfw": true
+  },
+  {
+    "zh": "数字艺术",
+    "en": "digital_art",
+    "sfw": true
+  },
+  {
+    "zh": "3D",
+    "en": "3d",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "3D渲染",
+    "en": "3d_render",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "低多边形",
+    "en": "low_poly",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "体素",
+    "en": "voxel",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "等距视角",
+    "en": "isometric",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "复古",
+    "en": "retro",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "合成波",
+    "en": "synthwave",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "蒸汽波",
+    "en": "vaporwave",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "赛博朋克",
+    "en": "cyberpunk",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "蒸汽朋克",
+    "en": "steampunk",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "奇幻风",
+    "en": "fantasy_art",
+    "sfw": true
+  },
+  {
+    "zh": "科幻",
+    "en": "sci-fi",
+    "sfw": true
+  },
+  {
+    "zh": "恐怖",
+    "en": "horror",
+    "sfw": true
+  },
+  {
+    "zh": "哥特",
+    "en": "gothic",
+    "sfw": true
+  },
+  {
+    "zh": "新艺术",
+    "en": "art_nouveau",
+    "sfw": true
+  },
+  {
+    "zh": "巴洛克",
+    "en": "baroque",
+    "sfw": true
+  },
+  {
+    "zh": "极简",
+    "en": "minimalism",
+    "sfw": true
+  },
+  {
+    "zh": "繁复",
+    "en": "maximalism",
+    "sfw": true
+  },
+  {
+    "zh": "波普",
+    "en": "pop_art",
+    "sfw": true
+  },
+  {
+    "zh": "超现实",
+    "en": "surrealism",
+    "sfw": true
+  },
+  {
+    "zh": "表现主义",
+    "en": "expressionism",
+    "sfw": true
+  },
+  {
+    "zh": "印象派",
+    "en": "impressionism",
+    "sfw": true
+  },
+  {
+    "zh": "点彩",
+    "en": "pointillism",
+    "sfw": true
+  },
+  {
+    "zh": "拼贴",
+    "en": "collage",
+    "sfw": true
+  },
+  {
+    "zh": "彩绘玻璃",
+    "en": "stained_glass",
+    "sfw": true
+  },
+  {
+    "zh": "动漫上色",
+    "en": "anime_coloring",
+    "sfw": true
+  },
+  {
+    "zh": "胶片颗粒",
+    "en": "film_grain",
+    "sfw": true
+  },
+  {
+    "zh": "单色",
+    "en": "monochrome",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "灰度",
+    "en": "greyscale",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "棕褐色调",
+    "en": "sepia",
+    "sfw": true
+  },
+  {
+    "zh": "调色",
+    "en": "color_grade",
+    "sfw": true
+  },
+  {
+    "zh": "柔和色",
+    "en": "pastel_colors",
+    "sfw": true
+  },
+  {
+    "zh": "鲜艳色",
+    "en": "vivid_colors",
+    "sfw": true
+  },
+  {
+    "zh": "暗色调",
+    "en": "muted_colors",
+    "sfw": true
+  },
+  {
+    "zh": "霓虹色",
+    "en": "neon_colors",
+    "sfw": true
+  },
+  {
+    "zh": "水彩风",
+    "en": "watercolor_style",
+    "sfw": true
+  },
+  {
+    "zh": "极简艺术",
+    "en": "minimalist_art",
+    "sfw": true
+  },
+  {
+    "zh": "渐变艺术",
+    "en": "gradient_art",
+    "sfw": true
+  },
+  {
+    "zh": "贴纸风",
+    "en": "sticker_art",
+    "sfw": true
+  },
+  {
+    "zh": "手绘风",
+    "en": "hand_drawn",
+    "sfw": true
+  },
+  {
+    "zh": "抽象艺术",
+    "en": "abstract_art",
+    "sfw": true
+  },
+  {
+    "zh": "京都动画",
+    "en": "kyoto_animation",
+    "sfw": true
+  },
+  {
+    "zh": "新海诚",
+    "en": "makoto_shinkai",
+    "sfw": true
+  },
+  {
+    "zh": "吉卜力",
+    "en": "studio_ghibli",
+    "sfw": true
+  },
+  {
+    "zh": "霸权社",
+    "en": "wits_studio",
+    "sfw": true
+  },
+  {
+    "zh": "细田守",
+    "en": "mamoru_hosoda",
+    "sfw": true
+  },
+  {
+    "zh": "汤浅政明",
+    "en": "masaaki_yuasa",
+    "sfw": true
+  },
+  {
+    "zh": "薄涂",
+    "en": "thin_painting",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "厚涂",
+    "en": "impasto",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "勾线",
+    "en": "inking",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "少女漫",
+    "en": "shoujo",
+    "sfw": true
+  },
+  {
+    "zh": "少年漫",
+    "en": "shounen",
+    "sfw": true
+  },
+  {
+    "zh": "机设风",
+    "en": "mecha",
+    "sfw": true
+  },
+  {
+    "zh": "和风",
+    "en": "japanese_style",
+    "sfw": true
+  },
+  {
+    "zh": "大正浪漫",
+    "en": "taisho_roman",
+    "sfw": true
+  },
+  {
+    "zh": "轻小说封面",
+    "en": "light_novel_cover",
+    "sfw": true
+  },
+  {
+    "zh": "复古动画",
+    "en": "retro_anime",
+    "sfw": true
+  },
+  {
+    "zh": "80年代动画",
+    "en": "80s_anime",
+    "sfw": true
+  },
+  {
+    "zh": "90年代动画",
+    "en": "90s_anime",
+    "sfw": true
+  },
+  {
+    "zh": "动画截图",
+    "en": "anime_screencap",
+    "sfw": true
+  },
+  {
+    "zh": "赛璐璐动画",
+    "en": "cel_animation",
+    "sfw": true
+  },
+  {
+    "zh": "漫画风",
+    "en": "anime_watercolor",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "迪士尼",
+    "en": "disney",
+    "sfw": true
+  },
+  {
+    "zh": "皮克斯",
+    "en": "pixar",
+    "sfw": true
+  },
+  {
+    "zh": "梦工厂",
+    "en": "dreamworks",
+    "sfw": true
+  },
+  {
+    "zh": "美漫",
+    "en": "american_comics",
+    "sfw": true
+  },
+  {
+    "zh": "美式卡通",
+    "en": "american_cartoon",
+    "sfw": true
+  },
+  {
+    "zh": "版画",
+    "en": "woodcut",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "蜡笔",
+    "en": "crayon_art",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "绘本风",
+    "en": "picture_book",
+    "sfw": true
+  },
+  {
+    "zh": "童话书风",
+    "en": "storybook",
+    "sfw": true
+  },
+  {
+    "zh": "条漫",
+    "en": "webtoon",
+    "sfw": true
+  },
+  {
+    "zh": "国漫",
+    "en": "manhua",
+    "sfw": true
+  },
+  {
+    "zh": "超写实",
+    "en": "hyperrealism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "电影感",
+    "en": "film_style",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "胶片摄影",
+    "en": "film_photography",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "复古胶片",
+    "en": "vintage_style",
+    "sfw": true
+  },
+  {
+    "zh": "原神",
+    "en": "genshin_impact",
+    "sfw": true
+  },
+  {
+    "zh": "崩坏",
+    "en": "honkai",
+    "sfw": true
+  },
+  {
+    "zh": "明日方舟",
+    "en": "arknights",
+    "sfw": true
+  },
+  {
+    "zh": "舰娘",
+    "en": "kancolle",
+    "sfw": true
+  },
+  {
+    "zh": "偶像大师",
+    "en": "idolmaster",
+    "sfw": true
+  },
+  {
+    "zh": "蔚蓝档案",
+    "en": "blue_archive",
+    "sfw": true
+  },
+  {
+    "zh": "游戏CG",
+    "en": "game_cg",
+    "sfw": true
+  },
+  {
+    "zh": "视觉小说",
+    "en": "visual_novel",
+    "sfw": true
+  },
+  {
+    "zh": "轻小说插画",
+    "en": "light_novel_style",
+    "sfw": true
+  },
+  {
+    "zh": "水墨",
+    "en": "ink_wash",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "马赛克",
+    "en": "mosaic",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "装饰艺术",
+    "en": "art_deco",
+    "sfw": true
+  },
+  {
+    "zh": "洛可可",
+    "en": "rococo",
+    "sfw": true
+  },
+  {
+    "zh": "折纸",
+    "en": "origami",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "剪纸",
+    "en": "paper_cutout",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "刺绣",
+    "en": "embroidery",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "雕塑风",
+    "en": "sculpture",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "金箔",
+    "en": "gold_leaf",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "立体主义",
+    "en": "cubism",
+    "sfw": true
+  },
+  {
+    "zh": "野兽派",
+    "en": "fauvism",
+    "sfw": true
+  },
+  {
+    "zh": "未来主义",
+    "en": "futurism",
+    "sfw": true
+  },
+  {
+    "zh": "象征主义",
+    "en": "symbolism",
+    "sfw": true
+  },
+  {
+    "zh": "后印象派",
+    "en": "post_impressionism",
+    "sfw": true
+  },
+  {
+    "zh": "抽象表现主义",
+    "en": "abstract_expressionism",
+    "sfw": true
+  },
+  {
+    "zh": "包豪斯",
+    "en": "bauhaus",
+    "sfw": true
+  },
+  {
+    "zh": "构成主义",
+    "en": "constructivism",
+    "sfw": true
+  },
+  {
+    "zh": "达达主义",
+    "en": "dadaism",
+    "sfw": true
+  },
+  {
+    "zh": "武侠风",
+    "en": "wuxia_style",
+    "sfw": true
+  },
+  {
+    "zh": "中国水墨",
+    "en": "chinese_ink",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "水彩晕染",
+    "en": "watercolor_wash",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "水粉",
+    "en": "gouache",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "丙烯",
+    "en": "acrylic",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "粉彩",
+    "en": "pastel_art",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "木炭",
+    "en": "charcoal",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "钢笔淡彩",
+    "en": "pen_ink",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "马克笔",
+    "en": "marker_art",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "喷绘",
+    "en": "airbrush",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "矢量图",
+    "en": "vector_art",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "扁平设计",
+    "en": "flat_design",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "粗野主义",
+    "en": "brutalism",
+    "sfw": true
+  },
+  {
+    "zh": "艺术海报",
+    "en": "art_poster",
+    "sfw": true
+  },
+  {
+    "zh": "同人风",
+    "en": "doujin_style",
+    "sfw": true
+  },
+  {
+    "zh": "主视觉图",
+    "en": "key_visual",
+    "sfw": true
+  },
+  {
+    "zh": "海报风",
+    "en": "poster_style",
+    "sfw": true
+  },
+  {
+    "zh": "专辑封面",
+    "en": "album_cover",
+    "sfw": true
+  },
+  {
+    "zh": "速写草稿",
+    "en": "rough_sketch",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "酸性图形",
+    "en": "acid_graphics",
+    "sfw": true
+  },
+  {
+    "zh": "非洲未来主义",
+    "en": "afrofuturism",
+    "sfw": true
+  },
+  {
+    "zh": "生物朋克",
+    "en": "biopunk",
+    "sfw": true
+  },
+  {
+    "zh": "巧克力少女",
+    "en": "choco_girl",
+    "sfw": true
+  },
+  {
+    "zh": "柴油朋克",
+    "en": "dieselpunk",
+    "sfw": true
+  },
+  {
+    "zh": "敦煌风格",
+    "en": "dunhuang_style",
+    "sfw": true
+  },
+  {
+    "zh": "安卓绿意",
+    "en": "frutiger_aero",
+    "sfw": true
+  },
+  {
+    "zh": "地铁风格",
+    "en": "frutiger_metro",
+    "sfw": true
+  },
+  {
+    "zh": "病态可爱",
+    "en": "gurokawa",
+    "sfw": true
+  },
+  {
+    "zh": "平成一族复古",
+    "en": "heisei_retro",
+    "sfw": true
+  },
+  {
+    "zh": "复古未来主义",
+    "en": "retrofuturism",
+    "sfw": true
+  },
+  {
+    "zh": "丝滑朋克",
+    "en": "silkpunk",
+    "sfw": true
+  },
+  {
+    "zh": "太阳能朋克",
+    "en": "solarpunk",
+    "sfw": true
+  },
+  {
+    "zh": "超扁平",
+    "en": "superflat",
+    "sfw": true
+  },
+  {
+    "zh": "天使街区",
+    "en": "tenshi_kaiwai",
+    "sfw": true
+  },
+  {
+    "zh": "怪核",
+    "en": "weirdcore",
+    "sfw": true
+  },
+  {
+    "zh": "阴暗可爱",
+    "en": "yami_kawaii",
+    "sfw": true
+  },
+  {
+    "zh": "梦核",
+    "en": "yume_kawaii",
+    "sfw": true
+  },
+  {
+    "zh": "千禧年风格",
+    "en": "y2k",
+    "sfw": true
+  },
+  {
+    "zh": "赛博嘻哈",
+    "en": "cyberpunk_style",
+    "sfw": true
+  },
+  {
+    "zh": "废土风",
+    "en": "wasteland_aesthetic",
+    "sfw": true
+  },
+  {
+    "zh": "蒸汽波",
+    "en": "vaporwave_aesthetic",
+    "sfw": true
+  },
+  {
+    "zh": "法式风情",
+    "en": "french_aesthetic",
+    "sfw": true
+  },
+  {
+    "zh": "学院风",
+    "en": "academia_aesthetic",
+    "sfw": true
+  },
+  {
+    "zh": "书呆子风",
+    "en": "dark_academia",
+    "sfw": true
+  },
+  {
+    "zh": "暗黑学院风",
+    "en": "dark_academia_aesthetic",
+    "sfw": true
+  },
+  {
+    "zh": "森林风",
+    "en": "cottagecore",
+    "sfw": true
+  },
+  {
+    "zh": "仙女风",
+    "en": "fairycore",
+    "sfw": true
+  },
+  {
+    "zh": "海滩风",
+    "en": "beachcore",
+    "sfw": true
+  },
+  {
+    "zh": "怀旧日本风",
+    "en": "japanese_retro",
+    "sfw": true
+  },
+  {
+    "zh": "昭和风",
+    "en": "showa_retro",
+    "sfw": true
+  },
+  {
+    "zh": "大正浪漫",
+    "en": "taisho_roman_style",
+    "sfw": true
+  },
+  {
+    "zh": "港风",
+    "en": "hong_kong_style",
+    "sfw": true
+  },
+  {
+    "zh": "韩流",
+    "en": "korean_style",
+    "sfw": true
+  },
+  {
+    "zh": "极简风",
+    "en": "minimalist_style",
+    "sfw": true
+  },
+  {
+    "zh": "北欧风",
+    "en": "scandinavian_style",
+    "sfw": true
+  },
+  {
+    "zh": "波西米亚",
+    "en": "bohemian_style",
+    "sfw": true
+  },
+  {
+    "zh": "哥特",
+    "en": "gothic_aesthetic",
+    "sfw": true
+  },
+  {
+    "zh": "洛丽塔",
+    "en": "lolita_fashion",
+    "sfw": true
+  },
+  {
+    "zh": "朋克",
+    "en": "punk_style",
+    "sfw": true
+  },
+  {
+    "zh": "街头风",
+    "en": "streetwear",
+    "sfw": true
+  },
+  {
+    "zh": "运动风",
+    "en": "athleisure",
+    "sfw": true
+  },
+  {
+    "zh": "休闲风",
+    "en": "casual_style",
+    "sfw": true
+  },
+  {
+    "zh": "抽象",
+    "en": "abstract",
+    "sfw": true
+  },
+  {
+    "zh": "浪漫主义",
+    "en": "romanticism",
+    "sfw": true
+  },
+  {
+    "zh": "新古典主义",
+    "en": "neoclassicism",
+    "sfw": true
+  },
+  {
+    "zh": "写实主义",
+    "en": "realism",
+    "sfw": true
+  },
+  {
+    "zh": "荷兰风格派",
+    "en": "de_stijl",
+    "sfw": true
+  },
+  {
+    "zh": "朴素派",
+    "en": "naive_art",
+    "sfw": true
+  },
+  {
+    "zh": "原始主义",
+    "en": "primitivism",
+    "sfw": true
+  },
+  {
+    "zh": "新印象派",
+    "en": "neo-impressionism",
+    "sfw": true
+  },
+  {
+    "zh": "分离派",
+    "en": "secessionist",
+    "sfw": true
+  },
+  {
+    "zh": "青年风格",
+    "en": "jungendstil",
+    "sfw": true
+  },
+  {
+    "zh": "至上主义",
+    "en": "suprematism",
+    "sfw": true
+  },
+  {
+    "zh": "未来主义(意大利)",
+    "en": "futurism_art",
+    "sfw": true
+  },
+  {
+    "zh": "低多边形",
+    "en": "low_poly_style",
+    "sfw": true
+  },
+  {
+    "zh": "体素",
+    "en": "voxel_art",
+    "sfw": true
+  },
+  {
+    "zh": "像素",
+    "en": "pixel_art_style",
+    "sfw": true
+  },
+  {
+    "zh": "等高线",
+    "en": "contour_art",
+    "sfw": true
+  },
+  {
+    "zh": "线描",
+    "en": "line_drawing",
+    "sfw": true
+  },
+  {
+    "zh": "钢笔淡彩",
+    "en": "pen_and_ink",
+    "sfw": true
+  },
+  {
+    "zh": "炭笔",
+    "en": "charcoal_sketch",
+    "sfw": true
+  },
+  {
+    "zh": "粉彩",
+    "en": "pastel_drawing",
+    "sfw": true
+  },
+  {
+    "zh": "蜡笔",
+    "en": "crayon_art_style",
+    "sfw": true
+  },
+  {
+    "zh": "马克笔",
+    "en": "marker_art_style",
+    "sfw": true
+  },
+  {
+    "zh": "水彩风",
+    "en": "watercolor_painting",
+    "sfw": true
+  },
+  {
+    "zh": "油画风",
+    "en": "oil_painting_style",
+    "sfw": true
+  },
+  {
+    "zh": "丙烯",
+    "en": "acrylic_painting",
+    "sfw": true
+  },
+  {
+    "zh": "喷绘",
+    "en": "airbrush_art",
+    "sfw": true
+  },
+  {
+    "zh": "版画",
+    "en": "printmaking",
+    "sfw": true
+  },
+  {
+    "zh": "木刻",
+    "en": "woodcut_style",
+    "sfw": true
+  },
+  {
+    "zh": "丝网印刷",
+    "en": "screen_printing",
+    "sfw": true
+  },
+  {
+    "zh": "蚀刻",
+    "en": "etching",
+    "sfw": true
+  },
+  {
+    "zh": "石版画",
+    "en": "lithograph",
+    "sfw": true
+  },
+  {
+    "zh": "拼贴",
+    "en": "collage_art",
+    "sfw": true
+  },
+  {
+    "zh": "涂鸦",
+    "en": "graffiti_art",
+    "sfw": true
+  },
+  {
+    "zh": "街头艺术",
+    "en": "street_art",
+    "sfw": true
+  },
+  {
+    "zh": "壁画",
+    "en": "mural_art",
+    "sfw": true
+  },
+  {
+    "zh": "漫画风",
+    "en": "comic_style",
+    "sfw": true
+  },
+  {
+    "zh": "美漫",
+    "en": "american_comics_style",
+    "sfw": true
+  },
+  {
+    "zh": "欧漫",
+    "en": "european_comics_style",
+    "sfw": true
+  },
+  {
+    "zh": "韩漫",
+    "en": "manhwa_style",
+    "sfw": true
+  },
+  {
+    "zh": "条漫",
+    "en": "webtoon_style",
+    "sfw": true
+  },
+  {
+    "zh": "插画",
+    "en": "illustration_style",
+    "sfw": true
+  },
+  {
+    "zh": "儿童绘本",
+    "en": "children's_book_illustration",
+    "sfw": true
+  },
+  {
+    "zh": "故事书",
+    "en": "storybook_style",
+    "sfw": true
+  },
+  {
+    "zh": "浮世绘",
+    "en": "ukiyo_e_style",
+    "sfw": true
+  },
+  {
+    "zh": "日本画",
+    "en": "nihonga",
+    "sfw": true
+  },
+  {
+    "zh": "水墨",
+    "en": "sumi-e",
+    "sfw": true
+  },
+  {
+    "zh": "工笔",
+    "en": "gongbi",
+    "sfw": true
+  },
+  {
+    "zh": "白描",
+    "en": "line_art_chinese",
+    "sfw": true
+  },
+  {
+    "zh": "壁画(敦煌)",
+    "en": "dunhuang_mural",
+    "sfw": true
+  },
+  {
+    "zh": "刺绣风",
+    "en": "embroidery_style",
+    "sfw": true
+  },
+  {
+    "zh": "剪纸",
+    "en": "paper_cutout_style",
+    "sfw": true
+  },
+  {
+    "zh": "折纸",
+    "en": "origami_art",
+    "sfw": true
+  },
+  {
+    "zh": "陶艺",
+    "en": "ceramic_art",
+    "sfw": true
+  },
+  {
+    "zh": "雕塑",
+    "en": "sculpture_style",
+    "sfw": true
+  },
+  {
+    "zh": "金属工艺",
+    "en": "metalwork_art",
+    "sfw": true
+  },
+  {
+    "zh": "珐琅",
+    "en": "enamel_art",
+    "sfw": true
+  },
+  {
+    "zh": "玻璃彩绘",
+    "en": "stained_glass_art",
+    "sfw": true
+  },
+  {
+    "zh": "马赛克",
+    "en": "mosaic_style",
+    "sfw": true
+  },
+  {
+    "zh": "黄金叶",
+    "en": "gold_leaf_art",
+    "sfw": true
+  },
+  {
+    "zh": "赛璐璐",
+    "en": "cel_shading_style",
+    "sfw": true
+  },
+  {
+    "zh": "厚涂",
+    "en": "impasto_style",
+    "sfw": true
+  },
+  {
+    "zh": "薄涂",
+    "en": "thin_painting_style",
+    "sfw": true
+  },
+  {
+    "zh": "渲染",
+    "en": "3d_render_style",
+    "sfw": true
+  },
+  {
+    "zh": "写实渲染",
+    "en": "photorealistic_render",
+    "sfw": true
+  },
+  {
+    "zh": "卡通渲染",
+    "en": "toon_shading",
+    "sfw": true
+  },
+  {
+    "zh": "无光渲染",
+    "en": "flat_shading",
+    "sfw": true
+  },
+  {
+    "zh": "风格化渲染",
+    "en": "stylized_render",
+    "sfw": true
+  },
+  {
+    "zh": "电影感",
+    "en": "cinematic_style",
+    "sfw": true
+  },
+  {
+    "zh": "电影截图",
+    "en": "film_still",
+    "sfw": true
+  },
+  {
+    "zh": "纪录片",
+    "en": "documentary_style",
+    "sfw": true
+  },
+  {
+    "zh": "胶片摄影",
+    "en": "film_photography_style",
+    "sfw": true
+  },
+  {
+    "zh": "数码摄影",
+    "en": "digital_photography",
+    "sfw": true
+  },
+  {
+    "zh": "宝丽来",
+    "en": "polaroid_style",
+    "sfw": true
+  },
+  {
+    "zh": "证件照",
+    "en": "mugshot_style",
+    "sfw": true
+  },
+  {
+    "zh": "监控摄像",
+    "en": "cctv_style",
+    "sfw": true
+  },
+  {
+    "zh": "故障艺术",
+    "en": "glitch_art",
+    "sfw": true
+  },
+  {
+    "zh": "噪点",
+    "en": "noise_effect",
+    "sfw": true
+  },
+  {
+    "zh": "黑白",
+    "en": "black_and_white",
+    "sfw": true
+  },
+  {
+    "zh": "深棕色",
+    "en": "sepia_style",
+    "sfw": true
+  },
+  {
+    "zh": "蓝晒",
+    "en": "cyanotype",
+    "sfw": true
+  },
+  {
+    "zh": "双重曝光",
+    "en": "double_exposure_style",
+    "sfw": true
+  },
+  {
+    "zh": "模糊",
+    "en": "blur_effect",
+    "sfw": true
+  },
+  {
+    "zh": "运动模糊",
+    "en": "motion_blur_effect",
+    "sfw": true
+  },
+  {
+    "zh": "光晕",
+    "en": "halo_effect",
+    "sfw": true
+  },
+  {
+    "zh": "复古滤镜",
+    "en": "retro_filter",
+    "sfw": true
+  },
+  {
+    "zh": "京都动画",
+    "en": "kyoto_animation_style",
+    "sfw": true
+  },
+  {
+    "zh": "新海诚",
+    "en": "makoto_shinkai_style",
+    "sfw": true
+  },
+  {
+    "zh": "吉卜力",
+    "en": "ghibli_style",
+    "sfw": true
+  },
+  {
+    "zh": "汤浅政明",
+    "en": "masaaki_yuasa_style",
+    "sfw": true
+  },
+  {
+    "zh": "细田守",
+    "en": "mamoru_hosoda_style",
+    "sfw": true
+  },
+  {
+    "zh": "今敏",
+    "en": "satoshi_kon_style",
+    "sfw": true
+  },
+  {
+    "zh": "老动画",
+    "en": "retro_anime_style",
+    "sfw": true
+  },
+  {
+    "zh": "80年代动画",
+    "en": "80s_anime_style",
+    "sfw": true
+  },
+  {
+    "zh": "90年代动画",
+    "en": "90s_anime_style",
+    "sfw": true
+  },
+  {
+    "zh": "手绘动画",
+    "en": "hand-drawn_animation",
+    "sfw": true
+  },
+  {
+    "zh": "赛璐璐动画",
+    "en": "cel_animation_style",
+    "sfw": true
+  },
+  {
+    "zh": "美少女风",
+    "en": "bishoujo_style",
+    "sfw": true
+  },
+  {
+    "zh": "少年漫风",
+    "en": "shounen_style",
+    "sfw": true
+  },
+  {
+    "zh": "少女漫风",
+    "en": "shoujo_style",
+    "sfw": true
+  },
+  {
+    "zh": "青年漫风",
+    "en": "seinen_style",
+    "sfw": true
+  },
+  {
+    "zh": "萌系",
+    "en": "moe_style",
+    "sfw": true
+  },
+  {
+    "zh": "萌绘",
+    "en": "moe_art",
+    "sfw": true
+  },
+  {
+    "zh": "兽耳风",
+    "en": "kemonomimi_style",
+    "sfw": true
+  },
+  {
+    "zh": "软萌",
+    "en": "kawaii_style",
+    "sfw": true
+  },
+  {
+    "zh": "人物原画",
+    "en": "character_design",
+    "sfw": true
+  },
+  {
+    "zh": "概念设计",
+    "en": "concept_art_style",
+    "sfw": true
+  },
+  {
+    "zh": "游戏CG",
+    "en": "game_cg_style",
+    "sfw": true
+  },
+  {
+    "zh": "视觉小说",
+    "en": "visual_novel_style",
+    "sfw": true
+  },
+  {
+    "zh": "轻小说封面",
+    "en": "light_novel_cover_style",
+    "sfw": true
+  },
+  {
+    "zh": "官方图鉴",
+    "en": "official_art_style",
+    "sfw": true
+  },
+  {
+    "zh": "live2d",
+    "en": "live2d_style",
+    "sfw": true
+  },
+  {
+    "zh": "手办风",
+    "en": "figure_style",
+    "sfw": true
+  },
+  {
+    "zh": "玩偶风",
+    "en": "doll_style",
+    "sfw": true
+  },
+  {
+    "zh": "照片风",
+    "en": "photograph_style",
+    "sfw": true
+  },
+  {
+    "zh": "真人",
+    "en": "live_action_style",
+    "sfw": true
+  },
+  {
+    "zh": "新印象派",
+    "en": "neo_impressionism_art",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "立体未来主义",
+    "en": "cubist_futurism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "光线派",
+    "en": "luminism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "色域绘画",
+    "en": "color_field_painting",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "硬边绘画",
+    "en": "hard_edge_painting",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "行动绘画",
+    "en": "action_painting",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "抒情抽象",
+    "en": "lyrical_abstraction",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "极简抽象",
+    "en": "minimal_abstraction",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "欧普艺术",
+    "en": "op_art",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "波普超写实",
+    "en": "pop_hyperrealism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "照相写实",
+    "en": "photoreal_painting",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "超级写实",
+    "en": "super_photorealism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "魔幻现实",
+    "en": "magic_realism_art",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "新古典写实",
+    "en": "neoclassical_realism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "社会现实",
+    "en": "social_realism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "地域主义",
+    "en": "regionalism_art",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "精确主义",
+    "en": "precisionism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "同步主义",
+    "en": "synchromism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "漩涡主义",
+    "en": "vorticism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "射线主义",
+    "en": "rayonism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "至上几何",
+    "en": "suprematist_geometric",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "新造型主义",
+    "en": "neo_plasticism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "构成超写实",
+    "en": "constructive_realism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "形而上绘画",
+    "en": "metaphysical_painting",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "新客观",
+    "en": "new_objectivity",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "桥社表现",
+    "en": "brucke_expressionism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "蓝骑士",
+    "en": "blue_rider_style",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "野兽新表现",
+    "en": "neo_fauvism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "抒情表现",
+    "en": "lyrical_expressionism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "抽象幻觉",
+    "en": "abstract_illusionism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "图案装饰",
+    "en": "pattern_and_decoration",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "坏画派",
+    "en": "bad_painting_style",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "新表现主义2",
+    "en": "neo_expressionism_alt",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "具象表现",
+    "en": "figurative_expressionism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "新写实",
+    "en": "nouveau_realisme",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "贫穷艺术",
+    "en": "arte_povera",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "大地艺术",
+    "en": "land_art_style",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "激浪派",
+    "en": "fluxus_art",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "观念艺术",
+    "en": "conceptual_art_style",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "极简观念",
+    "en": "minimal_conceptual",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "后极简",
+    "en": "post_minimalism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "后现代拼贴",
+    "en": "postmodern_collage",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "新波普",
+    "en": "neo_pop_art",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "低眉艺术",
+    "en": "lowbrow_art",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "街头波普",
+    "en": "street_pop_art",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "涂鸦写实",
+    "en": "graffiti_realism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "新壁画",
+    "en": "neo_muralism",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "数字水彩",
+    "en": "digital_watercolor",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "数字油画",
+    "en": "digital_oil",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "数字粉彩",
+    "en": "digital_pastel",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "混合媒介",
+    "en": "mixed_media_art",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "拼贴混合",
+    "en": "collage_mixed_media",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "3D卡通",
+    "en": "3d_cartoon_style",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "3D写实",
+    "en": "3d_realistic_style",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "体素渲染",
+    "en": "voxel_render_art",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "等距像素",
+    "en": "isometric_pixel_art",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "矢量扁平2",
+    "en": "flat_vector_art",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "几何扁平",
+    "en": "geometric_flat",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "孟菲斯风格",
+    "en": "memphis_design",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "包豪斯几何",
+    "en": "bauhaus_geometric",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "装饰几何",
+    "en": "art_deco_geometric",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "新艺术曲线",
+    "en": "art_nouveau_curves",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "哥特装饰",
+    "en": "gothic_ornamental",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "洛可可柔美",
+    "en": "rococo_soft",
+    "sfw": true,
+    "dimension": "art_style"
+  },
+  {
+    "zh": "京阿尼作画",
+    "en": "kyoani_style",
+    "sfw": true
+  },
+  {
+    "zh": "扳机社",
+    "en": "trigger_style",
+    "sfw": true
+  },
+  {
+    "zh": "骨头社",
+    "en": "bones_style",
+    "sfw": true
+  },
+  {
+    "zh": "A1作画",
+    "en": "a1_pictures_style",
+    "sfw": true
+  },
+  {
+    "zh": "飞碟社",
+    "en": "ufotable_style",
+    "sfw": true
+  },
+  {
+    "zh": "白组",
+    "en": "white_fox_style",
+    "sfw": true
+  },
+  {
+    "zh": "Cygames作画",
+    "en": "cygames_style",
+    "sfw": true
+  },
+  {
+    "zh": "米哈游风格",
+    "en": "mihoyo_style",
+    "sfw": true
+  },
+  {
+    "zh": "明日方舟风格",
+    "en": "arknights_style",
+    "sfw": true
+  },
+  {
+    "zh": "碧蓝航线风格",
+    "en": "azur_lane_style",
+    "sfw": true
+  },
+  {
+    "zh": "赛马娘风格",
+    "en": "umamusume_style",
+    "sfw": true
+  },
+  {
+    "zh": "偶像大师风格",
+    "en": "idolmaster_style_alt",
+    "sfw": true
+  },
+  {
+    "zh": "LoveLive风格",
+    "en": "lovelive_style",
+    "sfw": true
+  },
+  {
+    "zh": "孤独摇滚风格",
+    "en": "bocchi_style",
+    "sfw": true
+  },
+  {
+    "zh": "胶片颗粒粗",
+    "en": "heavy_film_grain",
+    "sfw": true
+  },
+  {
+    "zh": "柔焦摄影",
+    "en": "soft_focus_photo",
+    "sfw": true
+  },
+  {
+    "zh": "高对比摄影",
+    "en": "high_contrast_photo",
+    "sfw": true
+  },
+  {
+    "zh": "低对比摄影",
+    "en": "low_contrast_photo",
+    "sfw": true
+  },
+  {
+    "zh": "褪色胶片",
+    "en": "faded_film",
+    "sfw": true
+  },
+  {
+    "zh": "过曝胶片",
+    "en": "overexposed_film",
+    "sfw": true
+  },
+  {
+    "zh": "漏光胶片",
+    "en": "light_leak_film",
+    "sfw": true
+  },
+  {
+    "zh": "双重曝光摄影",
+    "en": "double_exposure_photo",
+    "sfw": true
+  },
+  {
+    "zh": "长曝光摄影",
+    "en": "long_exposure_photo",
+    "sfw": true
+  },
+  {
+    "zh": "移轴摄影",
+    "en": "tilt_shift_photo",
+    "sfw": true
+  },
+  {
+    "zh": "鱼眼摄影",
+    "en": "fisheye_photo_style",
+    "sfw": true
+  },
+  {
+    "zh": "红外摄影",
+    "en": "infrared_photo",
+    "sfw": true
+  }
+]

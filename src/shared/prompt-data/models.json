@@ -1,0 +1,25 @@
+{
+  "models": {
+    "illustAsianCoser_v20.safetensors": {
+      "fileName": "illustAsianCoser_v20.safetensors",
+      "baseModel": "Illustrious",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/1867122",
+      "description": "Illustrious 亚洲写实 coser 底模，亚洲面孔写真质感，适合人物写实出图。"
+    },
+    "lustifyNSFWCheckpoint_v10Krea2.safetensors": {
+      "fileName": "lustifyNSFWCheckpoint_v10Krea2.safetensors",
+      "baseModel": "Krea 2",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/573152",
+      "description": "Krea 2 底模 NSFW 写实 checkpoint，真实系 NSFW 出图。"
+    },
+    "moodyProMix_collectorsEdition.safetensors": {
+      "fileName": "moodyProMix_collectorsEdition.safetensors",
+      "baseModel": "ZImageTurbo",
+      "source": "civitai",
+      "sourceUrl": "https://civitai.com/models/620406",
+      "description": "ZImageTurbo 底模氛围写实 checkpoint（Collector's Edition），电影感氛围与写实光影。"
+    }
+  }
+}

@@ -1,0 +1,2314 @@
+[
+  {
+    "zh": "解剖错误",
+    "en": "bad_anatomy",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "手部畸形",
+    "en": "bad_hands",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "脚部畸形",
+    "en": "bad_feet",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "比例失调",
+    "en": "bad_proportions",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "多余手指",
+    "en": "extra_fingers",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "多余手臂",
+    "en": "extra_arms",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "多余腿",
+    "en": "extra_legs",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "缺手臂",
+    "en": "missing_arms",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "缺腿",
+    "en": "missing_legs",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "变异手",
+    "en": "mutated_hands",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "畸形肢体",
+    "en": "malformed_limbs",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "并指",
+    "en": "fused_fingers",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "多余眼睛",
+    "en": "extra_eyes",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "多余头",
+    "en": "extra_heads",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "重复",
+    "en": "duplicate",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "变形",
+    "en": "deformed",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "毁容",
+    "en": "disfigured",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "丑陋",
+    "en": "ugly",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "诡异",
+    "en": "creepy",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "模糊",
+    "en": "blurry",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "低分辨率",
+    "en": "lowres",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "JPEG伪影",
+    "en": "jpeg_artifacts",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "噪点",
+    "en": "noise",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "颗粒感",
+    "en": "grainy",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "水印",
+    "en": "watermark",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "文字",
+    "en": "text",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "签名",
+    "en": "signature",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "用户名",
+    "en": "username",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "画师名",
+    "en": "artist_name",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "角色名",
+    "en": "character_name",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "出框",
+    "en": "out_of_frame",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "裁切",
+    "en": "cropped",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "打码",
+    "en": "censored",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "最差质量",
+    "en": "worst_quality",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "低质量",
+    "en": "low_quality",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "普通质量",
+    "en": "normal_quality",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "过饱和",
+    "en": "oversaturated",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "欠饱和",
+    "en": "undersaturated",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "褪色",
+    "en": "washed_out",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "过暗",
+    "en": "dark",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "过曝",
+    "en": "overexposed",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "欠曝",
+    "en": "underexposed",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "倾斜",
+    "en": "tilted",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "扭曲",
+    "en": "distorted",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "变形",
+    "en": "warped",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "透视错误",
+    "en": "perspective_error",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "解剖错误",
+    "en": "anatomy_error",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "多余肢体",
+    "en": "extra_limbs",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "缺手指",
+    "en": "missing_fingers",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "畸形手",
+    "en": "malformed_hands",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "面部模糊",
+    "en": "blurry_face",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "斗鸡眼",
+    "en": "cross_eyed",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "眼部畸形",
+    "en": "bad_eyes",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "嘴部畸形",
+    "en": "bad_mouth",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "头发错误",
+    "en": "bad_hair",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "压缩伪影",
+    "en": "compression_artifacts",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "色带",
+    "en": "color_banding",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "色偏",
+    "en": "color_cast",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "偏暗",
+    "en": "too_dark",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "偏亮",
+    "en": "too_bright",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "高光溢出",
+    "en": "highlight_clipping",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "阴影过黑",
+    "en": "crushed_shadows",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "对比度过低",
+    "en": "low_contrast",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "饱和度不足",
+    "en": "under_saturated",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "灰蒙蒙",
+    "en": "hazy",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "锐化过度",
+    "en": "oversharpened",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "颗粒感",
+    "en": "grain",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "摩尔纹",
+    "en": "moire",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "角标",
+    "en": "corner_logo",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "边框",
+    "en": "frame_border",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "网格",
+    "en": "grid_lines",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "拉伸",
+    "en": "stretched",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "变形",
+    "en": "warped_distortion",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "鱼眼畸变",
+    "en": "fisheye_distortion",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "构图差",
+    "en": "bad_composition",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "透视差",
+    "en": "bad_perspective",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "光线差",
+    "en": "bad_lighting",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "脸部绘制差",
+    "en": "poorly_drawn_face",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "标志",
+    "en": "logo",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "画框",
+    "en": "frame",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "背景杂乱",
+    "en": "cluttered_background",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "放大伪影",
+    "en": "upscaled_artifacts",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "渐变色带",
+    "en": "gradient_banding",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "色边",
+    "en": "color_fringing",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "白平衡错误",
+    "en": "white_balance_error",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "曝光错误",
+    "en": "exposure_error",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "ISO噪点",
+    "en": "iso_noise",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "像素化",
+    "en": "pixelation",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "块状压缩",
+    "en": "blocky_compression",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "锯齿边缘",
+    "en": "jagged_edges",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "锯齿",
+    "en": "aliasing",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "残影",
+    "en": "ghost_trailing",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "镜头污渍",
+    "en": "lens_smudge",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "胶片划痕",
+    "en": "film_scratches",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "红眼",
+    "en": "red_eye",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "边缘失焦",
+    "en": "out_of_focus_edges",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "双重曝光伪影",
+    "en": "double_exposure_artifact",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "漏光伪影",
+    "en": "light_leak_artifact",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "闪光反射",
+    "en": "flash_reflection",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "灰尘斑点",
+    "en": "dust_specks",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "油渍",
+    "en": "oil_stain",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "水渍",
+    "en": "water_stain",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "指纹污渍",
+    "en": "fingerprint_smudge",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "污点",
+    "en": "dirt_speckle",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "抖动",
+    "en": "jitter",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "运动残影",
+    "en": "motion_ghosting",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "色差",
+    "en": "chromatic_fringe",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "柔焦错误",
+    "en": "soft_focus",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "雾焦",
+    "en": "hazy_focus",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "浑浊阴影",
+    "en": "muddy_shadows",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "阴影褪色",
+    "en": "washed_shadows",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "颜色溢出",
+    "en": "bleeding_colors",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "色彩过溢",
+    "en": "color_overflow",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "亮斑",
+    "en": "bright_spots",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "坏点",
+    "en": "dead_pixels",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "水印残影",
+    "en": "watermark_ghost",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "手指数错误",
+    "en": "wrong_finger_count",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "手指粘连",
+    "en": "fused_fingers_extra",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "多手指",
+    "en": "extra_fingers_extra",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "缺手指",
+    "en": "missing_fingers_extra",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "断手",
+    "en": "broken_hands",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "多臂",
+    "en": "extra_arms_extra",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "多腿",
+    "en": "extra_legs_extra",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "缺臂",
+    "en": "missing_arms_extra",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "缺腿",
+    "en": "missing_legs_extra",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "多脚",
+    "en": "extra_feet",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "缺脚",
+    "en": "missing_feet",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "歪脚",
+    "en": "deformed_feet",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "斜眼",
+    "en": "crossed_eyes",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "斗鸡眼",
+    "en": "lazy_eye",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "失焦眼",
+    "en": "unfocused_eyes",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "多瞳",
+    "en": "multiple_pupils",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "缺瞳",
+    "en": "missing_pupils",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "白眼",
+    "en": "white_eyes_abnormal",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "歪嘴",
+    "en": "crooked_mouth",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "缺牙",
+    "en": "missing_teeth",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "龅牙",
+    "en": "buck_teeth",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "歪鼻",
+    "en": "crooked_nose",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "多鼻",
+    "en": "extra_nose",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "塌鼻",
+    "en": "flat_nose",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "歪耳",
+    "en": "crooked_ears",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "多耳",
+    "en": "extra_ears",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "缺耳",
+    "en": "missing_ears",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "歪肩",
+    "en": "crooked_shoulders",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "多肩",
+    "en": "extra_shoulders",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "驼背",
+    "en": "hunched_back",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "骨盆歪",
+    "en": "twisted_pelvis",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "腿长不一致",
+    "en": "uneven_legs",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "脚掌外翻",
+    "en": "outward_feet",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "畸形手",
+    "en": "deformed_hands",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "断指",
+    "en": "broken_fingers",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "蹼状手指",
+    "en": "webbed_fingers",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "多拇指",
+    "en": "thumb_extra",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "缺拇指",
+    "en": "thumb_missing",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "手指卷曲错误",
+    "en": "finger_curled_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "缺手掌",
+    "en": "palm_missing",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "肘部反折",
+    "en": "elbow_backwards",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "膝部反折",
+    "en": "knee_backwards",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "脊柱弯曲",
+    "en": "spine_curved",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "脖子过长",
+    "en": "neck_too_long",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "缺脖子",
+    "en": "neck_missing",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "下颌错位",
+    "en": "jaw_misaligned",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "额头错误",
+    "en": "forehead_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "耳朵位置错误",
+    "en": "ear_placement_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "鼻子位置错误",
+    "en": "nose_placement_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "嘴巴位置错误",
+    "en": "mouth_placement_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "下巴错误",
+    "en": "chin_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "面部不对称",
+    "en": "facial_asymmetry",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "眼睛不对称",
+    "en": "eye_asymmetry",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "瞳孔不对称",
+    "en": "pupil_asymmetry",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "虹膜错位",
+    "en": "iris_misaligned",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "眼睑错误",
+    "en": "eyelid_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "眉毛错误",
+    "en": "brow_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "牙齿排列错误",
+    "en": "teeth_alignment_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "舌头错误",
+    "en": "tongue_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "皮肤斑点",
+    "en": "skin_blotch",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "伤疤错误",
+    "en": "scar_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "腰过宽",
+    "en": "waist_too_wide",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "腰过窄",
+    "en": "waist_too_narrow",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "肩宽错误",
+    "en": "shoulder_width_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "臂长错误",
+    "en": "arm_length_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "腿长错误",
+    "en": "leg_length_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "脚大小错误",
+    "en": "foot_size_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "手大小错误",
+    "en": "hand_size_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "躯干错误",
+    "en": "torso_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "断臂",
+    "en": "broken_arm",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "断腿",
+    "en": "broken_leg",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "脚踝扭曲",
+    "en": "twisted_ankle",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "X型腿",
+    "en": "knock_knees",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "O型腿",
+    "en": "bow_legs",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "耸肩驼背",
+    "en": "hunched_shoulders",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "胸部塌陷",
+    "en": "collapsed_chest",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "杂乱背景",
+    "en": "messy_background",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "重复图案",
+    "en": "repeating_pattern",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "边缘截断",
+    "en": "cropped_edges",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "主体切边",
+    "en": "subject_cut_off",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "多余人物",
+    "en": "extra_people",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "多余物体",
+    "en": "extra_objects",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "失焦背景",
+    "en": "out_of_focus_background",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "背景虚化过度",
+    "en": "over_blurred_background",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "透视错误",
+    "en": "wrong_perspective",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "地平线倾斜",
+    "en": "tilted_horizon",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "天空过曝",
+    "en": "overexposed_sky",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "地面过暗",
+    "en": "dark_ground",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "镜头脏",
+    "en": "dirty_lens",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "指纹",
+    "en": "fingerprint",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "划痕",
+    "en": "scratches",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "条纹",
+    "en": "streaks",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "闪烁",
+    "en": "flickering",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "眩光伪影",
+    "en": "glare_artifact",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "灰尘颗粒",
+    "en": "dust_particles",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "相机抖动",
+    "en": "camera_shake",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "运动模糊伪影",
+    "en": "motion_blur_artifact",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "天空过饱和",
+    "en": "oversaturated_sky",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "地面欠饱和",
+    "en": "undersaturated_ground",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "彩色噪点",
+    "en": "color_noise",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "传感器灰尘",
+    "en": "sensor_dust",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "暗角",
+    "en": "vignetting",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "色差伪影",
+    "en": "chromatic_aberration",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "镜头畸变",
+    "en": "lens_distortion",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "桶形畸变",
+    "en": "barrel_distortion",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "枕形畸变",
+    "en": "pincushion_distortion",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "重影",
+    "en": "double_vision",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "鬼影",
+    "en": "ghosting",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "光晕伪影",
+    "en": "halo_artifact",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "泛光伪影",
+    "en": "bloom_artifact",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "压缩噪点",
+    "en": "compression_noise",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "块状伪影",
+    "en": "blocky_artifacts",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "扫描线",
+    "en": "scanlines",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "隔行扫描",
+    "en": "interlacing",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "闪烁噪点",
+    "en": "flicker_noise",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "边缘杂乱",
+    "en": "cluttered_edges",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "重复纹理",
+    "en": "repeating_texture",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "平铺伪影",
+    "en": "tiling_artifacts",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "物体碰撞",
+    "en": "object_collision",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "物体重叠",
+    "en": "overlapping_objects",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "漂浮物体",
+    "en": "floating_objects",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "光影不一致",
+    "en": "lighting_inconsistency",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "阴影不一致",
+    "en": "shadow_inconsistency",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "倒影错误",
+    "en": "reflection_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "镜子错误",
+    "en": "mirror_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "窗影错误",
+    "en": "window_reflection_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "天空错误",
+    "en": "sky_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "地面错误",
+    "en": "ground_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "墙面错误",
+    "en": "wall_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "天花板错误",
+    "en": "ceiling_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "建筑错误",
+    "en": "architecture_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "水面错误",
+    "en": "water_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "人群错误",
+    "en": "crowd_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "车辆错误",
+    "en": "vehicle_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "背景元素错误",
+    "en": "background_elements_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "场景一致性错误",
+    "en": "scene_consistency_wrong",
+    "sfw": true,
+    "weight": 1
+  },
+  {
+    "zh": "错误面部",
+    "en": "bad_face",
+    "sfw": true
+  },
+  {
+    "zh": "错误耳朵",
+    "en": "bad_ears",
+    "sfw": true
+  },
+  {
+    "zh": "错误鼻子",
+    "en": "bad_nose",
+    "sfw": true
+  },
+  {
+    "zh": "错误牙齿",
+    "en": "bad_teeth",
+    "sfw": true
+  },
+  {
+    "zh": "畸形手指",
+    "en": "malformed_fingers",
+    "sfw": true
+  },
+  {
+    "zh": "多脚趾",
+    "en": "extra_toes",
+    "sfw": true
+  },
+  {
+    "zh": "缺脚趾",
+    "en": "missing_toes",
+    "sfw": true
+  },
+  {
+    "zh": "错误身体",
+    "en": "bad_body",
+    "sfw": true
+  },
+  {
+    "zh": "异常解剖",
+    "en": "abnormal_anatomy",
+    "sfw": true
+  },
+  {
+    "zh": "畸形解剖",
+    "en": "mutated_anatomy",
+    "sfw": true
+  },
+  {
+    "zh": "肢体扭曲",
+    "en": "distorted_limbs",
+    "sfw": true
+  },
+  {
+    "zh": "姿势扭曲",
+    "en": "contorted_posture",
+    "sfw": true
+  },
+  {
+    "zh": "身体扭曲",
+    "en": "warped_body",
+    "sfw": true
+  },
+  {
+    "zh": "比例失调",
+    "en": "disproportionate",
+    "sfw": true
+  },
+  {
+    "zh": "头身比错误",
+    "en": "wrong_head_to_body_ratio",
+    "sfw": true
+  },
+  {
+    "zh": "头部过大",
+    "en": "oversized_head",
+    "sfw": true
+  },
+  {
+    "zh": "头部过小",
+    "en": "undersized_head",
+    "sfw": true
+  },
+  {
+    "zh": "脖子过长",
+    "en": "long_neck_error",
+    "sfw": true
+  },
+  {
+    "zh": "手臂过长",
+    "en": "overly_long_arms",
+    "sfw": true
+  },
+  {
+    "zh": "腿过长",
+    "en": "overly_long_legs",
+    "sfw": true
+  },
+  {
+    "zh": "身体错位",
+    "en": "misaligned_body",
+    "sfw": true
+  },
+  {
+    "zh": "面部扭曲",
+    "en": "distorted_face",
+    "sfw": true
+  },
+  {
+    "zh": "五官错位",
+    "en": "misplaced_facial_features",
+    "sfw": true
+  },
+  {
+    "zh": "眼睛错位",
+    "en": "misaligned_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "嘴巴错位",
+    "en": "misplaced_mouth",
+    "sfw": true
+  },
+  {
+    "zh": "耳朵错位",
+    "en": "misplaced_ears",
+    "sfw": true
+  },
+  {
+    "zh": "鼻子错位",
+    "en": "misplaced_nose",
+    "sfw": true
+  },
+  {
+    "zh": "下颌错位",
+    "en": "misaligned_jaw",
+    "sfw": true
+  },
+  {
+    "zh": "眼睛不对称",
+    "en": "asymmetric_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "双下巴错误",
+    "en": "wrong_double_chin",
+    "sfw": true
+  },
+  {
+    "zh": "颧骨错误",
+    "en": "wrong_cheekbones",
+    "sfw": true
+  },
+  {
+    "zh": "额头错误",
+    "en": "wrong_forehead",
+    "sfw": true
+  },
+  {
+    "zh": "发型错误",
+    "en": "wrong_hair_style",
+    "sfw": true
+  },
+  {
+    "zh": "头发穿模",
+    "en": "hair_clipping",
+    "sfw": true
+  },
+  {
+    "zh": "衣物穿模",
+    "en": "clothing_clipping",
+    "sfw": true
+  },
+  {
+    "zh": "手指穿模",
+    "en": "fingers_clipping",
+    "sfw": true
+  },
+  {
+    "zh": "物件穿模",
+    "en": "object_clipping",
+    "sfw": true
+  },
+  {
+    "zh": "布料穿模",
+    "en": "fabric_clipping",
+    "sfw": true
+  },
+  {
+    "zh": "透视扭曲",
+    "en": "distorted_perspective",
+    "sfw": true
+  },
+  {
+    "zh": "解剖透视错误",
+    "en": "anatomical_perspective_error",
+    "sfw": true
+  },
+  {
+    "zh": "劣质",
+    "en": "poor_quality",
+    "sfw": true
+  },
+  {
+    "zh": "低质量",
+    "en": "low_quality_extra",
+    "sfw": true
+  },
+  {
+    "zh": "画质差",
+    "en": "bad_quality",
+    "sfw": true
+  },
+  {
+    "zh": "粗糙",
+    "en": "coarse",
+    "sfw": true
+  },
+  {
+    "zh": "模糊",
+    "en": "out_of_focus",
+    "sfw": true
+  },
+  {
+    "zh": "焦点错误",
+    "en": "wrong_focus",
+    "sfw": true
+  },
+  {
+    "zh": "失焦",
+    "en": "defocused",
+    "sfw": true
+  },
+  {
+    "zh": "边缘模糊",
+    "en": "blurry_edges",
+    "sfw": true
+  },
+  {
+    "zh": "模糊背景",
+    "en": "blurred_background_extra",
+    "sfw": true
+  },
+  {
+    "zh": "低分辨率",
+    "en": "low_resolution",
+    "sfw": true
+  },
+  {
+    "zh": "分辨率低",
+    "en": "lowres_extra",
+    "sfw": true
+  },
+  {
+    "zh": "像素化",
+    "en": "pixelated",
+    "sfw": true
+  },
+  {
+    "zh": "马赛克",
+    "en": "blocky",
+    "sfw": true
+  },
+  {
+    "zh": "挤压",
+    "en": "squashed",
+    "sfw": true
+  },
+  {
+    "zh": "变形拉伸",
+    "en": "distorted_stretch",
+    "sfw": true
+  },
+  {
+    "zh": "比例拉伸",
+    "en": "aspect_ratio_warp",
+    "sfw": true
+  },
+  {
+    "zh": "锯齿",
+    "en": "jagged",
+    "sfw": true
+  },
+  {
+    "zh": "毛刺",
+    "en": "fringing",
+    "sfw": true
+  },
+  {
+    "zh": "色块",
+    "en": "color_blocks",
+    "sfw": true
+  },
+  {
+    "zh": "颜色溢出",
+    "en": "color_bleeding",
+    "sfw": true
+  },
+  {
+    "zh": "色彩偏差",
+    "en": "color_shift",
+    "sfw": true
+  },
+  {
+    "zh": "色调不均",
+    "en": "uneven_tones",
+    "sfw": true
+  },
+  {
+    "zh": "色偏",
+    "en": "color_cast_extra",
+    "sfw": true
+  },
+  {
+    "zh": "偏色",
+    "en": "tinted",
+    "sfw": true
+  },
+  {
+    "zh": "过曝",
+    "en": "overexposure_extra",
+    "sfw": true
+  },
+  {
+    "zh": "欠曝",
+    "en": "underexposure",
+    "sfw": true
+  },
+  {
+    "zh": "高光过曝",
+    "en": "highlight_bleeding",
+    "sfw": true
+  },
+  {
+    "zh": "阴影死黑",
+    "en": "crushed_blacks",
+    "sfw": true
+  },
+  {
+    "zh": "暗部脏",
+    "en": "muddy_darks",
+    "sfw": true
+  },
+  {
+    "zh": "阴影脏",
+    "en": "dirty_shadows",
+    "sfw": true
+  },
+  {
+    "zh": "对比度低",
+    "en": "flat_contrast",
+    "sfw": true
+  },
+  {
+    "zh": "对比度过高",
+    "en": "harsh_contrast",
+    "sfw": true
+  },
+  {
+    "zh": "饱和度低",
+    "en": "desaturated",
+    "sfw": true
+  },
+  {
+    "zh": "饱和度偏高",
+    "en": "oversaturated_extra",
+    "sfw": true
+  },
+  {
+    "zh": "过饱和",
+    "en": "hyper_saturated",
+    "sfw": true
+  },
+  {
+    "zh": "颜色俗艳",
+    "en": "gaudy_colors",
+    "sfw": true
+  },
+  {
+    "zh": "色彩失真",
+    "en": "color_false",
+    "sfw": true
+  },
+  {
+    "zh": "肤色错误",
+    "en": "wrong_skin_color",
+    "sfw": true
+  },
+  {
+    "zh": "肤色不均",
+    "en": "uneven_skin_tone",
+    "sfw": true
+  },
+  {
+    "zh": "伪影",
+    "en": "artifact",
+    "sfw": true
+  },
+  {
+    "zh": "JPEG伪影",
+    "en": "jpeg_artifact",
+    "sfw": true
+  },
+  {
+    "zh": "压缩伪影",
+    "en": "compression_artifact",
+    "sfw": true
+  },
+  {
+    "zh": "AI伪影",
+    "en": "ai_artifact",
+    "sfw": true
+  },
+  {
+    "zh": "重影",
+    "en": "ghosting_artifact",
+    "sfw": true
+  },
+  {
+    "zh": "拖影",
+    "en": "trailing",
+    "sfw": true
+  },
+  {
+    "zh": "摩尔纹",
+    "en": "moire_pattern",
+    "sfw": true
+  },
+  {
+    "zh": "干扰纹",
+    "en": "interference_pattern",
+    "sfw": true
+  },
+  {
+    "zh": "闪烁",
+    "en": "flicker",
+    "sfw": true
+  },
+  {
+    "zh": "噪点斑",
+    "en": "noise_specks",
+    "sfw": true
+  },
+  {
+    "zh": "斑点",
+    "en": "blotches",
+    "sfw": true
+  },
+  {
+    "zh": "条纹",
+    "en": "streaks_extra",
+    "sfw": true
+  },
+  {
+    "zh": "线条",
+    "en": "lines_artifact",
+    "sfw": true
+  },
+  {
+    "zh": "网格线",
+    "en": "grid_pattern",
+    "sfw": true
+  },
+  {
+    "zh": "重复图案",
+    "en": "repeated_pattern",
+    "sfw": true
+  },
+  {
+    "zh": "拼贴痕迹",
+    "en": "seam_artifact",
+    "sfw": true
+  },
+  {
+    "zh": "接缝可见",
+    "en": "visible_seams",
+    "sfw": true
+  },
+  {
+    "zh": "水印残留",
+    "en": "watermark_extra",
+    "sfw": true
+  },
+  {
+    "zh": "文字残留",
+    "en": "text_artifact",
+    "sfw": true
+  },
+  {
+    "zh": "LOGO残留",
+    "en": "logo_artifact",
+    "sfw": true
+  },
+  {
+    "zh": "签名残留",
+    "en": "signature_artifact",
+    "sfw": true
+  },
+  {
+    "zh": "边框痕迹",
+    "en": "frame_lines",
+    "sfw": true
+  },
+  {
+    "zh": "裁剪痕迹",
+    "en": "crop_marks",
+    "sfw": true
+  },
+  {
+    "zh": "构图错误",
+    "en": "bad_composition_extra",
+    "sfw": true
+  },
+  {
+    "zh": "主体过小",
+    "en": "tiny_subject",
+    "sfw": true
+  },
+  {
+    "zh": "主体过远",
+    "en": "subject_too_far",
+    "sfw": true
+  },
+  {
+    "zh": "主体失焦",
+    "en": "subject_out_of_focus",
+    "sfw": true
+  },
+  {
+    "zh": "多人混乱",
+    "en": "crowd_chaos",
+    "sfw": true
+  },
+  {
+    "zh": "杂乱背景",
+    "en": "cluttered_bg",
+    "sfw": true
+  },
+  {
+    "zh": "背景混乱",
+    "en": "messy_background_extra",
+    "sfw": true
+  },
+  {
+    "zh": "背景多余",
+    "en": "distracting_background",
+    "sfw": true
+  },
+  {
+    "zh": "环境错误",
+    "en": "wrong_environment",
+    "sfw": true
+  },
+  {
+    "zh": "透视消失点错",
+    "en": "wrong_vanishing_point",
+    "sfw": true
+  },
+  {
+    "zh": "天空错误",
+    "en": "wrong_sky",
+    "sfw": true
+  },
+  {
+    "zh": "光线错误",
+    "en": "wrong_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "阴影错误",
+    "en": "wrong_shadows",
+    "sfw": true
+  },
+  {
+    "zh": "光源矛盾",
+    "en": "contradictory_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "反射错误",
+    "en": "wrong_reflection",
+    "sfw": true
+  },
+  {
+    "zh": "倒影错误",
+    "en": "wrong_mirror_reflection",
+    "sfw": true
+  },
+  {
+    "zh": "水中倒影错",
+    "en": "wrong_water_reflection",
+    "sfw": true
+  },
+  {
+    "zh": "重力矛盾",
+    "en": "impossible_physics",
+    "sfw": true
+  },
+  {
+    "zh": "多出路人",
+    "en": "extra_bystander",
+    "sfw": true
+  },
+  {
+    "zh": "多出手",
+    "en": "extra_hand",
+    "sfw": true
+  },
+  {
+    "zh": "多出腿",
+    "en": "extra_leg",
+    "sfw": true
+  },
+  {
+    "zh": "残缺",
+    "en": "amputee",
+    "sfw": true
+  },
+  {
+    "zh": "截肢",
+    "en": "missing_limb",
+    "sfw": true
+  },
+  {
+    "zh": "器官缺失",
+    "en": "missing_organ",
+    "sfw": true
+  },
+  {
+    "zh": "重复物品",
+    "en": "duplicate_object",
+    "sfw": true
+  },
+  {
+    "zh": "多余物件",
+    "en": "extra_object",
+    "sfw": true
+  },
+  {
+    "zh": "漂浮物件",
+    "en": "floating_object",
+    "sfw": true
+  },
+  {
+    "zh": "物件悬空",
+    "en": "levitating_object",
+    "sfw": true
+  },
+  {
+    "zh": "不合理遮挡",
+    "en": "wrong_occlusion",
+    "sfw": true
+  },
+  {
+    "zh": "遮挡错误",
+    "en": "occlusion_error",
+    "sfw": true
+  },
+  {
+    "zh": "穿帮",
+    "en": "blooper",
+    "sfw": true
+  },
+  {
+    "zh": "瑕疵",
+    "en": "flaw",
+    "sfw": true
+  },
+  {
+    "zh": "缺陷",
+    "en": "defect",
+    "sfw": true
+  },
+  {
+    "zh": "破损",
+    "en": "damaged",
+    "sfw": true
+  },
+  {
+    "zh": "污渍",
+    "en": "stain",
+    "sfw": true
+  },
+  {
+    "zh": "脏污",
+    "en": "dirty_extra",
+    "sfw": true
+  },
+  {
+    "zh": "油污",
+    "en": "grease_stain",
+    "sfw": true
+  },
+  {
+    "zh": "血渍",
+    "en": "blood_stain",
+    "sfw": true
+  },
+  {
+    "zh": "畸变",
+    "en": "distortion_extra",
+    "sfw": true
+  },
+  {
+    "zh": "劣化",
+    "en": "degradation",
+    "sfw": true
+  },
+  {
+    "zh": "退化",
+    "en": "degeneration",
+    "sfw": true
+  },
+  {
+    "zh": "损坏",
+    "en": "corrupted",
+    "sfw": true
+  },
+  {
+    "zh": "怪诞",
+    "en": "grotesque",
+    "sfw": true
+  },
+  {
+    "zh": "恐怖",
+    "en": "horrific",
+    "sfw": true
+  },
+  {
+    "zh": "惊悚",
+    "en": "creepy_extra",
+    "sfw": true
+  },
+  {
+    "zh": "丑陋",
+    "en": "ugly_extra",
+    "sfw": true
+  },
+  {
+    "zh": "低劣",
+    "en": "inferior",
+    "sfw": true
+  },
+  {
+    "zh": "业余",
+    "en": "amateurish",
+    "sfw": true
+  },
+  {
+    "zh": "外行",
+    "en": "unprofessional",
+    "sfw": true
+  },
+  {
+    "zh": "粗糙描线",
+    "en": "messy_lines",
+    "sfw": true
+  },
+  {
+    "zh": "乱线",
+    "en": "scribble",
+    "sfw": true
+  },
+  {
+    "zh": "草稿感",
+    "en": "sketchy",
+    "sfw": true
+  },
+  {
+    "zh": "未完成感",
+    "en": "unfinished_extra",
+    "sfw": true
+  },
+  {
+    "zh": "线稿外露",
+    "en": "visible_lineart",
+    "sfw": true
+  },
+  {
+    "zh": "脏色",
+    "en": "muddy_colors",
+    "sfw": true
+  },
+  {
+    "zh": "灰蒙蒙",
+    "en": "washed_out_extra",
+    "sfw": true
+  },
+  {
+    "zh": "褪色",
+    "en": "faded_colors",
+    "sfw": true
+  },
+  {
+    "zh": "暗沉",
+    "en": "dull_colors",
+    "sfw": true
+  }
+]

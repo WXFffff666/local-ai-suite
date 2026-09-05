@@ -1,0 +1,4829 @@
+[
+  {
+    "zh": "花",
+    "en": "flower",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "天空",
+    "en": "sky",
+    "sfw": true,
+    "dimension": "environment_type",
+    "group": "environment"
+  },
+  {
+    "zh": "云",
+    "en": "cloud",
+    "sfw": true,
+    "dimension": "weather",
+    "group": "environment"
+  },
+  {
+    "zh": "剑",
+    "en": "sword",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "包",
+    "en": "bag",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "蓝天",
+    "en": "blue_sky",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "杯子",
+    "en": "cup",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "闪光",
+    "en": "sparkle",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "枪",
+    "en": "gun",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "书",
+    "en": "book",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "窗户",
+    "en": "window",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "夜晚",
+    "en": "night",
+    "sfw": true,
+    "dimension": "time_of_day",
+    "group": "environment"
+  },
+  {
+    "zh": "铃铛",
+    "en": "bell",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "手机",
+    "en": "phone",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "椅子",
+    "en": "chair",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "海洋",
+    "en": "ocean",
+    "sfw": true,
+    "dimension": "environment_type",
+    "group": "environment"
+  },
+  {
+    "zh": "锁链",
+    "en": "chain",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "床",
+    "en": "bed",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "耳机",
+    "en": "headphones",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "手机",
+    "en": "cellphone",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "海滩",
+    "en": "beach",
+    "sfw": true,
+    "dimension": "environment_type",
+    "group": "environment"
+  },
+  {
+    "zh": "雨伞",
+    "en": "umbrella",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "桌子",
+    "en": "table",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "智能手机",
+    "en": "smartphone",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "月亮",
+    "en": "moon",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "多云天空",
+    "en": "cloudy_sky",
+    "sfw": true,
+    "dimension": "weather",
+    "group": "environment"
+  },
+  {
+    "zh": "瓶子",
+    "en": "bottle",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "背包",
+    "en": "backpack",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "刀",
+    "en": "knife",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "建筑",
+    "en": "building",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "法杖",
+    "en": "staff",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "盒子",
+    "en": "box",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "沙发",
+    "en": "couch",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "麦克风",
+    "en": "microphone",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "绳索",
+    "en": "rope",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "盘子",
+    "en": "plate",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "铃铛",
+    "en": "jingle_bell",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "书桌",
+    "en": "desk",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "雪",
+    "en": "snow",
+    "sfw": true,
+    "dimension": "weather",
+    "group": "environment"
+  },
+  {
+    "zh": "球",
+    "en": "ball",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "满月",
+    "en": "full_moon",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "手枪",
+    "en": "handgun",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "星空",
+    "en": "starry_sky",
+    "sfw": true,
+    "dimension": "weather",
+    "group": "environment"
+  },
+  {
+    "zh": "单肩包",
+    "en": "shoulder_bag",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "森林",
+    "en": "forest",
+    "sfw": true,
+    "dimension": "environment_type",
+    "group": "environment"
+  },
+  {
+    "zh": "雨",
+    "en": "rain",
+    "sfw": true,
+    "dimension": "weather",
+    "group": "environment"
+  },
+  {
+    "zh": "茶杯",
+    "en": "teacup",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "碗",
+    "en": "bowl",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "书包",
+    "en": "school_bag",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "镜子",
+    "en": "mirror",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "打开的书",
+    "en": "open_book",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "日落",
+    "en": "sunset",
+    "sfw": true,
+    "dimension": "time_of_day",
+    "group": "environment"
+  },
+  {
+    "zh": "盾牌",
+    "en": "shield",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "卡片",
+    "en": "card",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "下雪",
+    "en": "snowing",
+    "sfw": true,
+    "dimension": "weather",
+    "group": "environment"
+  },
+  {
+    "zh": "楼梯",
+    "en": "stairs",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "水晶",
+    "en": "crystal",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "勺子",
+    "en": "spoon",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "叉子",
+    "en": "fork",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "手提包",
+    "en": "handbag",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "城市",
+    "en": "city",
+    "sfw": true,
+    "dimension": "environment_type",
+    "group": "environment"
+  },
+  {
+    "zh": "山",
+    "en": "mountain",
+    "sfw": true,
+    "dimension": "environment_type",
+    "group": "environment"
+  },
+  {
+    "zh": "相机",
+    "en": "camera",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "门",
+    "en": "door",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "向日葵",
+    "en": "sunflower",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "礼盒",
+    "en": "gift_box",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "长矛",
+    "en": "spear",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "水下",
+    "en": "underwater",
+    "sfw": true,
+    "dimension": "environment_type",
+    "group": "environment"
+  },
+  {
+    "zh": "钢笔",
+    "en": "pen",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "气球",
+    "en": "balloon",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "吉他",
+    "en": "guitar",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "魔杖",
+    "en": "wand",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "蜡烛",
+    "en": "candle",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "电光",
+    "en": "electricity",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "太空",
+    "en": "space",
+    "sfw": true,
+    "dimension": "environment_type",
+    "group": "environment"
+  },
+  {
+    "zh": "公路",
+    "en": "road",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "城市景观",
+    "en": "cityscape",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "建筑风格",
+    "en": "architecture",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "田野",
+    "en": "field",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "秋叶",
+    "en": "autumn_leaves",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "雪花",
+    "en": "snowflakes",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "冬季",
+    "en": "winter",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "东亚建筑",
+    "en": "east_asian_architecture",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "新月",
+    "en": "crescent_moon",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "山峦地平线",
+    "en": "mountainous_horizon",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "夏季",
+    "en": "summer",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "彩虹",
+    "en": "rainbow",
+    "sfw": true,
+    "dimension": "weather",
+    "group": "environment"
+  },
+  {
+    "zh": "桥梁",
+    "en": "bridge",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "花田",
+    "en": "flower_field",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "街道",
+    "en": "street",
+    "sfw": true,
+    "dimension": "environment_type",
+    "group": "environment"
+  },
+  {
+    "zh": "摩天大楼",
+    "en": "skyscraper",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "列车内部",
+    "en": "train_interior",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "渐变天空",
+    "en": "gradient_sky",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "大海",
+    "en": "sea",
+    "sfw": true,
+    "dimension": "environment_type",
+    "group": "environment"
+  },
+  {
+    "zh": "日出",
+    "en": "sunrise",
+    "sfw": true,
+    "dimension": "time_of_day",
+    "group": "environment"
+  },
+  {
+    "zh": "白天",
+    "en": "day",
+    "sfw": true,
+    "dimension": "time_of_day",
+    "group": "environment"
+  },
+  {
+    "zh": "房间",
+    "en": "room",
+    "sfw": true,
+    "dimension": "environment_type",
+    "group": "environment"
+  },
+  {
+    "zh": "卧室",
+    "en": "bedroom",
+    "sfw": true,
+    "dimension": "environment_type",
+    "group": "environment"
+  },
+  {
+    "zh": "厨房",
+    "en": "kitchen",
+    "sfw": true,
+    "dimension": "environment_type",
+    "group": "environment"
+  },
+  {
+    "zh": "浴室",
+    "en": "bathroom",
+    "sfw": true,
+    "dimension": "environment_type",
+    "group": "environment"
+  },
+  {
+    "zh": "教室",
+    "en": "classroom",
+    "sfw": true,
+    "dimension": "environment_type",
+    "group": "environment"
+  },
+  {
+    "zh": "图书馆",
+    "en": "library",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "咖啡馆",
+    "en": "cafe",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "阳台",
+    "en": "balcony",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "屋顶",
+    "en": "rooftop",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "公园",
+    "en": "park",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "花园",
+    "en": "garden",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "河流",
+    "en": "river",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "瀑布",
+    "en": "waterfall",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "湖泊",
+    "en": "lake",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "岛屿",
+    "en": "island",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "沙漠",
+    "en": "desert",
+    "sfw": true,
+    "dimension": "environment_type",
+    "group": "environment"
+  },
+  {
+    "zh": "峡谷",
+    "en": "canyon",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "悬崖",
+    "en": "cliff",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "洞穴",
+    "en": "cave",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "火山",
+    "en": "volcano",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "灯塔",
+    "en": "lighthouse",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "城堡",
+    "en": "castle",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "寺庙",
+    "en": "temple",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "神社",
+    "en": "shrine",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "遗迹",
+    "en": "ruins",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "温室",
+    "en": "greenhouse",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "火车",
+    "en": "train",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "车站",
+    "en": "station",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "机场",
+    "en": "airport",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "路灯",
+    "en": "street_lamp",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "霓虹灯牌",
+    "en": "neon_sign",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "海报",
+    "en": "poster",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "旗帜",
+    "en": "flag",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "柱子",
+    "en": "pillar",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "拱门",
+    "en": "archway",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "围栏",
+    "en": "fence",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "喷泉",
+    "en": "fountain",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "红花",
+    "en": "red_flower",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "白花",
+    "en": "white_flower",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "蓝花",
+    "en": "blue_flower",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "粉花",
+    "en": "pink_flower",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "黄花",
+    "en": "yellow_flower",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "紫花",
+    "en": "purple_flower",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "在床上",
+    "en": "on_bed",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "在椅子上",
+    "en": "on_chair",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "沙发上",
+    "en": "on_couch",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "钢琴",
+    "en": "piano",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "小提琴",
+    "en": "violin",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "鼓",
+    "en": "drum",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "笔记本电脑",
+    "en": "laptop",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "电脑",
+    "en": "computer",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "电视",
+    "en": "television",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "钥匙",
+    "en": "key",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "时钟",
+    "en": "clock",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "画作",
+    "en": "painting",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "花瓶",
+    "en": "vase",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "毛巾",
+    "en": "towel",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "篮子",
+    "en": "basket",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "锅",
+    "en": "pot",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "平底锅",
+    "en": "frying_pan",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "筷子",
+    "en": "chopsticks",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "滑板",
+    "en": "skateboard",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "自行车",
+    "en": "bicycle",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "汽车",
+    "en": "car",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "公交车",
+    "en": "bus",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "船",
+    "en": "ship",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "小船",
+    "en": "boat",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "飞机",
+    "en": "airplane",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "直升机",
+    "en": "helicopter",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "火箭",
+    "en": "rocket",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "无人机",
+    "en": "drone",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "雾",
+    "en": "fog",
+    "sfw": true,
+    "dimension": "weather",
+    "group": "environment"
+  },
+  {
+    "zh": "闪电",
+    "en": "lightning",
+    "sfw": true,
+    "dimension": "weather",
+    "group": "environment"
+  },
+  {
+    "zh": "雷暴",
+    "en": "thunderstorm",
+    "sfw": true,
+    "dimension": "weather",
+    "group": "environment"
+  },
+  {
+    "zh": "冰雹",
+    "en": "hail",
+    "sfw": true,
+    "dimension": "weather",
+    "group": "environment"
+  },
+  {
+    "zh": "龙卷风",
+    "en": "tornado",
+    "sfw": true,
+    "dimension": "weather",
+    "group": "environment"
+  },
+  {
+    "zh": "雾霾",
+    "en": "smog",
+    "sfw": true,
+    "dimension": "weather",
+    "group": "environment"
+  },
+  {
+    "zh": "办公室",
+    "en": "office",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "客厅",
+    "en": "living_room",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "书房",
+    "en": "study",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "走廊",
+    "en": "hallway",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "医院",
+    "en": "hospital",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "教堂",
+    "en": "church",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "超市",
+    "en": "supermarket",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "电影院",
+    "en": "cinema",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "博物馆",
+    "en": "museum",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "美术馆",
+    "en": "art_gallery",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "健身房",
+    "en": "gym",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "游泳池",
+    "en": "swimming_pool",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "阁楼",
+    "en": "attic",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "地下室",
+    "en": "basement",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "走廊过道",
+    "en": "corridor",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "候诊室",
+    "en": "waiting_room",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "更衣室",
+    "en": "dressing_room",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "庭院",
+    "en": "courtyard",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "操场",
+    "en": "playground",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "停车场",
+    "en": "parking_lot",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "小巷",
+    "en": "alley",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "广场",
+    "en": "plaza",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "码头",
+    "en": "pier",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "港口",
+    "en": "harbor",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "隧道",
+    "en": "tunnel",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "天桥",
+    "en": "overpass",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "十字路口",
+    "en": "intersection",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "地铁站",
+    "en": "subway_station",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "屋顶花园",
+    "en": "rooftop_garden",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "摩天轮",
+    "en": "ferris_wheel",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "过山车",
+    "en": "roller_coaster",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "雨林",
+    "en": "rainforest",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "草原",
+    "en": "grassland",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "雪原",
+    "en": "snowy_field",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "丘陵",
+    "en": "hills",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "麦田",
+    "en": "wheat_field",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "稻田",
+    "en": "rice_paddy",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "草地",
+    "en": "meadow",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "农场",
+    "en": "farm",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "牧场",
+    "en": "ranch",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "山谷",
+    "en": "valley",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "沼泽",
+    "en": "swamp",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "丛林",
+    "en": "jungle",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "竹林",
+    "en": "bamboo_forest",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "樱花树",
+    "en": "cherry_blossoms",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "东京",
+    "en": "tokyo",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "上海",
+    "en": "shanghai",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "赛博朋克街区",
+    "en": "cyberpunk_street",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "夜市",
+    "en": "night_market",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "摩天大楼顶",
+    "en": "skyscraper_rooftop",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "龙穴",
+    "en": "dragon_den",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "异世界",
+    "en": "isekai",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "天空城",
+    "en": "sky_city",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "地牢",
+    "en": "dungeon",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "台灯",
+    "en": "desk_lamp",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "沙发",
+    "en": "sofa",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "书架",
+    "en": "bookshelf",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "电梯",
+    "en": "elevator",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "长椅",
+    "en": "bench",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "秋千",
+    "en": "swing",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "摩托车",
+    "en": "motorcycle",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "钟楼",
+    "en": "clock_tower",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "邮筒",
+    "en": "mailbox",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "消防栓",
+    "en": "fire_hydrant",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "蜜蜂",
+    "en": "bee",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "蜻蜓",
+    "en": "dragonfly",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "萤火虫",
+    "en": "fireflies",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "亭子",
+    "en": "pavilion",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "宝塔",
+    "en": "pagoda",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "雕像",
+    "en": "statue",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "舞厅",
+    "en": "ballroom",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "浴缸",
+    "en": "bathtub",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "宅男房间",
+    "en": "otaku_room",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "自助餐厅",
+    "en": "cafeteria",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "社团活动室",
+    "en": "clubroom",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "温室",
+    "en": "conservatory",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "法庭",
+    "en": "courtroom",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "餐厅",
+    "en": "dining_room",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "健身房",
+    "en": "fitness_gym",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "储物室",
+    "en": "gym_storeroom",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "校体育馆",
+    "en": "school_gym",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "医务室",
+    "en": "infirmary",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "停尸房",
+    "en": "morgue",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "办公室隔间",
+    "en": "cubicle",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "舞台",
+    "en": "stage",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "教职员室",
+    "en": "staff_room",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "军械库",
+    "en": "armory",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "壁橱",
+    "en": "closet",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "工作坊",
+    "en": "workshop",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "宫殿",
+    "en": "palace",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "大殿",
+    "en": "great_hall",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "门厅",
+    "en": "entrance_hall",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "露台",
+    "en": "veranda",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "玄关",
+    "en": "entryway",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "车库",
+    "en": "garage",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "蒸汽浴室",
+    "en": "steam_room",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "儿童房",
+    "en": "nursery",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "书房",
+    "en": "study_room",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "海岸",
+    "en": "shore",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "绿洲",
+    "en": "oasis",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "冰川",
+    "en": "glacier",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "山丘",
+    "en": "hill",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "浮空岛",
+    "en": "floating_island",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "台地",
+    "en": "mesa",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "草原",
+    "en": "savannah",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "湿地",
+    "en": "wetland",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "间歇泉",
+    "en": "geyser",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "池塘",
+    "en": "pond",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "溪流",
+    "en": "stream",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "海底",
+    "en": "seafloor",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "荒地",
+    "en": "wasteland",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "自然",
+    "en": "nature",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "平原",
+    "en": "plain",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "苔原",
+    "en": "tundra",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "高原",
+    "en": "highland",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "峡谷(深)",
+    "en": "ravine",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "火山口",
+    "en": "volcano_crater",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "岩洞",
+    "en": "cavern",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "石笋林",
+    "en": "stalactite_cave",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "珊瑚礁",
+    "en": "coral_reef",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "机场跑道",
+    "en": "runway",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "旋转木马",
+    "en": "carousel",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "高架渠",
+    "en": "aqueduct",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "绳桥",
+    "en": "rope_bridge",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "木桥",
+    "en": "wooden_bridge",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "运河",
+    "en": "canal",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "浮空城",
+    "en": "floating_city",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "乡镇",
+    "en": "town",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "村庄",
+    "en": "village",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "大坝",
+    "en": "dam",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "码头",
+    "en": "dock",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "干船坞",
+    "en": "drydock",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "造船厂",
+    "en": "shipyard",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "墓地",
+    "en": "graveyard",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "栈桥",
+    "en": "jetty",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "集市",
+    "en": "market",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "摊贩",
+    "en": "market_stall",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "电话亭",
+    "en": "phone_booth",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "泳池边",
+    "en": "poolside",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "水上乐园",
+    "en": "waterpark",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "铁路道口",
+    "en": "railroad_crossing",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "铁轨",
+    "en": "railroad_tracks",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "人行横道",
+    "en": "crosswalk",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "泥路",
+    "en": "dirt_road",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "高速公路",
+    "en": "highway",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "小路",
+    "en": "path",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "人行道",
+    "en": "sidewalk",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "石径",
+    "en": "stone_walkway",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "学校大门",
+    "en": "school_entrance",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "足球场",
+    "en": "soccer_field",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "跑道(田径)",
+    "en": "running_track",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "战壕",
+    "en": "trench",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "水井",
+    "en": "well",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "动物园",
+    "en": "zoo",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "草原(牧)",
+    "en": "pasture",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "果园",
+    "en": "orchard",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "葡萄园",
+    "en": "vineyard",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "茶园",
+    "en": "tea_plantation",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "薰衣草田",
+    "en": "lavender_field",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "控制塔",
+    "en": "control_tower",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "机库",
+    "en": "hangar",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "公寓",
+    "en": "apartment",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "水族馆",
+    "en": "aquarium",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "游戏厅",
+    "en": "arcade",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "居酒屋",
+    "en": "izakaya",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "小酒馆",
+    "en": "tavern",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "谷仓",
+    "en": "barn",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "碉堡",
+    "en": "bunker",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "公交站",
+    "en": "bus_stop",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "保龄球馆",
+    "en": "bowling_alley",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "赌场",
+    "en": "casino",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "浮空城堡",
+    "en": "floating_castle",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "工地",
+    "en": "construction_site",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "加油站",
+    "en": "gas_station",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "凉亭",
+    "en": "gazebo",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "房子",
+    "en": "house",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "旅馆",
+    "en": "hotel",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "小屋",
+    "en": "hut",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "工厂",
+    "en": "factory",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "炼油厂",
+    "en": "refinery",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "发电厂",
+    "en": "power_plant",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "核电站",
+    "en": "nuclear_powerplant",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "仓库",
+    "en": "warehouse",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "购物中心",
+    "en": "mall",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "军事基地",
+    "en": "military_base",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "天文台",
+    "en": "observatory",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "天文馆",
+    "en": "planetarium",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "监狱",
+    "en": "prison",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "餐厅(饭店)",
+    "en": "restaurant",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "下水道",
+    "en": "sewer",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "溜冰场",
+    "en": "skating_rink",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "棚屋",
+    "en": "shack",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "面包房",
+    "en": "bakery",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "书店",
+    "en": "bookstore",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "便利店",
+    "en": "convenience_store",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "花店",
+    "en": "flower_shop",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "药店",
+    "en": "pharmacy",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "美发沙龙",
+    "en": "salon",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "体育馆",
+    "en": "stadium",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "竞技场",
+    "en": "arena",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "吊脚楼",
+    "en": "stilt_house",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "剧院",
+    "en": "theater",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "圆形剧场",
+    "en": "amphitheater",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "电影院",
+    "en": "movie_theater",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "陵墓",
+    "en": "tomb",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "塔",
+    "en": "tower",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "钟塔",
+    "en": "bell_tower",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "瞭望塔",
+    "en": "watchtower",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "清真寺",
+    "en": "mosque",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "犹太会堂",
+    "en": "synagogue",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "树屋",
+    "en": "treehouse",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "风车",
+    "en": "windmill",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "大教堂",
+    "en": "cathedral",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "车站月台",
+    "en": "station_platform",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "航站楼",
+    "en": "terminal",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "候车室",
+    "en": "train_station_waiting_room",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "码头(船)",
+    "en": "wharf",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "缆车站",
+    "en": "cable_car_station",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "动物园笼子",
+    "en": "zoo_enclosure",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "水",
+    "en": "water",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "湿衣",
+    "en": "wet_clothes",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "冰",
+    "en": "ice",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "蒸汽",
+    "en": "steam",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "冰雕",
+    "en": "ice_sculpture",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "冰花",
+    "en": "ice_flower",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "海浪",
+    "en": "waves",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "浪花",
+    "en": "sea_spray",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "水面",
+    "en": "water_surface",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "倒影(水)",
+    "en": "reflection_in_water",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "涟漪",
+    "en": "ripples",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "水滴",
+    "en": "water_drops",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "水花",
+    "en": "water_splash",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "水流",
+    "en": "waterfall_stream",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "瀑布(小)",
+    "en": "cascade",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "雾气",
+    "en": "mist",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "晨雾",
+    "en": "morning_mist",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "薄雾",
+    "en": "haze",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "露珠",
+    "en": "dew",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "雪花",
+    "en": "snowflake",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "冰柱",
+    "en": "icicle",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "霜",
+    "en": "frost",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "雨滴",
+    "en": "raindrops",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "水坑",
+    "en": "puddle",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "温泉蒸汽",
+    "en": "onsen_steam",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "玫瑰",
+    "en": "rose",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "百合",
+    "en": "lily",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "郁金香",
+    "en": "tulip",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "牡丹",
+    "en": "peony",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "紫藤",
+    "en": "wisteria",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "绣球花",
+    "en": "hydrangea",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "薰衣草",
+    "en": "lavender",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "莲花",
+    "en": "lotus",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "兰花",
+    "en": "orchid",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "雏菊",
+    "en": "daisy",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "蒲公英",
+    "en": "dandelion",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "康乃馨",
+    "en": "carnation",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "菊花",
+    "en": "chrysanthemum",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "梅花",
+    "en": "plum_blossoms",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "桃花",
+    "en": "peach_blossom",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "梨花",
+    "en": "pear_blossom",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "苹果花",
+    "en": "apple_blossoms",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "桂花",
+    "en": "osmanthus",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "杜鹃花",
+    "en": "azalea",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "山茶花",
+    "en": "camellia",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "木槿",
+    "en": "hibiscus",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "茉莉",
+    "en": "jasmine",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "栀子花",
+    "en": "gardenia",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "迎春花",
+    "en": "forsythia",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "鸢尾花",
+    "en": "iris",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "罂粟花",
+    "en": "poppy",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "紫罗兰",
+    "en": "violet",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "三色堇",
+    "en": "pansy",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "风信子",
+    "en": "hyacinth",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "水仙花",
+    "en": "narcissus",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "彼岸花",
+    "en": "spider_lily",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "虞美人",
+    "en": "corn_poppy",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "玉兰",
+    "en": "magnolia",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "海棠",
+    "en": "crab_apple_blossoms",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "夹竹桃",
+    "en": "oleander",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "曼陀罗",
+    "en": "datura",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "芙蓉",
+    "en": "cotton_rose",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "蔷薇",
+    "en": "rose_bush",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "月季",
+    "en": "china_rose",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "含笑",
+    "en": "magnolia_fig",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "铃兰",
+    "en": "lily_of_the_valley",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "满天星",
+    "en": "baby's-breath",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "勿忘我",
+    "en": "forget-me-not",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "郁金香田",
+    "en": "tulip_field",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "花床",
+    "en": "flower_bed",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "花环",
+    "en": "flower_wreath",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "花束",
+    "en": "bouquet",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "花瓣",
+    "en": "petals",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "玫瑰花瓣",
+    "en": "rose_petals",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "花海",
+    "en": "sea_of_flowers",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "花墙",
+    "en": "flower_wall",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "开花树枝",
+    "en": "blossoming_branch",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "插花",
+    "en": "ikebana",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "苹果",
+    "en": "apple",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "香蕉",
+    "en": "banana",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "草莓",
+    "en": "strawberry",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "蓝莓",
+    "en": "blueberry",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "樱桃",
+    "en": "cherry",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "葡萄",
+    "en": "grapes",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "西瓜",
+    "en": "watermelon",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "甜瓜",
+    "en": "melon",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "橘子",
+    "en": "orange",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "柠檬",
+    "en": "lemon",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "菠萝",
+    "en": "pineapple",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "芒果",
+    "en": "mango",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "桃子",
+    "en": "peach",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "梨",
+    "en": "pear",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "李子",
+    "en": "plum",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "柿子",
+    "en": "persimmon",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "石榴",
+    "en": "pomegranate",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "猕猴桃",
+    "en": "kiwi",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "荔枝",
+    "en": "lychee",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "龙眼",
+    "en": "longan",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "枣",
+    "en": "jujube",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "山楂",
+    "en": "hawthorn",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "石榴花",
+    "en": "pomegranate_flower",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "香蕉皮",
+    "en": "banana_peel",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "苹果核",
+    "en": "apple_core",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "橘子片",
+    "en": "orange_slice",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "柠檬片",
+    "en": "lemon_slice",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "蔬菜",
+    "en": "vegetable",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "胡萝卜",
+    "en": "carrot",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "土豆",
+    "en": "potato",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "番茄",
+    "en": "tomato",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "黄瓜",
+    "en": "cucumber",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "茄子",
+    "en": "eggplant",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "玉米",
+    "en": "corn",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "南瓜",
+    "en": "pumpkin",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "青椒",
+    "en": "bell_pepper",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "洋葱",
+    "en": "onion",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "大蒜",
+    "en": "garlic",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "姜",
+    "en": "ginger",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "蘑菇",
+    "en": "mushroom",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "香菇",
+    "en": "shiitake",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "金针菇",
+    "en": "enoki_mushroom",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "西兰花",
+    "en": "broccoli",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "白菜",
+    "en": "cabbage",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "菠菜",
+    "en": "spinach",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "生菜",
+    "en": "lettuce",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "芦笋",
+    "en": "asparagus",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "莲藕",
+    "en": "lotus_root",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "竹笋",
+    "en": "bamboo_shoot",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "山药",
+    "en": "yam",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "红薯",
+    "en": "sweet_potato",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "芋头",
+    "en": "taro",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "花生",
+    "en": "peanut",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "核桃",
+    "en": "walnut",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "栗子",
+    "en": "chestnut",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "杏仁",
+    "en": "almond",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "腰果",
+    "en": "cashew",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "大米",
+    "en": "rice",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "面粉",
+    "en": "flour",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "面条",
+    "en": "noodles",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "意大利面",
+    "en": "pasta",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "面包",
+    "en": "bread",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "吐司",
+    "en": "toast",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "法棍",
+    "en": "baguette",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "牛角包",
+    "en": "croissant",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "贝果",
+    "en": "bagel",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "包子",
+    "en": "steamed_bun",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "饺子",
+    "en": "dumpling",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "饺子(煎)",
+    "en": "gyoza",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "馄饨",
+    "en": "wonton",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "汤圆",
+    "en": "tangyuan",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "粽子",
+    "en": "zongzi",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "鸡蛋",
+    "en": "egg",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "煎蛋",
+    "en": "fried_egg",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "荷包蛋",
+    "en": "sunny_side_up_egg",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "水煮蛋",
+    "en": "boiled_egg",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "炒蛋",
+    "en": "scrambled_egg",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "奶酪",
+    "en": "cheese",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "黄油",
+    "en": "butter",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "牛奶",
+    "en": "milk",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "酸奶",
+    "en": "yogurt",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "奶油",
+    "en": "cream",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "鲜奶油",
+    "en": "whipped_cream",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "冰淇淋",
+    "en": "ice_cream",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "甜筒",
+    "en": "ice_cream_cone",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "蛋糕",
+    "en": "cake",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "纸杯蛋糕",
+    "en": "cupcake",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "芝士蛋糕",
+    "en": "cheesecake",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "巧克力蛋糕",
+    "en": "chocolate_cake",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "水果蛋糕",
+    "en": "fruitcake",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "泡芙",
+    "en": "cream_puff",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "马卡龙",
+    "en": "macaron",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "曲奇",
+    "en": "cookie",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "巧克力",
+    "en": "chocolate",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "糖果",
+    "en": "candy",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "棒棒糖",
+    "en": "lollipop",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "棉花糖",
+    "en": "cotton_candy",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "软糖",
+    "en": "gummy_candy",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "果冻",
+    "en": "jelly",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "布丁",
+    "en": "pudding",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "铜锣烧",
+    "en": "dorayaki",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "大福",
+    "en": "daifuku",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "团子",
+    "en": "dango",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "麻薯",
+    "en": "mochi",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "羊羹",
+    "en": "yokan",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "和果子",
+    "en": "wagashi",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "鲷鱼烧",
+    "en": "taiyaki",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "章鱼烧",
+    "en": "takoyaki",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "大阪烧",
+    "en": "okonomiyaki",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "披萨",
+    "en": "pizza",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "汉堡",
+    "en": "burger",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "热狗",
+    "en": "hot_dog",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "三明治",
+    "en": "sandwich",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "薯条",
+    "en": "french_fries",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "炸鸡",
+    "en": "fried_chicken",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "鸡块",
+    "en": "chicken_nuggets",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "火腿",
+    "en": "ham",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "培根",
+    "en": "bacon",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "香肠",
+    "en": "sausage",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "牛排",
+    "en": "steak",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "烤肉",
+    "en": "barbecue",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "烤串",
+    "en": "yakitori",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "关东煮",
+    "en": "oden",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "寿喜烧",
+    "en": "sukiyaki",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "火锅",
+    "en": "hot_pot",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "寿司",
+    "en": "sushi",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "手卷",
+    "en": "hand_roll",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "饭团",
+    "en": "onigiri",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "拉面",
+    "en": "ramen",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "乌冬面",
+    "en": "udon",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "荞麦面",
+    "en": "soba",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "咖喱饭",
+    "en": "curry_rice",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "蛋包饭",
+    "en": "omurice",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "炸猪排",
+    "en": "tonkatsu",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "天妇罗",
+    "en": "tempura",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "味增汤",
+    "en": "miso_soup",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "沙拉",
+    "en": "salad",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "豆腐",
+    "en": "tofu",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "纳豆",
+    "en": "natto",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "泡菜",
+    "en": "kimchi",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "酱菜",
+    "en": "pickles",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "梅干",
+    "en": "umeboshi",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "海苔",
+    "en": "nori",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "海带",
+    "en": "seaweed",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "咖啡",
+    "en": "coffee",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "红茶",
+    "en": "black_tea",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "绿茶",
+    "en": "green_tea",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "茉莉花茶",
+    "en": "jasmine_tea",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "乌龙茶",
+    "en": "oolong_tea",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "奶茶",
+    "en": "milk_tea",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "珍珠奶茶",
+    "en": "bubble_tea",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "果汁",
+    "en": "juice",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "橙汁",
+    "en": "orange_juice",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "汽水",
+    "en": "soda",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "可乐",
+    "en": "cola",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "啤酒",
+    "en": "beer",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "葡萄酒",
+    "en": "wine",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "清酒",
+    "en": "sake",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "香槟",
+    "en": "champagne",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "鸡尾酒",
+    "en": "cocktail",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "威士忌",
+    "en": "whiskey",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "伏特加",
+    "en": "vodka",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "蜂蜜",
+    "en": "honey",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "果酱",
+    "en": "jam",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "花生酱",
+    "en": "peanut_butter",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "番茄酱",
+    "en": "ketchup",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "蛋黄酱",
+    "en": "mayonnaise",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "芥末酱",
+    "en": "mustard",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "酱油",
+    "en": "soy_sauce",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "盐",
+    "en": "salt",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "糖",
+    "en": "sugar",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "胡椒粉",
+    "en": "pepper",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "咖喱",
+    "en": "curry",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "味噌",
+    "en": "miso",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "辣油",
+    "en": "chili_oil",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "糖浆",
+    "en": "syrup",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "枫糖浆",
+    "en": "maple_syrup",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "冰箱",
+    "en": "refrigerator",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "微波炉",
+    "en": "microwave",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "烤箱",
+    "en": "oven",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "电饭煲",
+    "en": "rice_cooker",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "水槽",
+    "en": "sink",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "炉灶",
+    "en": "stove",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "面包机",
+    "en": "toaster",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "咖啡机",
+    "en": "coffee_machine",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "洗碗机",
+    "en": "dishwasher",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "汤锅",
+    "en": "cooking_pot",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "炒锅",
+    "en": "wok",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "茶壶",
+    "en": "teapot",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "水壶",
+    "en": "kettle",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "砧板",
+    "en": "cutting_board",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "擀面杖",
+    "en": "rolling_pin",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "打蛋器",
+    "en": "whisk",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "锅铲",
+    "en": "spatula",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "夹子",
+    "en": "tongs",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "漏勺",
+    "en": "strainer",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "削皮器",
+    "en": "peeler",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "保温杯",
+    "en": "thermos",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "马克杯",
+    "en": "mug",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "咖啡杯",
+    "en": "coffee_cup",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "玻璃杯",
+    "en": "glass",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "高脚杯",
+    "en": "wine_glass",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "碟子",
+    "en": "saucer",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "托盘",
+    "en": "tray",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "餐巾",
+    "en": "napkin",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "桌布",
+    "en": "tablecloth",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "筷子架",
+    "en": "chopstick_rest",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "餐刀",
+    "en": "butter_knife",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "牙签",
+    "en": "toothpick",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "保温壶",
+    "en": "vacuum_flask",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "保温盒",
+    "en": "lunch_box",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "便当盒",
+    "en": "bento_box",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "购物袋",
+    "en": "shopping_bag",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "纸袋",
+    "en": "paper_bag",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "塑料袋",
+    "en": "plastic_bag",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "麻袋",
+    "en": "sack",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "竹篮",
+    "en": "bamboo_basket",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "果篮",
+    "en": "fruit_basket",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "床头柜",
+    "en": "nightstand",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "梳妆台",
+    "en": "vanity_table",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "衣架",
+    "en": "coat_rack",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "落地灯",
+    "en": "floor_lamp",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "吊灯",
+    "en": "chandelier",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "壁灯",
+    "en": "wall_lamp",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "灯笼",
+    "en": "lantern",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "屏风",
+    "en": "folding_screen",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "地毯",
+    "en": "rug",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "窗帘",
+    "en": "curtain",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "百叶窗",
+    "en": "blinds",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "壁炉",
+    "en": "fireplace",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "壁钟",
+    "en": "wall_clock",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "挂钟",
+    "en": "pendulum_clock",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "鱼缸",
+    "en": "fish_tank",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "鸟笼",
+    "en": "birdcage",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "摇篮",
+    "en": "cradle",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "婴儿床",
+    "en": "crib",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "吊床",
+    "en": "hammock",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "滑梯",
+    "en": "slide",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "跷跷板",
+    "en": "seesaw",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "蹦床",
+    "en": "trampoline",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "沙坑",
+    "en": "sandbox",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "温泉",
+    "en": "hot_spring",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "露天浴池",
+    "en": "outdoor_bath",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "烟花",
+    "en": "fireworks",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "仙女棒",
+    "en": "sparkler",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "夜空",
+    "en": "night_sky",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "夏日祭",
+    "en": "summer_festival",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "鸟居",
+    "en": "torii_gate",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "榻榻米",
+    "en": "tatami",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "书堆",
+    "en": "book_pile",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "玫瑰园",
+    "en": "rose_garden",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "树篱",
+    "en": "hedge",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "修剪灌木",
+    "en": "topiary",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "枕头",
+    "en": "pillow",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "毯子",
+    "en": "blanket",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "夜景",
+    "en": "night_city",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "贝壳",
+    "en": "seashell",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "血",
+    "en": "blood",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "绷带",
+    "en": "bandages",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "大门",
+    "en": "gate",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "栏杆",
+    "en": "railing",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "瓦砾",
+    "en": "rubble",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "储物柜",
+    "en": "locker",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "座椅",
+    "en": "seat",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "茶杯",
+    "en": "tea_cup",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "弓",
+    "en": "bow",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "晾衣绳",
+    "en": "clothesline",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "梳子",
+    "en": "hair_brush",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "笔记本",
+    "en": "notebook",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "厕纸",
+    "en": "toilet_paper",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "水瓶",
+    "en": "water_bottle",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "浇水壶",
+    "en": "watering_can",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "箭",
+    "en": "arrow",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "扫帚",
+    "en": "broom",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "水桶",
+    "en": "bucket",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "粉笔",
+    "en": "chalk",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "彩纸屑",
+    "en": "confetti",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "祭典",
+    "en": "festival",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "草",
+    "en": "grass",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "拉花咖啡",
+    "en": "latte_art",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "针",
+    "en": "needle",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "学校",
+    "en": "school",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "火花",
+    "en": "spark",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "工作室",
+    "en": "studio",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "游泳圈",
+    "en": "swim_ring",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "帐篷",
+    "en": "tent",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "墙壁",
+    "en": "wall",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "写字夹板",
+    "en": "clipboard",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "风筝",
+    "en": "kite",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "树叶",
+    "en": "leaf",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "杂志",
+    "en": "magazine",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "垫子",
+    "en": "mat",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "显微镜",
+    "en": "microscope",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "纸",
+    "en": "paper",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "鞋",
+    "en": "shoe",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "商店",
+    "en": "shop",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "听诊器",
+    "en": "stethoscope",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "毛绒玩具",
+    "en": "stuffed_toy",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "网球拍",
+    "en": "tennis_racket",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "试管",
+    "en": "test_tube",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "小瓶",
+    "en": "vial",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "口哨",
+    "en": "whistle",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "风铃",
+    "en": "wind_chime",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "游乐场",
+    "en": "amusement_park",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "捕虫网",
+    "en": "butterfly_net",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "盒子",
+    "en": "case",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "硬币",
+    "en": "coin",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "骰子",
+    "en": "dice",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "鼓棒",
+    "en": "drumsticks",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "展品",
+    "en": "exhibit",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "游戏机",
+    "en": "game_console",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "地图",
+    "en": "map",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "节拍器",
+    "en": "metronome",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "颜料",
+    "en": "paint",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "画笔",
+    "en": "paintbrush",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "护照",
+    "en": "passport",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "铅笔",
+    "en": "pencil",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "站台",
+    "en": "platform",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "拼图",
+    "en": "puzzle",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "剪刀",
+    "en": "scissors",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "乐谱",
+    "en": "sheet_music",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "溜冰鞋",
+    "en": "skates",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "零食",
+    "en": "snack",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "雪球",
+    "en": "snowball",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "雪人",
+    "en": "snowman",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "摊位",
+    "en": "stall",
+    "sfw": true,
+    "group": "environment"
+  },
+  {
+    "zh": "行李箱",
+    "en": "suitcase",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "望远镜",
+    "en": "telescope",
+    "sfw": true,
+    "group": "object"
+  },
+  {
+    "zh": "毛线",
+    "en": "yarn",
+    "sfw": true,
+    "group": "object"
+  }
+]

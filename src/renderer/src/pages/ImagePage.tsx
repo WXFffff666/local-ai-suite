@@ -28,6 +28,7 @@ import {
   type SaveTempReply,
 } from '../components/imagepage/apiTypes'
 import { autoDefaults } from '../../../image/autotune'
+import { PromptPicker } from '../components/promptpicker/PromptPicker'
 import type { AllowedEventChannel, ImageQueueStatusEvent } from '../../../main/ipc/whitelist'
 import '../components/imagepage/imagepage.css'
 
@@ -57,6 +58,7 @@ export function ImagePage(): React.JSX.Element {
   /** 阶段1 — AI 提示词润色（本地 LLM 扩写，可关） */
   const [enhance, setEnhance] = useState(true)
   const [enhancedPrompt, setEnhancedPrompt] = useState<string | null>(null)
+  const [pickerOpen, setPickerOpen] = useState(false)
   /** todo19 — LoraPicker 受控值；提交时经 toGenerateLoras 注入 loras 载荷 */
   const [loras, setLoras] = useState<LoraSelection[]>([])
   const [error, setError] = useState<string | null>(null)
@@ -277,6 +279,14 @@ export function ImagePage(): React.JSX.Element {
         >
           <ImageModeToggle value={mode} onChange={setMode} disabled={busy} />
           <GenerationFields value={fields} onChange={patchFields} disabled={busy} />
+          <button
+            type="button"
+            className="las-img-library-btn"
+            onClick={() => setPickerOpen(true)}
+            data-testid="img-open-library"
+          >
+            📚 提示词库（标签 / 预设 / 角色）
+          </button>
           <label className="las-img-enhance-toggle">
             <input
               type="checkbox"
@@ -326,6 +336,13 @@ export function ImagePage(): React.JSX.Element {
           {resultB64 ? <img className="las-img-result" src={`data:image/png;base64,${resultB64}`} alt="生成结果" /> : null}
         </div>
       </div>
+      <PromptPicker
+        open={pickerOpen}
+        onClose={() => setPickerOpen(false)}
+        onInsert={(snippet) => {
+          setFields((f) => ({ ...f, prompt: f.prompt.trim() === '' ? snippet : `${f.prompt.trim().replace(/,\s*$/, '')}, ${snippet}` }))
+        }}
+      />
     </section>
   )
 }

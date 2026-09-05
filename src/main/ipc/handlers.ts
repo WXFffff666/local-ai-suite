@@ -14,8 +14,8 @@
  * { ok:false, error:'not-ready' } until the real store is injected.
  */
 
-import { statSync } from 'fs'
-import { isAbsolute } from 'path'
+import { mkdirSync, statSync } from 'fs'
+import { isAbsolute, join, resolve, sep } from 'path'
 import { SIDECAR_HOST } from '../../core/types'
 import type { ModelEntry } from '../../models/registry'
 import type { CopyPayload, GalleryItem, InsertPayload, ReuseParams, SaveOptions } from '../../gallery/gallery'
@@ -78,6 +78,7 @@ import {
   imageQueueStatusSchema,
   modelsDownloadSchema,
   modelsLoraMetaSchema,
+  modelsOpenDirSchema,
   modelsLoraScanSchema,
   modelsSetDirSchema,
   permissionRespondSchema,
@@ -162,6 +163,8 @@ export type HandlerDeps = {
   hfSearch: HfSearchFn
   dialog: DialogLike
   safeStorage: SafeStorageLike
+  /** 阶段3：models:openDir 用（测试注入 fake；缺省动态取 electron.shell） */
+  shell?: { openPath: (path: string) => Promise<string> }
   conversations?: () => ConversationsProvider | null
   /**
    * todo23: agent session registry behind the agent:* channels. Absent until
@@ -266,6 +269,14 @@ export function toImageQueueStatusEvent(ev: QueueEvent): ImageQueueStatusEvent {
   if (ev.message !== undefined) event.message = ev.message
   if (ev.attempt !== undefined) event.attempt = ev.attempt
   return event
+}
+
+/** 阶段3：electron.shell 惰性解析（测试环境无 electron 时抛错即 500-shape） */
+function defaultShell(): { openPath: (path: string) => Promise<string> } {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const electron = require('electron') as { shell?: { openPath: (path: string) => Promise<string> } }
+  if (electron.shell === undefined) throw new Error('electron shell unavailable')
+  return electron.shell
 }
 
 export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
@@ -389,6 +400,25 @@ export function buildIpcHandlers(deps: HandlerDeps): HandlerMap {
     // (chokidar watch keeps it fresh — no second fs walk). Meta reads touch the
     // fs directly but the renderer-supplied path is confined to modelsDir
     // inside readLoraMetaFile before any open (assertInsideModelsDir).
+    // 阶段3：打开模型子目录（资源管理器），用户可直接拖入 GGUF/safetensors，
+    // registry 的 chokidar 监听会自动识别注册。路径白名单 + 逃逸拦截。
+    'models:openDir': async (args) => {
+      const parsed = validatePayload(modelsOpenDirSchema, first(args, {}))
+      if (!parsed.ok) return parsed
+      const base = resolve(services.registry.modelsDir)
+      const target = parsed.data.sub === undefined ? base : resolve(join(base, parsed.data.sub))
+      if (target !== base && !target.startsWith(base + sep)) return { ok: false, error: 'path-escape' }
+      try {
+        mkdirSync(target, { recursive: true })
+      } catch {
+        /* already exists or mkdir failed — openPath will surface it */
+      }
+      const shellLike = deps.shell ?? defaultShell()
+      const err = await shellLike.openPath(target)
+      if (err !== '') return { ok: false, error: err }
+      return { ok: true, path: target }
+    },
+
     'models:loraScan': async (args) => {
       const parsed = validatePayload(modelsLoraScanSchema, first(args, {}))
       if (!parsed.ok) return parsed

@@ -1,0 +1,417 @@
+[
+  {
+    "id": "hair_color",
+    "zh": "发色",
+    "exclusive": true,
+    "tags": [
+      "black_hair",
+      "blonde_hair",
+      "brown_hair",
+      "red_hair",
+      "pink_hair",
+      "blue_hair",
+      "green_hair",
+      "purple_hair",
+      "white_hair",
+      "grey_hair",
+      "orange_hair",
+      "yellow_hair",
+      "multicolored_hair",
+      "two-tone_hair",
+      "streaked_hair",
+      "gradient_hair"
+    ]
+  },
+  {
+    "id": "eye_color",
+    "zh": "瞳色",
+    "exclusive": true,
+    "tags": [
+      "blue_eyes",
+      "red_eyes",
+      "brown_eyes",
+      "green_eyes",
+      "purple_eyes",
+      "yellow_eyes",
+      "pink_eyes",
+      "black_eyes",
+      "grey_eyes",
+      "heterochromia",
+      "glowing_eyes"
+    ]
+  },
+  {
+    "id": "hair_style",
+    "zh": "发型",
+    "exclusive": true,
+    "tags": [
+      "long_hair",
+      "short_hair",
+      "very_long_hair",
+      "medium_hair",
+      "twintails",
+      "ponytail",
+      "side_ponytail",
+      "braid",
+      "side_braid",
+      "hair_bun",
+      "ahoge",
+      "blunt_bangs",
+      "parted_bangs",
+      "bob_cut",
+      "hime_cut",
+      "drill_hair",
+      "curls",
+      "wavy_hair",
+      "straight_hair",
+      "messy_hair",
+      "wet_hair",
+      "spiky_hair",
+      "fluffy_hair"
+    ]
+  },
+  {
+    "id": "pose_type",
+    "zh": "姿势",
+    "exclusive": true,
+    "tags": [
+      "standing",
+      "sitting",
+      "lying",
+      "kneeling",
+      "squatting",
+      "seiza",
+      "leaning_forward",
+      "leaning_back",
+      "leaning_to_the_side",
+      "all_fours",
+      "on_stomach",
+      "on_back",
+      "lying_on_back",
+      "lying_on_side",
+      "arched_back",
+      "bent_over",
+      "legs_up",
+      "flying",
+      "standing_on_one_leg",
+      "crouching",
+      "handstand",
+      "prone",
+      "supine",
+      "sitting_on_floor",
+      "sitting_on_chair",
+      "sitting_on_bed"
+    ]
+  },
+  {
+    "id": "time_of_day",
+    "zh": "时间段",
+    "exclusive": true,
+    "tags": [
+      "day",
+      "night",
+      "sunset",
+      "sunrise",
+      "golden_hour",
+      "blue_hour"
+    ]
+  },
+  {
+    "id": "art_style",
+    "zh": "画风",
+    "exclusive": true,
+    "tags": [
+      "anime",
+      "illustration",
+      "semi_realistic",
+      "photorealistic",
+      "realistic",
+      "pixel_art",
+      "watercolor",
+      "oil_painting",
+      "ukiyo_e",
+      "sketch",
+      "lineart",
+      "comic",
+      "manga",
+      "cartoon",
+      "3d",
+      "3d_render",
+      "low_poly",
+      "voxel",
+      "isometric",
+      "retro",
+      "synthwave",
+      "vaporwave",
+      "cyberpunk",
+      "steampunk",
+      "monochrome",
+      "greyscale"
+    ]
+  },
+  {
+    "id": "count",
+    "zh": "人数",
+    "exclusive": true,
+    "tags": [
+      "1girl",
+      "1boy",
+      "2girls",
+      "3girls",
+      "multiple_girls",
+      "2boys",
+      "multiple_boys",
+      "1girl_1boy",
+      "2girls_1boy",
+      "1girl_2boys",
+      "2boys_1girl",
+      "solo"
+    ]
+  },
+  {
+    "id": "age_group",
+    "zh": "年龄层",
+    "exclusive": true,
+    "tags": [
+      "child",
+      "teenager",
+      "adult",
+      "young",
+      "elderly",
+      "loli",
+      "shota",
+      "milf"
+    ]
+  },
+  {
+    "id": "body_type",
+    "zh": "体型",
+    "exclusive": true,
+    "tags": [
+      "large_breasts",
+      "medium_breasts",
+      "small_breasts",
+      "huge_breasts",
+      "flat_chest",
+      "thighs",
+      "wide_hips",
+      "muscular",
+      "slim",
+      "curvy",
+      "tall",
+      "short"
+    ]
+  },
+  {
+    "id": "skin_tone",
+    "zh": "肤色",
+    "exclusive": true,
+    "tags": [
+      "dark_skin",
+      "light_skin",
+      "pale_skin",
+      "tan",
+      "fair_skin"
+    ]
+  },
+  {
+    "id": "species",
+    "zh": "种族",
+    "exclusive": true,
+    "tags": [
+      "elf",
+      "vampire",
+      "angel",
+      "demon",
+      "devil",
+      "kitsune",
+      "mermaid",
+      "fairy",
+      "witch",
+      "robot",
+      "android",
+      "cyborg",
+      "zombie",
+      "ghost",
+      "catgirl",
+      "bunny_girl",
+      "cat",
+      "dog",
+      "rabbit",
+      "fox",
+      "wolf",
+      "dragon"
+    ]
+  },
+  {
+    "id": "weather",
+    "zh": "天气",
+    "exclusive": true,
+    "tags": [
+      "rain",
+      "snow",
+      "snowing",
+      "rainbow",
+      "cloud",
+      "cloudy_sky",
+      "starry_sky"
+    ]
+  },
+  {
+    "id": "lighting_type",
+    "zh": "光线类型",
+    "exclusive": true,
+    "tags": [
+      "soft_lighting",
+      "hard_lighting",
+      "backlight",
+      "backlighting",
+      "rim_lighting",
+      "volumetric_lighting",
+      "sunlight",
+      "moonlight",
+      "neon_light",
+      "candlelight",
+      "glowing",
+      "silhouette",
+      "lens_flare",
+      "light_rays"
+    ]
+  },
+  {
+    "id": "camera_angle",
+    "zh": "拍摄角度",
+    "exclusive": true,
+    "tags": [
+      "from_above",
+      "from_below",
+      "from_side",
+      "from_behind",
+      "pov",
+      "dutch_angle",
+      "profile",
+      "over-the-shoulder",
+      "low_angle",
+      "high_angle",
+      "bird's_eye_view",
+      "worm's_eye_view"
+    ]
+  },
+  {
+    "id": "composition_type",
+    "zh": "构图",
+    "exclusive": true,
+    "tags": [
+      "full_body",
+      "upper_body",
+      "close-up",
+      "face_focus",
+      "portrait",
+      "cowboy_shot",
+      "wide_shot",
+      "medium_shot",
+      "long_shot",
+      "cropped_torso",
+      "extreme_close-up",
+      "landscape"
+    ]
+  },
+  {
+    "id": "expression_type",
+    "zh": "表情",
+    "exclusive": true,
+    "tags": [
+      "smile",
+      "grin",
+      "smirk",
+      "smug",
+      "happy",
+      "sad",
+      "angry",
+      "annoyed",
+      "serious",
+      "expressionless",
+      "surprised",
+      "scared",
+      "pout",
+      "frown",
+      "neutral",
+      "sleepy"
+    ]
+  },
+  {
+    "id": "environment_type",
+    "zh": "场景类型",
+    "exclusive": true,
+    "tags": [
+      "city",
+      "street",
+      "beach",
+      "forest",
+      "mountain",
+      "ocean",
+      "sea",
+      "room",
+      "bedroom",
+      "kitchen",
+      "bathroom",
+      "classroom",
+      "space",
+      "underwater",
+      "desert",
+      "sky"
+    ]
+  },
+  {
+    "id": "clothing_type",
+    "zh": "服装类型",
+    "exclusive": true,
+    "tags": [
+      "school_uniform",
+      "dress",
+      "kimono",
+      "yukata",
+      "swimsuit",
+      "bikini",
+      "maid_outfit",
+      "armor",
+      "serafuku",
+      "wedding_dress",
+      "pants",
+      "skirt"
+    ]
+  },
+  {
+    "id": "nsfw_explicitness",
+    "zh": "裸露程度",
+    "exclusive": true,
+    "tags": [
+      "nude",
+      "completely_nude",
+      "topless",
+      "bottomless",
+      "underwear",
+      "see_through",
+      "lingerie"
+    ]
+  },
+  {
+    "id": "h_pose_type",
+    "zh": "H体位",
+    "exclusive": true,
+    "tags": [
+      "doggy_style",
+      "missionary",
+      "cowgirl_position",
+      "reverse_cowgirl_position",
+      "mating_press",
+      "standing_sex",
+      "69_position",
+      "spooning_sex",
+      "amazon_position",
+      "prone_bone",
+      "sex_from_behind",
+      "lotus_position"
+    ]
+  }
+]

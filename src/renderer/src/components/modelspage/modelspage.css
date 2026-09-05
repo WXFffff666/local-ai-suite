@@ -174,3 +174,37 @@
 .las-models-launch-err {
   color: var(--las-danger, #da3633);
 }
+
+/* 阶段3：模型分类文件夹卡片 */
+.las-models-folders {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.las-models-folder-card {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+  border: 1px solid var(--las-border, rgba(255, 255, 255, 0.12));
+  background: rgba(255, 255, 255, 0.03);
+  color: inherit;
+  border-radius: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+.las-models-folder-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(124, 108, 246, 0.7);
+}
+.las-models-folder-card span {
+  font-size: 12px;
+  opacity: 0.65;
+}
+.las-models-folder-card .las-models-folder-open {
+  font-size: 12.5px;
+  opacity: 0.9;
+  color: var(--las-accent, #a99bff);
+}

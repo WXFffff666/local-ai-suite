@@ -1,0 +1,426 @@
+[
+  {
+    "zh": "裸体",
+    "en": "nude",
+    "sfw": false,
+    "dimension": "nsfw_explicitness",
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "全裸",
+    "en": "completely_nude",
+    "sfw": false,
+    "dimension": "nsfw_explicitness",
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "上身裸露",
+    "en": "topless",
+    "sfw": false,
+    "dimension": "nsfw_explicitness",
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "下身裸露",
+    "en": "bottomless",
+    "sfw": false,
+    "dimension": "nsfw_explicitness",
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "张开腿",
+    "en": "spread_legs",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "后入式",
+    "en": "doggy_style",
+    "sfw": false,
+    "dimension": "h_pose_type",
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "传教士位",
+    "en": "missionary",
+    "sfw": false,
+    "dimension": "h_pose_type",
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "骑乘位",
+    "en": "cowgirl_position",
+    "sfw": false,
+    "dimension": "h_pose_type",
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "反骑乘位",
+    "en": "reverse_cowgirl_position",
+    "sfw": false,
+    "dimension": "h_pose_type",
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "站立性交",
+    "en": "standing_sex",
+    "sfw": false,
+    "dimension": "h_pose_type",
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "背后位",
+    "en": "sex_from_behind",
+    "sfw": false,
+    "dimension": "h_pose_type",
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "蹲式骑乘",
+    "en": "squatting_cowgirl_position",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "交配式",
+    "en": "mating_press",
+    "sfw": false,
+    "dimension": "h_pose_type",
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "倒插式",
+    "en": "piledriver",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "69式",
+    "en": "69_position",
+    "sfw": false,
+    "dimension": "h_pose_type",
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "女上位",
+    "en": "on_top",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "颜坐",
+    "en": "facesitting",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "剪刀式",
+    "en": "scissoring",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "摆臀",
+    "en": "presenting",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "双腿张开",
+    "en": "legs_apart",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "抬腿",
+    "en": "raised_leg",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "张开腿",
+    "en": "open_legs",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "裸露腰部",
+    "en": "naked_waist",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "下拉下装",
+    "en": "bottom_wear_pulled_down",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "跨坐",
+    "en": "straddling",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "莲花坐位",
+    "en": "lotus_position",
+    "sfw": false,
+    "dimension": "h_pose_type",
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "汤匙体位",
+    "en": "spooning_sex",
+    "sfw": false,
+    "dimension": "h_pose_type",
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "亚马逊体位",
+    "en": "amazon_position",
+    "sfw": false,
+    "dimension": "h_pose_type",
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "反向女上位",
+    "en": "inverted_cowgirl",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "腿架肩上",
+    "en": "legs_over_shoulders",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "俯卧式",
+    "en": "prone_bone",
+    "sfw": false,
+    "dimension": "h_pose_type",
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "斜位交合",
+    "en": "angled_sex",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "跪姿交合",
+    "en": "kneeling_sex",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "靠墙性交",
+    "en": "wall_sex",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "桌上性交",
+    "en": "table_sex",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "椅上性交",
+    "en": "chair_sex",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "侧位交合",
+    "en": "side_sex",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "坐姿性交",
+    "en": "sitting_sex",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "床上性交",
+    "en": "bed_sex",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "车内性交",
+    "en": "car_sex",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "浴缸性交",
+    "en": "bath_sex",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "地板性交",
+    "en": "floor_sex",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "反向蹲骑式",
+    "en": "reverse_squatting_cowgirl_position",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "直立跨坐",
+    "en": "upright_straddle",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "反向直立跨坐",
+    "en": "reverse_upright_straddle",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "折叠体位（对折）",
+    "en": "folded",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "膝抵胸前",
+    "en": "knees_to_chest",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "腿过头顶",
+    "en": "legs_over_head",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "铁砧位",
+    "en": "anvil_position",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "悬空抱腿式",
+    "en": "suspended_congress",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "反向悬空抱腿式",
+    "en": "reverse_suspended_congress",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "全尼尔森锁（手臂背后锁喉式性交）",
+    "en": "full_nelson",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "骑跨压上（骑乘压制）",
+    "en": "mounting",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "站立传教士式",
+    "en": "standing_missionary",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "侧躺体位（侧位）",
+    "en": "on_side",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "头脚相向交叉体位",
+    "en": "top-down_bottom-up",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "串烧体位（前后同插）",
+    "en": "spitroast",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "反向串烧体位",
+    "en": "reverse_spitroast",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "男上位（标准男上女下）",
+    "en": "boy_on_top",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "女上位",
+    "en": "girl_on_top",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "反亚马逊体位",
+    "en": "reverse_amazon_position",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "摇篮体位",
+    "en": "cradle_position",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "直升机体位",
+    "en": "helicopter_position",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "大字缚体位",
+    "en": "spread_eagle_position",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "熊抱体位",
+    "en": "bear_position",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "蹲在人身上",
+    "en": "squatting_on_person",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "膝上舞",
+    "en": "lap_dance",
+    "sfw": false,
+    "group": "nsfw:pose"
+  },
+  {
+    "zh": "展示自身",
+    "en": "presenting_own_body",
+    "sfw": false,
+    "group": "nsfw:pose"
+  }
+]

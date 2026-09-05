@@ -24,6 +24,7 @@ describe('ipc whitelist', () => {
       'models:list',
       'models:download',
       'models:setDir',
+  'models:openDir',
       'models:loraScan',
       'models:loraMeta',
       // todo30b: registry-driven llama relaunch (the 21→30 wired hop, services.launchModel)

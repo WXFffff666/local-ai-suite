@@ -29,6 +29,7 @@ import { ModelRegistry, type RegistryOptions } from '../models/registry'
 import { ImageQueue } from '../image/queue'
 import { createSdJobHandler, pickDiffusionModel } from '../image/executor'
 import { createLlamaChat, enhancePrompt, pickEnhancerModel } from '../image/enhance'
+import { lookupZh } from '../shared/promptLibrary'
 import { SIDECAR_HOST } from '../core/types'
 import { Gallery } from '../gallery/gallery'
 import { SearchOrchestrator, type OrchestratorOptions } from '../search/orchestrator'
@@ -227,7 +228,14 @@ export class Services {
             return { port: status.port }
           },
           enhance: (text) =>
-            enhancePrompt({ text }, { chat: createLlamaChat({ resolveChatUrl: () => this.resolveEnhanceChatUrl() }) }),
+            enhancePrompt(
+              { text },
+              {
+                chat: createLlamaChat({ resolveChatUrl: () => this.resolveEnhanceChatUrl() }),
+                // zh2en 查表兜底（prompt-weaver 数据，主进程惰性加载）
+                lookupZh: (zh) => lookupZh(zh),
+              },
+            ),
         }),
       )
       this.imageQueueInstance = queue

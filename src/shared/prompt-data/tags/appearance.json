@@ -1,0 +1,3205 @@
+[
+  {
+    "zh": "长发",
+    "en": "long_hair",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "胸部",
+    "en": "breasts",
+    "sfw": true
+  },
+  {
+    "zh": "短发",
+    "en": "short_hair",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "蓝瞳",
+    "en": "blue_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "大胸",
+    "en": "large_breasts",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "黑发",
+    "en": "black_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "金发",
+    "en": "blonde_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "棕发",
+    "en": "brown_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "红瞳",
+    "en": "red_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "兽耳",
+    "en": "animal_ears",
+    "sfw": true
+  },
+  {
+    "zh": "肚脐",
+    "en": "navel",
+    "sfw": true
+  },
+  {
+    "zh": "乳沟",
+    "en": "cleavage",
+    "sfw": true
+  },
+  {
+    "zh": "超长发",
+    "en": "very_long_hair",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "裸肩",
+    "en": "bare_shoulders",
+    "sfw": true
+  },
+  {
+    "zh": "双马尾",
+    "en": "twintails",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "中胸",
+    "en": "medium_breasts",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "蓝发",
+    "en": "blue_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "紫瞳",
+    "en": "purple_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "绿瞳",
+    "en": "green_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "尾巴",
+    "en": "tail",
+    "sfw": true
+  },
+  {
+    "zh": "多色发",
+    "en": "multicolored_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "棕瞳",
+    "en": "brown_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "粉发",
+    "en": "pink_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "白发",
+    "en": "white_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "灰发",
+    "en": "grey_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "黄瞳",
+    "en": "yellow_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "呆毛",
+    "en": "ahoge",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "单马尾",
+    "en": "ponytail",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "编发",
+    "en": "braid",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "紫发",
+    "en": "purple_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "大腿",
+    "en": "thighs",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "牙齿",
+    "en": "teeth",
+    "sfw": true
+  },
+  {
+    "zh": "汗水",
+    "en": "sweat",
+    "sfw": true
+  },
+  {
+    "zh": "红发",
+    "en": "red_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "小胸",
+    "en": "small_breasts",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "中长发",
+    "en": "medium_hair",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "翅膀",
+    "en": "wings",
+    "sfw": true
+  },
+  {
+    "zh": "尖耳",
+    "en": "pointy_ears",
+    "sfw": true
+  },
+  {
+    "zh": "绿发",
+    "en": "green_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "赤脚",
+    "en": "barefoot",
+    "sfw": true
+  },
+  {
+    "zh": "虎牙",
+    "en": "fang",
+    "sfw": true
+  },
+  {
+    "zh": "挑染发",
+    "en": "streaked_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "齐刘海",
+    "en": "blunt_bangs",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "粉瞳",
+    "en": "pink_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "腹部",
+    "en": "stomach",
+    "sfw": true
+  },
+  {
+    "zh": "猫耳",
+    "en": "cat_ears",
+    "sfw": true
+  },
+  {
+    "zh": "深肤色",
+    "en": "dark_skin",
+    "sfw": true,
+    "dimension": "skin_tone"
+  },
+  {
+    "zh": "露脐",
+    "en": "midriff",
+    "sfw": true
+  },
+  {
+    "zh": "双色发",
+    "en": "two-tone_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "痣",
+    "en": "mole",
+    "sfw": true
+  },
+  {
+    "zh": "发髻",
+    "en": "hair_bun",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "遮眼发",
+    "en": "hair_over_one_eye",
+    "sfw": true
+  },
+  {
+    "zh": "橙发",
+    "en": "orange_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "黑瞳",
+    "en": "black_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "腋下",
+    "en": "armpits",
+    "sfw": true
+  },
+  {
+    "zh": "巨乳",
+    "en": "huge_breasts",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "兔耳",
+    "en": "rabbit_ears",
+    "sfw": true
+  },
+  {
+    "zh": "中分刘海",
+    "en": "parted_bangs",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "裸臂",
+    "en": "bare_arms",
+    "sfw": true
+  },
+  {
+    "zh": "腿部",
+    "en": "legs",
+    "sfw": true
+  },
+  {
+    "zh": "光腿",
+    "en": "bare_legs",
+    "sfw": true
+  },
+  {
+    "zh": "异色瞳",
+    "en": "heterochromia",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "平胸",
+    "en": "flat_chest",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "宽胯",
+    "en": "wide_hips",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "肌肉",
+    "en": "muscular",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "纤细",
+    "en": "slim",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "曲线",
+    "en": "curvy",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "高挑",
+    "en": "tall",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "娇小",
+    "en": "short",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "白皙肤",
+    "en": "fair_skin",
+    "sfw": true,
+    "dimension": "skin_tone"
+  },
+  {
+    "zh": "浅肤色",
+    "en": "light_skin",
+    "sfw": true,
+    "dimension": "skin_tone"
+  },
+  {
+    "zh": "苍白肤",
+    "en": "pale_skin",
+    "sfw": true,
+    "dimension": "skin_tone"
+  },
+  {
+    "zh": "晒黑",
+    "en": "tan",
+    "sfw": true,
+    "dimension": "skin_tone"
+  },
+  {
+    "zh": "雀斑",
+    "en": "freckles",
+    "sfw": true
+  },
+  {
+    "zh": "睫毛",
+    "en": "eyelashes",
+    "sfw": true
+  },
+  {
+    "zh": "发光眼",
+    "en": "glowing_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "灰瞳",
+    "en": "grey_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "侧马尾",
+    "en": "side_ponytail",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "侧编发",
+    "en": "side_braid",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "波波头",
+    "en": "bob_cut",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "姬发式",
+    "en": "hime_cut",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "钻头发",
+    "en": "drill_hair",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "卷发",
+    "en": "curls",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "波浪发",
+    "en": "wavy_hair",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "直发",
+    "en": "straight_hair",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "凌乱发",
+    "en": "messy_hair",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "湿发",
+    "en": "wet_hair",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "蓬松发",
+    "en": "fluffy_hair",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "刺头发",
+    "en": "spiky_hair",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "长鬓发",
+    "en": "long_sidelocks",
+    "sfw": true
+  },
+  {
+    "zh": "眉间发丝",
+    "en": "hair_between_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "渐变发",
+    "en": "gradient_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "黄发",
+    "en": "yellow_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "美甲",
+    "en": "nail_polish",
+    "sfw": true
+  },
+  {
+    "zh": "耳环",
+    "en": "earrings",
+    "sfw": true
+  },
+  {
+    "zh": "项链",
+    "en": "necklace",
+    "sfw": true
+  },
+  {
+    "zh": "手链",
+    "en": "bracelet",
+    "sfw": true
+  },
+  {
+    "zh": "戒指",
+    "en": "ring",
+    "sfw": true
+  },
+  {
+    "zh": "珠宝",
+    "en": "jewelry",
+    "sfw": true
+  },
+  {
+    "zh": "皇冠",
+    "en": "crown",
+    "sfw": true
+  },
+  {
+    "zh": "天使翼",
+    "en": "angel_wings",
+    "sfw": true
+  },
+  {
+    "zh": "羽翼",
+    "en": "feather_wings",
+    "sfw": true
+  },
+  {
+    "zh": "猫尾",
+    "en": "cat_tail",
+    "sfw": true
+  },
+  {
+    "zh": "狐尾",
+    "en": "fox_tail",
+    "sfw": true
+  },
+  {
+    "zh": "兔尾",
+    "en": "rabbit_tail",
+    "sfw": true
+  },
+  {
+    "zh": "兽耳绒毛",
+    "en": "animal_ear_fluff",
+    "sfw": true
+  },
+  {
+    "zh": "银发",
+    "en": "silver_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "彩虹发",
+    "en": "rainbow_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "青蓝发",
+    "en": "teal_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "薄荷发",
+    "en": "mint_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "薰衣草发",
+    "en": "lavender_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "浅蓝发",
+    "en": "light_blue_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "深蓝发",
+    "en": "dark_blue_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "浅绿发",
+    "en": "light_green_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "深绿发",
+    "en": "dark_green_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "浅粉发",
+    "en": "light_pink_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "深红发",
+    "en": "dark_red_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "浅棕发",
+    "en": "light_brown_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "浅紫发",
+    "en": "light_purple_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "深紫发",
+    "en": "dark_purple_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "琥珀瞳",
+    "en": "amber_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "紫罗兰瞳",
+    "en": "violet_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "青蓝瞳",
+    "en": "teal_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "浅蓝瞳",
+    "en": "light_blue_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "橙瞳",
+    "en": "orange_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "银瞳",
+    "en": "silver_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "白瞳",
+    "en": "white_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "彩色瞳",
+    "en": "multicolored_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "竖瞳",
+    "en": "slit_pupils",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "菱形瞳",
+    "en": "diamond_pupils",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "爱心瞳",
+    "en": "heart_pupils",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "法式辫",
+    "en": "french_braid",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "鱼骨辫",
+    "en": "fishtail_braid",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "低双马尾",
+    "en": "low_twintails",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "短双马尾",
+    "en": "short_twintails",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "丸子头",
+    "en": "topknot",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "狼尾",
+    "en": "wolf_cut",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "鲻鱼头",
+    "en": "mullet",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "精灵短发",
+    "en": "pixie_cut",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "锅盖头",
+    "en": "bowl_cut",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "后梳发",
+    "en": "slicked_back",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "编发马尾",
+    "en": "braided_ponytail",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "高马尾",
+    "en": "high_ponytail",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "低马尾",
+    "en": "low_ponytail",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "双丸子头",
+    "en": "double_buns",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "羊角辫",
+    "en": "odango",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "泪痣",
+    "en": "beauty_mark",
+    "sfw": true
+  },
+  {
+    "zh": "酒窝",
+    "en": "dimples",
+    "sfw": true
+  },
+  {
+    "zh": "圆鼻",
+    "en": "round_nose",
+    "sfw": true
+  },
+  {
+    "zh": "粗眉",
+    "en": "thick_eyebrows",
+    "sfw": true
+  },
+  {
+    "zh": "吊梢眼",
+    "en": "upturned_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "下垂眼",
+    "en": "downturned_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "伤疤",
+    "en": "scar",
+    "sfw": true
+  },
+  {
+    "zh": "丰满",
+    "en": "plump",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "微胖",
+    "en": "chubby",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "娇小",
+    "en": "petite",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "运动型",
+    "en": "athletic",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "锁骨",
+    "en": "collarbone",
+    "sfw": true
+  },
+  {
+    "zh": "腹肌",
+    "en": "abs",
+    "sfw": true
+  },
+  {
+    "zh": "臀部",
+    "en": "butt",
+    "sfw": true
+  },
+  {
+    "zh": "发饰",
+    "en": "hair_ornament",
+    "sfw": true
+  },
+  {
+    "zh": "发夹",
+    "en": "hairpin",
+    "sfw": true
+  },
+  {
+    "zh": "眼罩",
+    "en": "eyepatch",
+    "sfw": true
+  },
+  {
+    "zh": "单片眼镜",
+    "en": "monocle",
+    "sfw": true
+  },
+  {
+    "zh": "恶魔翼",
+    "en": "demon_wings",
+    "sfw": true
+  },
+  {
+    "zh": "妖精翼",
+    "en": "fairy_wings",
+    "sfw": true
+  },
+  {
+    "zh": "蝴蝶翼",
+    "en": "butterfly_wings",
+    "sfw": true
+  },
+  {
+    "zh": "龙翼",
+    "en": "dragon_wings",
+    "sfw": true
+  },
+  {
+    "zh": "角",
+    "en": "horns",
+    "sfw": true
+  },
+  {
+    "zh": "眼线",
+    "en": "eyeliner",
+    "sfw": true
+  },
+  {
+    "zh": "眼影",
+    "en": "eyeshadow",
+    "sfw": true
+  },
+  {
+    "zh": "口红",
+    "en": "lipstick",
+    "sfw": true
+  },
+  {
+    "zh": "极长发",
+    "en": "absurdly_long_hair",
+    "sfw": true
+  },
+  {
+    "zh": "蓬松大卷发",
+    "en": "big_hair",
+    "sfw": true
+  },
+  {
+    "zh": "光头",
+    "en": "bald",
+    "sfw": true
+  },
+  {
+    "zh": "秃顶",
+    "en": "balding",
+    "sfw": true
+  },
+  {
+    "zh": "板寸",
+    "en": "buzz_cut",
+    "sfw": true
+  },
+  {
+    "zh": "平头",
+    "en": "crew_cut",
+    "sfw": true
+  },
+  {
+    "zh": "内扣波波头",
+    "en": "inverted_bob",
+    "sfw": true
+  },
+  {
+    "zh": "渐层短削发",
+    "en": "undercut",
+    "sfw": true
+  },
+  {
+    "zh": "平顶头",
+    "en": "flattop",
+    "sfw": true
+  },
+  {
+    "zh": "短长发",
+    "en": "short_hair_with_long_locks",
+    "sfw": true
+  },
+  {
+    "zh": "水母头",
+    "en": "jellyfish_cut",
+    "sfw": true
+  },
+  {
+    "zh": "辫刘海",
+    "en": "braided_bangs",
+    "sfw": true
+  },
+  {
+    "zh": "前辫",
+    "en": "front_braid",
+    "sfw": true
+  },
+  {
+    "zh": "皇冠辫",
+    "en": "crown_braid",
+    "sfw": true
+  },
+  {
+    "zh": "半皇冠辫",
+    "en": "half_crown_braid",
+    "sfw": true
+  },
+  {
+    "zh": "单辫",
+    "en": "single_braid",
+    "sfw": true
+  },
+  {
+    "zh": "多辫",
+    "en": "multiple_braids",
+    "sfw": true
+  },
+  {
+    "zh": "双辫",
+    "en": "twin_braids",
+    "sfw": true
+  },
+  {
+    "zh": "低双辫",
+    "en": "low_twin_braids",
+    "sfw": true
+  },
+  {
+    "zh": "三辫",
+    "en": "tri_braids",
+    "sfw": true
+  },
+  {
+    "zh": "四辫",
+    "en": "quad_braids",
+    "sfw": true
+  },
+  {
+    "zh": "绳辫",
+    "en": "rope_braid",
+    "sfw": true
+  },
+  {
+    "zh": "脏辫",
+    "en": "dreadlocks",
+    "sfw": true
+  },
+  {
+    "zh": "盒辫",
+    "en": "box_braids",
+    "sfw": true
+  },
+  {
+    "zh": "半扎辫",
+    "en": "half_up_braid",
+    "sfw": true
+  },
+  {
+    "zh": "半扎半放辫",
+    "en": "half_up_half_down_braid",
+    "sfw": true
+  },
+  {
+    "zh": "辫发髻",
+    "en": "braided_bun",
+    "sfw": true
+  },
+  {
+    "zh": "单发髻",
+    "en": "single_hair_bun",
+    "sfw": true
+  },
+  {
+    "zh": "双发髻",
+    "en": "double_bun",
+    "sfw": true
+  },
+  {
+    "zh": "低发髻",
+    "en": "very_low_bun",
+    "sfw": true
+  },
+  {
+    "zh": "圆锥发髻",
+    "en": "cone_hair_bun",
+    "sfw": true
+  },
+  {
+    "zh": "甜甜圈发髻",
+    "en": "donut_hair_bun",
+    "sfw": true
+  },
+  {
+    "zh": "心形发髻",
+    "en": "heart_hair_bun",
+    "sfw": true
+  },
+  {
+    "zh": "三发髻",
+    "en": "triple_bun",
+    "sfw": true
+  },
+  {
+    "zh": "发环",
+    "en": "hair_rings",
+    "sfw": true
+  },
+  {
+    "zh": "单发环",
+    "en": "single_hair_ring",
+    "sfw": true
+  },
+  {
+    "zh": "三发环",
+    "en": "tri_hair_rings",
+    "sfw": true
+  },
+  {
+    "zh": "半扎发",
+    "en": "half_updo",
+    "sfw": true
+  },
+  {
+    "zh": "单侧扎",
+    "en": "one_side_up",
+    "sfw": true
+  },
+  {
+    "zh": "折叠马尾",
+    "en": "folded_ponytail",
+    "sfw": true
+  },
+  {
+    "zh": "前马尾",
+    "en": "front_ponytail",
+    "sfw": true
+  },
+  {
+    "zh": "高侧马尾",
+    "en": "high_side_ponytail",
+    "sfw": true
+  },
+  {
+    "zh": "低侧马尾",
+    "en": "low_side_ponytail",
+    "sfw": true
+  },
+  {
+    "zh": "短侧马尾",
+    "en": "short_side_ponytail",
+    "sfw": true
+  },
+  {
+    "zh": "分叉马尾",
+    "en": "split_ponytail",
+    "sfw": true
+  },
+  {
+    "zh": "三马尾",
+    "en": "tri_tails",
+    "sfw": true
+  },
+  {
+    "zh": "四马尾",
+    "en": "quad_tails",
+    "sfw": true
+  },
+  {
+    "zh": "弓形发",
+    "en": "bow-shaped_hair",
+    "sfw": true
+  },
+  {
+    "zh": "四叶草发型",
+    "en": "four_leaf_clover_hairstyle",
+    "sfw": true
+  },
+  {
+    "zh": "兔发型",
+    "en": "rabbit_hairstyle",
+    "sfw": true
+  },
+  {
+    "zh": "花形发",
+    "en": "flower-shaped_hair",
+    "sfw": true
+  },
+  {
+    "zh": "星形发",
+    "en": "star-shaped_hair",
+    "sfw": true
+  },
+  {
+    "zh": "爆炸头",
+    "en": "afro",
+    "sfw": true
+  },
+  {
+    "zh": "蜂窝头",
+    "en": "beehive_hairdo",
+    "sfw": true
+  },
+  {
+    "zh": "顶冠发",
+    "en": "crested_hair",
+    "sfw": true
+  },
+  {
+    "zh": "飞机头",
+    "en": "pompadour",
+    "sfw": true
+  },
+  {
+    "zh": "卷立前发",
+    "en": "quiff",
+    "sfw": true
+  },
+  {
+    "zh": "卷发",
+    "en": "curly_hair",
+    "sfw": true
+  },
+  {
+    "zh": "外翻发",
+    "en": "flipped_hair",
+    "sfw": true
+  },
+  {
+    "zh": "双螺旋卷",
+    "en": "twin_drills",
+    "sfw": true
+  },
+  {
+    "zh": "单螺旋卷",
+    "en": "single_drill",
+    "sfw": true
+  },
+  {
+    "zh": "发瓣",
+    "en": "hair_flaps",
+    "sfw": true
+  },
+  {
+    "zh": "尖发",
+    "en": "pointy_hair",
+    "sfw": true
+  },
+  {
+    "zh": "角状发",
+    "en": "hair_horns",
+    "sfw": true
+  },
+  {
+    "zh": "螺旋卷",
+    "en": "ringlets",
+    "sfw": true
+  },
+  {
+    "zh": "竖发",
+    "en": "spiked_hair",
+    "sfw": true
+  },
+  {
+    "zh": "宽面条发",
+    "en": "kishimen_hair",
+    "sfw": true
+  },
+  {
+    "zh": "拱形刘海",
+    "en": "arched_bangs",
+    "sfw": true
+  },
+  {
+    "zh": "不对称刘海",
+    "en": "asymmetrical_bangs",
+    "sfw": true
+  },
+  {
+    "zh": "中分刘海",
+    "en": "center-flap_bangs",
+    "sfw": true
+  },
+  {
+    "zh": "交叉刘海",
+    "en": "crossed_bangs",
+    "sfw": true
+  },
+  {
+    "zh": "细碎刘海",
+    "en": "wispy_bangs",
+    "sfw": true
+  },
+  {
+    "zh": "参差刘海",
+    "en": "choppy_bangs",
+    "sfw": true
+  },
+  {
+    "zh": "斜刘海",
+    "en": "diagonal_bangs",
+    "sfw": true
+  },
+  {
+    "zh": "尖齿刘海",
+    "en": "fanged_bangs",
+    "sfw": true
+  },
+  {
+    "zh": "短刘海",
+    "en": "short_bangs",
+    "sfw": true
+  },
+  {
+    "zh": "长刘海",
+    "en": "long_bangs",
+    "sfw": true
+  },
+  {
+    "zh": "中分",
+    "en": "middle_part",
+    "sfw": true
+  },
+  {
+    "zh": "双分刘海",
+    "en": "double-parted_bangs",
+    "sfw": true
+  },
+  {
+    "zh": "帘式发",
+    "en": "curtained_hair",
+    "sfw": true
+  },
+  {
+    "zh": "斜掠刘海",
+    "en": "swept_bangs",
+    "sfw": true
+  },
+  {
+    "zh": "彩色刘海",
+    "en": "colored_bangs",
+    "sfw": true
+  },
+  {
+    "zh": "发束",
+    "en": "hair_intakes",
+    "sfw": true
+  },
+  {
+    "zh": "单发束",
+    "en": "single_hair_intake",
+    "sfw": true
+  },
+  {
+    "zh": "侧发",
+    "en": "sidelocks",
+    "sfw": true
+  },
+  {
+    "zh": "不对称侧发",
+    "en": "asymmetrical_sidelocks",
+    "sfw": true
+  },
+  {
+    "zh": "螺旋侧发",
+    "en": "drill_sidelocks",
+    "sfw": true
+  },
+  {
+    "zh": "低扎侧发",
+    "en": "low-tied_sidelocks",
+    "sfw": true
+  },
+  {
+    "zh": "扎后侧发",
+    "en": "sidelocks_tied_back",
+    "sfw": true
+  },
+  {
+    "zh": "单侧发",
+    "en": "single_sidelock",
+    "sfw": true
+  },
+  {
+    "zh": "美人尖",
+    "en": "widow's_peak",
+    "sfw": true
+  },
+  {
+    "zh": "心形呆毛",
+    "en": "heart_ahoge",
+    "sfw": true
+  },
+  {
+    "zh": "巨大呆毛",
+    "en": "huge_ahoge",
+    "sfw": true
+  },
+  {
+    "zh": "天线发",
+    "en": "antenna_hair",
+    "sfw": true
+  },
+  {
+    "zh": "心形天线发",
+    "en": "heart_antenna_hair",
+    "sfw": true
+  },
+  {
+    "zh": "背头",
+    "en": "hair_slicked_back",
+    "sfw": true
+  },
+  {
+    "zh": "分线发",
+    "en": "parted_hair",
+    "sfw": true
+  },
+  {
+    "zh": "莫西干头",
+    "en": "mohawk",
+    "sfw": true
+  },
+  {
+    "zh": "不对称发",
+    "en": "asymmetrical_hair",
+    "sfw": true
+  },
+  {
+    "zh": "铲青",
+    "en": "sidecut",
+    "sfw": true
+  },
+  {
+    "zh": "平切发尾",
+    "en": "blunt_ends",
+    "sfw": true
+  },
+  {
+    "zh": "发过肩",
+    "en": "hair_over_shoulder",
+    "sfw": true
+  },
+  {
+    "zh": "发光发",
+    "en": "glowing_hair",
+    "sfw": true
+  },
+  {
+    "zh": "漂浮发",
+    "en": "floating_hair",
+    "sfw": true
+  },
+  {
+    "zh": "机械发",
+    "en": "mechanical_hair",
+    "sfw": true
+  },
+  {
+    "zh": "火焰发",
+    "en": "fiery_hair",
+    "sfw": true
+  },
+  {
+    "zh": "水晶发",
+    "en": "crystal_hair",
+    "sfw": true
+  },
+  {
+    "zh": "蛇发",
+    "en": "snake_hair",
+    "sfw": true
+  },
+  {
+    "zh": "液体发",
+    "en": "liquid_hair",
+    "sfw": true
+  },
+  {
+    "zh": "植物发",
+    "en": "plant_hair",
+    "sfw": true
+  },
+  {
+    "zh": "表情发",
+    "en": "expressive_hair",
+    "sfw": true
+  },
+  {
+    "zh": "心形发",
+    "en": "heart-shaped_hair",
+    "sfw": true
+  },
+  {
+    "zh": "松散发丝",
+    "en": "loose_hair_strand",
+    "sfw": true
+  },
+  {
+    "zh": "散发",
+    "en": "hair_down",
+    "sfw": true
+  },
+  {
+    "zh": "扎起",
+    "en": "hair_up",
+    "sfw": true
+  },
+  {
+    "zh": "分离发",
+    "en": "detached_hair",
+    "sfw": true
+  },
+  {
+    "zh": "额头",
+    "en": "forehead",
+    "sfw": true
+  },
+  {
+    "zh": "额头标记",
+    "en": "forehead_mark",
+    "sfw": true
+  },
+  {
+    "zh": "嘴唇",
+    "en": "lips",
+    "sfw": true
+  },
+  {
+    "zh": "后颈",
+    "en": "nape",
+    "sfw": true
+  },
+  {
+    "zh": "长颈",
+    "en": "long_neck",
+    "sfw": true
+  },
+  {
+    "zh": "长舌",
+    "en": "long_tongue",
+    "sfw": true
+  },
+  {
+    "zh": "眉毛",
+    "en": "eyebrows",
+    "sfw": true
+  },
+  {
+    "zh": "睫毛(彩色)",
+    "en": "colored_eyelashes",
+    "sfw": true
+  },
+  {
+    "zh": "假睫毛",
+    "en": "fake_eyelashes",
+    "sfw": true
+  },
+  {
+    "zh": "背",
+    "en": "back",
+    "sfw": true
+  },
+  {
+    "zh": "锁骨下窝",
+    "en": "median_furrow",
+    "sfw": true
+  },
+  {
+    "zh": "胸肌",
+    "en": "pectorals",
+    "sfw": true
+  },
+  {
+    "zh": "肋骨",
+    "en": "ribs",
+    "sfw": true
+  },
+  {
+    "zh": "腰窝",
+    "en": "dimples_of_venus",
+    "sfw": true
+  },
+  {
+    "zh": "腹股沟",
+    "en": "groin",
+    "sfw": true
+  },
+  {
+    "zh": "髋",
+    "en": "hips",
+    "sfw": true
+  },
+  {
+    "zh": "腹线",
+    "en": "linea_alba",
+    "sfw": true
+  },
+  {
+    "zh": "窄腰",
+    "en": "narrow_waist",
+    "sfw": true
+  },
+  {
+    "zh": "肚",
+    "en": "belly",
+    "sfw": true
+  },
+  {
+    "zh": "肚脐遮盖",
+    "en": "covered_navel",
+    "sfw": true
+  },
+  {
+    "zh": "侧腹肌",
+    "en": "obliques",
+    "sfw": true
+  },
+  {
+    "zh": "手臂(粗)",
+    "en": "thick_arms",
+    "sfw": true
+  },
+  {
+    "zh": "二头肌",
+    "en": "biceps",
+    "sfw": true
+  },
+  {
+    "zh": "脚",
+    "en": "feet",
+    "sfw": true
+  },
+  {
+    "zh": "脚底",
+    "en": "soles",
+    "sfw": true
+  },
+  {
+    "zh": "手掌",
+    "en": "palms",
+    "sfw": true
+  },
+  {
+    "zh": "膝盖",
+    "en": "knees",
+    "sfw": true
+  },
+  {
+    "zh": "膝窝",
+    "en": "kneepits",
+    "sfw": true
+  },
+  {
+    "zh": "腿(长)",
+    "en": "long_legs",
+    "sfw": true
+  },
+  {
+    "zh": "细腿",
+    "en": "slim_legs",
+    "sfw": true
+  },
+  {
+    "zh": "粗腿",
+    "en": "thick_thighs",
+    "sfw": true
+  },
+  {
+    "zh": "脚趾",
+    "en": "toes",
+    "sfw": true
+  },
+  {
+    "zh": "下垂眼",
+    "en": "tareme",
+    "sfw": true
+  },
+  {
+    "zh": "吊梢眼",
+    "en": "tsurime",
+    "sfw": true
+  },
+  {
+    "zh": "三白眼",
+    "en": "sanpaku",
+    "sfw": true
+  },
+  {
+    "zh": "血丝眼",
+    "en": "bloodshot_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "大眼",
+    "en": "big_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "瞪眼",
+    "en": "wide-eyed",
+    "sfw": true
+  },
+  {
+    "zh": "眯眼",
+    "en": "narrowed_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "不对称眼",
+    "en": "asymmetrical_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "错位虹膜",
+    "en": "mismatched_irises",
+    "sfw": true
+  },
+  {
+    "zh": "锯齿眼",
+    "en": "dashed_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "心形瞳",
+    "en": "heart-shaped_pupils",
+    "sfw": true
+  },
+  {
+    "zh": "星形瞳",
+    "en": "star-shaped_pupils",
+    "sfw": true
+  },
+  {
+    "zh": "十字瞳",
+    "en": "cross-shaped_pupils",
+    "sfw": true
+  },
+  {
+    "zh": "菱形瞳",
+    "en": "diamond-shaped_pupils",
+    "sfw": true
+  },
+  {
+    "zh": "月牙瞳",
+    "en": "crescent-shaped_pupils",
+    "sfw": true
+  },
+  {
+    "zh": "时钟瞳",
+    "en": "clock_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "水平瞳",
+    "en": "horizontal_pupils",
+    "sfw": true
+  },
+  {
+    "zh": "无瞳",
+    "en": "no_pupils",
+    "sfw": true
+  },
+  {
+    "zh": "多瞳",
+    "en": "extra_pupils",
+    "sfw": true
+  },
+  {
+    "zh": "错位瞳",
+    "en": "mismatched_pupils",
+    "sfw": true
+  },
+  {
+    "zh": "发光瞳",
+    "en": "glowing_eye",
+    "sfw": true
+  },
+  {
+    "zh": "闪光瞳",
+    "en": "sparkling_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "漩涡眼",
+    "en": "spiral-only_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "黑眼白",
+    "en": "black_sclera",
+    "sfw": true
+  },
+  {
+    "zh": "白眼白",
+    "en": "no_sclera",
+    "sfw": true
+  },
+  {
+    "zh": "红眼白",
+    "en": "red_sclera",
+    "sfw": true
+  },
+  {
+    "zh": "蓝眼白",
+    "en": "blue_sclera",
+    "sfw": true
+  },
+  {
+    "zh": "青黑眼圈",
+    "en": "bags_under_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "泪袋",
+    "en": "aegyo_sal",
+    "sfw": true
+  },
+  {
+    "zh": "复眼",
+    "en": "compound_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "像素眼",
+    "en": "pixel_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "按钮眼",
+    "en": "button_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "睫毛下阴影",
+    "en": "eye_reflection",
+    "sfw": true
+  },
+  {
+    "zh": "眼中文字",
+    "en": "text_in_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "渐变色瞳",
+    "en": "gradient_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "彩虹瞳",
+    "en": "rainbow_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "双色瞳",
+    "en": "two-tone_eyes",
+    "sfw": true
+  },
+  {
+    "zh": "单眼",
+    "en": "one-eyed",
+    "sfw": true
+  },
+  {
+    "zh": "第三只眼",
+    "en": "third_eye",
+    "sfw": true
+  },
+  {
+    "zh": "白化",
+    "en": "albino",
+    "sfw": true
+  },
+  {
+    "zh": "深棕肤",
+    "en": "very_dark_skin",
+    "sfw": true
+  },
+  {
+    "zh": "彩色肤",
+    "en": "colored_skin",
+    "sfw": true
+  },
+  {
+    "zh": "蓝肤",
+    "en": "blue_skin",
+    "sfw": true
+  },
+  {
+    "zh": "绿肤",
+    "en": "green_skin",
+    "sfw": true
+  },
+  {
+    "zh": "粉肤",
+    "en": "pink_skin",
+    "sfw": true
+  },
+  {
+    "zh": "紫肤",
+    "en": "purple_skin",
+    "sfw": true
+  },
+  {
+    "zh": "红肤",
+    "en": "red_skin",
+    "sfw": true
+  },
+  {
+    "zh": "银肤",
+    "en": "silver_skin",
+    "sfw": true
+  },
+  {
+    "zh": "黑肤",
+    "en": "black_skin",
+    "sfw": true
+  },
+  {
+    "zh": "白肤(非自然)",
+    "en": "white_skin",
+    "sfw": true
+  },
+  {
+    "zh": "黄肤(非自然)",
+    "en": "yellow_skin",
+    "sfw": true
+  },
+  {
+    "zh": "灰肤",
+    "en": "grey_skin",
+    "sfw": true
+  },
+  {
+    "zh": "金属肤",
+    "en": "metal_skin",
+    "sfw": true
+  },
+  {
+    "zh": "塑料肤",
+    "en": "plastic_skin",
+    "sfw": true
+  },
+  {
+    "zh": "多色肤",
+    "en": "multicolored_skin",
+    "sfw": true
+  },
+  {
+    "zh": "双色肤",
+    "en": "two-tone_skin",
+    "sfw": true
+  },
+  {
+    "zh": "补丁肤",
+    "en": "patchwork_skin",
+    "sfw": true
+  },
+  {
+    "zh": "白斑病",
+    "en": "vitiligo",
+    "sfw": true
+  },
+  {
+    "zh": "鳞片",
+    "en": "scales",
+    "sfw": true
+  },
+  {
+    "zh": "油亮肤",
+    "en": "shiny_skin",
+    "sfw": true
+  },
+  {
+    "zh": "体毛",
+    "en": "body_fur",
+    "sfw": true
+  },
+  {
+    "zh": "多翼",
+    "en": "multiple_wings",
+    "sfw": true
+  },
+  {
+    "zh": "单翼",
+    "en": "single_wing",
+    "sfw": true
+  },
+  {
+    "zh": "巨翼",
+    "en": "oversized_wings",
+    "sfw": true
+  },
+  {
+    "zh": "迷你翼",
+    "en": "mini_wings",
+    "sfw": true
+  },
+  {
+    "zh": "羽毛翼",
+    "en": "feathered_wings",
+    "sfw": true
+  },
+  {
+    "zh": "鸟翼",
+    "en": "bird_wings",
+    "sfw": true
+  },
+  {
+    "zh": "蝙蝠翼",
+    "en": "bat_wings",
+    "sfw": true
+  },
+  {
+    "zh": "骨翼",
+    "en": "skeletal_wings",
+    "sfw": true
+  },
+  {
+    "zh": "虫翼",
+    "en": "insect_wings",
+    "sfw": true
+  },
+  {
+    "zh": "蜻蜓翼",
+    "en": "dragonfly_wings",
+    "sfw": true
+  },
+  {
+    "zh": "蛾翼",
+    "en": "moth_wings",
+    "sfw": true
+  },
+  {
+    "zh": "水晶翼",
+    "en": "crystal_wings",
+    "sfw": true
+  },
+  {
+    "zh": "能量翼",
+    "en": "energy_wings",
+    "sfw": true
+  },
+  {
+    "zh": "火焰翼",
+    "en": "fiery_wings",
+    "sfw": true
+  },
+  {
+    "zh": "冰翼",
+    "en": "ice_wings",
+    "sfw": true
+  },
+  {
+    "zh": "液体翼",
+    "en": "liquid_wings",
+    "sfw": true
+  },
+  {
+    "zh": "植物翼",
+    "en": "plant_wings",
+    "sfw": true
+  },
+  {
+    "zh": "机械翼",
+    "en": "mechanical_wings",
+    "sfw": true
+  },
+  {
+    "zh": "头翼",
+    "en": "head_wings",
+    "sfw": true
+  },
+  {
+    "zh": "发翼",
+    "en": "hair_wings",
+    "sfw": true
+  },
+  {
+    "zh": "耳翼",
+    "en": "wing_ears",
+    "sfw": true
+  },
+  {
+    "zh": "低垂翼",
+    "en": "low_wings",
+    "sfw": true
+  },
+  {
+    "zh": "腿翼",
+    "en": "leg_wings",
+    "sfw": true
+  },
+  {
+    "zh": "腕翼",
+    "en": "wrist_wings",
+    "sfw": true
+  },
+  {
+    "zh": "发光翼",
+    "en": "glowing_wings",
+    "sfw": true
+  },
+  {
+    "zh": "透明翼",
+    "en": "transparent_wings",
+    "sfw": true
+  },
+  {
+    "zh": "渐变翼",
+    "en": "gradient_wings",
+    "sfw": true
+  },
+  {
+    "zh": "多色翼",
+    "en": "multicolored_wings",
+    "sfw": true
+  },
+  {
+    "zh": "彩虹翼",
+    "en": "rainbow_wings",
+    "sfw": true
+  },
+  {
+    "zh": "黑翼",
+    "en": "black_wings",
+    "sfw": true
+  },
+  {
+    "zh": "红翼",
+    "en": "red_wings",
+    "sfw": true
+  },
+  {
+    "zh": "白翼",
+    "en": "white_wings",
+    "sfw": true
+  },
+  {
+    "zh": "蓝翼",
+    "en": "blue_wings",
+    "sfw": true
+  },
+  {
+    "zh": "绿翼",
+    "en": "green_wings",
+    "sfw": true
+  },
+  {
+    "zh": "棕翼",
+    "en": "brown_wings",
+    "sfw": true
+  },
+  {
+    "zh": "黄翼",
+    "en": "yellow_wings",
+    "sfw": true
+  },
+  {
+    "zh": "粉翼",
+    "en": "pink_wings",
+    "sfw": true
+  },
+  {
+    "zh": "灰翼",
+    "en": "grey_wings",
+    "sfw": true
+  },
+  {
+    "zh": "不对称翼",
+    "en": "asymmetrical_wings",
+    "sfw": true
+  },
+  {
+    "zh": "带血翼",
+    "en": "bloody_wings",
+    "sfw": true
+  },
+  {
+    "zh": "破翼",
+    "en": "torn_wings",
+    "sfw": true
+  },
+  {
+    "zh": "不对称胸",
+    "en": "asymmetrical_breasts",
+    "sfw": true
+  },
+  {
+    "zh": "唇彩",
+    "en": "lipgloss",
+    "sfw": true
+  },
+  {
+    "zh": "睫毛膏",
+    "en": "mascara",
+    "sfw": true
+  },
+  {
+    "zh": "古铜粉",
+    "en": "bronzer",
+    "sfw": true
+  },
+  {
+    "zh": "亮片妆",
+    "en": "glitter_makeup",
+    "sfw": true
+  },
+  {
+    "zh": "辣妹妆",
+    "en": "gyaru_makeup",
+    "sfw": true
+  },
+  {
+    "zh": "红唇",
+    "en": "red_lips",
+    "sfw": true
+  },
+  {
+    "zh": "粉唇",
+    "en": "pink_lips",
+    "sfw": true
+  },
+  {
+    "zh": "橙唇",
+    "en": "orange_lips",
+    "sfw": true
+  },
+  {
+    "zh": "黑唇",
+    "en": "black_lips",
+    "sfw": true
+  },
+  {
+    "zh": "紫唇",
+    "en": "purple_lips",
+    "sfw": true
+  },
+  {
+    "zh": "蓝唇",
+    "en": "blue_lips",
+    "sfw": true
+  },
+  {
+    "zh": "绿眼影",
+    "en": "green_eyeshadow",
+    "sfw": true
+  },
+  {
+    "zh": "蓝眼影",
+    "en": "blue_eyeshadow",
+    "sfw": true
+  },
+  {
+    "zh": "紫眼影",
+    "en": "purple_eyeshadow",
+    "sfw": true
+  },
+  {
+    "zh": "粉眼影",
+    "en": "pink_eyeshadow",
+    "sfw": true
+  },
+  {
+    "zh": "红眼影",
+    "en": "red_eyeshadow",
+    "sfw": true
+  },
+  {
+    "zh": "黑眼影",
+    "en": "black_eyeshadow",
+    "sfw": true
+  },
+  {
+    "zh": "烟熏眼影",
+    "en": "smokey_eyeshadow",
+    "sfw": true
+  },
+  {
+    "zh": "下眼影",
+    "en": "eyeshadow_under_eye",
+    "sfw": true
+  },
+  {
+    "zh": "面部彩绘",
+    "en": "facepaint",
+    "sfw": true
+  },
+  {
+    "zh": "面部宝石",
+    "en": "face_jewel",
+    "sfw": true
+  },
+  {
+    "zh": "化妆品",
+    "en": "cosmetics",
+    "sfw": true
+  },
+  {
+    "zh": "胡子",
+    "en": "facial_hair",
+    "sfw": true
+  },
+  {
+    "zh": "胡须",
+    "en": "beard",
+    "sfw": true
+  },
+  {
+    "zh": "山羊胡",
+    "en": "goatee",
+    "sfw": true
+  },
+  {
+    "zh": "八字胡",
+    "en": "mustache",
+    "sfw": true
+  },
+  {
+    "zh": "胡茬",
+    "en": "stubble",
+    "sfw": true
+  },
+  {
+    "zh": "发铃",
+    "en": "hair_bell",
+    "sfw": true
+  },
+  {
+    "zh": "发球",
+    "en": "hair_bobbles",
+    "sfw": true
+  },
+  {
+    "zh": "发夹",
+    "en": "hairclip",
+    "sfw": true
+  },
+  {
+    "zh": "花形发饰",
+    "en": "hair_flower",
+    "sfw": true
+  },
+  {
+    "zh": "发管",
+    "en": "hair_tubes",
+    "sfw": true
+  },
+  {
+    "zh": "发簪",
+    "en": "kanzashi",
+    "sfw": true
+  },
+  {
+    "zh": "发棒",
+    "en": "hair_stick",
+    "sfw": true
+  },
+  {
+    "zh": "发圈",
+    "en": "hair_tie",
+    "sfw": true
+  },
+  {
+    "zh": "头带",
+    "en": "headband",
+    "sfw": true
+  },
+  {
+    "zh": "发网",
+    "en": "bun_cover",
+    "sfw": true
+  },
+  {
+    "zh": "发套",
+    "en": "wig",
+    "sfw": true
+  },
+  {
+    "zh": "梳子",
+    "en": "comb",
+    "sfw": true
+  },
+  {
+    "zh": "卷发筒",
+    "en": "hair_rollers",
+    "sfw": true
+  },
+  {
+    "zh": "长指甲",
+    "en": "long_fingernails",
+    "sfw": true
+  },
+  {
+    "zh": "脚趾甲油",
+    "en": "toenail_polish",
+    "sfw": true
+  },
+  {
+    "zh": "手",
+    "en": "hand",
+    "sfw": true
+  },
+  {
+    "zh": "双侧高马尾",
+    "en": "double_high_ponytail",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "双侧低马尾",
+    "en": "double_low_ponytail",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "编织双马尾",
+    "en": "braided_twintails",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "麻花双马尾",
+    "en": "twisted_twintails",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "高双丸子",
+    "en": "high_double_buns",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "低双丸子",
+    "en": "low_double_buns",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "半丸子双马尾",
+    "en": "half_bun_twintails",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "发尾卷",
+    "en": "curled_hair_ends",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "发尾渐尖",
+    "en": "tapered_hair_ends",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "层次短发",
+    "en": "layered_short_hair",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "碎盖短发",
+    "en": "choppy_short_hair",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "羽毛切短发",
+    "en": "feathered_bob",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "内卷中发",
+    "en": "inward_curled_medium_hair",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "外翘中发",
+    "en": "outward_flipped_medium_hair",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "羊毛卷",
+    "en": "wool_perm",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "水波纹卷",
+    "en": "water_wave_perm",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "大波浪卷",
+    "en": "large_wavy_perm",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "小波浪卷",
+    "en": "small_wavy_perm",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "荷叶边刘海",
+    "en": "frilly_bangs",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "透视刘海",
+    "en": "see_through_bangs",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "框颜刘海",
+    "en": "face_framing_bangs",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "八字刘海",
+    "en": "curtain_bangs",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "龙须刘海",
+    "en": "whispy_face_framing",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "锯齿刘海",
+    "en": "jagged_bangs",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "重叠刘海",
+    "en": "layered_bangs",
+    "sfw": true,
+    "dimension": "hair_style"
+  },
+  {
+    "zh": "染挑发尾",
+    "en": "dip_dye_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "耳后挑染",
+    "en": "peekaboo_highlight",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "钱币挑染",
+    "en": "money_piece_highlight",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "隐藏染",
+    "en": "hidden_hair_color",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "半分染色",
+    "en": "split_dye_hair",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "晕染发色",
+    "en": "smudged_hair_color",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "荧光发色",
+    "en": "neon_hair_color",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "粉彩发色",
+    "en": "pastel_hair_color",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "烟熏发色",
+    "en": "smoky_hair_color",
+    "sfw": true,
+    "dimension": "hair_color"
+  },
+  {
+    "zh": "猫瞳竖线",
+    "en": "cat_slit_pupils",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "圆瞳大眼",
+    "en": "round_pupils_large",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "双色瞳环",
+    "en": "dual_ring_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "渐变瞳孔",
+    "en": "gradient_pupils",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "星瞳",
+    "en": "star_pupils",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "花瓣瞳",
+    "en": "flower_pupils",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "月牙瞳",
+    "en": "crescent_pupils",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "十字星瞳",
+    "en": "cross_star_pupils",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "水光眼",
+    "en": "watery_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "荧光眼",
+    "en": "fluorescent_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "遮光眼",
+    "en": "shaded_eyes",
+    "sfw": true,
+    "dimension": "eye_color"
+  },
+  {
+    "zh": "双眼皮",
+    "en": "double_eyelids",
+    "sfw": true
+  },
+  {
+    "zh": "单眼皮",
+    "en": "single_eyelid",
+    "sfw": true
+  },
+  {
+    "zh": "眼角痣",
+    "en": "mole_under_eye",
+    "sfw": true
+  },
+  {
+    "zh": "眼角泪痣",
+    "en": "tear_mole",
+    "sfw": true
+  },
+  {
+    "zh": "眉上痣",
+    "en": "mole_above_eye",
+    "sfw": true
+  },
+  {
+    "zh": "眼尾上挑",
+    "en": "upturned_eye_corners",
+    "sfw": true
+  },
+  {
+    "zh": "眼尾下垂",
+    "en": "downturned_eye_corners",
+    "sfw": true
+  },
+  {
+    "zh": "小麦肤",
+    "en": "wheat_skin",
+    "sfw": true,
+    "dimension": "skin_tone"
+  },
+  {
+    "zh": "蜜糖肤",
+    "en": "honey_skin",
+    "sfw": true,
+    "dimension": "skin_tone"
+  },
+  {
+    "zh": "青白肤",
+    "en": "porcelain_skin",
+    "sfw": true,
+    "dimension": "skin_tone"
+  },
+  {
+    "zh": "麦芽肤",
+    "en": "bronze_skin",
+    "sfw": true,
+    "dimension": "skin_tone"
+  },
+  {
+    "zh": "透明肤",
+    "en": "translucent_skin",
+    "sfw": true,
+    "dimension": "skin_tone"
+  },
+  {
+    "zh": "晒痕",
+    "en": "tan_lines",
+    "sfw": true
+  },
+  {
+    "zh": "日晒红",
+    "en": "sunburn_skin",
+    "sfw": true
+  },
+  {
+    "zh": "拉伸纹",
+    "en": "stretch_marks",
+    "sfw": true
+  },
+  {
+    "zh": "血管纹",
+    "en": "visible_veins",
+    "sfw": true
+  },
+  {
+    "zh": "锁骨凹陷",
+    "en": "hollow_collarbone",
+    "sfw": true
+  },
+  {
+    "zh": "天鹅颈",
+    "en": "swan_neck",
+    "sfw": true
+  },
+  {
+    "zh": "直角肩",
+    "en": "square_shoulders",
+    "sfw": true
+  },
+  {
+    "zh": "溜肩",
+    "en": "sloping_shoulders",
+    "sfw": true
+  },
+  {
+    "zh": "窄肩",
+    "en": "narrow_shoulders",
+    "sfw": true
+  },
+  {
+    "zh": "宽肩",
+    "en": "broad_shoulders",
+    "sfw": true
+  },
+  {
+    "zh": "沙漏身形",
+    "en": "hourglass_figure",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "梨形身材",
+    "en": "pear_shaped_body",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "倒三角身形",
+    "en": "inverted_triangle_body",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "矩形身形",
+    "en": "rectangle_body",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "苹果身形",
+    "en": "apple_shaped_body",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "纤细腰",
+    "en": "slender_waist",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "丰满腰",
+    "en": "thick_waist",
+    "sfw": true,
+    "dimension": "body_type"
+  },
+  {
+    "zh": "马甲线",
+    "en": "ab_lines",
+    "sfw": true
+  },
+  {
+    "zh": "人鱼线",
+    "en": "v_line_abs",
+    "sfw": true
+  },
+  {
+    "zh": "鲨鱼肌",
+    "en": "serratus_muscle",
+    "sfw": true
+  },
+  {
+    "zh": "肱二头肌",
+    "en": "toned_biceps",
+    "sfw": true
+  },
+  {
+    "zh": "背肌",
+    "en": "back_muscles",
+    "sfw": true
+  },
+  {
+    "zh": "小腿肌",
+    "en": "calf_muscle",
+    "sfw": true
+  },
+  {
+    "zh": "大腿缝",
+    "en": "thigh_gap",
+    "sfw": true
+  },
+  {
+    "zh": "绝对领域缝",
+    "en": "zettai_ryouiki_gap",
+    "sfw": true
+  },
+  {
+    "zh": "膝上窝",
+    "en": "knee_dimple",
+    "sfw": true
+  },
+  {
+    "zh": "水光妆",
+    "en": "dewy_makeup",
+    "sfw": true
+  },
+  {
+    "zh": "哑光妆",
+    "en": "matte_makeup",
+    "sfw": true
+  },
+  {
+    "zh": "浓妆",
+    "en": "heavy_makeup",
+    "sfw": true
+  },
+  {
+    "zh": "淡妆",
+    "en": "light_makeup",
+    "sfw": true
+  },
+  {
+    "zh": "烟熏妆",
+    "en": "smoky_makeup",
+    "sfw": true
+  },
+  {
+    "zh": "猫眼妆",
+    "en": "cat_eye_makeup",
+    "sfw": true
+  },
+  {
+    "zh": "泪妆",
+    "en": "teary_makeup",
+    "sfw": true
+  },
+  {
+    "zh": "咬唇妆",
+    "en": "gradient_lips",
+    "sfw": true
+  },
+  {
+    "zh": "水光唇",
+    "en": "glossy_lips",
+    "sfw": true
+  },
+  {
+    "zh": "哑光唇",
+    "en": "matte_lips",
+    "sfw": true
+  },
+  {
+    "zh": "金属唇",
+    "en": "metallic_lips",
+    "sfw": true
+  },
+  {
+    "zh": "挑染眉",
+    "en": "dyed_eyebrows",
+    "sfw": true
+  },
+  {
+    "zh": "浓眉",
+    "en": "bushy_eyebrows",
+    "sfw": true
+  },
+  {
+    "zh": "细眉",
+    "en": "thin_eyebrows",
+    "sfw": true
+  },
+  {
+    "zh": "拱眉",
+    "en": "arched_eyebrows",
+    "sfw": true
+  },
+  {
+    "zh": "平眉",
+    "en": "straight_eyebrows",
+    "sfw": true
+  },
+  {
+    "zh": "柳叶眉",
+    "en": "willow_eyebrows",
+    "sfw": true
+  },
+  {
+    "zh": "断眉",
+    "en": "slit_eyebrows",
+    "sfw": true
+  },
+  {
+    "zh": "唇钉",
+    "en": "lip_piercing_beauty",
+    "sfw": true
+  },
+  {
+    "zh": "舌钉",
+    "en": "tongue_piercing_beauty",
+    "sfw": true
+  },
+  {
+    "zh": "酒窝深",
+    "en": "deep_dimples",
+    "sfw": true
+  },
+  {
+    "zh": "虎牙突出",
+    "en": "prominent_fang",
+    "sfw": true
+  },
+  {
+    "zh": "兔牙",
+    "en": "bunny_teeth",
+    "sfw": true
+  },
+  {
+    "zh": "折耳猫耳",
+    "en": "folded_cat_ears",
+    "sfw": true
+  },
+  {
+    "zh": "立耳猫耳",
+    "en": "upright_cat_ears",
+    "sfw": true
+  },
+  {
+    "zh": "垂耳兔耳",
+    "en": "droopy_rabbit_ears",
+    "sfw": true
+  },
+  {
+    "zh": "竖直兔耳",
+    "en": "upright_rabbit_ears",
+    "sfw": true
+  },
+  {
+    "zh": "毛绒犬耳",
+    "en": "floppy_dog_ears",
+    "sfw": true
+  },
+  {
+    "zh": "尖狐耳",
+    "en": "pointed_fox_ears",
+    "sfw": true
+  },
+  {
+    "zh": "发光角",
+    "en": "glowing_horns",
+    "sfw": true
+  },
+  {
+    "zh": "螺旋角",
+    "en": "spiral_horns",
+    "sfw": true
+  },
+  {
+    "zh": "分叉角",
+    "en": "branched_horns",
+    "sfw": true
+  },
+  {
+    "zh": "水晶角",
+    "en": "crystal_horns",
+    "sfw": true
+  },
+  {
+    "zh": "羽毛天使翼",
+    "en": "feathered_angel_wings",
+    "sfw": true
+  },
+  {
+    "zh": "破损翼",
+    "en": "tattered_wings",
+    "sfw": true
+  },
+  {
+    "zh": "绒毛尾",
+    "en": "fluffy_tail",
+    "sfw": true
+  },
+  {
+    "zh": "分叉尾",
+    "en": "split_tail",
+    "sfw": true
+  },
+  {
+    "zh": "九尾",
+    "en": "nine_tails",
+    "sfw": true
+  },
+  {
+    "zh": "爱心尾尖",
+    "en": "heart_tipped_tail",
+    "sfw": true
+  },
+  {
+    "zh": "发光尾",
+    "en": "glowing_tail",
+    "sfw": true
+  },
+  {
+    "zh": "尖甲",
+    "en": "pointed_nails",
+    "sfw": true
+  },
+  {
+    "zh": "方甲",
+    "en": "square_nails",
+    "sfw": true
+  },
+  {
+    "zh": "爱心美甲",
+    "en": "heart_nail_art",
+    "sfw": true
+  },
+  {
+    "zh": "法式美甲",
+    "en": "french_nail",
+    "sfw": true
+  },
+  {
+    "zh": "渐变美甲",
+    "en": "gradient_nails",
+    "sfw": true
+  },
+  {
+    "zh": "长趾甲",
+    "en": "long_toenails",
+    "sfw": true
+  },
+  {
+    "zh": "足弓",
+    "en": "arched_feet",
+    "sfw": true
+  },
+  {
+    "zh": "足背纹",
+    "en": "foot_veins",
+    "sfw": true
+  },
+  {
+    "zh": "绒毛眉",
+    "en": "fluffy_eyebrows",
+    "sfw": true
+  },
+  {
+    "zh": "眉尾挑染",
+    "en": "eyebrow_highlight",
+    "sfw": true
+  },
+  {
+    "zh": "星形睫毛",
+    "en": "star_eyelashes",
+    "sfw": true
+  },
+  {
+    "zh": "彩色睫毛",
+    "en": "colored_eyelashes_alt",
+    "sfw": true
+  },
+  {
+    "zh": "下睫毛",
+    "en": "lower_eyelashes",
+    "sfw": true
+  },
+  {
+    "zh": "上睫毛浓密",
+    "en": "thick_upper_eyelashes",
+    "sfw": true
+  },
+  {
+    "zh": "唇彩珠光",
+    "en": "pearlescent_lip_gloss",
+    "sfw": true
+  },
+  {
+    "zh": "唇线",
+    "en": "lip_liner",
+    "sfw": true
+  },
+  {
+    "zh": "唇峰",
+    "en": "cupid_bow_lips",
+    "sfw": true
+  },
+  {
+    "zh": "丰唇",
+    "en": "plump_lips",
+    "sfw": true
+  }
+]

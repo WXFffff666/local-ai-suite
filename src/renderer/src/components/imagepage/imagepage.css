@@ -188,3 +188,17 @@
   word-break: break-all;
   opacity: 0.9;
 }
+
+.las-img-library-btn {
+  align-self: flex-start;
+  border: 1px solid var(--las-border, rgba(255, 255, 255, 0.16));
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  border-radius: 8px;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.las-img-library-btn:hover {
+  border-color: rgba(124, 108, 246, 0.7);
+}

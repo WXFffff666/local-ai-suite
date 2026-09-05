@@ -1,0 +1,476 @@
+[
+  {
+    "zh": "绳缚/日式紧缚",
+    "en": "shibari",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "盒缚（双手背后方形缚）",
+    "en": "box_tie",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "猪缚（四肢反绑）",
+    "en": "hogtie",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "蛙缚（腿折成蛙姿）",
+    "en": "frogtie",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "虾缚（卷成虾状）",
+    "en": "shrimp_tie",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "吊臂缚（手臂背后吊起）",
+    "en": "strappado",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "吊缚/悬吊",
+    "en": "suspension",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "股绳/阴绳（勒私处的绳）",
+    "en": "crotch_rope",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "绑手腕",
+    "en": "bound_wrists",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "绑脚踝",
+    "en": "bound_ankles",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "绑手臂",
+    "en": "bound_arms",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "绑腿",
+    "en": "bound_legs",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "绑胸部",
+    "en": "bound_breasts",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "绑躯干",
+    "en": "bound_torso",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "手铐/锁拷",
+    "en": "cuffs",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "脚镣",
+    "en": "shackles",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "铁链束缚",
+    "en": "chained",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "分腿棒",
+    "en": "spreader_bar",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "枷（手足枷）",
+    "en": "stocks",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "颈手枷",
+    "en": "pillory",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "颈部提琴枷",
+    "en": "neck_violin",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "牛轭枷",
+    "en": "yoke",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "扎带",
+    "en": "cable_tie",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "魔法束缚（能量绳/魔法绳）",
+    "en": "magic_bondage",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  }
+,
+  {
+    "zh": "口球",
+    "en": "ball_gag",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "被堵嘴",
+    "en": "gagged",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "布团口塞",
+    "en": "cloth_gag",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "胶带封嘴",
+    "en": "tape_gag",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "马嚼口塞",
+    "en": "bit_gag",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "裂口口塞",
+    "en": "cleave_gag",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "环形口塞",
+    "en": "ring_gag",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "绳结口塞",
+    "en": "rope_gag",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "内裤口塞",
+    "en": "panty_gag",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "临时口塞",
+    "en": "improvised_gag",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "手捂嘴",
+    "en": "hand_gagged",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "填充口塞",
+    "en": "stuffed_gag",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "栓式口塞",
+    "en": "plug_gag",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "平板口塞",
+    "en": "panel_gag",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "绳结塞",
+    "en": "knot_gag",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "蜘蛛口塞",
+    "en": "spider_gag",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "镂空口球",
+    "en": "wiffle_gag",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "罩口式口塞",
+    "en": "over_the_mouth_gag",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "开口器",
+    "en": "dental_gag",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "口塞头带",
+    "en": "gag_harness",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "已取下口塞",
+    "en": "ungagged",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "戴上口塞",
+    "en": "applying_gag",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "乳房束缚",
+    "en": "breast_bondage",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "丝带束缚",
+    "en": "ribbon_bondage",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "胶带束缚",
+    "en": "tape_bondage",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "束缚手套",
+    "en": "bondage_mittens",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "困境束缚",
+    "en": "predicament_bondage",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "公开束缚",
+    "en": "public_bondage",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "发缚",
+    "en": "hair_bondage",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "自缚",
+    "en": "self_bondage",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "隐蔽束缚",
+    "en": "stealth_bondage",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "暗示束缚",
+    "en": "implied_bondage",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "尾巴束缚",
+    "en": "tail_bondage",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "皮带束缚",
+    "en": "belt_bondage",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "临时束缚",
+    "en": "improvised_bondage",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "衣下束缚",
+    "en": "bondage_under_clothes",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "束缚椅",
+    "en": "bondage_chair",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "束缚面罩",
+    "en": "bondage_mask",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "束缚裤",
+    "en": "bondage_pants",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "裆部束缚",
+    "en": "crotch_bondage",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "器械束缚",
+    "en": "device_bondage",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "束缚服",
+    "en": "bondage_outfit",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "束缚手铐",
+    "en": "bondage_cuffs",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "链铐手腕",
+    "en": "chained_wrists",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "链铐脚踝",
+    "en": "chained_legs",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "手链",
+    "en": "hand_chains",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "铁球锁链",
+    "en": "ball_and_chain_restraint",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "链条拘束具",
+    "en": "chain_harness",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "胸部拘束具",
+    "en": "chest_harness",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "O环拘束具",
+    "en": "o-ring_harness",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "大腿拘束具",
+    "en": "thigh_harness",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "面部拘束具",
+    "en": "face_harness",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "口塞下巴带",
+    "en": "gag_chinstrap",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "贞操带",
+    "en": "chastity_belt",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  },
+  {
+    "zh": "贞操笼",
+    "en": "chastity_cage",
+    "sfw": false,
+    "group": "nsfw:restraint"
+  }]

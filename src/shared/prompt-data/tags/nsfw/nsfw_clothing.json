@@ -1,0 +1,617 @@
+[
+  {
+    "zh": "情趣内衣",
+    "en": "lingerie",
+    "sfw": false,
+    "dimension": "nsfw_explicitness",
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "内衣",
+    "en": "underwear",
+    "sfw": false,
+    "dimension": "nsfw_explicitness",
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "内裤",
+    "en": "panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "胸罩",
+    "en": "bra",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "丁字裤",
+    "en": "thong",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "丁字裤",
+    "en": "g-string",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "透视装",
+    "en": "see_through",
+    "sfw": false,
+    "dimension": "nsfw_explicitness",
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "透明衣物",
+    "en": "transparent_clothes",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "敞开衣物",
+    "en": "open_clothes",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "吊袜带",
+    "en": "garter_belt",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "吊袜带",
+    "en": "garter",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "束腰",
+    "en": "corset",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "娃娃装",
+    "en": "babydoll",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "吊带衫",
+    "en": "camisole",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "渔网袜",
+    "en": "fishnets",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "乳胶",
+    "en": "latex",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "连体衣",
+    "en": "bodysuit",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "裆缝",
+    "en": "crotch_seam",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "侧乳",
+    "en": "sideboob",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "下乳",
+    "en": "underboob",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "微型比基尼",
+    "en": "micro_bikini",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "掀衣",
+    "en": "clothes_lift",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "掀衬衫",
+    "en": "shirt_lift",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "掀裙",
+    "en": "skirt_lift",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "自掀衣物",
+    "en": "lifting_own_clothes",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "自拉衣物",
+    "en": "pulling_own_clothes",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "乳贴",
+    "en": "pasties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "乳贴片",
+    "en": "nipple_pasties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "剥开衣物",
+    "en": "clothes_peeling",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "湿身透视",
+    "en": "wet_see_through",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "高叉泳装",
+    "en": "highleg",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "开裆内裤",
+    "en": "crotchless_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "开裆连体衣",
+    "en": "crotchless_bodysuit",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "内裤拨到一边",
+    "en": "underwear_pulled_aside",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "半脱衣",
+    "en": "partially_clothed",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "露裆",
+    "en": "crotch_flash",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  }
+,
+  {
+    "zh": "连体袜",
+    "en": "bodystocking",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "渔网连体袜",
+    "en": "fishnet_bodystocking",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "透视连体袜",
+    "en": "see-through_bodystocking",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "撕破连体袜",
+    "en": "torn_bodystocking",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "仅穿连体袜",
+    "en": "bodystocking_only",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "紧身连体袜",
+    "en": "taut_bodystocking",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "抽丝连体袜",
+    "en": "laddered_bodystocking",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "大腿带连体袜",
+    "en": "thighband_bodystocking",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "不可能连体袜",
+    "en": "impossible_bodystocking",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "拉扯连体袜",
+    "en": "bodystocking_pull",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "敞开连体袜",
+    "en": "open_bodystocking",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "猫猫情趣内衣",
+    "en": "cat_lingerie",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "新娘情趣内衣",
+    "en": "bridal_lingerie",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "缎面情趣内衣",
+    "en": "satin_lingerie",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "透视情趣内衣",
+    "en": "see-through_lingerie",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "甜品情趣内衣",
+    "en": "sweets_lingerie",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "链条情趣内衣",
+    "en": "chain_lingerie",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "湿透内裤",
+    "en": "wet_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "污渍内裤",
+    "en": "stained_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "透视内裤",
+    "en": "see-through_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "蕾丝内裤",
+    "en": "lace_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "荷叶边内裤",
+    "en": "frilled_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "丁字内裤",
+    "en": "thong_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "细绳内裤",
+    "en": "string_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "侧系内裤",
+    "en": "side-tie_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "高叉内裤",
+    "en": "highleg_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "低叉内裤",
+    "en": "lowleg_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "蝴蝶结内裤",
+    "en": "bow_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "条纹内裤",
+    "en": "striped_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "印花内裤",
+    "en": "print_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "格纹内裤",
+    "en": "plaid_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "波点内裤",
+    "en": "polka_dot_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "蕾丝边内裤",
+    "en": "lace-trimmed_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "微型内裤",
+    "en": "micro_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "运动内裤",
+    "en": "sports_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "内裤戴头上",
+    "en": "panties_on_head",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "内裤挂腿边",
+    "en": "panties_around_one_leg",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "连裤袜下内裤",
+    "en": "panties_under_pantyhose",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "解开侧系内裤",
+    "en": "untied_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "未穿内裤",
+    "en": "unworn_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "手持内裤",
+    "en": "holding_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "体操裤下内裤",
+    "en": "panties_under_buruma",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "猫耳内裤",
+    "en": "cat_ear_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "多带内裤",
+    "en": "multi-strapped_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "罗纹内裤",
+    "en": "ribbed_panties",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "开裆连裤袜",
+    "en": "crotchless_pantyhose",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "开裆体操服",
+    "en": "crotchless_leotard",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "开裆比基尼",
+    "en": "crotchless_bikini",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "开裆泳装",
+    "en": "crotchless_swimsuit",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "开裆灯笼裤",
+    "en": "crotchless_bloomers",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "开裆长裤",
+    "en": "crotchless_pants",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "开裆短裤",
+    "en": "crotchless_shorts",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "湿泳装",
+    "en": "wet_swimsuit",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "泳装拨开",
+    "en": "swimsuit_aside",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "拉连体泳装",
+    "en": "one-piece_swimsuit_pull",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "高叉连体泳装",
+    "en": "highleg_one-piece_swimsuit",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "不可能泳装",
+    "en": "impossible_swimsuit",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "弹弓泳装",
+    "en": "slingshot_swimsuit",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "掀毛衣",
+    "en": "sweater_lift",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "裸穿毛衣",
+    "en": "naked_sweater",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "敞胸毛衣",
+    "en": "open-chest_sweater",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "处女杀手毛衣",
+    "en": "virgin_killer_sweater",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "短款毛衣",
+    "en": "cropped_sweater",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "露肩毛衣",
+    "en": "off-shoulder_sweater",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "链条腰带",
+    "en": "chain_belt",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  },
+  {
+    "zh": "身体链",
+    "en": "body_chain",
+    "sfw": false,
+    "group": "nsfw:clothing"
+  }]

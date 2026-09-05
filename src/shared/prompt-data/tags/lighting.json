@@ -1,0 +1,1165 @@
+[
+  {
+    "zh": "光环",
+    "en": "halo",
+    "sfw": true
+  },
+  {
+    "zh": "发光",
+    "en": "glowing",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "阳光",
+    "en": "sunlight",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "蓝光环",
+    "en": "blue_halo",
+    "sfw": true
+  },
+  {
+    "zh": "倒影",
+    "en": "reflection",
+    "sfw": true
+  },
+  {
+    "zh": "粉光环",
+    "en": "pink_halo",
+    "sfw": true
+  },
+  {
+    "zh": "镜头光斑",
+    "en": "lens_flare",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "逆光",
+    "en": "backlighting",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "黄光环",
+    "en": "yellow_halo",
+    "sfw": true
+  },
+  {
+    "zh": "红光环",
+    "en": "red_halo",
+    "sfw": true
+  },
+  {
+    "zh": "光柱",
+    "en": "light_rays",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "剪影",
+    "en": "silhouette",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "绿光环",
+    "en": "green_halo",
+    "sfw": true
+  },
+  {
+    "zh": "斑驳阳光",
+    "en": "dappled_sunlight",
+    "sfw": true
+  },
+  {
+    "zh": "紫光环",
+    "en": "purple_halo",
+    "sfw": true
+  },
+  {
+    "zh": "柔光",
+    "en": "soft_lighting",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "硬光",
+    "en": "hard_lighting",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "逆光",
+    "en": "backlight",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "轮廓光",
+    "en": "rim_lighting",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "体积光",
+    "en": "volumetric_lighting",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "月光",
+    "en": "moonlight",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "烛光",
+    "en": "candlelight",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "霓虹光",
+    "en": "neon_light",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "闪光",
+    "en": "glint",
+    "sfw": true
+  },
+  {
+    "zh": "星光",
+    "en": "starry_light",
+    "sfw": true
+  },
+  {
+    "zh": "彩灯",
+    "en": "christmas_lights",
+    "sfw": true
+  },
+  {
+    "zh": "火光",
+    "en": "firelight",
+    "sfw": true
+  },
+  {
+    "zh": "火炬",
+    "en": "torch",
+    "sfw": true
+  },
+  {
+    "zh": "手电光",
+    "en": "flashlight",
+    "sfw": true
+  },
+  {
+    "zh": "路灯",
+    "en": "streetlight",
+    "sfw": true
+  },
+  {
+    "zh": "晨光",
+    "en": "sunrise_light",
+    "sfw": true
+  },
+  {
+    "zh": "黄金时刻",
+    "en": "golden_hour",
+    "sfw": true,
+    "dimension": "time_of_day"
+  },
+  {
+    "zh": "蓝色时刻",
+    "en": "blue_hour",
+    "sfw": true,
+    "dimension": "time_of_day"
+  },
+  {
+    "zh": "戏剧光",
+    "en": "dramatic_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "氛围光",
+    "en": "moody_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "自然光",
+    "en": "natural_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "暖光",
+    "en": "warm_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "冷光",
+    "en": "cool_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "彩色光",
+    "en": "colored_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "红光",
+    "en": "red_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "蓝光",
+    "en": "blue_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "绿光",
+    "en": "green_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "紫光",
+    "en": "purple_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "粉光",
+    "en": "pink_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "投影",
+    "en": "drop_shadow",
+    "sfw": true
+  },
+  {
+    "zh": "光粒子",
+    "en": "light_particles",
+    "sfw": true
+  },
+  {
+    "zh": "烛光",
+    "en": "candle_light",
+    "sfw": true
+  },
+  {
+    "zh": "灯笼光",
+    "en": "lantern_light",
+    "sfw": true
+  },
+  {
+    "zh": "火光",
+    "en": "fire_light",
+    "sfw": true
+  },
+  {
+    "zh": "灵光",
+    "en": "aura",
+    "sfw": true
+  },
+  {
+    "zh": "黄昏",
+    "en": "dusk",
+    "sfw": true,
+    "dimension": "time_of_day"
+  },
+  {
+    "zh": "正午",
+    "en": "midday",
+    "sfw": true,
+    "dimension": "time_of_day"
+  },
+  {
+    "zh": "暮光",
+    "en": "twilight",
+    "sfw": true,
+    "dimension": "time_of_day"
+  },
+  {
+    "zh": "夕阳光",
+    "en": "sunset_light",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "朝霞",
+    "en": "dawn_glow",
+    "sfw": true
+  },
+  {
+    "zh": "午后光",
+    "en": "afternoon_light",
+    "sfw": true
+  },
+  {
+    "zh": "屏幕光",
+    "en": "screen_light",
+    "sfw": true
+  },
+  {
+    "zh": "台灯光",
+    "en": "desk_lamp_light",
+    "sfw": true
+  },
+  {
+    "zh": "荧光",
+    "en": "fluorescent_light",
+    "sfw": true
+  },
+  {
+    "zh": "手电光束",
+    "en": "flashlight_beam",
+    "sfw": true
+  },
+  {
+    "zh": "烛光暖晕",
+    "en": "candle_glow",
+    "sfw": true
+  },
+  {
+    "zh": "窗户光",
+    "en": "window_glow",
+    "sfw": true
+  },
+  {
+    "zh": "篝火光",
+    "en": "campfire_light",
+    "sfw": true
+  },
+  {
+    "zh": "烟花光",
+    "en": "fireworks_glow",
+    "sfw": true
+  },
+  {
+    "zh": "车头灯",
+    "en": "car_headlights",
+    "sfw": true
+  },
+  {
+    "zh": "手机屏幕光",
+    "en": "phone_screen_glow",
+    "sfw": true
+  },
+  {
+    "zh": "霓虹辉光",
+    "en": "neon_glow",
+    "sfw": true
+  },
+  {
+    "zh": "灯笼光",
+    "en": "lantern_glow",
+    "sfw": true
+  },
+  {
+    "zh": "火炬光",
+    "en": "torchlight",
+    "sfw": true
+  },
+  {
+    "zh": "应急灯",
+    "en": "emergency_light",
+    "sfw": true
+  },
+  {
+    "zh": "信号灯辉光",
+    "en": "traffic_light_glow",
+    "sfw": true
+  },
+  {
+    "zh": "迪斯科灯光",
+    "en": "disco_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "舞台光",
+    "en": "stage_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "激光",
+    "en": "laser_light",
+    "sfw": true
+  },
+  {
+    "zh": "全息光",
+    "en": "holographic_light",
+    "sfw": true
+  },
+  {
+    "zh": "极光",
+    "en": "aurora",
+    "sfw": true
+  },
+  {
+    "zh": "侧光",
+    "en": "side_lighting",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "顶光",
+    "en": "top_lighting",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "底光",
+    "en": "underlighting",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "聚光灯",
+    "en": "spotlight",
+    "sfw": true
+  },
+  {
+    "zh": "漏光",
+    "en": "light_leak",
+    "sfw": true
+  },
+  {
+    "zh": "光斑",
+    "en": "light_glare",
+    "sfw": true
+  },
+  {
+    "zh": "环境光",
+    "en": "ambient_lighting",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "主光",
+    "en": "key_light",
+    "sfw": true
+  },
+  {
+    "zh": "辅光",
+    "en": "fill_light",
+    "sfw": true
+  },
+  {
+    "zh": "月光辉光",
+    "en": "moon_glow",
+    "sfw": true
+  },
+  {
+    "zh": "星光辉光",
+    "en": "starlight_glow",
+    "sfw": true
+  },
+  {
+    "zh": "路灯辉光",
+    "en": "streetlight_glow",
+    "sfw": true
+  },
+  {
+    "zh": "阴天光",
+    "en": "overcast_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "生物荧光",
+    "en": "bioluminescence",
+    "sfw": true
+  },
+  {
+    "zh": "萤火光",
+    "en": "firefly_glow",
+    "sfw": true
+  },
+  {
+    "zh": "反向光",
+    "en": "back_light",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "顶部光",
+    "en": "toplight",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "底部光",
+    "en": "underlight",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "荧光棒",
+    "en": "glow_stick",
+    "sfw": true
+  },
+  {
+    "zh": "光晕",
+    "en": "glow",
+    "sfw": true
+  },
+  {
+    "zh": "丁达尔效应",
+    "en": "god_rays",
+    "sfw": true
+  },
+  {
+    "zh": "双重曝光",
+    "en": "double_exposure",
+    "sfw": true
+  },
+  {
+    "zh": "泛光",
+    "en": "bloom",
+    "sfw": true
+  },
+  {
+    "zh": "光柱光束",
+    "en": "light_beam",
+    "sfw": true
+  },
+  {
+    "zh": "光晕色散",
+    "en": "halation",
+    "sfw": true
+  },
+  {
+    "zh": "相机闪光灯",
+    "en": "camera_flash",
+    "sfw": true
+  },
+  {
+    "zh": "顶光",
+    "en": "overlighting",
+    "sfw": true
+  },
+  {
+    "zh": "侧光",
+    "en": "sidelighting",
+    "sfw": true
+  },
+  {
+    "zh": "窗影",
+    "en": "window_shadow",
+    "sfw": true
+  },
+  {
+    "zh": "光斑(水面)",
+    "en": "caustics",
+    "sfw": true
+  },
+  {
+    "zh": "折射",
+    "en": "refraction",
+    "sfw": true
+  },
+  {
+    "zh": "晨光",
+    "en": "dawn",
+    "sfw": true
+  },
+  {
+    "zh": "暮光",
+    "en": "evening",
+    "sfw": true
+  },
+  {
+    "zh": "晨间",
+    "en": "morning",
+    "sfw": true
+  },
+  {
+    "zh": "灯柱光",
+    "en": "lamppost",
+    "sfw": true
+  },
+  {
+    "zh": "吊灯光",
+    "en": "ceiling_light",
+    "sfw": true
+  },
+  {
+    "zh": "油灯",
+    "en": "oil_lamp",
+    "sfw": true
+  },
+  {
+    "zh": "余烬",
+    "en": "embers",
+    "sfw": true
+  },
+  {
+    "zh": "枪口火光",
+    "en": "muzzle_flash",
+    "sfw": true
+  },
+  {
+    "zh": "车头灯",
+    "en": "headlight",
+    "sfw": true
+  },
+  {
+    "zh": "泛光灯",
+    "en": "floodlights",
+    "sfw": true
+  },
+  {
+    "zh": "信号弹",
+    "en": "flare",
+    "sfw": true
+  },
+  {
+    "zh": "紫外线",
+    "en": "ultraviolet_light",
+    "sfw": true
+  },
+  {
+    "zh": "过曝",
+    "en": "overexposure",
+    "sfw": true
+  },
+  {
+    "zh": "树荫",
+    "en": "tree_shade",
+    "sfw": true
+  },
+  {
+    "zh": "阴影",
+    "en": "shadow",
+    "sfw": true
+  },
+  {
+    "zh": "彩色阴影",
+    "en": "colored_shadow",
+    "sfw": true
+  },
+  {
+    "zh": "暗处",
+    "en": "darkness",
+    "sfw": true
+  },
+  {
+    "zh": "透明剪影",
+    "en": "see-through_silhouette",
+    "sfw": true
+  },
+  {
+    "zh": "微光",
+    "en": "dim_light",
+    "sfw": true
+  },
+  {
+    "zh": "月光斑驳",
+    "en": "dappled_moonlight",
+    "sfw": true
+  },
+  {
+    "zh": "缝光",
+    "en": "crack_of_light",
+    "sfw": true
+  },
+  {
+    "zh": "水下光",
+    "en": "underwater_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "水下光束",
+    "en": "underwater_light_rays",
+    "sfw": true
+  },
+  {
+    "zh": "舞台灯光",
+    "en": "stage_lights",
+    "sfw": true
+  },
+  {
+    "zh": "太阳",
+    "en": "sun",
+    "sfw": true
+  },
+  {
+    "zh": "白炽",
+    "en": "incandescent_light",
+    "sfw": true
+  },
+  {
+    "zh": "钨丝灯",
+    "en": "tungsten_light",
+    "sfw": true
+  },
+  {
+    "zh": "混合光",
+    "en": "mixed_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "对比光",
+    "en": "contrast_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "轮廓光",
+    "en": "contour_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "边缘光",
+    "en": "edge_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "逆光剪影",
+    "en": "backlit_silhouette",
+    "sfw": true
+  },
+  {
+    "zh": "金色光",
+    "en": "golden_light",
+    "sfw": true
+  },
+  {
+    "zh": "银色光",
+    "en": "silver_light",
+    "sfw": true
+  },
+  {
+    "zh": "午夜",
+    "en": "midnight",
+    "sfw": true
+  },
+  {
+    "zh": "日照",
+    "en": "sunlit",
+    "sfw": true
+  },
+  {
+    "zh": "月光",
+    "en": "moonlit",
+    "sfw": true
+  },
+  {
+    "zh": "晨雾光",
+    "en": "hazy_morning_light",
+    "sfw": true
+  },
+  {
+    "zh": "暖光",
+    "en": "warm_glow",
+    "sfw": true
+  },
+  {
+    "zh": "冷光",
+    "en": "cold_light",
+    "sfw": true
+  },
+  {
+    "zh": "夜灯",
+    "en": "night_light",
+    "sfw": true
+  },
+  {
+    "zh": "霓虹招牌",
+    "en": "neon_sign_light",
+    "sfw": true
+  },
+  {
+    "zh": "圣光",
+    "en": "divine_light",
+    "sfw": true
+  },
+  {
+    "zh": "神光",
+    "en": "god_light",
+    "sfw": true
+  },
+  {
+    "zh": "天堂光",
+    "en": "heavenly_light",
+    "sfw": true
+  },
+  {
+    "zh": "魔法光",
+    "en": "magical_light",
+    "sfw": true
+  },
+  {
+    "zh": "能量光",
+    "en": "energy_glow",
+    "sfw": true
+  },
+  {
+    "zh": "荧光",
+    "en": "fluorescent_glow",
+    "sfw": true
+  },
+  {
+    "zh": "发光点",
+    "en": "glowing_dots",
+    "sfw": true
+  },
+  {
+    "zh": "辉光粒子",
+    "en": "glowing_particles",
+    "sfw": true
+  },
+  {
+    "zh": "光尘",
+    "en": "light_dust",
+    "sfw": true
+  },
+  {
+    "zh": "丁达尔",
+    "en": "tyndall_effect",
+    "sfw": true
+  },
+  {
+    "zh": "投影",
+    "en": "projected_light",
+    "sfw": true
+  },
+  {
+    "zh": "幻灯",
+    "en": "light_show",
+    "sfw": true
+  },
+  {
+    "zh": "木灯笼",
+    "en": "wooden_lantern",
+    "sfw": true
+  },
+  {
+    "zh": "发光头饰",
+    "en": "glowing_headgear",
+    "sfw": true
+  },
+  {
+    "zh": "日光",
+    "en": "daylight",
+    "sfw": true
+  },
+  {
+    "zh": "影棚光",
+    "en": "studio_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "柔和顶光",
+    "en": "soft_top_light",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "硬顶光",
+    "en": "hard_top_light",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "柔和侧光2",
+    "en": "soft_side_light",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "硬侧光",
+    "en": "hard_side_light",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "柔和逆光",
+    "en": "soft_backlight",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "硬逆光",
+    "en": "hard_backlight",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "轮廓逆光",
+    "en": "rim_backlight",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "伦勃朗光",
+    "en": "rembrandt_lighting",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "蝴蝶光",
+    "en": "butterfly_lighting",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "分割光",
+    "en": "split_lighting",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "环形光",
+    "en": "loop_lighting",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "宽光",
+    "en": "broad_lighting",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "短光",
+    "en": "short_lighting",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "羽毛光",
+    "en": "feathered_lighting",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "羽毛阴影",
+    "en": "feathered_shadow",
+    "sfw": true
+  },
+  {
+    "zh": "柔光箱",
+    "en": "softbox_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "反光板光",
+    "en": "reflector_light",
+    "sfw": true
+  },
+  {
+    "zh": "蜂巢光",
+    "en": "honeycomb_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "柔和伞光",
+    "en": "umbrella_soft_light",
+    "sfw": true
+  },
+  {
+    "zh": "直射闪光",
+    "en": "direct_flash",
+    "sfw": true
+  },
+  {
+    "zh": "跳闪",
+    "en": "bounce_flash",
+    "sfw": true
+  },
+  {
+    "zh": "背光柔化",
+    "en": "backlit_softening",
+    "sfw": true
+  },
+  {
+    "zh": "窗口自然光2",
+    "en": "window_natural_light",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "天窗光",
+    "en": "skylight_light",
+    "sfw": true,
+    "dimension": "lighting_type"
+  },
+  {
+    "zh": "门缝光",
+    "en": "door_slit_light",
+    "sfw": true
+  },
+  {
+    "zh": "百叶窗影",
+    "en": "blinds_shadow",
+    "sfw": true
+  },
+  {
+    "zh": "树叶斑驳光2",
+    "en": "leaf_dappled_light",
+    "sfw": true
+  },
+  {
+    "zh": "水面反光",
+    "en": "water_reflected_light",
+    "sfw": true
+  },
+  {
+    "zh": "镜面反光",
+    "en": "mirror_reflected_light",
+    "sfw": true
+  },
+  {
+    "zh": "金属反光",
+    "en": "metal_reflected_light",
+    "sfw": true
+  },
+  {
+    "zh": "霓虹反射光",
+    "en": "neon_reflected_light",
+    "sfw": true
+  },
+  {
+    "zh": "烛光反射",
+    "en": "candle_reflected_light",
+    "sfw": true
+  },
+  {
+    "zh": "屏幕反光",
+    "en": "screen_reflected_light",
+    "sfw": true
+  },
+  {
+    "zh": "火光闪烁",
+    "en": "flickering_firelight",
+    "sfw": true
+  },
+  {
+    "zh": "壁炉光",
+    "en": "fireplace_glow",
+    "sfw": true
+  },
+  {
+    "zh": "篝火辉光",
+    "en": "campfire_glow",
+    "sfw": true
+  },
+  {
+    "zh": "烛火辉光",
+    "en": "candlelight_glow",
+    "sfw": true
+  },
+  {
+    "zh": "灯笼辉光",
+    "en": "lantern_glow_light",
+    "sfw": true
+  },
+  {
+    "zh": "路灯辉光2",
+    "en": "streetlamp_glow",
+    "sfw": true
+  },
+  {
+    "zh": "车灯辉光",
+    "en": "headlight_glow",
+    "sfw": true
+  },
+  {
+    "zh": "霓虹辉光2",
+    "en": "neon_glow_light",
+    "sfw": true
+  },
+  {
+    "zh": "全息辉光",
+    "en": "hologram_glow",
+    "sfw": true
+  },
+  {
+    "zh": "极光辉光",
+    "en": "aurora_glow",
+    "sfw": true
+  },
+  {
+    "zh": "荧光辉光2",
+    "en": "fluorescent_glow_light",
+    "sfw": true
+  },
+  {
+    "zh": "生物荧光2",
+    "en": "bioluminescent_glow",
+    "sfw": true
+  },
+  {
+    "zh": "月光辉光2",
+    "en": "moonlight_glow",
+    "sfw": true
+  },
+  {
+    "zh": "星光辉光2",
+    "en": "starlight_glow_light",
+    "sfw": true
+  },
+  {
+    "zh": "晨雾辉光",
+    "en": "morning_mist_glow",
+    "sfw": true
+  },
+  {
+    "zh": "丁达尔2",
+    "en": "tyndall_light",
+    "sfw": true
+  },
+  {
+    "zh": "光柱丁达尔",
+    "en": "god_ray_beam",
+    "sfw": true
+  },
+  {
+    "zh": "体积雾光",
+    "en": "volumetric_fog_light",
+    "sfw": true
+  },
+  {
+    "zh": "尘埃光柱",
+    "en": "dust_light_beam",
+    "sfw": true
+  },
+  {
+    "zh": "彩色丁达尔",
+    "en": "colored_god_rays",
+    "sfw": true
+  },
+  {
+    "zh": "晨光丁达尔",
+    "en": "morning_god_rays",
+    "sfw": true
+  },
+  {
+    "zh": "黄昏丁达尔",
+    "en": "sunset_god_rays",
+    "sfw": true
+  },
+  {
+    "zh": "森林丁达尔",
+    "en": "forest_god_rays",
+    "sfw": true
+  },
+  {
+    "zh": "教堂丁达尔",
+    "en": "cathedral_god_rays",
+    "sfw": true
+  },
+  {
+    "zh": "水下丁达尔",
+    "en": "underwater_god_rays",
+    "sfw": true
+  },
+  {
+    "zh": "阴天丁达尔",
+    "en": "overcast_god_rays",
+    "sfw": true
+  }
+]

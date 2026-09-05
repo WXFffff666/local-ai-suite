@@ -1,0 +1,1581 @@
+[
+  {
+    "zh": "全身",
+    "en": "full_body",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "上半身",
+    "en": "upper_body",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "牛仔镜头",
+    "en": "cowboy_shot",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "侧面",
+    "en": "from_side",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "背面",
+    "en": "from_behind",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "第一人称视角",
+    "en": "pov",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "侧影",
+    "en": "profile",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "斜角镜头",
+    "en": "dutch_angle",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "俯视",
+    "en": "from_above",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "肖像",
+    "en": "portrait",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "仰视",
+    "en": "from_below",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "裁切躯干",
+    "en": "cropped_torso",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "裁切腿部",
+    "en": "cropped_legs",
+    "sfw": true
+  },
+  {
+    "zh": "特写",
+    "en": "close-up",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "屈膝",
+    "en": "knee_up",
+    "sfw": true
+  },
+  {
+    "zh": "第一人称手部",
+    "en": "pov_hands",
+    "sfw": true
+  },
+  {
+    "zh": "自拍",
+    "en": "selfie",
+    "sfw": true
+  },
+  {
+    "zh": "全景",
+    "en": "wide_shot",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "横构图",
+    "en": "landscape",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "面部聚焦",
+    "en": "face_focus",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "过肩视角",
+    "en": "over-the-shoulder",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "低角度",
+    "en": "low_angle",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "高角度",
+    "en": "high_angle",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "平视",
+    "en": "eye_level",
+    "sfw": true
+  },
+  {
+    "zh": "头部裁切",
+    "en": "head_cutoff",
+    "sfw": true
+  },
+  {
+    "zh": "极特写",
+    "en": "extreme_close-up",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "中景",
+    "en": "medium_shot",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "远景",
+    "en": "long_shot",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "定场镜头",
+    "en": "establishing_shot",
+    "sfw": true
+  },
+  {
+    "zh": "鸟瞰",
+    "en": "bird's_eye_view",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "仰角视角",
+    "en": "worm's_eye_view",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "多角度",
+    "en": "multiple_angles",
+    "sfw": true
+  },
+  {
+    "zh": "对称构图",
+    "en": "symmetrical_composition",
+    "sfw": true
+  },
+  {
+    "zh": "居中",
+    "en": "centered",
+    "sfw": true
+  },
+  {
+    "zh": "偏中心",
+    "en": "off-center",
+    "sfw": true
+  },
+  {
+    "zh": "三分法",
+    "en": "rule_of_thirds",
+    "sfw": true
+  },
+  {
+    "zh": "景深",
+    "en": "depth_of_field",
+    "sfw": true
+  },
+  {
+    "zh": "散景",
+    "en": "bokeh",
+    "sfw": true
+  },
+  {
+    "zh": "背景虚化",
+    "en": "blurred_background",
+    "sfw": true
+  },
+  {
+    "zh": "前景",
+    "en": "foreground",
+    "sfw": true
+  },
+  {
+    "zh": "背景",
+    "en": "background",
+    "sfw": true
+  },
+  {
+    "zh": "歪头",
+    "en": "head_tilt",
+    "sfw": true
+  },
+  {
+    "zh": "机位",
+    "en": "camera_angle",
+    "sfw": true
+  },
+  {
+    "zh": "拉近",
+    "en": "zoom_in",
+    "sfw": true
+  },
+  {
+    "zh": "拉远",
+    "en": "zoom_out",
+    "sfw": true
+  },
+  {
+    "zh": "背影",
+    "en": "behind_view",
+    "sfw": true
+  },
+  {
+    "zh": "半身",
+    "en": "waist_up",
+    "sfw": true
+  },
+  {
+    "zh": "胸像",
+    "en": "bust_shot",
+    "sfw": true
+  },
+  {
+    "zh": "头肩像",
+    "en": "head_and_shoulders",
+    "sfw": true
+  },
+  {
+    "zh": "四分之三侧",
+    "en": "three-quarter_view",
+    "sfw": true
+  },
+  {
+    "zh": "正面",
+    "en": "front_view",
+    "sfw": true
+  },
+  {
+    "zh": "背面",
+    "en": "back_view",
+    "sfw": true
+  },
+  {
+    "zh": "大头照",
+    "en": "headshot",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "七分身",
+    "en": "seven_eighths_shot",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "全身远景",
+    "en": "full_body_shot",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "膝上",
+    "en": "knee_shot",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "胯上",
+    "en": "hip_shot",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "半身特写",
+    "en": "medium_closeup",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "俯视构图",
+    "en": "top_view",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "仰视构图",
+    "en": "bottom_view",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "侧面构图",
+    "en": "side_shot",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "鸟瞰构图",
+    "en": "overhead_shot",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "旋转",
+    "en": "rotated",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "第三人称",
+    "en": "third_person",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "监视器视角",
+    "en": "cctv_view",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "主观视角",
+    "en": "subjective_view",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "高角度镜头",
+    "en": "high_angle_shot",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "低角度镜头",
+    "en": "low_angle_shot",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "广角",
+    "en": "wide_angle",
+    "sfw": true
+  },
+  {
+    "zh": "长焦",
+    "en": "telephoto",
+    "sfw": true
+  },
+  {
+    "zh": "鱼眼",
+    "en": "fisheye",
+    "sfw": true
+  },
+  {
+    "zh": "移轴",
+    "en": "tilt_shift",
+    "sfw": true
+  },
+  {
+    "zh": "慢门",
+    "en": "long_exposure",
+    "sfw": true
+  },
+  {
+    "zh": "框架构图",
+    "en": "framing",
+    "sfw": true
+  },
+  {
+    "zh": "引导线",
+    "en": "leading_lines",
+    "sfw": true
+  },
+  {
+    "zh": "黄金比例",
+    "en": "golden_ratio",
+    "sfw": true
+  },
+  {
+    "zh": "对角线构图",
+    "en": "diagonal_composition",
+    "sfw": true
+  },
+  {
+    "zh": "三角构图",
+    "en": "triangular_composition",
+    "sfw": true
+  },
+  {
+    "zh": "圆形构图",
+    "en": "circular_composition",
+    "sfw": true
+  },
+  {
+    "zh": "放射构图",
+    "en": "radial_composition",
+    "sfw": true
+  },
+  {
+    "zh": "螺旋构图",
+    "en": "spiral_composition",
+    "sfw": true
+  },
+  {
+    "zh": "留白",
+    "en": "negative_space",
+    "sfw": true
+  },
+  {
+    "zh": "一点透视",
+    "en": "one_point_perspective",
+    "sfw": true
+  },
+  {
+    "zh": "两点透视",
+    "en": "two_point_perspective",
+    "sfw": true
+  },
+  {
+    "zh": "三点透视",
+    "en": "three_point_perspective",
+    "sfw": true
+  },
+  {
+    "zh": "航拍",
+    "en": "aerial_view",
+    "sfw": true
+  },
+  {
+    "zh": "跟随镜头",
+    "en": "tracking_shot",
+    "sfw": true
+  },
+  {
+    "zh": "推拉镜头",
+    "en": "dolly_shot",
+    "sfw": true
+  },
+  {
+    "zh": "摇镜",
+    "en": "panning_shot",
+    "sfw": true
+  },
+  {
+    "zh": "手持镜头",
+    "en": "handheld",
+    "sfw": true
+  },
+  {
+    "zh": "固定机位",
+    "en": "static_shot",
+    "sfw": true
+  },
+  {
+    "zh": "运动模糊",
+    "en": "motion_blur",
+    "sfw": true
+  },
+  {
+    "zh": "前景虚化",
+    "en": "foreground_blur",
+    "sfw": true
+  },
+  {
+    "zh": "空气透视",
+    "en": "atmospheric_perspective",
+    "sfw": true
+  },
+  {
+    "zh": "消失点",
+    "en": "vanishing_point",
+    "sfw": true
+  },
+  {
+    "zh": "倒影构图",
+    "en": "reflected_shot",
+    "sfw": true
+  },
+  {
+    "zh": "镜像构图",
+    "en": "mirror_shot",
+    "sfw": true
+  },
+  {
+    "zh": "窗景构图",
+    "en": "window_shot",
+    "sfw": true
+  },
+  {
+    "zh": "门框构图",
+    "en": "doorway_shot",
+    "sfw": true
+  },
+  {
+    "zh": "层次构图",
+    "en": "layered_shot",
+    "sfw": true
+  },
+  {
+    "zh": "纵深构图",
+    "en": "depth_composition",
+    "sfw": true
+  },
+  {
+    "zh": "对称平衡",
+    "en": "symmetrical_balance",
+    "sfw": true
+  },
+  {
+    "zh": "非对称平衡",
+    "en": "asymmetric_balance",
+    "sfw": true
+  },
+  {
+    "zh": "高处俯拍",
+    "en": "high_up",
+    "sfw": true
+  },
+  {
+    "zh": "侧身",
+    "en": "sideways",
+    "sfw": true
+  },
+  {
+    "zh": "直面",
+    "en": "straight-on",
+    "sfw": true
+  },
+  {
+    "zh": "全身远景",
+    "en": "very_wide_shot",
+    "sfw": true
+  },
+  {
+    "zh": "下半身",
+    "en": "lower_body",
+    "sfw": true
+  },
+  {
+    "zh": "头部出框",
+    "en": "head_out_of_frame",
+    "sfw": true
+  },
+  {
+    "zh": "眼部出框",
+    "en": "eyes_out_of_frame",
+    "sfw": true
+  },
+  {
+    "zh": "手臂出框",
+    "en": "arm_out_of_frame",
+    "sfw": true
+  },
+  {
+    "zh": "脚出框",
+    "en": "foot_out_of_frame",
+    "sfw": true
+  },
+  {
+    "zh": "膝盖出框",
+    "en": "knees_out_of_frame",
+    "sfw": true
+  },
+  {
+    "zh": "裁切头部",
+    "en": "cropped_head",
+    "sfw": true
+  },
+  {
+    "zh": "裁切手臂",
+    "en": "cropped_arms",
+    "sfw": true
+  },
+  {
+    "zh": "裁切肩膀",
+    "en": "cropped_shoulders",
+    "sfw": true
+  },
+  {
+    "zh": "裁切镜头",
+    "en": "cut-in",
+    "sfw": true
+  },
+  {
+    "zh": "群体侧面",
+    "en": "group_profile",
+    "sfw": true
+  },
+  {
+    "zh": "分裂裁切",
+    "en": "split_crop",
+    "sfw": true
+  },
+  {
+    "zh": "全景",
+    "en": "panorama",
+    "sfw": true
+  },
+  {
+    "zh": "透视",
+    "en": "perspective",
+    "sfw": true
+  },
+  {
+    "zh": "景深变化",
+    "en": "variations",
+    "sfw": true
+  },
+  {
+    "zh": "残像",
+    "en": "afterimage",
+    "sfw": true
+  },
+  {
+    "zh": "边框",
+    "en": "border",
+    "sfw": true
+  },
+  {
+    "zh": "淡出边框",
+    "en": "fading_border",
+    "sfw": true
+  },
+  {
+    "zh": "内嵌边框",
+    "en": "inset_border",
+    "sfw": true
+  },
+  {
+    "zh": "华丽边框",
+    "en": "ornate_border",
+    "sfw": true
+  },
+  {
+    "zh": "圆角边框",
+    "en": "rounded_corners",
+    "sfw": true
+  },
+  {
+    "zh": "取景器",
+    "en": "viewfinder",
+    "sfw": true
+  },
+  {
+    "zh": "角色设定图",
+    "en": "character_chart",
+    "sfw": true
+  },
+  {
+    "zh": "设定图",
+    "en": "reference_sheet",
+    "sfw": true
+  },
+  {
+    "zh": "关系图",
+    "en": "relationship_graph",
+    "sfw": true
+  },
+  {
+    "zh": "统计表",
+    "en": "stats",
+    "sfw": true
+  },
+  {
+    "zh": "列队图",
+    "en": "column_lineup",
+    "sfw": true
+  },
+  {
+    "zh": "立体模型",
+    "en": "diorama",
+    "sfw": true
+  },
+  {
+    "zh": "边框外",
+    "en": "from_outside",
+    "sfw": true
+  },
+  {
+    "zh": "故障",
+    "en": "glitch",
+    "sfw": true
+  },
+  {
+    "zh": "信箱式",
+    "en": "letterboxed",
+    "sfw": true
+  },
+  {
+    "zh": "柱式遮幅",
+    "en": "pillarboxed",
+    "sfw": true
+  },
+  {
+    "zh": "排列图",
+    "en": "lineup",
+    "sfw": true
+  },
+  {
+    "zh": "马赛克艺术",
+    "en": "mosaic_art",
+    "sfw": true
+  },
+  {
+    "zh": "剪影对照",
+    "en": "silhouette_contrast",
+    "sfw": true
+  },
+  {
+    "zh": "部分入水",
+    "en": "partially_underwater_shot",
+    "sfw": true
+  },
+  {
+    "zh": "社交媒体构图",
+    "en": "social_media_composition",
+    "sfw": true
+  },
+  {
+    "zh": "对称",
+    "en": "symmetry",
+    "sfw": true
+  },
+  {
+    "zh": "旋转对称",
+    "en": "rotational_symmetry",
+    "sfw": true
+  },
+  {
+    "zh": "站立全身图",
+    "en": "tachi-e",
+    "sfw": true
+  },
+  {
+    "zh": "裁切线",
+    "en": "trim_marks",
+    "sfw": true
+  },
+  {
+    "zh": "缩放层次",
+    "en": "zoom_layer",
+    "sfw": true
+  },
+  {
+    "zh": "AI生成",
+    "en": "ai-generated",
+    "sfw": true
+  },
+  {
+    "zh": "全员",
+    "en": "everyone",
+    "sfw": true
+  },
+  {
+    "zh": "群体照",
+    "en": "group_picture",
+    "sfw": true
+  },
+  {
+    "zh": "静物",
+    "en": "still_life",
+    "sfw": true
+  },
+  {
+    "zh": "风景",
+    "en": "scenery",
+    "sfw": true
+  },
+  {
+    "zh": "无人",
+    "en": "no_humans",
+    "sfw": true
+  },
+  {
+    "zh": "物体特写",
+    "en": "object_focus",
+    "sfw": true
+  },
+  {
+    "zh": "植物特写",
+    "en": "plant_focus",
+    "sfw": true
+  },
+  {
+    "zh": "武器特写",
+    "en": "weapon_focus",
+    "sfw": true
+  },
+  {
+    "zh": "手部特写",
+    "en": "hand_focus",
+    "sfw": true
+  },
+  {
+    "zh": "足部特写",
+    "en": "foot_focus",
+    "sfw": true
+  },
+  {
+    "zh": "臀部特写",
+    "en": "ass_focus",
+    "sfw": true
+  },
+  {
+    "zh": "背部特写",
+    "en": "back_focus",
+    "sfw": true
+  },
+  {
+    "zh": "腋下特写",
+    "en": "armpit_focus",
+    "sfw": true
+  },
+  {
+    "zh": "腰部特写",
+    "en": "waist_focus",
+    "sfw": true
+  },
+  {
+    "zh": "脐部特写",
+    "en": "navel_focus",
+    "sfw": true
+  },
+  {
+    "zh": "眼部特写",
+    "en": "eye_focus",
+    "sfw": true
+  },
+  {
+    "zh": "嘴唇特写",
+    "en": "lip_focus",
+    "sfw": true
+  },
+  {
+    "zh": "腹部特写",
+    "en": "belly_focus",
+    "sfw": true
+  },
+  {
+    "zh": "颈部特写",
+    "en": "neck_focus",
+    "sfw": true
+  },
+  {
+    "zh": "肩部特写",
+    "en": "shoulder_focus",
+    "sfw": true
+  },
+  {
+    "zh": "锁骨特写",
+    "en": "collarbone_focus",
+    "sfw": true
+  },
+  {
+    "zh": "腿特写",
+    "en": "leg_focus",
+    "sfw": true
+  },
+  {
+    "zh": "大腿特写",
+    "en": "thigh_focus",
+    "sfw": true
+  },
+  {
+    "zh": "尾特写",
+    "en": "tail_focus",
+    "sfw": true
+  },
+  {
+    "zh": "翅膀特写",
+    "en": "wing_focus",
+    "sfw": true
+  },
+  {
+    "zh": "耳特写",
+    "en": "ear_focus",
+    "sfw": true
+  },
+  {
+    "zh": "发特写",
+    "en": "hair_focus",
+    "sfw": true
+  },
+  {
+    "zh": "配件特写",
+    "en": "accessory_focus",
+    "sfw": true
+  },
+  {
+    "zh": "衣物特写",
+    "en": "clothing_focus",
+    "sfw": true
+  },
+  {
+    "zh": "食物特写",
+    "en": "food_focus",
+    "sfw": true
+  },
+  {
+    "zh": "饮料特写",
+    "en": "drink_focus",
+    "sfw": true
+  },
+  {
+    "zh": "书特写",
+    "en": "book_focus",
+    "sfw": true
+  },
+  {
+    "zh": "车特写",
+    "en": "vehicle_focus",
+    "sfw": true
+  },
+  {
+    "zh": "手机特写",
+    "en": "phone_focus",
+    "sfw": true
+  },
+  {
+    "zh": "相机特写",
+    "en": "camera_focus",
+    "sfw": true
+  },
+  {
+    "zh": "道具特写",
+    "en": "prop_focus",
+    "sfw": true
+  },
+  {
+    "zh": "环境特写",
+    "en": "environment_focus",
+    "sfw": true
+  },
+  {
+    "zh": "云特写",
+    "en": "cloud_focus",
+    "sfw": true
+  },
+  {
+    "zh": "水特写",
+    "en": "water_focus",
+    "sfw": true
+  },
+  {
+    "zh": "影特写",
+    "en": "shadow_focus",
+    "sfw": true
+  },
+  {
+    "zh": "天空特写",
+    "en": "sky_focus",
+    "sfw": true
+  },
+  {
+    "zh": "混合",
+    "en": "blending",
+    "sfw": true
+  },
+  {
+    "zh": "衍射星光",
+    "en": "diffraction_spikes",
+    "sfw": true
+  },
+  {
+    "zh": "变形",
+    "en": "distortion",
+    "sfw": true
+  },
+  {
+    "zh": "抖动",
+    "en": "dithering",
+    "sfw": true
+  },
+  {
+    "zh": "强调线",
+    "en": "emphasis_lines",
+    "sfw": true
+  },
+  {
+    "zh": "渐变",
+    "en": "gradient",
+    "sfw": true
+  },
+  {
+    "zh": "网点",
+    "en": "halftone",
+    "sfw": true
+  },
+  {
+    "zh": "交叉线",
+    "en": "crosshatching",
+    "sfw": true
+  },
+  {
+    "zh": "高对比",
+    "en": "high_contrast",
+    "sfw": true
+  },
+  {
+    "zh": "色相偏移",
+    "en": "hue_shifting",
+    "sfw": true
+  },
+  {
+    "zh": "运动线",
+    "en": "motion_lines",
+    "sfw": true
+  },
+  {
+    "zh": "光效线",
+    "en": "speed_lines",
+    "sfw": true
+  },
+  {
+    "zh": "点画",
+    "en": "stippling",
+    "sfw": true
+  },
+  {
+    "zh": "网纹",
+    "en": "screentones",
+    "sfw": true
+  },
+  {
+    "zh": "动画截图",
+    "en": "anime_screenshot",
+    "sfw": true
+  },
+  {
+    "zh": "画集",
+    "en": "artbook",
+    "sfw": true
+  },
+  {
+    "zh": "日历",
+    "en": "calendar",
+    "sfw": true
+  },
+  {
+    "zh": "一格",
+    "en": "1koma",
+    "sfw": true
+  },
+  {
+    "zh": "四格",
+    "en": "4koma",
+    "sfw": true
+  },
+  {
+    "zh": "封面",
+    "en": "cover",
+    "sfw": true
+  },
+  {
+    "zh": "游戏截图",
+    "en": "game_screenshot",
+    "sfw": true
+  },
+  {
+    "zh": "官方图",
+    "en": "official_art",
+    "sfw": true
+  },
+  {
+    "zh": "明信片",
+    "en": "postcard",
+    "sfw": true
+  },
+  {
+    "zh": "竖长图",
+    "en": "tall_image",
+    "sfw": true
+  },
+  {
+    "zh": "宽图",
+    "en": "wide_image",
+    "sfw": true
+  },
+  {
+    "zh": "透明背景",
+    "en": "transparent_background",
+    "sfw": true
+  },
+  {
+    "zh": "壁纸",
+    "en": "wallpaper",
+    "sfw": true
+  },
+  {
+    "zh": "宽屏",
+    "en": "widescreen",
+    "sfw": true
+  },
+  {
+    "zh": "无边线",
+    "en": "no_lineart",
+    "sfw": true
+  },
+  {
+    "zh": "轮廓",
+    "en": "outline",
+    "sfw": true
+  },
+  {
+    "zh": "速写",
+    "en": "oekaki",
+    "sfw": true
+  },
+  {
+    "zh": "矢量图",
+    "en": "vector_trace",
+    "sfw": true
+  },
+  {
+    "zh": "未完成",
+    "en": "unfinished",
+    "sfw": true
+  },
+  {
+    "zh": "高反差",
+    "en": "high_contrast_lighting",
+    "sfw": true
+  },
+  {
+    "zh": "焦点堆栈",
+    "en": "focus_stack",
+    "sfw": true
+  },
+  {
+    "zh": "多重曝光",
+    "en": "multiple_exposure",
+    "sfw": true
+  },
+  {
+    "zh": "光绘",
+    "en": "light_painting",
+    "sfw": true
+  },
+  {
+    "zh": "微距",
+    "en": "macro_shot",
+    "sfw": true
+  },
+  {
+    "zh": "广角畸变",
+    "en": "wide-angle_distortion",
+    "sfw": true
+  },
+  {
+    "zh": "极远景",
+    "en": "extreme_long_shot",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "大全景",
+    "en": "extreme_wide_shot",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "中远景",
+    "en": "medium_long_shot",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "中景半身",
+    "en": "medium_shot_half",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "特写半身",
+    "en": "close_medium_shot",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "极特写面部",
+    "en": "extreme_face_closeup",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "眼部极特写",
+    "en": "eye_extreme_closeup",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "手部极特写",
+    "en": "hand_extreme_closeup",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "胸部特写",
+    "en": "chest_closeup",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "腰部特写",
+    "en": "waist_closeup",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "腿部极特写",
+    "en": "leg_extreme_closeup",
+    "sfw": true,
+    "dimension": "composition_type"
+  },
+  {
+    "zh": "俯拍全身",
+    "en": "top_down_full_body",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "仰拍全身",
+    "en": "low_up_full_body",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "侧拍全身",
+    "en": "side_full_body",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "斜侧拍",
+    "en": "three_quarter_shot_angle",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "背面全身",
+    "en": "back_full_body_shot",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "过肩特写",
+    "en": "over_shoulder_closeup",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "肩上视角",
+    "en": "shoulder_level_view",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "腰部视角",
+    "en": "waist_level_view",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "膝盖视角",
+    "en": "knee_level_view",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "地面视角",
+    "en": "ground_level_view",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "天花板视角",
+    "en": "ceiling_view",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "门缝视角",
+    "en": "door_gap_view",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "窗框视角",
+    "en": "window_frame_view",
+    "sfw": true,
+    "dimension": "camera_angle"
+  },
+  {
+    "zh": "镜面反射构图",
+    "en": "mirror_reflection_composition",
+    "sfw": true
+  },
+  {
+    "zh": "水面反射构图",
+    "en": "water_reflection_composition",
+    "sfw": true
+  },
+  {
+    "zh": "玻璃反射构图",
+    "en": "glass_reflection_composition",
+    "sfw": true
+  },
+  {
+    "zh": "对称反射",
+    "en": "symmetric_reflection",
+    "sfw": true
+  },
+  {
+    "zh": "框中框",
+    "en": "frame_within_frame",
+    "sfw": true
+  },
+  {
+    "zh": "前景框",
+    "en": "foreground_frame",
+    "sfw": true
+  },
+  {
+    "zh": "自然框",
+    "en": "natural_framing",
+    "sfw": true
+  },
+  {
+    "zh": "建筑框",
+    "en": "architectural_frame",
+    "sfw": true
+  },
+  {
+    "zh": "隧道视角",
+    "en": "tunnel_view",
+    "sfw": true
+  },
+  {
+    "zh": "走廊透视",
+    "en": "corridor_perspective",
+    "sfw": true
+  },
+  {
+    "zh": "螺旋楼梯透视",
+    "en": "spiral_stair_perspective",
+    "sfw": true
+  },
+  {
+    "zh": "一消失点",
+    "en": "single_vanishing_point",
+    "sfw": true
+  },
+  {
+    "zh": "双消失点",
+    "en": "dual_vanishing_point",
+    "sfw": true
+  },
+  {
+    "zh": "鱼眼透视",
+    "en": "fisheye_perspective",
+    "sfw": true
+  },
+  {
+    "zh": "等距透视",
+    "en": "isometric_perspective",
+    "sfw": true
+  },
+  {
+    "zh": "斜向透视",
+    "en": "oblique_perspective",
+    "sfw": true
+  },
+  {
+    "zh": "仰视透视",
+    "en": "worm_eye_perspective",
+    "sfw": true
+  },
+  {
+    "zh": "俯视透视",
+    "en": "bird_eye_perspective",
+    "sfw": true
+  },
+  {
+    "zh": "浅景深",
+    "en": "shallow_depth_of_field",
+    "sfw": true
+  },
+  {
+    "zh": "深景深",
+    "en": "deep_depth_of_field",
+    "sfw": true
+  },
+  {
+    "zh": "选择性对焦",
+    "en": "selective_focus",
+    "sfw": true
+  },
+  {
+    "zh": "焦点转移",
+    "en": "rack_focus",
+    "sfw": true
+  },
+  {
+    "zh": "虚化前景",
+    "en": "blurred_foreground",
+    "sfw": true
+  },
+  {
+    "zh": "虚化中景",
+    "en": "blurred_midground",
+    "sfw": true
+  },
+  {
+    "zh": "清晰焦点面",
+    "en": "sharp_focus_plane",
+    "sfw": true
+  },
+  {
+    "zh": "分散焦点",
+    "en": "split_focus",
+    "sfw": true
+  },
+  {
+    "zh": "多焦点",
+    "en": "multiple_focus",
+    "sfw": true
+  },
+  {
+    "zh": "动态模糊构图",
+    "en": "motion_blur_composition",
+    "sfw": true
+  },
+  {
+    "zh": "平移模糊",
+    "en": "panning_blur",
+    "sfw": true
+  },
+  {
+    "zh": "缩放模糊",
+    "en": "zoom_blur_composition",
+    "sfw": true
+  },
+  {
+    "zh": "旋转模糊",
+    "en": "radial_blur_composition",
+    "sfw": true
+  },
+  {
+    "zh": "三分法偏移",
+    "en": "rule_of_thirds_offset",
+    "sfw": true
+  },
+  {
+    "zh": "中心对称",
+    "en": "central_symmetry",
+    "sfw": true
+  },
+  {
+    "zh": "非对称平衡2",
+    "en": "asymmetrical_balance_alt",
+    "sfw": true
+  },
+  {
+    "zh": "黄金螺旋",
+    "en": "golden_spiral",
+    "sfw": true
+  },
+  {
+    "zh": "对角线引导",
+    "en": "diagonal_leading",
+    "sfw": true
+  },
+  {
+    "zh": "S形构图",
+    "en": "s_curve_composition",
+    "sfw": true
+  },
+  {
+    "zh": "三角形引导",
+    "en": "triangle_leading",
+    "sfw": true
+  },
+  {
+    "zh": "放射线构图",
+    "en": "radiating_lines",
+    "sfw": true
+  },
+  {
+    "zh": "重复图案",
+    "en": "repeating_pattern_composition",
+    "sfw": true
+  },
+  {
+    "zh": "节奏重复",
+    "en": "rhythmic_repetition",
+    "sfw": true
+  },
+  {
+    "zh": "比例对比",
+    "en": "scale_contrast",
+    "sfw": true
+  },
+  {
+    "zh": "负空间留白",
+    "en": "negative_space_composition",
+    "sfw": true
+  },
+  {
+    "zh": "极简留白",
+    "en": "minimal_negative_space",
+    "sfw": true
+  },
+  {
+    "zh": "密集构图",
+    "en": "dense_composition",
+    "sfw": true
+  },
+  {
+    "zh": "留白构图",
+    "en": "white_space_composition",
+    "sfw": true
+  },
+  {
+    "zh": "分割画面",
+    "en": "split_screen_composition",
+    "sfw": true
+  },
+  {
+    "zh": "拼贴画面",
+    "en": "collage_composition",
+    "sfw": true
+  },
+  {
+    "zh": "画中画",
+    "en": "picture_in_picture",
+    "sfw": true
+  }
+]

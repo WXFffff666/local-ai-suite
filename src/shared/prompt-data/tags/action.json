@@ -1,0 +1,2322 @@
+[
+  {
+    "zh": "看镜头",
+    "en": "looking_at_viewer",
+    "sfw": true
+  },
+  {
+    "zh": "手持",
+    "en": "holding",
+    "sfw": true
+  },
+  {
+    "zh": "持武器",
+    "en": "holding_weapon",
+    "sfw": true
+  },
+  {
+    "zh": "回眸",
+    "en": "looking_back",
+    "sfw": true
+  },
+  {
+    "zh": "拿食物",
+    "en": "holding_food",
+    "sfw": true
+  },
+  {
+    "zh": "牵手",
+    "en": "holding_hands",
+    "sfw": true
+  },
+  {
+    "zh": "低头看",
+    "en": "looking_down",
+    "sfw": true
+  },
+  {
+    "zh": "进食",
+    "en": "eating",
+    "sfw": true
+  },
+  {
+    "zh": "哭泣",
+    "en": "crying",
+    "sfw": true
+  },
+  {
+    "zh": "睡觉",
+    "en": "sleeping",
+    "sfw": true
+  },
+  {
+    "zh": "抬头看",
+    "en": "looking_up",
+    "sfw": true
+  },
+  {
+    "zh": "指",
+    "en": "pointing",
+    "sfw": true
+  },
+  {
+    "zh": "搬运",
+    "en": "carrying",
+    "sfw": true
+  },
+  {
+    "zh": "喝玻璃杯",
+    "en": "drinking_glass",
+    "sfw": true
+  },
+  {
+    "zh": "行走",
+    "en": "walking",
+    "sfw": true
+  },
+  {
+    "zh": "奔跑",
+    "en": "running",
+    "sfw": true
+  },
+  {
+    "zh": "吸管喝",
+    "en": "drinking_straw",
+    "sfw": true
+  },
+  {
+    "zh": "比心",
+    "en": "heart_hands",
+    "sfw": true
+  },
+  {
+    "zh": "挥手",
+    "en": "waving",
+    "sfw": true
+  },
+  {
+    "zh": "视线移开",
+    "en": "looking_away",
+    "sfw": true
+  },
+  {
+    "zh": "格斗架势",
+    "en": "fighting_stance",
+    "sfw": true
+  },
+  {
+    "zh": "持长柄武器",
+    "en": "holding_polearm",
+    "sfw": true
+  },
+  {
+    "zh": "抱物",
+    "en": "hugging_object",
+    "sfw": true
+  },
+  {
+    "zh": "跳跃",
+    "en": "jumping",
+    "sfw": true
+  },
+  {
+    "zh": "持扇",
+    "en": "holding_fan",
+    "sfw": true
+  },
+  {
+    "zh": "端托盘",
+    "en": "holding_tray",
+    "sfw": true
+  },
+  {
+    "zh": "持乐器",
+    "en": "holding_instrument",
+    "sfw": true
+  },
+  {
+    "zh": "交谈",
+    "en": "talking",
+    "sfw": true
+  },
+  {
+    "zh": "持花束",
+    "en": "holding_bouquet",
+    "sfw": true
+  },
+  {
+    "zh": "喝水",
+    "en": "drinking",
+    "sfw": true
+  },
+  {
+    "zh": "抱动物",
+    "en": "holding_animal",
+    "sfw": true
+  },
+  {
+    "zh": "紧张冒汗",
+    "en": "nervous_sweating",
+    "sfw": true
+  },
+  {
+    "zh": "抱玩偶",
+    "en": "holding_stuffed_toy",
+    "sfw": true
+  },
+  {
+    "zh": "阅读",
+    "en": "reading",
+    "sfw": true
+  },
+  {
+    "zh": "骑乘",
+    "en": "riding",
+    "sfw": true
+  },
+  {
+    "zh": "跳舞",
+    "en": "dancing",
+    "sfw": true
+  },
+  {
+    "zh": "大笑",
+    "en": "laughing",
+    "sfw": true
+  },
+  {
+    "zh": "演奏",
+    "en": "playing_instrument",
+    "sfw": true
+  },
+  {
+    "zh": "竖拇指",
+    "en": "thumbs_up",
+    "sfw": true
+  },
+  {
+    "zh": "抱腿",
+    "en": "hugging_own_legs",
+    "sfw": true
+  },
+  {
+    "zh": "拿礼物",
+    "en": "holding_gift",
+    "sfw": true
+  },
+  {
+    "zh": "拿罐",
+    "en": "holding_can",
+    "sfw": true
+  },
+  {
+    "zh": "咬",
+    "en": "biting",
+    "sfw": true
+  },
+  {
+    "zh": "持筷",
+    "en": "holding_chopsticks",
+    "sfw": true
+  },
+  {
+    "zh": "指向观众",
+    "en": "pointing_at_viewer",
+    "sfw": true
+  },
+  {
+    "zh": "背人",
+    "en": "carrying_person",
+    "sfw": true
+  },
+  {
+    "zh": "唱歌",
+    "en": "singing",
+    "sfw": true
+  },
+  {
+    "zh": "拿纸",
+    "en": "holding_paper",
+    "sfw": true
+  },
+  {
+    "zh": "踢",
+    "en": "kicking",
+    "sfw": true
+  },
+  {
+    "zh": "打哈欠",
+    "en": "yawning",
+    "sfw": true
+  },
+  {
+    "zh": "大喊",
+    "en": "shouting",
+    "sfw": true
+  },
+  {
+    "zh": "烹饪",
+    "en": "cooking",
+    "sfw": true
+  },
+  {
+    "zh": "持扫帚",
+    "en": "holding_broom",
+    "sfw": true
+  },
+  {
+    "zh": "出拳",
+    "en": "punching",
+    "sfw": true
+  },
+  {
+    "zh": "打游戏",
+    "en": "playing_games",
+    "sfw": true
+  },
+  {
+    "zh": "亲脸颊",
+    "en": "kissing_cheek",
+    "sfw": true
+  },
+  {
+    "zh": "指自己",
+    "en": "pointing_at_self",
+    "sfw": true
+  },
+  {
+    "zh": "四指比心",
+    "en": "four-finger_heart_hands",
+    "sfw": true
+  },
+  {
+    "zh": "抱人",
+    "en": "lifting_person",
+    "sfw": true
+  },
+  {
+    "zh": "游泳",
+    "en": "swimming",
+    "sfw": true
+  },
+  {
+    "zh": "钓鱼",
+    "en": "fishing",
+    "sfw": true
+  },
+  {
+    "zh": "骑行",
+    "en": "cycling",
+    "sfw": true
+  },
+  {
+    "zh": "骑马",
+    "en": "horseback_riding",
+    "sfw": true
+  },
+  {
+    "zh": "开门",
+    "en": "opening_door",
+    "sfw": true
+  },
+  {
+    "zh": "玩头发",
+    "en": "playing_with_hair",
+    "sfw": true
+  },
+  {
+    "zh": "拥抱",
+    "en": "hugging",
+    "sfw": true
+  },
+  {
+    "zh": "环抱",
+    "en": "embracing",
+    "sfw": true
+  },
+  {
+    "zh": "倚靠",
+    "en": "leaning",
+    "sfw": true
+  },
+  {
+    "zh": "旋转",
+    "en": "twirling",
+    "sfw": true
+  },
+  {
+    "zh": "耳语",
+    "en": "whispering",
+    "sfw": true
+  },
+  {
+    "zh": "抓自己头发",
+    "en": "holding_own_hair",
+    "sfw": true
+  },
+  {
+    "zh": "持剑",
+    "en": "holding_sword",
+    "sfw": true
+  },
+  {
+    "zh": "持枪",
+    "en": "holding_gun",
+    "sfw": true
+  },
+  {
+    "zh": "持伞",
+    "en": "holding_umbrella",
+    "sfw": true
+  },
+  {
+    "zh": "持弓",
+    "en": "holding_bow",
+    "sfw": true
+  },
+  {
+    "zh": "持相机",
+    "en": "holding_camera",
+    "sfw": true
+  },
+  {
+    "zh": "持花",
+    "en": "holding_flower",
+    "sfw": true
+  },
+  {
+    "zh": "持刀",
+    "en": "holding_knife",
+    "sfw": true
+  },
+  {
+    "zh": "持杖",
+    "en": "holding_staff",
+    "sfw": true
+  },
+  {
+    "zh": "舔",
+    "en": "licking",
+    "sfw": true
+  },
+  {
+    "zh": "咀嚼",
+    "en": "chewing",
+    "sfw": true
+  },
+  {
+    "zh": "吸溜",
+    "en": "slurping",
+    "sfw": true
+  },
+  {
+    "zh": "打篮球",
+    "en": "playing_basketball",
+    "sfw": true
+  },
+  {
+    "zh": "打棒球",
+    "en": "playing_baseball",
+    "sfw": true
+  },
+  {
+    "zh": "滑板",
+    "en": "skateboarding",
+    "sfw": true
+  },
+  {
+    "zh": "溜冰",
+    "en": "ice_skating",
+    "sfw": true
+  },
+  {
+    "zh": "冲浪",
+    "en": "surfing",
+    "sfw": true
+  },
+  {
+    "zh": "攀爬",
+    "en": "climbing",
+    "sfw": true
+  },
+  {
+    "zh": "荡秋千",
+    "en": "swinging",
+    "sfw": true
+  },
+  {
+    "zh": "投掷",
+    "en": "throwing",
+    "sfw": true
+  },
+  {
+    "zh": "接球",
+    "en": "catching",
+    "sfw": true
+  },
+  {
+    "zh": "瑜伽",
+    "en": "yoga",
+    "sfw": true
+  },
+  {
+    "zh": "芭蕾",
+    "en": "ballet",
+    "sfw": true
+  },
+  {
+    "zh": "潜水",
+    "en": "diving",
+    "sfw": true
+  },
+  {
+    "zh": "滑雪",
+    "en": "skiing",
+    "sfw": true
+  },
+  {
+    "zh": "射击",
+    "en": "shooting",
+    "sfw": true
+  },
+  {
+    "zh": "瞄准",
+    "en": "aiming",
+    "sfw": true
+  },
+  {
+    "zh": "闪避",
+    "en": "dodging",
+    "sfw": true
+  },
+  {
+    "zh": "攻击",
+    "en": "attacking",
+    "sfw": true
+  },
+  {
+    "zh": "格挡",
+    "en": "blocking",
+    "sfw": true
+  },
+  {
+    "zh": "书写",
+    "en": "writing",
+    "sfw": true
+  },
+  {
+    "zh": "画画",
+    "en": "drawing",
+    "sfw": true
+  },
+  {
+    "zh": "打扫",
+    "en": "cleaning",
+    "sfw": true
+  },
+  {
+    "zh": "洗澡",
+    "en": "bathing",
+    "sfw": true
+  },
+  {
+    "zh": "刷牙",
+    "en": "brushing_teeth",
+    "sfw": true
+  },
+  {
+    "zh": "祈祷",
+    "en": "praying",
+    "sfw": true
+  },
+  {
+    "zh": "冥想",
+    "en": "meditating",
+    "sfw": true
+  },
+  {
+    "zh": "敬礼",
+    "en": "salute",
+    "sfw": true
+  },
+  {
+    "zh": "打字",
+    "en": "typing",
+    "sfw": true
+  },
+  {
+    "zh": "玩游戏",
+    "en": "playing_video_games",
+    "sfw": true
+  },
+  {
+    "zh": "骑马",
+    "en": "horse_riding",
+    "sfw": true
+  },
+  {
+    "zh": "开车",
+    "en": "driving",
+    "sfw": true
+  },
+  {
+    "zh": "打电话",
+    "en": "talking_on_phone",
+    "sfw": true
+  },
+  {
+    "zh": "自拍",
+    "en": "taking_selfie",
+    "sfw": true
+  },
+  {
+    "zh": "听音乐",
+    "en": "listening_to_music",
+    "sfw": true
+  },
+  {
+    "zh": "戴耳机",
+    "en": "wearing_headphones",
+    "sfw": true
+  },
+  {
+    "zh": "弹吉他",
+    "en": "playing_guitar",
+    "sfw": true
+  },
+  {
+    "zh": "弹钢琴",
+    "en": "playing_piano",
+    "sfw": true
+  },
+  {
+    "zh": "拍照",
+    "en": "taking_photo",
+    "sfw": true
+  },
+  {
+    "zh": "野餐",
+    "en": "picnicking",
+    "sfw": true
+  },
+  {
+    "zh": "露营",
+    "en": "camping",
+    "sfw": true
+  },
+  {
+    "zh": "爬山",
+    "en": "hiking",
+    "sfw": true
+  },
+  {
+    "zh": "拳击",
+    "en": "boxing",
+    "sfw": true
+  },
+  {
+    "zh": "举重",
+    "en": "lifting_weights",
+    "sfw": true
+  },
+  {
+    "zh": "慢跑",
+    "en": "jogging",
+    "sfw": true
+  },
+  {
+    "zh": "打高尔夫",
+    "en": "golfing",
+    "sfw": true
+  },
+  {
+    "zh": "打网球",
+    "en": "tennis",
+    "sfw": true
+  },
+  {
+    "zh": "踢足球",
+    "en": "soccer",
+    "sfw": true
+  },
+  {
+    "zh": "打排球",
+    "en": "volleyball",
+    "sfw": true
+  },
+  {
+    "zh": "打乒乓球",
+    "en": "table_tennis",
+    "sfw": true
+  },
+  {
+    "zh": "杂耍",
+    "en": "juggling",
+    "sfw": true
+  },
+  {
+    "zh": "剑术练习",
+    "en": "practicing_swordsmanship",
+    "sfw": true
+  },
+  {
+    "zh": "喂宠物",
+    "en": "feeding_pet",
+    "sfw": true
+  },
+  {
+    "zh": "道歉",
+    "en": "apologizing",
+    "sfw": true
+  },
+  {
+    "zh": "化妆",
+    "en": "applying_makeup",
+    "sfw": true
+  },
+  {
+    "zh": "乞求",
+    "en": "begging",
+    "sfw": true
+  },
+  {
+    "zh": "平衡",
+    "en": "balancing",
+    "sfw": true
+  },
+  {
+    "zh": "吹泡泡",
+    "en": "blowing_bubbles",
+    "sfw": true
+  },
+  {
+    "zh": "吹口香糖",
+    "en": "blowing_bubble_gum",
+    "sfw": true
+  },
+  {
+    "zh": "碰撞",
+    "en": "bumping",
+    "sfw": true
+  },
+  {
+    "zh": "追逐",
+    "en": "chasing",
+    "sfw": true
+  },
+  {
+    "zh": "欢呼",
+    "en": "cheering",
+    "sfw": true
+  },
+  {
+    "zh": "安慰",
+    "en": "comforting",
+    "sfw": true
+  },
+  {
+    "zh": "专注",
+    "en": "concentrating",
+    "sfw": true
+  },
+  {
+    "zh": "烘焙",
+    "en": "baking",
+    "sfw": true
+  },
+  {
+    "zh": "搅拌",
+    "en": "stirring",
+    "sfw": true
+  },
+  {
+    "zh": "咳嗽",
+    "en": "coughing",
+    "sfw": true
+  },
+  {
+    "zh": "压碎",
+    "en": "crushing",
+    "sfw": true
+  },
+  {
+    "zh": "切割",
+    "en": "cutting",
+    "sfw": true
+  },
+  {
+    "zh": "挖掘",
+    "en": "digging",
+    "sfw": true
+  },
+  {
+    "zh": "拖拽",
+    "en": "dragging",
+    "sfw": true
+  },
+  {
+    "zh": "做梦",
+    "en": "dreaming",
+    "sfw": true
+  },
+  {
+    "zh": "穿衣",
+    "en": "dressing",
+    "sfw": true
+  },
+  {
+    "zh": "掉落",
+    "en": "dropping",
+    "sfw": true
+  },
+  {
+    "zh": "晾干",
+    "en": "drying",
+    "sfw": true
+  },
+  {
+    "zh": "双持",
+    "en": "dual_wielding",
+    "sfw": true
+  },
+  {
+    "zh": "死亡",
+    "en": "dying",
+    "sfw": true
+  },
+  {
+    "zh": "偷听",
+    "en": "eavesdropping",
+    "sfw": true
+  },
+  {
+    "zh": "肘击",
+    "en": "elbowing",
+    "sfw": true
+  },
+  {
+    "zh": "晕倒",
+    "en": "fainting",
+    "sfw": true
+  },
+  {
+    "zh": "扇风",
+    "en": "fanning",
+    "sfw": true
+  },
+  {
+    "zh": "喂食",
+    "en": "feeding",
+    "sfw": true
+  },
+  {
+    "zh": "摆弄",
+    "en": "fidgeting",
+    "sfw": true
+  },
+  {
+    "zh": "战斗",
+    "en": "fighting",
+    "sfw": true
+  },
+  {
+    "zh": "开火",
+    "en": "firing",
+    "sfw": true
+  },
+  {
+    "zh": "挥舞",
+    "en": "flailing",
+    "sfw": true
+  },
+  {
+    "zh": "拍打",
+    "en": "flapping",
+    "sfw": true
+  },
+  {
+    "zh": "调情",
+    "en": "flirting",
+    "sfw": true
+  },
+  {
+    "zh": "园艺",
+    "en": "gardening",
+    "sfw": true
+  },
+  {
+    "zh": "浇水",
+    "en": "watering",
+    "sfw": true
+  },
+  {
+    "zh": "给予",
+    "en": "giving",
+    "sfw": true
+  },
+  {
+    "zh": "抓取",
+    "en": "grabbing",
+    "sfw": true
+  },
+  {
+    "zh": "吊挂",
+    "en": "hanging",
+    "sfw": true
+  },
+  {
+    "zh": "孵化",
+    "en": "hatching",
+    "sfw": true
+  },
+  {
+    "zh": "治疗",
+    "en": "healing",
+    "sfw": true
+  },
+  {
+    "zh": "躲藏",
+    "en": "hiding",
+    "sfw": true
+  },
+  {
+    "zh": "击打",
+    "en": "hitting",
+    "sfw": true
+  },
+  {
+    "zh": "想象",
+    "en": "imagining",
+    "sfw": true
+  },
+  {
+    "zh": "模仿",
+    "en": "imitating",
+    "sfw": true
+  },
+  {
+    "zh": "膝撞",
+    "en": "kneeing",
+    "sfw": true
+  },
+  {
+    "zh": "敲门",
+    "en": "knocking",
+    "sfw": true
+  },
+  {
+    "zh": "着陆",
+    "en": "landing",
+    "sfw": true
+  },
+  {
+    "zh": "发射",
+    "en": "launching",
+    "sfw": true
+  },
+  {
+    "zh": "举起",
+    "en": "lifting",
+    "sfw": true
+  },
+  {
+    "zh": "注视",
+    "en": "looking",
+    "sfw": true
+  },
+  {
+    "zh": "测量",
+    "en": "measuring",
+    "sfw": true
+  },
+  {
+    "zh": "融化",
+    "en": "melting",
+    "sfw": true
+  },
+  {
+    "zh": "读心",
+    "en": "mind_reading",
+    "sfw": true
+  },
+  {
+    "zh": "多任务",
+    "en": "multitasking",
+    "sfw": true
+  },
+  {
+    "zh": "挖鼻",
+    "en": "nose_picking",
+    "sfw": true
+  },
+  {
+    "zh": "打开",
+    "en": "opening",
+    "sfw": true
+  },
+  {
+    "zh": "偷看",
+    "en": "peeking",
+    "sfw": true
+  },
+  {
+    "zh": "剥皮",
+    "en": "peeling",
+    "sfw": true
+  },
+  {
+    "zh": "轻拍",
+    "en": "patting",
+    "sfw": true
+  },
+  {
+    "zh": "捏",
+    "en": "pinching",
+    "sfw": true
+  },
+  {
+    "zh": "投球",
+    "en": "pitching",
+    "sfw": true
+  },
+  {
+    "zh": "玩",
+    "en": "playing",
+    "sfw": true
+  },
+  {
+    "zh": "戳",
+    "en": "poking",
+    "sfw": true
+  },
+  {
+    "zh": "抛光",
+    "en": "polishing",
+    "sfw": true
+  },
+  {
+    "zh": "倒",
+    "en": "pouring",
+    "sfw": true
+  },
+  {
+    "zh": "编程",
+    "en": "programming",
+    "sfw": true
+  },
+  {
+    "zh": "保护",
+    "en": "protecting",
+    "sfw": true
+  },
+  {
+    "zh": "拉",
+    "en": "pulling",
+    "sfw": true
+  },
+  {
+    "zh": "推",
+    "en": "pushing",
+    "sfw": true
+  },
+  {
+    "zh": "装填",
+    "en": "reloading",
+    "sfw": true
+  },
+  {
+    "zh": "修理",
+    "en": "repairing",
+    "sfw": true
+  },
+  {
+    "zh": "抵抗",
+    "en": "resisting",
+    "sfw": true
+  },
+  {
+    "zh": "休息",
+    "en": "resting",
+    "sfw": true
+  },
+  {
+    "zh": "撕裂",
+    "en": "ripping",
+    "sfw": true
+  },
+  {
+    "zh": "咆哮",
+    "en": "roaring",
+    "sfw": true
+  },
+  {
+    "zh": "滚动",
+    "en": "rolling",
+    "sfw": true
+  },
+  {
+    "zh": "摩擦",
+    "en": "rubbing",
+    "sfw": true
+  },
+  {
+    "zh": "抓挠",
+    "en": "scratching",
+    "sfw": true
+  },
+  {
+    "zh": "尖叫",
+    "en": "screaming",
+    "sfw": true
+  },
+  {
+    "zh": "搜索",
+    "en": "searching",
+    "sfw": true
+  },
+  {
+    "zh": "摇晃",
+    "en": "shaking",
+    "sfw": true
+  },
+  {
+    "zh": "分享",
+    "en": "sharing",
+    "sfw": true
+  },
+  {
+    "zh": "剃须",
+    "en": "shaving",
+    "sfw": true
+  },
+  {
+    "zh": "购物",
+    "en": "shopping",
+    "sfw": true
+  },
+  {
+    "zh": "下沉",
+    "en": "sinking",
+    "sfw": true
+  },
+  {
+    "zh": "素描",
+    "en": "sketching",
+    "sfw": true
+  },
+  {
+    "zh": "劈砍",
+    "en": "slashing",
+    "sfw": true
+  },
+  {
+    "zh": "滑动",
+    "en": "sliding",
+    "sfw": true
+  },
+  {
+    "zh": "滑倒",
+    "en": "slipping",
+    "sfw": true
+  },
+  {
+    "zh": "嗅",
+    "en": "smelling",
+    "sfw": true
+  },
+  {
+    "zh": "吸烟",
+    "en": "smoking",
+    "sfw": true
+  },
+  {
+    "zh": "打喷嚏",
+    "en": "sneezing",
+    "sfw": true
+  },
+  {
+    "zh": "泼洒",
+    "en": "spilling",
+    "sfw": true
+  },
+  {
+    "zh": "旋转",
+    "en": "spinning",
+    "sfw": true
+  },
+  {
+    "zh": "吐",
+    "en": "spitting",
+    "sfw": true
+  },
+  {
+    "zh": "溅水",
+    "en": "splashing",
+    "sfw": true
+  },
+  {
+    "zh": "勺抱",
+    "en": "spooning",
+    "sfw": true
+  },
+  {
+    "zh": "喷洒",
+    "en": "spraying",
+    "sfw": true
+  },
+  {
+    "zh": "眯眼",
+    "en": "squinting",
+    "sfw": true
+  },
+  {
+    "zh": "叠放",
+    "en": "stacking",
+    "sfw": true
+  },
+  {
+    "zh": "踏步",
+    "en": "stepping",
+    "sfw": true
+  },
+  {
+    "zh": "跺脚",
+    "en": "stomping",
+    "sfw": true
+  },
+  {
+    "zh": "学习",
+    "en": "studying",
+    "sfw": true
+  },
+  {
+    "zh": "吸",
+    "en": "sucking",
+    "sfw": true
+  },
+  {
+    "zh": "召唤",
+    "en": "summoning",
+    "sfw": true
+  },
+  {
+    "zh": "日光浴",
+    "en": "sunbathing",
+    "sfw": true
+  },
+  {
+    "zh": "摇摆",
+    "en": "swaying",
+    "sfw": true
+  },
+  {
+    "zh": "摇尾",
+    "en": "tail_wagging",
+    "sfw": true
+  },
+  {
+    "zh": "教学",
+    "en": "teaching",
+    "sfw": true
+  },
+  {
+    "zh": "发短信",
+    "en": "text_messaging",
+    "sfw": true
+  },
+  {
+    "zh": "思考",
+    "en": "thinking",
+    "sfw": true
+  },
+  {
+    "zh": "挠痒",
+    "en": "tickling",
+    "sfw": true
+  },
+  {
+    "zh": "触碰",
+    "en": "touching",
+    "sfw": true
+  },
+  {
+    "zh": "训练",
+    "en": "training",
+    "sfw": true
+  },
+  {
+    "zh": "抽搐",
+    "en": "twitching",
+    "sfw": true
+  },
+  {
+    "zh": "绑",
+    "en": "tying",
+    "sfw": true
+  },
+  {
+    "zh": "解开",
+    "en": "untying",
+    "sfw": true
+  },
+  {
+    "zh": "拔刀",
+    "en": "unsheathing",
+    "sfw": true
+  },
+  {
+    "zh": "呕吐",
+    "en": "vomiting",
+    "sfw": true
+  },
+  {
+    "zh": "涉水",
+    "en": "wading",
+    "sfw": true
+  },
+  {
+    "zh": "等待",
+    "en": "waiting",
+    "sfw": true
+  },
+  {
+    "zh": "加热",
+    "en": "warming",
+    "sfw": true
+  },
+  {
+    "zh": "洗",
+    "en": "washing",
+    "sfw": true
+  },
+  {
+    "zh": "观看",
+    "en": "watching",
+    "sfw": true
+  },
+  {
+    "zh": "搅拌(料理)",
+    "en": "whisking",
+    "sfw": true
+  },
+  {
+    "zh": "工作",
+    "en": "working",
+    "sfw": true
+  },
+  {
+    "zh": "拧干",
+    "en": "wringing",
+    "sfw": true
+  },
+  {
+    "zh": "拉链(拉上)",
+    "en": "zipping",
+    "sfw": true
+  },
+  {
+    "zh": "战斗",
+    "en": "battle",
+    "sfw": true
+  },
+  {
+    "zh": "流血",
+    "en": "bleeding",
+    "sfw": true
+  },
+  {
+    "zh": "吹",
+    "en": "blowing",
+    "sfw": true
+  },
+  {
+    "zh": "保龄球",
+    "en": "bowling",
+    "sfw": true
+  },
+  {
+    "zh": "燃烧",
+    "en": "burning",
+    "sfw": true
+  },
+  {
+    "zh": "雕刻",
+    "en": "carving",
+    "sfw": true
+  },
+  {
+    "zh": "约会",
+    "en": "dating",
+    "sfw": true
+  },
+  {
+    "zh": "溶解",
+    "en": "dissolving",
+    "sfw": true
+  },
+  {
+    "zh": "溺水",
+    "en": "drowning",
+    "sfw": true
+  },
+  {
+    "zh": "击剑",
+    "en": "fencing",
+    "sfw": true
+  },
+  {
+    "zh": "弯折",
+    "en": "folding",
+    "sfw": true
+  },
+  {
+    "zh": "烤肉",
+    "en": "grilling",
+    "sfw": true
+  },
+  {
+    "zh": "搭车",
+    "en": "hitchhiking",
+    "sfw": true
+  },
+  {
+    "zh": "绑架",
+    "en": "kidnapping",
+    "sfw": true
+  },
+  {
+    "zh": "编织",
+    "en": "knitting",
+    "sfw": true
+  },
+  {
+    "zh": "行军",
+    "en": "marching",
+    "sfw": true
+  },
+  {
+    "zh": "恐慌",
+    "en": "panicking",
+    "sfw": true
+  },
+  {
+    "zh": "赛跑",
+    "en": "racing",
+    "sfw": true
+  },
+  {
+    "zh": "录音",
+    "en": "recording",
+    "sfw": true
+  },
+  {
+    "zh": "划船",
+    "en": "rowing",
+    "sfw": true
+  },
+  {
+    "zh": "责骂",
+    "en": "scolding",
+    "sfw": true
+  },
+  {
+    "zh": "缝纫",
+    "en": "sewing",
+    "sfw": true
+  },
+  {
+    "zh": "偷窃",
+    "en": "shoplifting",
+    "sfw": true
+  },
+  {
+    "zh": "打脸",
+    "en": "slapping",
+    "sfw": true
+  },
+  {
+    "zh": "尾随",
+    "en": "stalking",
+    "sfw": true
+  },
+  {
+    "zh": "摔跤",
+    "en": "wrestling",
+    "sfw": true
+  },
+  {
+    "zh": "航行",
+    "en": "sailing",
+    "sfw": true
+  },
+  {
+    "zh": "举重",
+    "en": "weightlifting",
+    "sfw": true
+  },
+  {
+    "zh": "射箭",
+    "en": "archery",
+    "sfw": true
+  },
+  {
+    "zh": "滑旱冰",
+    "en": "roller_skating",
+    "sfw": true
+  },
+  {
+    "zh": "跳伞",
+    "en": "skydiving",
+    "sfw": true
+  },
+  {
+    "zh": "跳伞(伞)",
+    "en": "parachuting",
+    "sfw": true
+  },
+  {
+    "zh": "拿包",
+    "en": "holding_bag",
+    "sfw": true
+  },
+  {
+    "zh": "拿公文包",
+    "en": "holding_briefcase",
+    "sfw": true
+  },
+  {
+    "zh": "拿行李箱",
+    "en": "holding_suitcase",
+    "sfw": true
+  },
+  {
+    "zh": "拿钱包",
+    "en": "holding_wallet",
+    "sfw": true
+  },
+  {
+    "zh": "拿手帕",
+    "en": "holding_handkerchief",
+    "sfw": true
+  },
+  {
+    "zh": "拿毛毯",
+    "en": "holding_blanket",
+    "sfw": true
+  },
+  {
+    "zh": "拿枕头",
+    "en": "holding_pillow",
+    "sfw": true
+  },
+  {
+    "zh": "拿电话",
+    "en": "holding_phone",
+    "sfw": true
+  },
+  {
+    "zh": "拿麦克风",
+    "en": "holding_microphone",
+    "sfw": true
+  },
+  {
+    "zh": "拿咖啡杯",
+    "en": "holding_coffee_cup",
+    "sfw": true
+  },
+  {
+    "zh": "拿树枝",
+    "en": "holding_branch",
+    "sfw": true
+  },
+  {
+    "zh": "拿树叶",
+    "en": "holding_leaf",
+    "sfw": true
+  },
+  {
+    "zh": "拿石头",
+    "en": "holding_rock",
+    "sfw": true
+  },
+  {
+    "zh": "拿水晶",
+    "en": "holding_crystal",
+    "sfw": true
+  },
+  {
+    "zh": "拿宝石",
+    "en": "holding_gem",
+    "sfw": true
+  },
+  {
+    "zh": "拿羽毛",
+    "en": "holding_feather",
+    "sfw": true
+  },
+  {
+    "zh": "拿贝壳",
+    "en": "holding_seashell",
+    "sfw": true
+  },
+  {
+    "zh": "拿书",
+    "en": "holding_book",
+    "sfw": true
+  },
+  {
+    "zh": "拿杂志",
+    "en": "holding_magazine",
+    "sfw": true
+  },
+  {
+    "zh": "拿漫画",
+    "en": "holding_manga",
+    "sfw": true
+  },
+  {
+    "zh": "拿报纸",
+    "en": "holding_newspaper",
+    "sfw": true
+  },
+  {
+    "zh": "拿卷轴",
+    "en": "holding_scroll",
+    "sfw": true
+  },
+  {
+    "zh": "拿信封",
+    "en": "holding_envelope",
+    "sfw": true
+  },
+  {
+    "zh": "拿信",
+    "en": "holding_letter",
+    "sfw": true
+  },
+  {
+    "zh": "拿笔记本",
+    "en": "holding_notebook",
+    "sfw": true
+  },
+  {
+    "zh": "拿笔",
+    "en": "holding_pen",
+    "sfw": true
+  },
+  {
+    "zh": "拿铅笔",
+    "en": "holding_pencil",
+    "sfw": true
+  },
+  {
+    "zh": "拿羽毛笔",
+    "en": "holding_quill",
+    "sfw": true
+  },
+  {
+    "zh": "拿蜡笔",
+    "en": "holding_crayon",
+    "sfw": true
+  },
+  {
+    "zh": "拿粉笔",
+    "en": "holding_chalk",
+    "sfw": true
+  },
+  {
+    "zh": "拿马克笔",
+    "en": "holding_marker",
+    "sfw": true
+  },
+  {
+    "zh": "拿尺",
+    "en": "holding_ruler",
+    "sfw": true
+  },
+  {
+    "zh": "拿剪刀",
+    "en": "holding_scissors",
+    "sfw": true
+  },
+  {
+    "zh": "拿锤子",
+    "en": "holding_hammer",
+    "sfw": true
+  },
+  {
+    "zh": "拿螺丝刀",
+    "en": "holding_screwdriver",
+    "sfw": true
+  },
+  {
+    "zh": "拿扳手",
+    "en": "holding_wrench",
+    "sfw": true
+  },
+  {
+    "zh": "拿锯子",
+    "en": "holding_saw",
+    "sfw": true
+  },
+  {
+    "zh": "拿斧头",
+    "en": "holding_axe",
+    "sfw": true
+  },
+  {
+    "zh": "拿电锯",
+    "en": "holding_chainsaw",
+    "sfw": true
+  },
+  {
+    "zh": "拿撬棍",
+    "en": "holding_crowbar",
+    "sfw": true
+  },
+  {
+    "zh": "拿拖把",
+    "en": "holding_mop",
+    "sfw": true
+  },
+  {
+    "zh": "拿水桶",
+    "en": "holding_bucket",
+    "sfw": true
+  },
+  {
+    "zh": "拿海绵",
+    "en": "holding_sponge",
+    "sfw": true
+  },
+  {
+    "zh": "拿铲子",
+    "en": "holding_shovel",
+    "sfw": true
+  },
+  {
+    "zh": "拿耙子",
+    "en": "holding_rake",
+    "sfw": true
+  },
+  {
+    "zh": "拿锄头",
+    "en": "holding_hoe",
+    "sfw": true
+  },
+  {
+    "zh": "拿镰刀",
+    "en": "holding_sickle",
+    "sfw": true
+  },
+  {
+    "zh": "拿剪枝剪",
+    "en": "holding_shears",
+    "sfw": true
+  },
+  {
+    "zh": "拿手套",
+    "en": "holding_gloves",
+    "sfw": true
+  },
+  {
+    "zh": "拿帽子",
+    "en": "holding_unworn_hat",
+    "sfw": true
+  },
+  {
+    "zh": "拿鞋",
+    "en": "holding_shoes",
+    "sfw": true
+  },
+  {
+    "zh": "拿袜子",
+    "en": "holding_sock",
+    "sfw": true
+  },
+  {
+    "zh": "拿围巾",
+    "en": "holding_scarf",
+    "sfw": true
+  },
+  {
+    "zh": "拿钥匙",
+    "en": "holding_key",
+    "sfw": true
+  },
+  {
+    "zh": "拿硬币",
+    "en": "holding_coin",
+    "sfw": true
+  },
+  {
+    "zh": "拿钱",
+    "en": "holding_money",
+    "sfw": true
+  },
+  {
+    "zh": "拿珠宝",
+    "en": "holding_jewelry",
+    "sfw": true
+  },
+  {
+    "zh": "拿火柴",
+    "en": "holding_match",
+    "sfw": true
+  },
+  {
+    "zh": "拿蜡烛",
+    "en": "holding_candle",
+    "sfw": true
+  },
+  {
+    "zh": "拿灯笼",
+    "en": "holding_lantern",
+    "sfw": true
+  },
+  {
+    "zh": "拿火把",
+    "en": "holding_torch",
+    "sfw": true
+  },
+  {
+    "zh": "拿手电筒",
+    "en": "holding_flashlight",
+    "sfw": true
+  },
+  {
+    "zh": "拿放大镜",
+    "en": "holding_magnifying_glass",
+    "sfw": true
+  },
+  {
+    "zh": "拿望远镜",
+    "en": "holding_telescope",
+    "sfw": true
+  },
+  {
+    "zh": "拿试管",
+    "en": "holding_test_tube",
+    "sfw": true
+  },
+  {
+    "zh": "拿小瓶",
+    "en": "holding_vial",
+    "sfw": true
+  },
+  {
+    "zh": "拿药",
+    "en": "holding_pill",
+    "sfw": true
+  },
+  {
+    "zh": "拿绷带",
+    "en": "holding_bandages",
+    "sfw": true
+  },
+  {
+    "zh": "拿听诊器",
+    "en": "holding_stethoscope",
+    "sfw": true
+  },
+  {
+    "zh": "拿注射器",
+    "en": "holding_syringe",
+    "sfw": true
+  },
+  {
+    "zh": "拿温度计",
+    "en": "holding_thermometer",
+    "sfw": true
+  },
+  {
+    "zh": "拿吉他",
+    "en": "holding_guitar",
+    "sfw": true
+  },
+  {
+    "zh": "拿小提琴",
+    "en": "holding_violin",
+    "sfw": true
+  },
+  {
+    "zh": "拿鼓棒",
+    "en": "holding_drumsticks",
+    "sfw": true
+  },
+  {
+    "zh": "拿长笛",
+    "en": "holding_flute",
+    "sfw": true
+  },
+  {
+    "zh": "拿萨克斯",
+    "en": "holding_saxophone",
+    "sfw": true
+  },
+  {
+    "zh": "拿小号",
+    "en": "holding_trumpet",
+    "sfw": true
+  },
+  {
+    "zh": "拿尤克里里",
+    "en": "holding_ukulele",
+    "sfw": true
+  },
+  {
+    "zh": "拿羽毛(笔)",
+    "en": "holding_plectrum",
+    "sfw": true
+  },
+  {
+    "zh": "拿玩偶",
+    "en": "holding_doll",
+    "sfw": true
+  },
+  {
+    "zh": "拿棋盘棋子",
+    "en": "holding_chess_piece",
+    "sfw": true
+  },
+  {
+    "zh": "拿骰子",
+    "en": "holding_dice",
+    "sfw": true
+  },
+  {
+    "zh": "拿麻将牌",
+    "en": "holding_mahjong_tile",
+    "sfw": true
+  },
+  {
+    "zh": "拿牌",
+    "en": "holding_card",
+    "sfw": true
+  },
+  {
+    "zh": "拿跳绳",
+    "en": "holding_jump_rope",
+    "sfw": true
+  },
+  {
+    "zh": "拿奖杯",
+    "en": "holding_trophy",
+    "sfw": true
+  },
+  {
+    "zh": "拿滑雪板",
+    "en": "holding_surfboard",
+    "sfw": true
+  },
+  {
+    "zh": "拿滑板",
+    "en": "holding_skateboard",
+    "sfw": true
+  },
+  {
+    "zh": "拿球",
+    "en": "holding_ball",
+    "sfw": true
+  },
+  {
+    "zh": "拿球拍",
+    "en": "holding_racket",
+    "sfw": true
+  },
+  {
+    "zh": "拿网球拍",
+    "en": "holding_tennis_racket",
+    "sfw": true
+  },
+  {
+    "zh": "拿高尔夫球杆",
+    "en": "holding_golf_club",
+    "sfw": true
+  },
+  {
+    "zh": "拿哑铃",
+    "en": "holding_dumbbell",
+    "sfw": true
+  },
+  {
+    "zh": "拿哨子",
+    "en": "holding_whistle",
+    "sfw": true
+  },
+  {
+    "zh": "拿鱼竿",
+    "en": "holding_fishing_rod",
+    "sfw": true
+  },
+  {
+    "zh": "拿桨",
+    "en": "holding_oar",
+    "sfw": true
+  },
+  {
+    "zh": "拿捕蝶网",
+    "en": "holding_butterfly_net",
+    "sfw": true
+  },
+  {
+    "zh": "拿救生圈",
+    "en": "holding_swim_ring",
+    "sfw": true
+  },
+  {
+    "zh": "拿十字架",
+    "en": "holding_cross",
+    "sfw": true
+  },
+  {
+    "zh": "拿权杖",
+    "en": "holding_scepter",
+    "sfw": true
+  },
+  {
+    "zh": "拿皇冠",
+    "en": "holding_crown",
+    "sfw": true
+  },
+  {
+    "zh": "拿蜡烛台",
+    "en": "holding_candlestand",
+    "sfw": true
+  },
+  {
+    "zh": "拿镜子",
+    "en": "holding_mirror",
+    "sfw": true
+  },
+  {
+    "zh": "拿梳子",
+    "en": "holding_comb",
+    "sfw": true
+  },
+  {
+    "zh": "拿牙刷",
+    "en": "holding_toothbrush",
+    "sfw": true
+  },
+  {
+    "zh": "拿毛巾",
+    "en": "holding_towel",
+    "sfw": true
+  },
+  {
+    "zh": "拿剃刀",
+    "en": "holding_razor",
+    "sfw": true
+  },
+  {
+    "zh": "拿吹风机",
+    "en": "holding_hair_dryer",
+    "sfw": true
+  },
+  {
+    "zh": "拿发刷",
+    "en": "holding_hair_brush",
+    "sfw": true
+  },
+  {
+    "zh": "打羽毛球",
+    "en": "playing_badminton",
+    "sfw": true
+  },
+  {
+    "zh": "打台球",
+    "en": "playing_billiards",
+    "sfw": true
+  },
+  {
+    "zh": "打保龄球",
+    "en": "playing_bowling",
+    "sfw": true
+  },
+  {
+    "zh": "打高尔夫",
+    "en": "playing_golf",
+    "sfw": true
+  },
+  {
+    "zh": "体操",
+    "en": "gymnastics",
+    "sfw": true
+  },
+  {
+    "zh": "打冰球",
+    "en": "playing_ice_hockey",
+    "sfw": true
+  },
+  {
+    "zh": "柔道",
+    "en": "judo",
+    "sfw": true
+  },
+  {
+    "zh": "打长曲棍球",
+    "en": "playing_lacrosse",
+    "sfw": true
+  },
+  {
+    "zh": "泰拳",
+    "en": "muay_thai",
+    "sfw": true
+  },
+  {
+    "zh": "橄榄球",
+    "en": "playing_rugby",
+    "sfw": true
+  },
+  {
+    "zh": "相扑",
+    "en": "sumo",
+    "sfw": true
+  },
+  {
+    "zh": "打网球",
+    "en": "playing_tennis",
+    "sfw": true
+  },
+  {
+    "zh": "田径",
+    "en": "track_and_field",
+    "sfw": true
+  },
+  {
+    "zh": "打水球",
+    "en": "playing_water_polo",
+    "sfw": true
+  },
+  {
+    "zh": "拳击训练",
+    "en": "boxing_training",
+    "sfw": true
+  },
+  {
+    "zh": "单板滑雪",
+    "en": "snowboarding",
+    "sfw": true
+  },
+  {
+    "zh": "攀岩",
+    "en": "rock_climbing",
+    "sfw": true
+  },
+  {
+    "zh": "皮划艇",
+    "en": "kayaking",
+    "sfw": true
+  },
+  {
+    "zh": "漂流",
+    "en": "rafting",
+    "sfw": true
+  },
+  {
+    "zh": "跳远",
+    "en": "long_jump",
+    "sfw": true
+  },
+  {
+    "zh": "跳高",
+    "en": "high_jump",
+    "sfw": true
+  },
+  {
+    "zh": "撑竿跳",
+    "en": "pole_vault",
+    "sfw": true
+  },
+  {
+    "zh": "标枪",
+    "en": "javelin_throw",
+    "sfw": true
+  },
+  {
+    "zh": "铅球",
+    "en": "shot_put",
+    "sfw": true
+  },
+  {
+    "zh": "链球",
+    "en": "hammer_throw",
+    "sfw": true
+  },
+  {
+    "zh": "跨栏",
+    "en": "hurdling",
+    "sfw": true
+  },
+  {
+    "zh": "健身",
+    "en": "fitness",
+    "sfw": true
+  },
+  {
+    "zh": "快跑",
+    "en": "sprinting",
+    "sfw": true
+  },
+  {
+    "zh": "接力",
+    "en": "relay_race",
+    "sfw": true
+  },
+  {
+    "zh": "芭蕾舞",
+    "en": "ballet_dancing",
+    "sfw": true
+  },
+  {
+    "zh": "肚皮舞",
+    "en": "belly_dancing",
+    "sfw": true
+  },
+  {
+    "zh": "霹雳舞",
+    "en": "breakdancing",
+    "sfw": true
+  },
+  {
+    "zh": "康康舞",
+    "en": "cancan",
+    "sfw": true
+  },
+  {
+    "zh": "弗拉门戈",
+    "en": "flamenco",
+    "sfw": true
+  },
+  {
+    "zh": "草裙舞",
+    "en": "hula_dancing",
+    "sfw": true
+  },
+  {
+    "zh": "钢管舞",
+    "en": "pole_dancing",
+    "sfw": true
+  },
+  {
+    "zh": "桑巴",
+    "en": "samba",
+    "sfw": true
+  },
+  {
+    "zh": "探戈",
+    "en": "tango",
+    "sfw": true
+  },
+  {
+    "zh": "踢踏舞",
+    "en": "tap_dancing",
+    "sfw": true
+  },
+  {
+    "zh": "华尔兹",
+    "en": "waltz_dancing",
+    "sfw": true
+  },
+  {
+    "zh": "月光漫步",
+    "en": "moonwalk",
+    "sfw": true
+  },
+  {
+    "zh": "摆手舞",
+    "en": "wotagei",
+    "sfw": true
+  },
+  {
+    "zh": "大摆舞",
+    "en": "yosakoi",
+    "sfw": true
+  },
+  {
+    "zh": "摆姿势",
+    "en": "posing",
+    "sfw": true
+  },
+  {
+    "zh": "表演",
+    "en": "performing",
+    "sfw": true
+  },
+  {
+    "zh": "观星",
+    "en": "stargazing",
+    "sfw": true
+  },
+  {
+    "zh": "抚摸宠物",
+    "en": "petting",
+    "sfw": true
+  },
+  {
+    "zh": "品尝",
+    "en": "tasting",
+    "sfw": true
+  },
+  {
+    "zh": "放松",
+    "en": "relaxing",
+    "sfw": true
+  },
+  {
+    "zh": "倾听",
+    "en": "listening",
+    "sfw": true
+  },
+  {
+    "zh": "微笑",
+    "en": "smiling",
+    "sfw": true
+  },
+  {
+    "zh": "发呆",
+    "en": "daydreaming",
+    "sfw": true
+  },
+  {
+    "zh": "装饰",
+    "en": "decorating",
+    "sfw": true
+  },
+  {
+    "zh": "包装礼物",
+    "en": "wrapping",
+    "sfw": true
+  },
+  {
+    "zh": "放风筝",
+    "en": "flying_kite",
+    "sfw": true
+  },
+  {
+    "zh": "堆雪人",
+    "en": "making_snowman",
+    "sfw": true
+  },
+  {
+    "zh": "打雪仗",
+    "en": "snowball_fight",
+    "sfw": true
+  },
+  {
+    "zh": "雪中嬉戏",
+    "en": "playing_in_snow",
+    "sfw": true
+  },
+  {
+    "zh": "投降",
+    "en": "surrendering",
+    "sfw": true
+  },
+  {
+    "zh": "修剪",
+    "en": "pruning",
+    "sfw": true
+  }
+]

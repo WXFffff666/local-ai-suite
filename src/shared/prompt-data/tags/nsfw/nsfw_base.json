@@ -1,0 +1,986 @@
+[
+  {
+    "zh": "乳头",
+    "en": "nipples",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴部/小穴",
+    "en": "pussy",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴毛",
+    "en": "pubic_hair",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "大乳晕",
+    "en": "large_areolae",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴唇露出",
+    "en": "cleft_of_venus",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴蒂",
+    "en": "clitoris",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "内阴唇",
+    "en": "inner_labia",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "肿起的乳头/挺立乳晕",
+    "en": "puffy_nipples",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "凹陷乳头",
+    "en": "inverted_nipples",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "衣服破损",
+    "en": "torn_clothes",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "衬衫破损",
+    "en": "torn_shirt",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "裙子破损",
+    "en": "torn_skirt",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "内裤破损",
+    "en": "torn_panties",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "掀胸罩",
+    "en": "bra_lift",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "内裤拨到一旁（露出下体）",
+    "en": "panties_aside",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "拉扯衬衫",
+    "en": "shirt_pull",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "解开纽扣",
+    "en": "unbuttoned",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "拉下拉链",
+    "en": "unzipping",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "裤子脱到脚踝",
+    "en": "pants_around_ankles",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "裙子卷到腰",
+    "en": "skirt_rolled_up",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "拉下内裤",
+    "en": "panty_pull",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "昏暗灯光",
+    "en": "dim_lighting",
+    "sfw": false,
+    "group": "nsfw:base"
+  }
+,
+  {
+    "zh": "遮挡乳头",
+    "en": "covered_nipples",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "露乳走光",
+    "en": "nipple_slip",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "深色乳头",
+    "en": "dark_nipples",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "巨大乳头",
+    "en": "huge_nipples",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "乳头环",
+    "en": "nipple_piercing",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "乳头戒指",
+    "en": "nipple_rings",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "乳棒",
+    "en": "nipple_bar",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "刺激乳头",
+    "en": "nipple_stimulation",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "捏乳头",
+    "en": "nipple_tweak",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "无乳头",
+    "en": "no_nipples",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "乳头饰品",
+    "en": "nipple_jewelry",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "乳头镂空",
+    "en": "nipple_cutout",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "乳头链",
+    "en": "nipple_chain",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "乳尖相触",
+    "en": "nipple-to-nipple",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "小乳头",
+    "en": "small_nipples",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "长乳头",
+    "en": "long_nipples",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "掰开小穴",
+    "en": "spread_pussy",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "自掰小穴",
+    "en": "spreading_own_pussy",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "小穴走光",
+    "en": "pussy_peek",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴部穿刺",
+    "en": "pussy_piercing",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "半开小穴",
+    "en": "half-spread_pussy",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "裆部镂空",
+    "en": "pussy_cutout",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴部特写",
+    "en": "pussy_focus",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "遮掩小穴",
+    "en": "covered_pussy",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "长阴唇",
+    "en": "long_labia",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "深色阴唇",
+    "en": "dark_labia",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴唇之间",
+    "en": "between_labia",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴唇环",
+    "en": "labia_piercing",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴唇戒指",
+    "en": "labia_ring",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴唇走光",
+    "en": "labia_slip",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "女性阴毛",
+    "en": "female_pubic_hair",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "耻部纹身",
+    "en": "pubic_tattoo",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴毛走光",
+    "en": "pubic_hair_peek",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "彩色阴毛",
+    "en": "colored_pubic_hair",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "稀疏阴毛",
+    "en": "sparse_pubic_hair",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "杂散阴毛",
+    "en": "stray_pubic_hair",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "浓密阴毛",
+    "en": "excessive_pubic_hair",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴毛胡茬",
+    "en": "pubic_stubble",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "修剪阴毛",
+    "en": "shaped_pubic_hair",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "心形阴毛",
+    "en": "heart-shaped_pubic_hair",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "耻部镂空",
+    "en": "pubic_cutout",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "裆部视角",
+    "en": "pov_crotch",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "遮挡裆部",
+    "en": "covering_crotch",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "开裆",
+    "en": "crotchless",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "护裆",
+    "en": "crotch_plate",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "裆部镂空衣",
+    "en": "crotch_cutout",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "裆部特写",
+    "en": "crotch_focus",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "裆部拉链",
+    "en": "crotch_zipper",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "抓裆",
+    "en": "crotch_grab",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴蒂包皮",
+    "en": "clitoral_hood",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "刺激阴蒂",
+    "en": "clitoral_stimulation",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴蒂环",
+    "en": "clitoral_piercing",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "勃起阴蒂",
+    "en": "erect_clitoris",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "遮挡阴蒂",
+    "en": "covered_clitoris",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴蒂戒指",
+    "en": "clitoris_ring",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "大阴蒂",
+    "en": "large_clitoris",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴蒂走光",
+    "en": "clitoris_slip",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "乳晕走光",
+    "en": "areola_slip",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "浅色乳晕",
+    "en": "light_areolae",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "斑点乳晕",
+    "en": "speckled_areolae",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "深色乳晕",
+    "en": "dark_areolae",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "乳晕环",
+    "en": "areola_piercing",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "乳晕痣",
+    "en": "mole_on_areola",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "撕破连裤袜",
+    "en": "torn_pantyhose",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "撕破过膝袜",
+    "en": "torn_thighhighs",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "撕破裤子",
+    "en": "torn_pants",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "撕破连衣裙",
+    "en": "torn_dress",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "撕破袖子",
+    "en": "torn_sleeves",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "撕破连体衣",
+    "en": "torn_bodysuit",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "撕破短裤",
+    "en": "torn_shorts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "撕破牛仔裤",
+    "en": "torn_jeans",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "撕破体操服",
+    "en": "torn_leotard",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "撕破手套",
+    "en": "torn_gloves",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "撕破外套",
+    "en": "torn_jacket",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "撕破泳装",
+    "en": "torn_swimsuit",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "撕破和服",
+    "en": "torn_kimono",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "撕破比基尼",
+    "en": "torn_bikini",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "胸部露出",
+    "en": "breasts_out",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "单乳露出",
+    "en": "one_breast_out",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "胸部走光",
+    "en": "breast_slip",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "胸部特写",
+    "en": "breast_focus",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "挺翘胸部",
+    "en": "perky_breasts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "下垂胸部",
+    "en": "hanging_breasts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "下垂乳房",
+    "en": "sagging_breasts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "青筋乳房",
+    "en": "veiny_breasts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "胸部纹身",
+    "en": "breast_tattoo",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "乳房帘",
+    "en": "breast_curtains",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "乳房痣",
+    "en": "mole_on_breast",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "晃动胸部",
+    "en": "bouncing_breasts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "双乳分开",
+    "en": "breasts_apart",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "乳沟",
+    "en": "between_breasts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "双乳挤压",
+    "en": "breasts_squeezed_together",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "巨乳",
+    "en": "gigantic_breasts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "爆乳",
+    "en": "bursting_breasts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "框住胸部",
+    "en": "framed_breasts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "按压胸部",
+    "en": "breast_press",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "乳袋",
+    "en": "breast_pocket",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "胸部托",
+    "en": "breast_rest",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "压胸",
+    "en": "breast_suppress",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "羡慕胸部",
+    "en": "breast_envy",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "头发遮胸",
+    "en": "hair_over_breasts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "衣物夹胸",
+    "en": "clothes_between_breasts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "领带夹胸",
+    "en": "necktie_between_breasts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "手臂托胸",
+    "en": "arm_under_breasts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "双臂托胸",
+    "en": "arms_under_breasts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "胸部贴玻璃",
+    "en": "breasts_on_glass",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "头埋乳间",
+    "en": "head_between_breasts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "脸贴胸",
+    "en": "face_to_breasts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "自抓胸",
+    "en": "grabbing_own_breast",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "抓他人胸",
+    "en": "grabbing_another's_breast",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "肛毛",
+    "en": "anal_hair",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "乳头凹陷",
+    "en": "nipple_indents",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "揉乳头",
+    "en": "nipple_rub",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "拉扯乳头",
+    "en": "nipple_pull",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "乳头创可贴",
+    "en": "bandaids_on_nipples",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "遮掩乳头",
+    "en": "covering_nipples",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "彩色乳头",
+    "en": "colored_nipples",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "打码乳头",
+    "en": "censored_nipples",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "自拧乳头",
+    "en": "tweaking_own_nipple",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "爱液痕",
+    "en": "pussy_juice_trail",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "爱液渍",
+    "en": "pussy_juice_stain",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "指上爱液",
+    "en": "pussy_juice_on_fingers",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "大量爱液",
+    "en": "excessive_pussy_juice",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "双穴夹击",
+    "en": "pussy_sandwich",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴部痣",
+    "en": "mole_on_pussy",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴部创可贴",
+    "en": "bandaid_on_pussy",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "展示自身阴部",
+    "en": "presenting_own_pussy",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "衣下掰开阴部",
+    "en": "spread_pussy_under_clothes",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "爱液滩",
+    "en": "pussy_juice_puddle",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "裆部带",
+    "en": "crotch_strap",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "手按自身裆部",
+    "en": "hand_on_own_crotch",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "手按他人裆部",
+    "en": "hand_on_another's_crotch",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "裆部痣",
+    "en": "mole_on_crotch",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "脸埋裆部",
+    "en": "face_in_crotch",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "捏揉阴蒂",
+    "en": "clitoris_tweak",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴蒂走光",
+    "en": "clitoris_peek",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "阴蒂链",
+    "en": "clitoris_chain",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "吸吮式阴蒂跳蛋",
+    "en": "clitoral_suction_vibrator",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "托胸",
+    "en": "breast_lift",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "错位胸部",
+    "en": "unaligned_breasts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "带子夹胸",
+    "en": "strap_between_breasts",
+    "sfw": false,
+    "group": "nsfw:base"
+  },
+  {
+    "zh": "无胸衣物",
+    "en": "breastless_clothes",
+    "sfw": false,
+    "group": "nsfw:base"
+  }]

@@ -25,6 +25,8 @@ export const ALLOWED_CHANNELS = [
   'models:list',
   'models:download',
   'models:setDir',
+  // 阶段3：打开模型子目录（资源管理器），拖入文件即自动注册
+  'models:openDir',
   // todo19: LoRA picker — list diffusion LoRA files + safetensors header meta
   'models:loraScan',
   'models:loraMeta',

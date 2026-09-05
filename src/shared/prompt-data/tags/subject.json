@@ -1,0 +1,2210 @@
+[
+  {
+    "zh": "单女",
+    "en": "1girl",
+    "sfw": true,
+    "dimension": "count"
+  },
+  {
+    "zh": "单人",
+    "en": "solo",
+    "sfw": true,
+    "dimension": "count"
+  },
+  {
+    "zh": "单男",
+    "en": "1boy",
+    "sfw": true,
+    "dimension": "count"
+  },
+  {
+    "zh": "多女",
+    "en": "multiple_girls",
+    "sfw": true,
+    "dimension": "count"
+  },
+  {
+    "zh": "双女",
+    "en": "2girls",
+    "sfw": true,
+    "dimension": "count"
+  },
+  {
+    "zh": "男性焦点",
+    "en": "male_focus",
+    "sfw": true
+  },
+  {
+    "zh": "男女",
+    "en": "hetero",
+    "sfw": true
+  },
+  {
+    "zh": "多男",
+    "en": "multiple_boys",
+    "sfw": true,
+    "dimension": "count"
+  },
+  {
+    "zh": "虚拟主播",
+    "en": "virtual_youtuber",
+    "sfw": true
+  },
+  {
+    "zh": "双男",
+    "en": "2boys",
+    "sfw": true,
+    "dimension": "count"
+  },
+  {
+    "zh": "Q版",
+    "en": "chibi",
+    "sfw": true
+  },
+  {
+    "zh": "三女",
+    "en": "3girls",
+    "sfw": true,
+    "dimension": "count"
+  },
+  {
+    "zh": "百合",
+    "en": "yuri",
+    "sfw": true
+  },
+  {
+    "zh": "萝莉",
+    "en": "loli",
+    "sfw": true,
+    "dimension": "age_group"
+  },
+  {
+    "zh": "猫",
+    "en": "cat",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "腐向",
+    "en": "yaoi",
+    "sfw": true
+  },
+  {
+    "zh": "精灵",
+    "en": "elf",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "机器人",
+    "en": "robot",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "狗",
+    "en": "dog",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "兔子",
+    "en": "rabbit",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "龙",
+    "en": "dragon",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "幽灵",
+    "en": "ghost",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "人造人",
+    "en": "android",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "天使",
+    "en": "angel",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "正太",
+    "en": "shota",
+    "sfw": true,
+    "dimension": "age_group"
+  },
+  {
+    "zh": "魔女",
+    "en": "witch",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "OL 白领",
+    "en": "office_lady",
+    "sfw": true
+  },
+  {
+    "zh": "忍者",
+    "en": "ninja",
+    "sfw": true
+  },
+  {
+    "zh": "偶像",
+    "en": "idol",
+    "sfw": true
+  },
+  {
+    "zh": "赛博格",
+    "en": "cyborg",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "狐狸",
+    "en": "fox",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "狼",
+    "en": "wolf",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "一男一女",
+    "en": "1girl_1boy",
+    "sfw": true,
+    "dimension": "count"
+  },
+  {
+    "zh": "两女一男",
+    "en": "2girls_1boy",
+    "sfw": true,
+    "dimension": "count"
+  },
+  {
+    "zh": "一女两男",
+    "en": "1girl_2boys",
+    "sfw": true,
+    "dimension": "count"
+  },
+  {
+    "zh": "两男一女",
+    "en": "2boys_1girl",
+    "sfw": true,
+    "dimension": "count"
+  },
+  {
+    "zh": "女性焦点",
+    "en": "female_focus",
+    "sfw": true
+  },
+  {
+    "zh": "儿童",
+    "en": "child",
+    "sfw": true,
+    "dimension": "age_group"
+  },
+  {
+    "zh": "青少年",
+    "en": "teenager",
+    "sfw": true,
+    "dimension": "age_group"
+  },
+  {
+    "zh": "成年",
+    "en": "adult",
+    "sfw": true,
+    "dimension": "age_group"
+  },
+  {
+    "zh": "年轻",
+    "en": "young",
+    "sfw": true,
+    "dimension": "age_group"
+  },
+  {
+    "zh": "老年",
+    "en": "elderly",
+    "sfw": true,
+    "dimension": "age_group"
+  },
+  {
+    "zh": "熟女",
+    "en": "milf",
+    "sfw": true,
+    "dimension": "age_group"
+  },
+  {
+    "zh": "恶魔",
+    "en": "demon",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "魔鬼",
+    "en": "devil",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "狐妖",
+    "en": "kitsune",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "人鱼",
+    "en": "mermaid",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "妖精",
+    "en": "fairy",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "魔法少女",
+    "en": "magical_girl",
+    "sfw": true
+  },
+  {
+    "zh": "武士",
+    "en": "samurai",
+    "sfw": true
+  },
+  {
+    "zh": "老师",
+    "en": "teacher",
+    "sfw": true
+  },
+  {
+    "zh": "吸血鬼",
+    "en": "vampire",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "女学生",
+    "en": "schoolgirl",
+    "sfw": true
+  },
+  {
+    "zh": "公主",
+    "en": "princess",
+    "sfw": true
+  },
+  {
+    "zh": "女王",
+    "en": "queen",
+    "sfw": true
+  },
+  {
+    "zh": "猫娘",
+    "en": "catgirl",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "兔女郎",
+    "en": "bunny_girl",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "吉祥物",
+    "en": "mascot",
+    "sfw": true
+  },
+  {
+    "zh": "僵尸",
+    "en": "zombie",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "动物",
+    "en": "animal",
+    "sfw": true
+  },
+  {
+    "zh": "鸟",
+    "en": "bird",
+    "sfw": true
+  },
+  {
+    "zh": "马",
+    "en": "horse",
+    "sfw": true
+  },
+  {
+    "zh": "鲸鱼",
+    "en": "whale",
+    "sfw": true
+  },
+  {
+    "zh": "鱼",
+    "en": "fish",
+    "sfw": true
+  },
+  {
+    "zh": "蝴蝶",
+    "en": "butterfly",
+    "sfw": true
+  },
+  {
+    "zh": "哥布林",
+    "en": "goblin",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "兽人",
+    "en": "orc",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "蜥蜴",
+    "en": "lizard",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "蛇",
+    "en": "snake",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "蜘蛛",
+    "en": "spider",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "史莱姆",
+    "en": "slime",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "凤凰",
+    "en": "phoenix",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "狮鹫",
+    "en": "griffin",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "独角兽",
+    "en": "unicorn",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "半人马",
+    "en": "centaur",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "萨提尔",
+    "en": "satyr",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "魅魔",
+    "en": "succubus",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "鹰身女妖",
+    "en": "harpy",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "天狗",
+    "en": "tengu",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "狸猫",
+    "en": "tanuki",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "熊",
+    "en": "bear",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "鹿",
+    "en": "deer",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "羊",
+    "en": "sheep",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "牛",
+    "en": "cow",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "松鼠",
+    "en": "squirrel",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "仓鼠",
+    "en": "hamster",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "猫头鹰",
+    "en": "owl",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "乌鸦",
+    "en": "crow",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "企鹅",
+    "en": "penguin",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "虎",
+    "en": "tiger",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "狮",
+    "en": "lion",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "青蛙",
+    "en": "frog",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "龟",
+    "en": "turtle",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "章鱼",
+    "en": "octopus",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "水母",
+    "en": "jellyfish",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "蟹",
+    "en": "crab",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "狼人",
+    "en": "werewolf",
+    "sfw": true,
+    "dimension": "species"
+  },
+  {
+    "zh": "女仆",
+    "en": "maid",
+    "sfw": true
+  },
+  {
+    "zh": "服务员",
+    "en": "waitress",
+    "sfw": true
+  },
+  {
+    "zh": "护士",
+    "en": "nurse",
+    "sfw": true
+  },
+  {
+    "zh": "修女",
+    "en": "nun",
+    "sfw": true
+  },
+  {
+    "zh": "女警",
+    "en": "policewoman",
+    "sfw": true
+  },
+  {
+    "zh": "士兵",
+    "en": "soldier",
+    "sfw": true
+  },
+  {
+    "zh": "骑士",
+    "en": "knight",
+    "sfw": true
+  },
+  {
+    "zh": "法师",
+    "en": "mage",
+    "sfw": true
+  },
+  {
+    "zh": "弓箭手",
+    "en": "archer",
+    "sfw": true
+  },
+  {
+    "zh": "神官",
+    "en": "priestess",
+    "sfw": true
+  },
+  {
+    "zh": "女皇",
+    "en": "empress",
+    "sfw": true
+  },
+  {
+    "zh": "医生",
+    "en": "doctor",
+    "sfw": true
+  },
+  {
+    "zh": "科学家",
+    "en": "scientist",
+    "sfw": true
+  },
+  {
+    "zh": "宇航员",
+    "en": "astronaut",
+    "sfw": true
+  },
+  {
+    "zh": "飞行员",
+    "en": "pilot",
+    "sfw": true
+  },
+  {
+    "zh": "厨师",
+    "en": "chef",
+    "sfw": true
+  },
+  {
+    "zh": "图书管理员",
+    "en": "librarian",
+    "sfw": true
+  },
+  {
+    "zh": "秘书",
+    "en": "secretary",
+    "sfw": true
+  },
+  {
+    "zh": "侦探",
+    "en": "detective",
+    "sfw": true
+  },
+  {
+    "zh": "间谍",
+    "en": "spy",
+    "sfw": true
+  },
+  {
+    "zh": "海盗",
+    "en": "pirate",
+    "sfw": true
+  },
+  {
+    "zh": "牛仔",
+    "en": "cowboy",
+    "sfw": true
+  },
+  {
+    "zh": "舞者",
+    "en": "dancer",
+    "sfw": true
+  },
+  {
+    "zh": "歌手",
+    "en": "singer",
+    "sfw": true
+  },
+  {
+    "zh": "演员",
+    "en": "actress",
+    "sfw": true
+  },
+  {
+    "zh": "模特",
+    "en": "model",
+    "sfw": true
+  },
+  {
+    "zh": "辣妹",
+    "en": "gyaru",
+    "sfw": true
+  },
+  {
+    "zh": "不良少女",
+    "en": "delinquent_girl",
+    "sfw": true
+  },
+  {
+    "zh": "大小姐",
+    "en": "ojou_sama",
+    "sfw": true
+  },
+  {
+    "zh": "主播",
+    "en": "streamer",
+    "sfw": true
+  },
+  {
+    "zh": "剑士",
+    "en": "swordswoman",
+    "sfw": true
+  },
+  {
+    "zh": "枪手",
+    "en": "gunslinger",
+    "sfw": true
+  },
+  {
+    "zh": "婴儿",
+    "en": "baby",
+    "sfw": true,
+    "dimension": "age_group"
+  },
+  {
+    "zh": "幼儿",
+    "en": "toddler",
+    "sfw": true,
+    "dimension": "age_group"
+  },
+  {
+    "zh": "青春期",
+    "en": "adolescent",
+    "sfw": true,
+    "dimension": "age_group"
+  },
+  {
+    "zh": "中年",
+    "en": "middle_aged",
+    "sfw": true,
+    "dimension": "age_group"
+  },
+  {
+    "zh": "男管家",
+    "en": "butler",
+    "sfw": true
+  },
+  {
+    "zh": "保镖",
+    "en": "bodyguard",
+    "sfw": true
+  },
+  {
+    "zh": "收银员",
+    "en": "cashier",
+    "sfw": true
+  },
+  {
+    "zh": "私人司机",
+    "en": "chauffeur",
+    "sfw": true
+  },
+  {
+    "zh": "自行车手",
+    "en": "cyclist",
+    "sfw": true
+  },
+  {
+    "zh": "牙医",
+    "en": "dentist",
+    "sfw": true
+  },
+  {
+    "zh": "DJ",
+    "en": "dj",
+    "sfw": true
+  },
+  {
+    "zh": "工程师",
+    "en": "engineer",
+    "sfw": true
+  },
+  {
+    "zh": "农民",
+    "en": "farmer",
+    "sfw": true
+  },
+  {
+    "zh": "消防员",
+    "en": "firefighter",
+    "sfw": true
+  },
+  {
+    "zh": "渔夫",
+    "en": "fisherman",
+    "sfw": true
+  },
+  {
+    "zh": "空乘",
+    "en": "flight_attendant",
+    "sfw": true
+  },
+  {
+    "zh": "花艺师",
+    "en": "florist",
+    "sfw": true
+  },
+  {
+    "zh": "艺伎",
+    "en": "geisha",
+    "sfw": true
+  },
+  {
+    "zh": "警卫",
+    "en": "guard",
+    "sfw": true
+  },
+  {
+    "zh": "女招待",
+    "en": "hostess",
+    "sfw": true
+  },
+  {
+    "zh": "清洁工",
+    "en": "janitor",
+    "sfw": true
+  },
+  {
+    "zh": "法官",
+    "en": "judge",
+    "sfw": true
+  },
+  {
+    "zh": "救生员",
+    "en": "lifeguard",
+    "sfw": true
+  },
+  {
+    "zh": "伐木工",
+    "en": "lumberjack",
+    "sfw": true
+  },
+  {
+    "zh": "机械师",
+    "en": "mechanic",
+    "sfw": true
+  },
+  {
+    "zh": "商人",
+    "en": "merchant",
+    "sfw": true
+  },
+  {
+    "zh": "矿工",
+    "en": "miner",
+    "sfw": true
+  },
+  {
+    "zh": "水手",
+    "en": "sailor",
+    "sfw": true
+  },
+  {
+    "zh": "上班族",
+    "en": "salaryman",
+    "sfw": true
+  },
+  {
+    "zh": "牧羊人",
+    "en": "shepherd",
+    "sfw": true
+  },
+  {
+    "zh": "卡车司机",
+    "en": "trucker",
+    "sfw": true
+  },
+  {
+    "zh": "列车长",
+    "en": "train_conductor",
+    "sfw": true
+  },
+  {
+    "zh": "配音演员",
+    "en": "voice_actor",
+    "sfw": true
+  },
+  {
+    "zh": "男侍应",
+    "en": "waiter",
+    "sfw": true
+  },
+  {
+    "zh": "理发师",
+    "en": "barber",
+    "sfw": true
+  },
+  {
+    "zh": "炼金术师",
+    "en": "alchemist",
+    "sfw": true
+  },
+  {
+    "zh": "吟游诗人",
+    "en": "bard",
+    "sfw": true
+  },
+  {
+    "zh": "铁匠",
+    "en": "blacksmith",
+    "sfw": true
+  },
+  {
+    "zh": "德鲁伊",
+    "en": "druid",
+    "sfw": true
+  },
+  {
+    "zh": "圣骑士",
+    "en": "paladin",
+    "sfw": true
+  },
+  {
+    "zh": "战士",
+    "en": "warrior",
+    "sfw": true
+  },
+  {
+    "zh": "角斗士",
+    "en": "gladiator",
+    "sfw": true
+  },
+  {
+    "zh": "巫师",
+    "en": "wizard",
+    "sfw": true
+  },
+  {
+    "zh": "公园管理员",
+    "en": "park_ranger",
+    "sfw": true
+  },
+  {
+    "zh": "保安",
+    "en": "security_guard",
+    "sfw": true
+  },
+  {
+    "zh": "雇佣兵",
+    "en": "mercenary",
+    "sfw": true
+  },
+  {
+    "zh": "狙击手",
+    "en": "sniper",
+    "sfw": true
+  },
+  {
+    "zh": "伞兵",
+    "en": "paratrooper",
+    "sfw": true
+  },
+  {
+    "zh": "军医",
+    "en": "military_medic",
+    "sfw": true
+  },
+  {
+    "zh": "山贼",
+    "en": "bandit",
+    "sfw": true
+  },
+  {
+    "zh": "入室窃贼",
+    "en": "burglar",
+    "sfw": true
+  },
+  {
+    "zh": "黑帮成员",
+    "en": "gangster",
+    "sfw": true
+  },
+  {
+    "zh": "黑客",
+    "en": "hacker",
+    "sfw": true
+  },
+  {
+    "zh": "黑手党",
+    "en": "mafia",
+    "sfw": true
+  },
+  {
+    "zh": "囚犯",
+    "en": "prisoner",
+    "sfw": true
+  },
+  {
+    "zh": "牧师",
+    "en": "priest",
+    "sfw": true
+  },
+  {
+    "zh": "僧侣",
+    "en": "monk",
+    "sfw": true
+  },
+  {
+    "zh": "巫女",
+    "en": "miko",
+    "sfw": true
+  },
+  {
+    "zh": "神职人员",
+    "en": "cleric",
+    "sfw": true
+  },
+  {
+    "zh": "酒保",
+    "en": "bartender",
+    "sfw": true
+  },
+  {
+    "zh": "拳击手",
+    "en": "boxer",
+    "sfw": true
+  },
+  {
+    "zh": "小丑",
+    "en": "clown",
+    "sfw": true
+  },
+  {
+    "zh": "魔术师",
+    "en": "magician",
+    "sfw": true
+  },
+  {
+    "zh": "芭蕾舞女",
+    "en": "ballerina",
+    "sfw": true
+  },
+  {
+    "zh": "摔跤手",
+    "en": "wrestler",
+    "sfw": true
+  },
+  {
+    "zh": "屠夫",
+    "en": "butcher",
+    "sfw": true
+  },
+  {
+    "zh": "水管工",
+    "en": "plumber",
+    "sfw": true
+  },
+  {
+    "zh": "木匠",
+    "en": "carpenter",
+    "sfw": true
+  },
+  {
+    "zh": "裁缝",
+    "en": "tailor",
+    "sfw": true
+  },
+  {
+    "zh": "斗牛士",
+    "en": "matador",
+    "sfw": true
+  },
+  {
+    "zh": "摄影师",
+    "en": "photographer",
+    "sfw": true
+  },
+  {
+    "zh": "律师",
+    "en": "lawyer",
+    "sfw": true
+  },
+  {
+    "zh": "记者",
+    "en": "journalist",
+    "sfw": true
+  },
+  {
+    "zh": "侠盗",
+    "en": "phantom_thief",
+    "sfw": true
+  },
+  {
+    "zh": "占卜师",
+    "en": "fortune_teller",
+    "sfw": true
+  },
+  {
+    "zh": "建筑工人",
+    "en": "construction_worker",
+    "sfw": true
+  },
+  {
+    "zh": "家里蹲",
+    "en": "hikikomori",
+    "sfw": true
+  },
+  {
+    "zh": "宪兵",
+    "en": "military_police",
+    "sfw": true
+  },
+  {
+    "zh": "教官",
+    "en": "drill_instructor",
+    "sfw": true
+  },
+  {
+    "zh": "蛙人",
+    "en": "frogman",
+    "sfw": true
+  },
+  {
+    "zh": "旗手",
+    "en": "standard_bearer",
+    "sfw": true
+  },
+  {
+    "zh": "教皇",
+    "en": "pope",
+    "sfw": true
+  },
+  {
+    "zh": "警察(男)",
+    "en": "policeman",
+    "sfw": true
+  },
+  {
+    "zh": "修船船长",
+    "en": "ship_captain",
+    "sfw": true
+  },
+  {
+    "zh": "篮球运动员",
+    "en": "basketball_player",
+    "sfw": true
+  },
+  {
+    "zh": "游泳者",
+    "en": "swimmer",
+    "sfw": true
+  },
+  {
+    "zh": "指挥家",
+    "en": "conductor",
+    "sfw": true
+  },
+  {
+    "zh": "小偷",
+    "en": "thief",
+    "sfw": true
+  },
+  {
+    "zh": "刺客",
+    "en": "assassin",
+    "sfw": true
+  },
+  {
+    "zh": "化学家",
+    "en": "chemist",
+    "sfw": true
+  },
+  {
+    "zh": "大天使",
+    "en": "archangel",
+    "sfw": true
+  },
+  {
+    "zh": "智天使",
+    "en": "cherub",
+    "sfw": true
+  },
+  {
+    "zh": "炽天使",
+    "en": "seraph",
+    "sfw": true
+  },
+  {
+    "zh": "蛇怪",
+    "en": "basilisk",
+    "sfw": true
+  },
+  {
+    "zh": "巨兽",
+    "en": "behemoth",
+    "sfw": true
+  },
+  {
+    "zh": "地狱三头犬",
+    "en": "cerberus",
+    "sfw": true
+  },
+  {
+    "zh": "奇美拉",
+    "en": "chimera",
+    "sfw": true
+  },
+  {
+    "zh": "天马",
+    "en": "pegasus",
+    "sfw": true
+  },
+  {
+    "zh": "斯芬克斯",
+    "en": "sphinx",
+    "sfw": true
+  },
+  {
+    "zh": "鸡蛇",
+    "en": "cockatrice",
+    "sfw": true
+  },
+  {
+    "zh": "独眼巨人",
+    "en": "cyclops",
+    "sfw": true
+  },
+  {
+    "zh": "无头骑士",
+    "en": "dullahan",
+    "sfw": true
+  },
+  {
+    "zh": "矮人",
+    "en": "dwarf",
+    "sfw": true
+  },
+  {
+    "zh": "黑暗精灵",
+    "en": "dark_elf",
+    "sfw": true
+  },
+  {
+    "zh": "羊男",
+    "en": "faun",
+    "sfw": true
+  },
+  {
+    "zh": "巨人",
+    "en": "giant",
+    "sfw": true
+  },
+  {
+    "zh": "女巨人",
+    "en": "giantess",
+    "sfw": true
+  },
+  {
+    "zh": "石魔像",
+    "en": "golem",
+    "sfw": true
+  },
+  {
+    "zh": "九头蛇",
+    "en": "hydra",
+    "sfw": true
+  },
+  {
+    "zh": "北海巨妖",
+    "en": "kraken",
+    "sfw": true
+  },
+  {
+    "zh": "拉米亚",
+    "en": "lamia",
+    "sfw": true
+  },
+  {
+    "zh": "美杜莎",
+    "en": "medusa",
+    "sfw": true
+  },
+  {
+    "zh": "米诺陶",
+    "en": "minotaur",
+    "sfw": true
+  },
+  {
+    "zh": "食人魔",
+    "en": "ogre",
+    "sfw": true
+  },
+  {
+    "zh": "鬼",
+    "en": "oni",
+    "sfw": true
+  },
+  {
+    "zh": "麒麟",
+    "en": "qilin",
+    "sfw": true
+  },
+  {
+    "zh": "报丧女妖",
+    "en": "banshee",
+    "sfw": true
+  },
+  {
+    "zh": "神灯精灵",
+    "en": "genie",
+    "sfw": true
+  },
+  {
+    "zh": "宁芙",
+    "en": "nymph",
+    "sfw": true
+  },
+  {
+    "zh": "女武神",
+    "en": "valkyrie",
+    "sfw": true
+  },
+  {
+    "zh": "食尸鬼",
+    "en": "ghoul",
+    "sfw": true
+  },
+  {
+    "zh": "僵尸(中国)",
+    "en": "jiangshi",
+    "sfw": true
+  },
+  {
+    "zh": "巫妖",
+    "en": "lich",
+    "sfw": true
+  },
+  {
+    "zh": "木乃伊",
+    "en": "mummy",
+    "sfw": true
+  },
+  {
+    "zh": "河童",
+    "en": "kappa",
+    "sfw": true
+  },
+  {
+    "zh": "雪女",
+    "en": "yuki_onna",
+    "sfw": true
+  },
+  {
+    "zh": "双足飞龙",
+    "en": "wyvern",
+    "sfw": true
+  },
+  {
+    "zh": "东方龙",
+    "en": "eastern_dragon",
+    "sfw": true
+  },
+  {
+    "zh": "西方龙",
+    "en": "western_dragon",
+    "sfw": true
+  },
+  {
+    "zh": "猫又",
+    "en": "nekomata",
+    "sfw": true
+  },
+  {
+    "zh": "半人马(水)",
+    "en": "hippocamp",
+    "sfw": true
+  },
+  {
+    "zh": "半身人",
+    "en": "halfling",
+    "sfw": true
+  },
+  {
+    "zh": "地精",
+    "en": "gnome",
+    "sfw": true
+  },
+  {
+    "zh": "风精",
+    "en": "sylph",
+    "sfw": true
+  },
+  {
+    "zh": "火蜥蜴",
+    "en": "salamander",
+    "sfw": true
+  },
+  {
+    "zh": "水精",
+    "en": "undine",
+    "sfw": true
+  },
+  {
+    "zh": "元素精灵",
+    "en": "elemental",
+    "sfw": true
+  },
+  {
+    "zh": "拟态宝箱",
+    "en": "mimic",
+    "sfw": true
+  },
+  {
+    "zh": "曼德拉草",
+    "en": "mandragora",
+    "sfw": true
+  },
+  {
+    "zh": "人鱼(男)",
+    "en": "merman",
+    "sfw": true
+  },
+  {
+    "zh": "小仙子",
+    "en": "pixie",
+    "sfw": true
+  },
+  {
+    "zh": "小恶魔",
+    "en": "imp",
+    "sfw": true
+  },
+  {
+    "zh": "死神",
+    "en": "shinigami",
+    "sfw": true
+  },
+  {
+    "zh": "狼人变体",
+    "en": "lycanthrope",
+    "sfw": true
+  },
+  {
+    "zh": "新·兽",
+    "en": "nue",
+    "sfw": true
+  },
+  {
+    "zh": "虎鲸鲨",
+    "en": "shachihoko",
+    "sfw": true
+  },
+  {
+    "zh": "熊猫",
+    "en": "panda",
+    "sfw": true
+  },
+  {
+    "zh": "考拉",
+    "en": "koala",
+    "sfw": true
+  },
+  {
+    "zh": "袋鼠",
+    "en": "kangaroo",
+    "sfw": true
+  },
+  {
+    "zh": "猴子",
+    "en": "monkey",
+    "sfw": true
+  },
+  {
+    "zh": "大猩猩",
+    "en": "gorilla",
+    "sfw": true
+  },
+  {
+    "zh": "黑猩猩",
+    "en": "chimpanzee",
+    "sfw": true
+  },
+  {
+    "zh": "刺猬",
+    "en": "hedgehog",
+    "sfw": true
+  },
+  {
+    "zh": "浣熊",
+    "en": "raccoon",
+    "sfw": true
+  },
+  {
+    "zh": "水獭",
+    "en": "otter",
+    "sfw": true
+  },
+  {
+    "zh": "海豹",
+    "en": "seal",
+    "sfw": true
+  },
+  {
+    "zh": "海豚",
+    "en": "dolphin",
+    "sfw": true
+  },
+  {
+    "zh": "鲨鱼",
+    "en": "shark",
+    "sfw": true
+  },
+  {
+    "zh": "鳗鱼",
+    "en": "eel",
+    "sfw": true
+  },
+  {
+    "zh": "海马",
+    "en": "seahorse",
+    "sfw": true
+  },
+  {
+    "zh": "海星",
+    "en": "starfish",
+    "sfw": true
+  },
+  {
+    "zh": "虾",
+    "en": "shrimp",
+    "sfw": true
+  },
+  {
+    "zh": "龙虾",
+    "en": "lobster",
+    "sfw": true
+  },
+  {
+    "zh": "蜗牛",
+    "en": "snail",
+    "sfw": true
+  },
+  {
+    "zh": "毛虫",
+    "en": "caterpillar",
+    "sfw": true
+  },
+  {
+    "zh": "蛾",
+    "en": "moth",
+    "sfw": true
+  },
+  {
+    "zh": "甲虫",
+    "en": "beetle",
+    "sfw": true
+  },
+  {
+    "zh": "瓢虫",
+    "en": "ladybug",
+    "sfw": true
+  },
+  {
+    "zh": "蚂蚁",
+    "en": "ant",
+    "sfw": true
+  },
+  {
+    "zh": "黄蜂",
+    "en": "wasp",
+    "sfw": true
+  },
+  {
+    "zh": "蟋蟀",
+    "en": "cricket",
+    "sfw": true
+  },
+  {
+    "zh": "蚱蜢",
+    "en": "grasshopper",
+    "sfw": true
+  },
+  {
+    "zh": "螳螂",
+    "en": "mantis",
+    "sfw": true
+  },
+  {
+    "zh": "蝎子",
+    "en": "scorpion",
+    "sfw": true
+  },
+  {
+    "zh": "短吻鳄",
+    "en": "alligator",
+    "sfw": true
+  },
+  {
+    "zh": "鳄鱼",
+    "en": "crocodile",
+    "sfw": true
+  },
+  {
+    "zh": "恐龙",
+    "en": "dinosaur",
+    "sfw": true
+  },
+  {
+    "zh": "猛犸象",
+    "en": "mammoth",
+    "sfw": true
+  },
+  {
+    "zh": "骆驼",
+    "en": "camel",
+    "sfw": true
+  },
+  {
+    "zh": "犀牛",
+    "en": "rhinoceros",
+    "sfw": true
+  },
+  {
+    "zh": "河马",
+    "en": "hippopotamus",
+    "sfw": true
+  },
+  {
+    "zh": "斑马",
+    "en": "zebra",
+    "sfw": true
+  },
+  {
+    "zh": "长颈鹿",
+    "en": "giraffe",
+    "sfw": true
+  },
+  {
+    "zh": "大象",
+    "en": "elephant",
+    "sfw": true
+  },
+  {
+    "zh": "野猪",
+    "en": "boar",
+    "sfw": true
+  },
+  {
+    "zh": "獾",
+    "en": "badger",
+    "sfw": true
+  },
+  {
+    "zh": "黄鼠狼",
+    "en": "weasel",
+    "sfw": true
+  },
+  {
+    "zh": "雪貂",
+    "en": "ferret",
+    "sfw": true
+  },
+  {
+    "zh": "老鼠",
+    "en": "mouse",
+    "sfw": true
+  },
+  {
+    "zh": "蝙蝠",
+    "en": "bat",
+    "sfw": true
+  },
+  {
+    "zh": "天鹅",
+    "en": "swan",
+    "sfw": true
+  },
+  {
+    "zh": "鸭",
+    "en": "duck",
+    "sfw": true
+  },
+  {
+    "zh": "鹅",
+    "en": "goose",
+    "sfw": true
+  },
+  {
+    "zh": "火鸡",
+    "en": "turkey",
+    "sfw": true
+  },
+  {
+    "zh": "孔雀",
+    "en": "peacock",
+    "sfw": true
+  },
+  {
+    "zh": "鹦鹉",
+    "en": "parrot",
+    "sfw": true
+  },
+  {
+    "zh": "鹰",
+    "en": "eagle",
+    "sfw": true
+  },
+  {
+    "zh": "隼",
+    "en": "falcon",
+    "sfw": true
+  },
+  {
+    "zh": "海鸥",
+    "en": "seagull",
+    "sfw": true
+  },
+  {
+    "zh": "鹭",
+    "en": "heron",
+    "sfw": true
+  },
+  {
+    "zh": "鹤",
+    "en": "crane",
+    "sfw": true
+  },
+  {
+    "zh": "火烈鸟",
+    "en": "flamingo",
+    "sfw": true
+  },
+  {
+    "zh": "鸵鸟",
+    "en": "ostrich",
+    "sfw": true
+  },
+  {
+    "zh": "啄木鸟",
+    "en": "woodpecker",
+    "sfw": true
+  },
+  {
+    "zh": "燕子",
+    "en": "swallow",
+    "sfw": true
+  },
+  {
+    "zh": "麻雀",
+    "en": "sparrow",
+    "sfw": true
+  },
+  {
+    "zh": "夜莺",
+    "en": "nightingale",
+    "sfw": true
+  },
+  {
+    "zh": "雏鸡",
+    "en": "chick",
+    "sfw": true
+  },
+  {
+    "zh": "母鸡",
+    "en": "hen",
+    "sfw": true
+  },
+  {
+    "zh": "公鸡",
+    "en": "rooster",
+    "sfw": true
+  },
+  {
+    "zh": "猪",
+    "en": "pig",
+    "sfw": true
+  },
+  {
+    "zh": "山羊",
+    "en": "goat",
+    "sfw": true
+  },
+  {
+    "zh": "羊羔",
+    "en": "lamb",
+    "sfw": true
+  },
+  {
+    "zh": "水豚",
+    "en": "capybara",
+    "sfw": true
+  },
+  {
+    "zh": "花栗鼠",
+    "en": "chipmunk",
+    "sfw": true
+  },
+  {
+    "zh": "豚鼠",
+    "en": "guinea_pig",
+    "sfw": true
+  },
+  {
+    "zh": "河狸",
+    "en": "beaver",
+    "sfw": true
+  },
+  {
+    "zh": "鸭嘴兽",
+    "en": "platypus",
+    "sfw": true
+  },
+  {
+    "zh": "针鼹",
+    "en": "echidna",
+    "sfw": true
+  },
+  {
+    "zh": "黑猫",
+    "en": "black_cat",
+    "sfw": true
+  },
+  {
+    "zh": "小猫",
+    "en": "kitten",
+    "sfw": true
+  },
+  {
+    "zh": "猎豹",
+    "en": "cheetah",
+    "sfw": true
+  },
+  {
+    "zh": "豹",
+    "en": "leopard",
+    "sfw": true
+  },
+  {
+    "zh": "小狗",
+    "en": "puppy",
+    "sfw": true
+  },
+  {
+    "zh": "小龙虾",
+    "en": "crayfish",
+    "sfw": true
+  },
+  {
+    "zh": "寄居蟹",
+    "en": "hermit_crab",
+    "sfw": true
+  },
+  {
+    "zh": "鲎",
+    "en": "horseshoe_crab",
+    "sfw": true
+  },
+  {
+    "zh": "等足虫",
+    "en": "isopod",
+    "sfw": true
+  },
+  {
+    "zh": "乌贼",
+    "en": "cuttlefish",
+    "sfw": true
+  },
+  {
+    "zh": "鱿鱼",
+    "en": "squid",
+    "sfw": true
+  },
+  {
+    "zh": "蛤",
+    "en": "clam",
+    "sfw": true
+  },
+  {
+    "zh": "珊瑚",
+    "en": "coral",
+    "sfw": true
+  },
+  {
+    "zh": "牡蛎",
+    "en": "oyster",
+    "sfw": true
+  },
+  {
+    "zh": "海葵",
+    "en": "sea_anemone",
+    "sfw": true
+  },
+  {
+    "zh": "海胆",
+    "en": "sea_urchin",
+    "sfw": true
+  },
+  {
+    "zh": "蜈蚣",
+    "en": "centipede",
+    "sfw": true
+  },
+  {
+    "zh": "蝉",
+    "en": "cicada",
+    "sfw": true
+  },
+  {
+    "zh": "蟑螂",
+    "en": "cockroach",
+    "sfw": true
+  },
+  {
+    "zh": "萤火虫",
+    "en": "firefly",
+    "sfw": true
+  },
+  {
+    "zh": "苍蝇",
+    "en": "fly",
+    "sfw": true
+  },
+  {
+    "zh": "马陆",
+    "en": "millipede",
+    "sfw": true
+  },
+  {
+    "zh": "蚊子",
+    "en": "mosquito",
+    "sfw": true
+  },
+  {
+    "zh": "鼠妇",
+    "en": "pillbug",
+    "sfw": true
+  },
+  {
+    "zh": "北极熊",
+    "en": "polar_bear",
+    "sfw": true
+  },
+  {
+    "zh": "公牛",
+    "en": "bull",
+    "sfw": true
+  },
+  {
+    "zh": "赤狐",
+    "en": "red_fox",
+    "sfw": true
+  },
+  {
+    "zh": "小猪",
+    "en": "piglet",
+    "sfw": true
+  },
+  {
+    "zh": "墨西哥钝口螈",
+    "en": "axolotl",
+    "sfw": true
+  },
+  {
+    "zh": "蝌蚪",
+    "en": "tadpole",
+    "sfw": true
+  },
+  {
+    "zh": "蟾蜍",
+    "en": "toad",
+    "sfw": true
+  },
+  {
+    "zh": "壁虎",
+    "en": "gecko",
+    "sfw": true
+  },
+  {
+    "zh": "鬣蜥",
+    "en": "iguana",
+    "sfw": true
+  },
+  {
+    "zh": "森蚺",
+    "en": "anaconda",
+    "sfw": true
+  },
+  {
+    "zh": "蟒蛇",
+    "en": "boa_constrictor",
+    "sfw": true
+  },
+  {
+    "zh": "眼镜蛇",
+    "en": "cobra",
+    "sfw": true
+  },
+  {
+    "zh": "巨蟒",
+    "en": "python",
+    "sfw": true
+  },
+  {
+    "zh": "响尾蛇",
+    "en": "rattlesnake",
+    "sfw": true
+  },
+  {
+    "zh": "陆龟",
+    "en": "tortoise",
+    "sfw": true
+  },
+  {
+    "zh": "金鱼",
+    "en": "goldfish",
+    "sfw": true
+  },
+  {
+    "zh": "锦鲤",
+    "en": "koi",
+    "sfw": true
+  },
+  {
+    "zh": "小丑鱼",
+    "en": "clownfish",
+    "sfw": true
+  },
+  {
+    "zh": "腔棘鱼",
+    "en": "coelacanth",
+    "sfw": true
+  },
+  {
+    "zh": "海鳗",
+    "en": "moray_eel",
+    "sfw": true
+  },
+  {
+    "zh": "蝠鲼",
+    "en": "manta_ray",
+    "sfw": true
+  },
+  {
+    "zh": "皇带鱼",
+    "en": "oarfish",
+    "sfw": true
+  },
+  {
+    "zh": "河豚",
+    "en": "puffer_fish",
+    "sfw": true
+  },
+  {
+    "zh": "旗鱼",
+    "en": "sailfish",
+    "sfw": true
+  },
+  {
+    "zh": "锤头鲨",
+    "en": "hammerhead_shark",
+    "sfw": true
+  },
+  {
+    "zh": "鲸鲨",
+    "en": "whale_shark",
+    "sfw": true
+  },
+  {
+    "zh": "剑鱼",
+    "en": "swordfish",
+    "sfw": true
+  },
+  {
+    "zh": "金枪鱼",
+    "en": "tuna",
+    "sfw": true
+  },
+  {
+    "zh": "白鲸",
+    "en": "beluga_whale",
+    "sfw": true
+  },
+  {
+    "zh": "蓝鲸",
+    "en": "blue_whale",
+    "sfw": true
+  },
+  {
+    "zh": "座头鲸",
+    "en": "humpback_whale",
+    "sfw": true
+  },
+  {
+    "zh": "独角鲸",
+    "en": "narwhal",
+    "sfw": true
+  },
+  {
+    "zh": "虎鲸",
+    "en": "orca",
+    "sfw": true
+  },
+  {
+    "zh": "幽灵少女",
+    "en": "ghost_girl",
+    "sfw": true
+  },
+  {
+    "zh": "蛇女",
+    "en": "snake_girl",
+    "sfw": true
+  },
+  {
+    "zh": "蜘蛛娘",
+    "en": "spider_girl",
+    "sfw": true
+  },
+  {
+    "zh": "植物娘",
+    "en": "plant_girl",
+    "sfw": true
+  },
+  {
+    "zh": "恶魔少女",
+    "en": "demon_girl",
+    "sfw": true
+  },
+  {
+    "zh": "龙少女",
+    "en": "dragon_girl",
+    "sfw": true
+  },
+  {
+    "zh": "石像鬼",
+    "en": "gargoyle",
+    "sfw": true
+  },
+  {
+    "zh": "机器人少女",
+    "en": "robot_girl",
+    "sfw": true
+  },
+  {
+    "zh": "堕天使",
+    "en": "fallen_angel",
+    "sfw": true
+  },
+  {
+    "zh": "丧尸新娘",
+    "en": "zombie_bride",
+    "sfw": true
+  },
+  {
+    "zh": "臭鼬",
+    "en": "skunk",
+    "sfw": true
+  },
+  {
+    "zh": "海狮",
+    "en": "sea_lion",
+    "sfw": true
+  },
+  {
+    "zh": "海象",
+    "en": "walrus",
+    "sfw": true
+  },
+  {
+    "zh": "剑齿虎",
+    "en": "sabretooth_tiger",
+    "sfw": true
+  },
+  {
+    "zh": "金刚鹦鹉",
+    "en": "macaw",
+    "sfw": true
+  },
+  {
+    "zh": "蜥蜴人",
+    "en": "lizardman",
+    "sfw": true
+  },
+  {
+    "zh": "学校护士",
+    "en": "school_nurse",
+    "sfw": true
+  },
+  {
+    "zh": "四女",
+    "en": "4girls",
+    "sfw": true
+  },
+  {
+    "zh": "五女",
+    "en": "5girls",
+    "sfw": true
+  },
+  {
+    "zh": "群像",
+    "en": "crowd",
+    "sfw": true
+  },
+  {
+    "zh": "双男双女",
+    "en": "2boys_2girls",
+    "sfw": true
+  }
+]
